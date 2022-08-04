@@ -15,9 +15,9 @@ export default function Login(){
                             </div>*/}
                         </div>
 
-                        <h2 className='login-title'>Log In</h2>
+                        <h2 className='login-title'>Automation tool</h2>
 
-                        <h3>Welcome back! Please enter your details.</h3>
+               
 
                         <form method='POST' className="login-main" >
                             <div id='personal-account'>
