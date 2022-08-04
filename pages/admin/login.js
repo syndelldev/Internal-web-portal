@@ -2,7 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 export default function Login(){
-
+    
     return(
         <>
             <style global jsx>{`html, body,div#__next{ height: 100%; }`}</style> 
