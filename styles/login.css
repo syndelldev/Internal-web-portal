@@ -1,28 +1,20 @@
-.login-section{background-color: #00155C;}
-.login-container {display: flex; justify-content: center;padding: 5%;}
+.login-section{background-color: #00155C; height: 100%;}
+.login-container {display: flex; justify-content: center;}
 .login-div {padding: 60px 100px;width: 719px;background: #FFFFFF;box-shadow: 0px 0px 124px rgb(132 132 132 / 17%);border-radius: 5px;margin: 0 auto; }
 .login-head{display: flex;padding-bottom: 40px;}
 .login-title{font-weight: 700;font-size: 22px;line-height: 40px;color: #000000;font-family: 'PT Sans';font-weight: bold;}
 .login-text a{text-decoration: none!important;}
 .login-text-login{color: #70AA26;    font-weight: 500;}
-span.signup-text-login {color: #70aa26;
-}
-.login-logo-mobile {
-    display: none;
-}
-label.check {
-    margin-left: 12px;
-}
-span.icon-eyes svg {
-    font-size: 24px;
-}
+span.signup-text-login {color: #70aa26;}
+.login-logo-mobile { display: none;}
+label.check { margin-left: 12px;}
+span.icon-eyes svg { font-size: 24px;}
 .login-icon-eyes {
     margin-top: -55px !important;
     padding-right: 15px;
     float: right;
     font-size: 20px;
 }
-
 .login-logo ,  .login-col {
     width: 50%;
 }
@@ -71,18 +63,12 @@ button.login-create-acc-btn {
     border-radius: 4px;
     color: #fff;
 }
-button.login-create-acc-btn::after {
-    content: url(/login/ArrowRight.svg);
-    position: absolute;
-    margin-top: 3px;
-    margin-left: 7px;
-}
 .login-section input[type="checkbox"] {
     width: 17px;
     height: 17px;
     vertical-align: sub;
 }
-.form-label , label.check {
+.form-label , label .check {
     font-style: normal;
     font-weight: 500;
     font-size: 16px;
@@ -90,7 +76,6 @@ button.login-create-acc-btn::after {
     color: #000000;
     font-family: "PT Sans";
 }
-
 .login-two {
     width: 50% !important;
     text-align: right;
