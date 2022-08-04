@@ -1,4 +1,6 @@
+const { rejects } = require("assert");
 const { createPool } = require("mysql");
+const { resolve } = require("path");
 
 const pool = createPool({
     host:"localhost",
@@ -11,8 +13,29 @@ const pool = createPool({
 pool.getConnection((err)=>{
     if(err)
     {
-        console.log("connection Error");
+        console.log("Database Connection Error");
     }
-    console.log("connection Succesfully");
+    console.log("Database Connected Succesfully");
 });
-module.exports=pool;
+
+const executeQuery=(query, arraparams)=>{
+    return new Promise((resolve,rejects)=>{
+        try{
+            pool.query(query, arraparams,(err,data)=>{
+                if(err)
+                {
+                    console.log('Error in executing Query');
+                    rejects(err);
+                }
+                resolve(data);
+            })
+        }
+        catch(err)
+        {
+            rejects(err);
+        }
+    });
+}
+
+//module.exports=pool;
+module.exports={executeQuery};
