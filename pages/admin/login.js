@@ -9,17 +9,8 @@ export default function Login(){
             <section className='login-section'>
                 <div className='container login-container'>
                     <div className='login-div'>
-                        <div className='login-head'>
-                            {/*<div className='login-logo'>
-                                <a href="/"> <Image src="/Images/logo.png" alt="login logo" width={220} height={50} /></a>
-                            </div>*/}
-                        </div>
-
-                        <h2 className='login-title'>Log In</h2>
-
-                        <h3>Welcome back! Please enter your details.</h3>
-
-                        <form method='POST' className="login-main" >
+                       <h2 className='login-title'>Automation Tool Login</h2>
+                            <form method='POST' className="login-main" >
                             <div id='personal-account'>
                                 <div className="form-group"  >
                                         <label htmlFor="ba-num"  className='form-label'>Email</label>
