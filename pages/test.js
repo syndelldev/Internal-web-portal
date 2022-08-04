@@ -1,4 +1,4 @@
-import { supabase } from "../utils/supabase"
+//import { supabase } from "../utils/supabase"
 
 export default function Test({data}){
     //console.log(data);
@@ -9,10 +9,10 @@ export default function Test({data}){
     )
 }
 
-export async function getStaticProps(context){
+/*export async function getStaticProps(context){
     const data=await supabase.from('admin').select("*");
     console.log(data.data);
     return{
         props:{ data:data },
     };
-}
+}*/
