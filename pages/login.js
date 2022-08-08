@@ -1,54 +1,67 @@
-import Image from 'next/image'
-import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect } from 'react';
+import { useRouter } from 'next/router'
+import { useState } from "react";
 
-import jwt from 'jsonwebtoken'
+export default function Login()
+{
+    //console.log(JSON.stringify(data));
+    const [username,setusername] = useState("");
+    const [password,setpassword] = useState("");
+    const [message,setmessage] = useState("You are not LogIn!");
 
-export default function Login(){
-    const [username, setusername] = useState('')
-    const [password, setpassword] = useState('')
-    const [message, setmessage] = useState("You are not  LogIn!")
-
-    const onsubmit = async(e) =>{
+    let usernamechange = (e) => {
+        let inputvalue = e.target.value;
+        setusername(inputvalue);
+    }
+    
+    let passwordchange = (e) => {
+        let inputvalue = e.target.value;
+        setpassword(inputvalue);
+    }
+    
+    const login = async(e) => {
         e.preventDefault();
-        const res = await fetch('http://localhost:3000/api/admin/login',{
-            method:'POST',
+        
+        const result = await fetch(`http://localhost:3000/api/admin/login/`,{
+            method: "POST",
+            mode: 'cors',
             headers: {
                 "Content-Type": "application/json",
             },
-            body:JSON.stringify({username,password})
-        }).then((t)=>t.json())
+            credentials : "include",
+            body:JSON.stringify({ "username":username ,"password":password }),
+        })
+        //const data = await res.json()
 
-        //const token = res.token
-        if(token)
-        {
-            //const json = jwt.decode(token)
-            console.log(password)
-            setmessage(`welcome ${username} and ${password}! } `)
-        }
-        else
-        {
-            setmessage('Something Went Wrong!')
-        }
+        console.log(username)
+        console.log(password)
+        
 
+        if(result.status==201)
+        {
+            alert("Sucess")
+        }
+        else{
+            alert("Login Failed")
+        }
     }
+
     return(
         <>
-            <style global jsx>{`html, body,div#__next{ height: 100%; }`}</style> 
             <section className='login-section'>
                 <div className='container login-container'>
                     <div className='login-div'>
                        <h2 className='login-title'>Automation Tool Login</h2>
                         <h2>{message}</h2>
-                            <form method='POST' className="login-main"  >
+                            <form method="POST" onSubmit={login} className="login-main"  >
                             <div id='personal-account'>
                                 <div className="form-group"  >
                                     <label htmlFor="ba-num"  className='form-label'>Email</label>
-                                    <input type="text" name="username" value={username} onChange={e=>setusername(e.target.value)} className='form-control login-input' />
+                                    <input type="text" id="username" name="username" value={username} onChange={usernamechange} className='form-control login-input' />
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="pwd" className='form-label label'>Password</label>
-                                    <input type="password"  name="password" value={password} onChange={e=>setpassword(e.target.value)}  className='form-control login-input' />
+                                    <input type="password" id="password" name="password" value={password} onChange={passwordchange}  className='form-control login-input' />
                                 </div>  
                                 <div className='login-head'>
                                     <div className='login-col'>
@@ -60,7 +73,7 @@ export default function Login(){
                                 </div> 
                                 
                                 <div className="login-btn">
-                                    <button type="submit" onClick={onsubmit} className="login-create-acc-btn">Login</button>  
+                                    <button type="submit" className="login-create-acc-btn">Login</button>  
                                 </div>         
                             </div>
                         </form>
@@ -69,4 +82,5 @@ export default function Login(){
             </section>
         </>
     )
+        
 }
