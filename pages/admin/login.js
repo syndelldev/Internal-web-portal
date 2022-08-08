@@ -1,73 +1,39 @@
-import { useEffect } from 'react';
-import { useRouter } from 'next/router'
-import { useState } from "react";
+import Image from 'next/image'
+import Link from 'next/link'
+import { useState } from 'react'
 
-/*export async function getServerSideProps(context){
+import jwt from 'jsonwebtoken'
 
-    const res = await fetch(`http://localhost:3000/api/admin/`);
-    const data = await res.json();
-    //console.log(data)
-    return{
-        props:{data},
+export default function Login(){
+    const [username, setusername] = useState('')
+    const [password, setpassword] = useState('')
+    const [message, setmessage] = useState("You are not  LogIn!")
+
+    const onsubmit = async(e) =>{
+        e.preventDefault();
+        console.log(JSON.stringify({username,password}))
+        /*const res = await fetch('http://localhost:3000/api/admin/login',{
+            method:'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body:JSON.stringify({username,password})
+        }).then((t)=>t.json())
+
+        const token = res.token
+        if(token)
+        {
+            //const json = jwt.decode(token)
+            console.log(password)
+            setmessage(`welcome ${username} and ${password}! } `)
+        }
+        else
+        {
+            setmessage('Something Went Wrong!')
+        }*/
+
     }
-}*/
-
-export default function home()
-{
-
-//console.log(JSON.stringify(data));
-const [username,setusername] = useState("");
-const [password,setpassword] = useState("");
-const [message,setmessage] = useState("You are not LogIn!");
-
-let usernamechange = (e) => {
-    let inputvalue = e.target.value;
-    setusername(inputvalue);
-}
-
-let passwordchange = (e) => {
-    let inputvalue = e.target.value;
-    setpassword(inputvalue);
-}
-
-/*const emailsend = async(e) => {
-    
-    //console.log(username,password);
-    e.preventDefault();
-
-    if (username == "") {
-        let text = "Enter your Email ID";
-	    document.getElementById("errusername").innerHTML = text;
-    }
-    if (password == "") {
-        let text = "Enter your password ";
-	    document.getElementById("errpassword").innerHTML = text;
-    }
-}*/
-
-const login = async(e) => {
-    e.preventDefault();
-    const res = await fetch(`http://localhost:3000/api/admin/login/`,{
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body:JSON.stringify({username,password}),
-    })
-    const data=await res.json()
-    console.log(data)
-
-    if(res.status==200)
-    {
-        alert("Sucess")
-    }
-    else{
-        alert("Failed")
-    }
-}
-
-
-return(
+    return(
         <>
             <style global jsx>{`html, body,div#__next{ height: 100%; }`}</style> 
             <section className='login-section'>
@@ -75,7 +41,7 @@ return(
                     <div className='login-div'>
                        <h2 className='login-title'>Automation Tool Login</h2>
                         <p>{message}</p>
-                            <form method='POST' className="login-main" onSubmit={login} >
+                            <form method='POST' className="login-main" onSubmit={onsubmit} >
                             <div id='personal-account'>
                                 <div className="form-group"  >
                                     <label htmlFor="ba-num"  className='form-label'>Email</label>
@@ -103,8 +69,5 @@ return(
                 </div>
             </section>
         </>
-    );
-
-
+    )
 }
-

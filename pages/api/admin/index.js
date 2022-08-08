@@ -1,6 +1,9 @@
 import nc from "next-connect";
-import { getAllData } from '../../../controller/admin/admin'
+import { getAllUser } from '../../../controller/admin/admin'
 
 const handler=nc();
-handler.get(getAllData);
+
+handler.get(getAllUser);
+
+
 export default handler;

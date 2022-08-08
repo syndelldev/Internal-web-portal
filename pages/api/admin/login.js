@@ -20,30 +20,27 @@ async function login(req,res){
             const username = req.body.username;
             const password = req.body.password;
 
-            //const data = {username,password}
+            const data = {username,password}
             //res.status(201).json(data);
 
             var loginQuery = await executeQuery("select password from tbl_user where username= ? ", [req.body.username] );
+            res.status(200).json(loginQuery);
             
             
             //console.log(loginQuery)
+
             var dbpassword = loginQuery[0].password;
             console.log(dbpassword)
             console.log(password)
 
-            //console.log(res.status)
-            
-
-            if(dbpassword === password)
+            if(dbpassword == password)
             {
                 console.log("Sucess")
             }
-            else
+            else //if(loginQuery !== req.body.password)
             {
                 console.log("Fail")
             }
-
-            res.status(200).json(loginQuery);
             
         }
         catch(err){
@@ -56,3 +53,40 @@ async function login(req,res){
 }
  
 export default login;
+
+
+
+
+
+
+/*async function Login(req,res){
+        
+
+    console.log(req.body);
+
+    if(!req.body){
+        res.statusCode=404
+        res.end('Error')
+        return
+    }
+    
+    const { username, password } = req.body
+    
+    console.log(username)
+    console.log(password)
+
+
+    res.json({
+        token: jwt.sign(
+            {
+                username,
+                password,
+                admin:username==='user' && password==='User@1234'
+                //admin:username===username && password===password
+            },
+            KEY
+        )
+    })
+}
+
+export default {Login,handler}*/

@@ -10,13 +10,22 @@ import TableCell from "@material-ui/core/TableCell";
 // core components
 import styles from "assets/jss/nextjs-material-dashboard/components/tableStyle.js";
 
+
+/*export async function getServerSideProps(content){
+  const res = await fetch(`http://localhost:3000/api/admin`)
+  const userlist = await res.json()
+  console.log(userlist);
+
+  return{ props: {userlist} }
+}*/
+
 export default function CustomTable(props) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   const { tableHead, tableData, tableHeaderColor } = props;
   return (
     <div className={classes.tableResponsive}>
-      <Table className={classes.table}>
+      {/*<Table className={classes.table}>
         {tableHead !== undefined ? (
           <TableHead className={classes[tableHeaderColor + "TableHeader"]}>
             <TableRow className={classes.tableHeadRow}>
@@ -34,6 +43,9 @@ export default function CustomTable(props) {
           </TableHead>
         ) : null}
         <TableBody>
+          
+        </TableBody>
+        <TableBody>
           {tableData.map((prop, key) => {
             return (
               <TableRow key={key} className={classes.tableBodyRow}>
@@ -48,7 +60,7 @@ export default function CustomTable(props) {
             );
           })}
         </TableBody>
-      </Table>
+        </Table>*/}
     </div>
   );
 }
