@@ -29,7 +29,7 @@ export default function Login()
                 "Content-Type": "application/json",
             },
             credentials : "include",
-            body:JSON.stringify({ "username":username ,"password":password }),
+            body:JSON.stringify({ username:username, password:password }),
         })
         //const data = await res.json()
 
@@ -37,12 +37,20 @@ export default function Login()
         console.log(password)
         
 
-        if(result.status==201)
+        /*if(result.status === 200)
         {
-            alert("Sucess")
+            window.alert("Sucess")
         }
-        else{
-            alert("Login Failed")
+        else //if(result.status==500)
+        {
+            window.alert("Login Failed")
+        }*/
+        try{
+            console.log(result)
+        }
+        catch(error){
+            window.alert(error);
+            console.log(error);
         }
     }
 
@@ -52,7 +60,6 @@ export default function Login()
                 <div className='container login-container'>
                     <div className='login-div'>
                        <h2 className='login-title'>Automation Tool Login</h2>
-                        <h2>{message}</h2>
                             <form method="POST" onSubmit={login} className="login-main"  >
                             <div id='personal-account'>
                                 <div className="form-group"  >
