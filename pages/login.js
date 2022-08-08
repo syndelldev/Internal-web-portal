@@ -2,7 +2,8 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router'
 import { useState } from "react";
 
-import { useForm, Controller  } from 'react-hook-form';
+//import { useForm  } from 'react-hook-form';
+import { useSession } from "next-auth/react"
 
 /*export async function getServerSideProps(context){
 
@@ -16,6 +17,10 @@ import { useForm, Controller  } from 'react-hook-form';
 
 export default function home()
 {
+
+    async function myFunction() {
+        const session = await getSession()
+    }
     //const { register,  watch, handleSubmit, formState: { errors }, control } = useForm(); 
 
     const [username,setusername] = useState("");
