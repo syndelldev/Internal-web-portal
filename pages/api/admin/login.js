@@ -20,7 +20,7 @@ async function login(req,res){
             const username = req.body.username;
             const password = req.body.password;
 
-            const data = {username,password}
+            //const data = {username,password}
             //res.status(201).json(data);
 
             var loginQuery = await executeQuery("select password from tbl_user where username= ? ", [req.body.username] );
@@ -30,21 +30,22 @@ async function login(req,res){
             //console.log(loginQuery)
 
             var dbpassword = loginQuery[0].password;
-            console.log(dbpassword)
-            console.log(password)
+            //console.log(dbpassword)
+            //console.log(password)
 
-            if(dbpassword == password)
+            if(dbpassword == req.body.password)
             {
                 console.log("Sucess")
+                //res.status(200).send(dbpassword)
             }
-            else //if(loginQuery !== req.body.password)
+            else 
             {
                 console.log("Fail")
             }
             
         }
         catch(err){
-            res.status(500).json(err);
+            console.log(err)
         }
         
         

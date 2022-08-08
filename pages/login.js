@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router'
 import { useState } from "react";
 
+import { useForm, Controller  } from 'react-hook-form';
+
 /*export async function getServerSideProps(context){
 
     const res = await fetch(`http://localhost:3000/api/admin/`);
@@ -14,56 +16,58 @@ import { useState } from "react";
 
 export default function home()
 {
+    //const { register,  watch, handleSubmit, formState: { errors }, control } = useForm(); 
 
-//console.log(JSON.stringify(data));
-const [username,setusername] = useState("");
-const [password,setpassword] = useState("");
-const [message,setmessage] = useState("You are not LogIn!");
-
-let usernamechange = (e) => {
-    let inputvalue = e.target.value;
-    setusername(inputvalue);
-}
-
-let passwordchange = (e) => {
-    let inputvalue = e.target.value;
-    setpassword(inputvalue);
-}
-
-/*const emailsend = async(e) => {
+    const [username,setusername] = useState("");
+    const [password,setpassword] = useState("");
+    const [passwrong,setpasswrong] = useState("");
+    const router = useRouter();
     
-    //console.log(username,password);
-    e.preventDefault();
+    
 
-    if (username == "") {
-        let text = "Enter your Email ID";
-	    document.getElementById("errusername").innerHTML = text;
-    }
-    if (password == "") {
-        let text = "Enter your password ";
-	    document.getElementById("errpassword").innerHTML = text;
-    }
-}*/
+    const login = async(e) => {
+        e.preventDefault();
 
-const login = async(e) => {
-    e.preventDefault();
-    const res = await fetch(`http://localhost:3000/api/admin/login/`,{
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body:JSON.stringify({username,password}),
-    })
-    const data=await res.json()
-    console.log(data)
+        if (username == "") {
+            let text = "Enter your Email ID";
+            document.getElementById("erremail").innerHTML = text;
+        }
+        if (password == "") {
+            let text = "Enter your Password";
+            document.getElementById("errpassword").innerHTML = text;
+        }
 
-    if(res.status==200)
-    {
-        alert("Sucess")
-    }
-    else{
-        alert("Failed")
-    }
+
+
+        const res = await fetch(`http://localhost:3000/api/admin/login/`,{
+            method: "POST",
+            headers: { "Content-Type": "application/json",},
+            body:JSON.stringify({username,password}),
+        })
+
+        const data=await res.json()
+        //console.log(data)
+
+        if(data != "")
+        {
+            var dbpass=data[0].password;
+            console.log(dbpass)
+            console.log(password)
+
+            if(dbpass == password)
+            {
+                router.push("/admin/dashboard");
+                //alert("Sucess")
+            }
+            else{
+                //alert("password wrong")
+                setpasswrong("Username and Password Not matched!")
+            }
+            
+        }
+        else{
+            //alert("Failed")
+        }
 }
 
 
@@ -73,17 +77,18 @@ return(
             <section className='login-section'>
                 <div className='container login-container'>
                     <div className='login-div'>
-                       <h2 className='login-title'>Automation Tool Login</h2>
-                        <p>{message}</p>
-                            <form method='POST' className="login-main" onSubmit={login} >
+                        <h2 className='login-title'>Automation Tool Login</h2>
+                        <form method='POST' className="login-main" onSubmit={login} >
                             <div id='personal-account'>
                                 <div className="form-group"  >
                                     <label htmlFor="ba-num"  className='form-label'>Email</label>
                                     <input type="text" name="username" value={username} onChange={e=>setusername(e.target.value)} className='form-control login-input' />
+                                    <span className='error-msg' id='erremail'></span>
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="pwd" className='form-label label'>Password</label>
                                     <input type="password"  name="password" value={password} onChange={e=>setpassword(e.target.value)}  className='form-control login-input' />
+                                    <span className='error-msg' id='errpassword'></span>
                                 </div>  
                                 <div className='login-head'>
                                     <div className='login-col'>
@@ -93,7 +98,7 @@ return(
                                         <Link href='/'><a><span className='login-text-login'>Forgot Password?</span></a></Link>
                                     </div>*/}
                                 </div> 
-                                
+                                <p className='error-msg'>{passwrong}</p>
                                 <div className="login-btn">
                                     <button type="submit" className="login-create-acc-btn">Login</button>  
                                 </div>         
