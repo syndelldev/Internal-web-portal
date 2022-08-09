@@ -15,7 +15,7 @@ import routes from "routes.js";
 
 import styles from "assets/jss/nextjs-material-dashboard/layouts/adminStyle.js";
 
-import bgImage from "assets/img/sidebar-2.jpg";
+import bgImage from "assets/img/background.jpg";
 import logo from "assets/img/reactlogo.png";
 
 let ps;
@@ -79,7 +79,7 @@ export default function Admin({ children, ...rest }) {
     <div className={classes.wrapper}>
       <Sidebar
         routes={routes}
-        logoText={"Creative Tim"}
+        logoText={"Automation Tool"}
         logo={logo}
         image={image}
         handleDrawerToggle={handleDrawerToggle}
@@ -102,14 +102,14 @@ export default function Admin({ children, ...rest }) {
           <div className={classes.map}>{children}</div>
         )}
         {getRoute() ? <Footer /> : null}
-        <FixedPlugin
+        {/* <FixedPlugin
           handleImageClick={handleImageClick}
           handleColorClick={handleColorClick}
           bgColor={color}
           bgImage={image}
           handleFixedClick={handleFixedClick}
           fixedClasses={fixedClasses}
-        />
+        /> */}
       </div>
     </div>
   );

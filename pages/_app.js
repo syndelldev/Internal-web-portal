@@ -21,7 +21,11 @@ import App from "next/app";
 import Head from "next/head";
 import Router from "next/router";
 
+import 'bootstrap/dist/css/bootstrap.min.css'
+import '../styles/login.css'
+
 import PageChange from "components/PageChange/PageChange.js";
+
 
 import "assets/css/nextjs-material-dashboard.css?v=1.1.0";
 
@@ -84,7 +88,7 @@ export default class MyApp extends App {
             name="viewport"
             content="width=device-width, initial-scale=1, shrink-to-fit=no"
           />
-          <title>NextJS Material Dashboard by Creative Tim</title>
+          <title>Automation Tool</title>
           <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
         </Head>
         <Layout>
