@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+
 // react plugin for creating charts
 import ChartistGraph from "react-chartist";
 // @material-ui/core
@@ -39,10 +40,9 @@ import {
   completedTasksChart,
 } from "variables/charts.js";
 
-const getLocalItems = () =>{
-  let data = localStorage.getItem('formdata')
-  console.log(data)
-}
+
+
+
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 
 function Dashboard() {

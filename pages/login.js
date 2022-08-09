@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { useEffect } from 'react';
 import { useRouter } from 'next/router'
 import { useState } from "react";
@@ -25,6 +27,14 @@ export default function home()
     const [password,setpassword] = useState("");
     const [passwrong,setpasswrong] = useState("");
     const router = useRouter();
+
+    console.log(username);
+    //console.log(localStorage.setItem('data', username))
+
+    useEffect(()=>{
+        console.log(localStorage.setItem('data', username))
+    })
+    
 
     const login = async(e) => {
         e.preventDefault();
@@ -72,14 +82,14 @@ export default function home()
             //alert("Failed")
         }
         
-        const formdata = data[0].username;
+        /*const formdata = data[0].username;
 
         console.log(localStorage.setItem('data', formdata))
         //console.log(formdata)
 
         //console.log(localStorage.setItem('data', formdata));
 
-        /*useEffect(()=>{
+        React.useEffect(()=>{
             localStorage.setItem('formdata', JSON.stringify(formdata))
         },[formdata])*/
         
