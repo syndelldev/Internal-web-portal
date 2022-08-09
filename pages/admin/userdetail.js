@@ -96,7 +96,7 @@ function UserDetail({UserDetail}) {
                       <TableCell>{user.role}</TableCell>
                       <TableCell>{user.creation_time}</TableCell>
                       <TableCell>
-                        <a href="#">view</a>
+                        <a href="#">Edit</a>&nbsp;&nbsp;&nbsp;<a href="#">Delete</a>
                       </TableCell>
                     </TableRow>
                   )
