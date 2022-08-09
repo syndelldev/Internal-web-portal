@@ -13,9 +13,9 @@ import Router from "next/router";
 
 export default function Index({data}) {
   console.log(data);
-  /*React.useEffect(() => {
-    Router.push("/admin/login");
-  });*/
+  React.useEffect(() => {
+    Router.push("/login");
+  });
 
   return <div />;
 }
