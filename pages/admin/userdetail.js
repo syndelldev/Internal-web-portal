@@ -60,6 +60,7 @@ function UserDetail({UserDetail}) {
     <div>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
+        <Button>Add New User</Button>
           <Card>
             <CardHeader color="primary">
               <h4 className={classes.cardTitleWhite}>User Details</h4>
