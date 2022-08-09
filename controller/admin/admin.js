@@ -22,18 +22,5 @@ const getUserById = async (req,res) => {
     }
 }
 
-/*const logindata = async (req,res) => {
-    
-        //const username = req.body.username;
-        //const password = req.body.password;
 
-        
-    try{
-        let loginQuery = await executeQuery(" select * from tbl_user where `username`= ? and `password`=? ", [req.body.username,req.body.password] );
-        res.status(200).json(loginQuery);
-    }
-    catch(err){
-        res.status(500).json(err);
-    }
-}*/
 export { getAllUser,getUserById }
