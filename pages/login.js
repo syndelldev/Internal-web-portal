@@ -17,10 +17,8 @@ import { useSession } from "next-auth/react"
 
 export default function home()
 {
-
-    async function myFunction() {
-        const session = await getSession()
-    }
+    
+    
     //const { register,  watch, handleSubmit, formState: { errors }, control } = useForm(); 
 
     const [username,setusername] = useState("");
