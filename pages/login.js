@@ -67,9 +67,19 @@ export default function home()
             //console.log(dbpass)
             //console.log(password)
 
+            var role = data[0].role
+            console.log(role)
+
+
             if(dbpass == password)
             {
-                router.push("/admin/dashboard");
+                if(role==='admin'){
+                    router.push("/admin/dashboard");
+                }
+                else if(role==='user'){
+                    router.push("/user");
+                }
+                
                 //alert("Sucess")
             }
             else{
