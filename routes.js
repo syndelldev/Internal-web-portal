@@ -40,17 +40,16 @@ const dashboardRoutes = [
     name: "User Detail",
     rtlName: "ملف تعريفي للمستخدم",
     icon: Person,
-
     layout: "/admin",
   },
-  {
-    path: "/user-profile",
-    name: "User Profile",
-    rtlName: "ملف تعريفي للمستخدم",
-    icon: Person,
+  // {
+  //   path: "/user-profile",
+  //   name: "User Profile",
+  //   rtlName: "ملف تعريفي للمستخدم",
+  //   icon: Person,
 
-    layout: "/admin",
-  },
+  //   layout: "/admin",
+  // },
   {
     path: "/table-list",
     name: "Table List",

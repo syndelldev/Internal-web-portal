@@ -22,5 +22,13 @@ const getUserById = async (req,res) => {
     }
 }
 
-
-export { getAllUser,getUserById }
+const AddUser = async () =>{
+    let id = req.query.id;
+    try{
+        let createUser = await executeQuery(" INSERT INTO `tbl_user`( `username`, `password`, `mobile_no`, `department`, `position`, `status`, `role`, `creation_time`) VALUES (?,?,?,?,?,?,?,?) ")
+    }
+    catch(err){
+        res.status(500).json(err);
+    }
+}
+export { getAllUser,getUserById,AddUser }

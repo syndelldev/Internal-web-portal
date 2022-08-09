@@ -30,7 +30,6 @@ const getUserData = () => {
 
 export default function AdminNavbarLinks() {
   const router = useRouter();
-
   
     const logoutfunc = () => {
       //localStorage.removeItem('data');
@@ -38,13 +37,6 @@ export default function AdminNavbarLinks() {
       router.push("/login");
     }
   
-
-  /*const logoutfunc = () => {
-    //localStorage.removeItem('data');
-    localStorage.clear('data');
-    router.push("/login");
-  }*/
-
   const size = useWindowSize();
   const useStyles = makeStyles(styles);
   const classes = useStyles();

@@ -1,4 +1,5 @@
 import React from "react";
+import { useRouter } from 'next/router'
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -24,11 +25,12 @@ import styles from "assets/jss/nextjs-material-dashboard/components/tableStyle.j
 
 
 import avatar from "assets/img/faces/marc.jpg";
+import { Link } from "@material-ui/icons";
 
 export async function getServerSideProps(content){
   const res = await fetch(`http://localhost:3000/api/admin`)
   const UserDetail = await res.json()
-  console.log(UserDetail);
+  //console.log(UserDetail);
 
   return{ props: {UserDetail} }
 } 
@@ -54,17 +56,19 @@ export async function getServerSideProps(content){
 
 function UserDetail({UserDetail}) {
   console.log(UserDetail)
+
+  const router = useRouter();
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   return (
     <div>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-        <Button>Add New User</Button>
+        <Button><a href='/admin/adduser'>Add New User</a></Button>
           <Card>
             <CardHeader color="primary">
               <h4 className={classes.cardTitleWhite}>User Details</h4>
-              <p className={classes.cardCategoryWhite}>Here is a subtitle for this table</p>
+              {/*<p className={classes.cardCategoryWhite}>Here is a subtitle for this table</p>*/}
             </CardHeader>
             <CardBody>
             <div className={classes.tableResponsive}>
