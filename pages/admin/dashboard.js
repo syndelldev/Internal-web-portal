@@ -39,6 +39,10 @@ import {
   completedTasksChart,
 } from "variables/charts.js";
 
+const getLocalItems = () =>{
+  let data = localStorage.getItem('formdata')
+  console.log(data)
+}
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 
 function Dashboard() {
@@ -46,7 +50,7 @@ function Dashboard() {
   const classes = useStyles();
   return (
     <div>
-      <GridContainer>
+      {/*<GridContainer>
         <GridItem xs={12} sm={6} md={3}>
           <Card>
             <CardHeader color="warning" stats icon>
@@ -260,7 +264,7 @@ function Dashboard() {
             </CardBody>
           </Card>
         </GridItem>
-      </GridContainer>
+      </GridContainer>*/}
     </div>
   );
 }
