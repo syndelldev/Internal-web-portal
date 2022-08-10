@@ -72,95 +72,51 @@ function AddUser() {
                         </GridItem>*/}
                              
                         <GridItem xs={12} sm={12} md={12}>
-                            <CustomInput
-                                labelText="Username"
-                                id="username"
-                                name="username"
-                                formControlProps={{
-                                fullWidth: true,
-                                }} 
-                            />
+                          <div className="form-group">
+                            <input type="text" className="form-control signup-input" placeholder="Username" {...register('name',  { required: "Please enter your Name", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
                             <div className="error-msg">{errors.name && <p>{errors.name.message}</p>}</div>
-                            {/*<div className="form-group">
-                                <label htmlFor="name" className='form-label label' >Name</label>
-                                <input type="text" className="form-control signup-input" {...register('name',  { required: "Please enter your Name", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
-                                <div className="error-msg">{errors.name && <p>{errors.name.message}</p>}</div>
-                              </div> */} 
-                        </GridItem>
-                        <div className="error-msg">{errors.username && <p>{errors.username.message}</p>}</div>
-                        <GridItem xs={12} sm={12} md={12}>
-                            <CustomInput
-                                labelText="Password"
-                                id="password"
-                                formControlProps={{
-                                fullWidth: true,
-                                }}
-                            />
-                        </GridItem>
-                        <GridItem xs={12} sm={12} md={6}>
-                            <CustomInput
-                                labelText="Email"
-                                id="email"
-                                formControlProps={{
-                                fullWidth: true,
-                                }}
-                            />
-                        </GridItem>
-                        <GridItem xs={12} sm={12} md={6}>
-                            <CustomInput
-                                labelText="Mobile No"
-                                id="mobile_num"
-                                formControlProps={{
-                                fullWidth: true,
-                                }}
-                            />
+                          </div> 
+                          <div className="error-msg">{errors.username && <p>{errors.username.message}</p>}</div>
                         </GridItem>
                         <GridItem xs={12} sm={12} md={12}>
-                            <CustomInput
-                                labelText="Department"
-                                id="department"
-                                formControlProps={{
-                                fullWidth: true,
-                                }}
-                            />
+                          <div className="form-group">
+                            <input type="password" className="form-control signup-input" placeholder="Password" {...register('password',  { required: "Please enter your password", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
+                            <div className="error-msg">{errors.password && <p>{errors.password.message}</p>}</div>
+                          </div> 
+                        </GridItem>
+                        <GridItem xs={12} sm={12} md={6}>
+                          <div className="form-group">
+                            <input type="text" className="form-control signup-input" placeholder="Mobile No" {...register('mobile_num',  { required: "Please enter your Mobile Num", pattern: {value: /^[0-9]+$/ , message: 'Only characters Numbers allow',} })} />
+                            <div className="error-msg">{errors.mobile_num && <p>{errors.mobile_num.message}</p>}</div>
+                          </div> 
+                        </GridItem>
+                        <GridItem xs={12} sm={12} md={6}>
+                          <div className="form-group">
+                            <input type="text" className="form-control signup-input" placeholder="Department" {...register('department',  { required: "Please enter your Department", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
+                            <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>
+                          </div> 
+                        </GridItem>
+                        <GridItem xs={12} sm={12} md={12}>
+                          <div className="form-group">
+                            <input type="text" className="form-control signup-input" placeholder="Position" {...register('position',  { required: "Please enter your Position", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
+                            <div className="error-msg">{errors.position && <p>{errors.position.message}</p>}</div>
+                          </div> 
                         </GridItem>
                     </GridContainer>
                     <GridContainer>
                         <GridItem xs={12} sm={12} md={6}>
-                            <CustomInput
-                                labelText="Position"
-                                id="position"
-                                formControlProps={{
-                                fullWidth: true,
-                                }}
-                            />
+                          <div className="form-group">
+                            <input type="text" className="form-control signup-input" placeholder="Status" {...register('status',  { required: "Please enter your Status", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
+                            <div className="error-msg">{errors.status && <p>{errors.status.message}</p>}</div>
+                          </div> 
                         </GridItem>
                         <GridItem xs={12} sm={12} md={6}>
-                            <CustomInput
-                                labelText="Role"
-                                id="role"
-                                formControlProps={{
-                                fullWidth: true,
-                                }}
-                            />
+                          <div className="form-group">
+                            <input type="text" className="form-control signup-input" placeholder="Role" {...register('role',  { required: "Please enter your Role", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
+                            <div className="error-msg">{errors.role && <p>{errors.role.message}</p>}</div>
+                          </div> 
                         </GridItem>
                     </GridContainer>
-                    {/*<GridContainer>
-                        <GridItem xs={12} sm={12} md={12}>
-                        <InputLabel style={{ color: "#AAAAAA" }}>About me</InputLabel>
-                        <CustomInput
-                            labelText="Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo."
-                            id="about-me"
-                            formControlProps={{
-                            fullWidth: true,
-                            }}
-                            inputProps={{
-                            multiline: true,
-                            rows: 5,
-                            }}
-                        />
-                        </GridItem>
-                    </GridContainer>*/}
                     </CardBody>
                     <CardFooter>
                         <Button color="primary" type="submit">Add User</Button>
