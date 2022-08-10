@@ -54,7 +54,7 @@ import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js
 
 
 export async function getServerSideProps(content){
-    const res = await fetch(`http://localhost:3000/api/user`)
+    const res = await fetch(`/api/user`)
     const tasklist = await res.json()
     console.log(tasklist);
   

@@ -14,7 +14,7 @@ import CardBody from "components/Card/CardBody.js";
 
 
 export async function getServerSideProps(content){
-    const res = await fetch(`http://localhost:3000/api/admin`)
+    const res = await fetch(`/api/admin`)
     const userlist = await res.json()
     console.log(userlist);
   
