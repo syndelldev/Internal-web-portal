@@ -23,9 +23,8 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import styles from "assets/jss/nextjs-material-dashboard/components/tableStyle.js";
 
-
 import avatar from "assets/img/faces/marc.jpg";
-import { Link } from "@material-ui/icons";
+import axios from "axios";
 
 export async function getServerSideProps(content){
   const res = await fetch(`http://localhost:3000/api/admin`)
@@ -34,7 +33,6 @@ export async function getServerSideProps(content){
 
   return{ props: {UserDetail} }
 } 
-
 /*const styles = {
   cardCategoryWhite: {
     color: "rgba(255,255,255,.62)",
@@ -57,6 +55,10 @@ export async function getServerSideProps(content){
 function UserDetail({UserDetail}) {
   console.log(UserDetail)
 
+
+  const deleteUser = async(id) =>{
+    let deleteUserData = axios.delete(`/api/admin/${id}`)
+  }
   const router = useRouter();
   const useStyles = makeStyles(styles);
   const classes = useStyles();
@@ -101,7 +103,8 @@ function UserDetail({UserDetail}) {
                       <TableCell>{user.role}</TableCell>
                       <TableCell>{user.creation_time}</TableCell>
                       <TableCell>
-                        <a href="#">Edit</a>&nbsp;&nbsp;&nbsp;<a href="#">Delete</a>
+                        <a href={'/userdetail/1/'}>Edit</a>&nbsp;&nbsp;&nbsp;
+                        <a href={`/userdetail`}>Delete</a>
                       </TableCell>
                     </TableRow>
                   )

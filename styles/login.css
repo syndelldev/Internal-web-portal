@@ -3,18 +3,17 @@
 .login-container {display: flex; justify-content: center;padding:5%}
 .login-div {padding: 60px 100px;width: 500px;background: #FFFFFF;box-shadow: 0px 0px 124px rgb(132 132 132 / 17%);border-radius: 5px;margin: 0 auto; }
 .login-head{display: flex;padding-bottom: 40px;}
-.login-title{font-weight: 700;font-size: 22px;line-height: 40px;color: #000000;font-family: 'PT Sans';font-weight: bold;text-align: center;}
+.login-title{font-weight: 700;font-size: 22px;line-height: 40px;color: #000000;font-weight: bold;text-align: center;}
 .login-text a{text-decoration: none!important;}
-.login-text-login{color: #000;    font-weight: 500;}
+.login-text-login{color: #000;  font-size: 14px;  font-weight: 500;}
 span.signup-text-login {color: #70aa26;}
 .login-logo-mobile { display: none;}
 label.check { margin-left: 12px;}
 span.icon-eyes svg { font-size: 24px;}
-.login-icon-eyes {
-    margin-top: -55px !important;
-    padding-right: 15px;
+.icon-eyes{
     float: right;
-    font-size: 20px;
+    margin-top: -50px;
+    margin-right: 10px;
 }
 .login-logo ,  .login-col {
     width: 50%;
@@ -31,7 +30,6 @@ span.icon-eyes svg { font-size: 24px;}
     text-align: center;
 }
 .login-section h3 {
-    font-family: "Work Sans";
     font-style: normal;
     font-weight: 400 !important;
     font-size: 18px !important;
@@ -54,7 +52,6 @@ span.icon-eyes svg { font-size: 24px;}
 .login-section .form-control {
     padding: 12px 12px !important;
     margin-bottom: 12px;
-    font-family: unset;
 }
 button.login-create-acc-btn {
     background : #ADD8E6;
@@ -77,7 +74,6 @@ button.login-create-acc-btn {
     font-size: 16px;
     line-height: 30px;
     color: #000000;
-    font-family: "PT Sans";
 }
 .login-two {
     width: 50% !important;
