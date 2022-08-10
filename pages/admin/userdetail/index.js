@@ -26,10 +26,12 @@ import styles from "assets/jss/nextjs-material-dashboard/components/tableStyle.j
 import avatar from "assets/img/faces/marc.jpg";
 import axios from "axios";
 
+import { server } from 'config';
+
 export async function getServerSideProps(content){
-  const res = await fetch(`/api/admin`)
+  const res = await fetch(`${server}/api/admin`)
   const UserDetail = await res.json()
-  //console.log(UserDetail);
+  console.log(UserDetail);
 
   return{ props: {UserDetail} }
 } 
@@ -55,8 +57,7 @@ export async function getServerSideProps(content){
 function UserDetail({UserDetail}) {
   console.log(UserDetail)
 
-
-  const deleteUser = async(id) =>{
+  /*const deleteUser = async(id) =>{
     try{
       await axios.delete("/api/admin/" + id);
       router.push("/");
@@ -64,6 +65,10 @@ function UserDetail({UserDetail}) {
     catch(err){
       console.error(err);
     }    
+  }*/
+
+  const onSubmit = async(data) =>{
+    console.log(data);
   }
   const router = useRouter();
   const useStyles = makeStyles(styles);

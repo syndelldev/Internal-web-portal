@@ -15,6 +15,8 @@ import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 
+import { useForm  } from 'react-hook-form';
+
 import avatar from "assets/img/faces/marc.jpg";
 
 const styles = {
@@ -39,21 +41,22 @@ const styles = {
 function AddUser() {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
-
-  const onsubmit = async (data) =>{
+  const { register,  watch, handleSubmit, formState: { errors }, control } = useForm(); 
+  const onSubmit = async (data) =>{
     console.log(data)
   }
   return (
     <div>
       <GridContainer>
         <GridItem xs={12} sm={12} md={8}>
-            <form onSubmit={onsubmit}>
+            <form onSubmit={handleSubmit(onSubmit)}>              
             <Card>
                 <CardHeader color="primary">
                     <h4 className={classes.cardTitleWhite}>Create User Profile</h4>
                     <p className={classes.cardCategoryWhite}>Complete your profile</p>
                 </CardHeader>
                 <CardBody>
+                  
                     <GridContainer>
                         {/*<GridItem xs={12} sm={12} md={5}>
                         <CustomInput
@@ -67,15 +70,24 @@ function AddUser() {
                             }}
                         />
                         </GridItem>*/}
+                             
                         <GridItem xs={12} sm={12} md={12}>
                             <CustomInput
                                 labelText="Username"
                                 id="username"
+                                name="username"
                                 formControlProps={{
                                 fullWidth: true,
-                                }}
+                                }} 
                             />
+                            <div className="error-msg">{errors.name && <p>{errors.name.message}</p>}</div>
+                            {/*<div className="form-group">
+                                <label htmlFor="name" className='form-label label' >Name</label>
+                                <input type="text" className="form-control signup-input" {...register('name',  { required: "Please enter your Name", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
+                                <div className="error-msg">{errors.name && <p>{errors.name.message}</p>}</div>
+                              </div> */} 
                         </GridItem>
+                        <div className="error-msg">{errors.username && <p>{errors.username.message}</p>}</div>
                         <GridItem xs={12} sm={12} md={12}>
                             <CustomInput
                                 labelText="Password"
@@ -151,7 +163,7 @@ function AddUser() {
                     </GridContainer>*/}
                     </CardBody>
                     <CardFooter>
-                        <Button color="primary">Add User</Button>
+                        <Button color="primary" type="submit">Add User</Button>
                     </CardFooter>
                 </Card>
             </form>
