@@ -1,9 +1,8 @@
 import React from 'react';
-
 import { useEffect } from 'react';
 import { useRouter } from 'next/router'
 import { useState } from "react";
-//import { IoMdEye , IoMdEyeOff } from "react-icons/io"
+import { IoMdEye , IoMdEyeOff , IoMdMail } from "react-icons/io"
 //import { useForm  } from 'react-hook-form';
 //import { useSession } from "next-auth/react"
 
@@ -27,6 +26,9 @@ export default function home()
     const [password,setpassword] = useState("");
     const [passwrong,setpasswrong] = useState("");
     const router = useRouter();
+
+    //Password Hide and Show
+    const [isRevealPwd, setIsRevealPwd] = useState(false);
 
     console.log(username);
     //console.log(localStorage.setItem('data', username))
@@ -119,20 +121,23 @@ return(
                                 <div className="form-group"  >
                                     <label htmlFor="ba-num"  className='form-label'>Email</label>
                                     <input type="text" name="username" value={username} onChange={e=>setusername(e.target.value)} className='form-control login-input' />
+                                    <span className='icon-eyes'><IoMdMail /></span>
                                     <span className='error-msg' id='erremail'></span>
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="pwd" className='form-label label'>Password</label>
-                                    <input type="password"  name="password" value={password} onChange={e=>setpassword(e.target.value)}  className='form-control login-input' />
+                                    <input type={isRevealPwd ? 'text' : 'password'}  name="password" value={password} onChange={e=>setpassword(e.target.value)}  className='form-control login-input' />
+                                    <span className='icon-eyes' onClick={() => setIsRevealPwd((prevState) => !prevState)} >{isRevealPwd ? <IoMdEyeOff /> : <IoMdEye/>}</span>
                                     <span className='error-msg' id='errpassword'></span>
                                 </div>  
                                 <div className='login-head'>
                                     <div className='login-col'>
                                         <input type="checkbox" /><label className="check" htmlFor="">Remember me</label>
                                     </div>
-                                    {/*<div className='login-two'>
-                                        <Link href='/'><a><span className='login-text-login'>Forgot Password?</span></a></Link>
-                                    </div>*/}
+                                    <div className='login-two'>
+                                        {/*<Link href='#'><a><span className='login-text-login'>Forgot Password?</span></a></Link>*/}
+                                        <a href='#'><span className='login-text-login'>Forgot Password?</span></a>
+                                    </div>
                                 </div> 
                                 <p className='error-msg'>{passwrong}</p>
                                 <div className="login-btn">

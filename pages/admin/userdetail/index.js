@@ -34,7 +34,6 @@ export async function getServerSideProps(content){
 
   return{ props: {UserDetail} }
 } 
-
 /*const styles = {
   cardCategoryWhite: {
     color: "rgba(255,255,255,.62)",
@@ -57,6 +56,10 @@ export async function getServerSideProps(content){
 function UserDetail({UserDetail}) {
   console.log(UserDetail)
 
+
+  const deleteUser = async(id) =>{
+    let deleteUserData = await fetch(`/api/admin/${id}`,)
+  }
   const router = useRouter();
   const useStyles = makeStyles(styles);
   const classes = useStyles();
@@ -101,7 +104,8 @@ function UserDetail({UserDetail}) {
                       <TableCell>{user.role}</TableCell>
                       <TableCell>{user.creation_time}</TableCell>
                       <TableCell>
-                        <a href="#">Edit</a>&nbsp;&nbsp;&nbsp;<a href="#">Delete</a>
+                        <a href={'/userdetail/1/'}>Edit</a>&nbsp;&nbsp;&nbsp;
+                        <a href="#">Delete</a>
                       </TableCell>
                     </TableRow>
                   )
