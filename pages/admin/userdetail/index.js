@@ -27,7 +27,7 @@ import avatar from "assets/img/faces/marc.jpg";
 import axios from "axios";
 
 export async function getServerSideProps(content){
-  const res = await fetch(`/api/admin`)
+  const res = await fetch(`/api/admin/`)
   const UserDetail = await res.json()
   //console.log(UserDetail);
 
