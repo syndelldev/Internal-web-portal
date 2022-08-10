@@ -27,7 +27,7 @@ import avatar from "assets/img/faces/marc.jpg";
 import axios from "axios";
 
 export async function getServerSideProps(content){
-  const res = await fetch(`http://localhost:3000/api/admin`)
+  const res = await fetch(`/api/admin`)
   const UserDetail = await res.json()
   //console.log(UserDetail);
 
@@ -57,7 +57,13 @@ function UserDetail({UserDetail}) {
 
 
   const deleteUser = async(id) =>{
-    let deleteUserData = axios.delete(`/api/admin/${id}`)
+    try{
+      await axios.delete("/api/admin/" + id);
+      router.push("/");
+    }
+    catch(err){
+      console.error(err);
+    }    
   }
   const router = useRouter();
   const useStyles = makeStyles(styles);
@@ -103,8 +109,8 @@ function UserDetail({UserDetail}) {
                       <TableCell>{user.role}</TableCell>
                       <TableCell>{user.creation_time}</TableCell>
                       <TableCell>
-                        <a href={'/userdetail/1/'}>Edit</a>&nbsp;&nbsp;&nbsp;
-                        <a href={`/userdetail`}>Delete</a>
+                        <a href={''}>Edit</a>&nbsp;&nbsp;&nbsp;
+                        <a onClick={()=>deleteUser(user.id)}>Delete</a>
                       </TableCell>
                     </TableRow>
                   )
