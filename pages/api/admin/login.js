@@ -23,7 +23,7 @@ async function login(req,res){
             //const data = {username,password}
             //res.status(201).json(data);
 
-            var loginQuery = await executeQuery("select password from tbl_user where username= ? ", [req.body.username] );
+            var loginQuery = await executeQuery("select * from tbl_user where username= ? ", [req.body.username] );
             res.status(200).json(loginQuery);
             
             

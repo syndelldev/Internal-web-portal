@@ -22,18 +22,13 @@ const getUserById = async (req,res) => {
     }
 }
 
-/*const logindata = async (req,res) => {
-    
-        //const username = req.body.username;
-        //const password = req.body.password;
-
-        
+const AddUser = async () =>{
+    let id = req.query.id;
     try{
-        let loginQuery = await executeQuery(" select * from tbl_user where `username`= ? and `password`=? ", [req.body.username,req.body.password] );
-        res.status(200).json(loginQuery);
+        let createUser = await executeQuery(" INSERT INTO `tbl_user`( `username`, `password`, `mobile_no`, `department`, `position`, `status`, `role`, `creation_time`) VALUES (?,?,?,?,?,?,?,?) ")
     }
     catch(err){
         res.status(500).json(err);
     }
-}*/
-export { getAllUser,getUserById }
+}
+export { getAllUser,getUserById,AddUser }

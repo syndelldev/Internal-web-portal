@@ -1,7 +1,9 @@
+import React from 'react';
+
 import { useEffect } from 'react';
 import { useRouter } from 'next/router'
 import { useState } from "react";
-
+//import { IoMdEye , IoMdEyeOff } from "react-icons/io"
 //import { useForm  } from 'react-hook-form';
 //import { useSession } from "next-auth/react"
 
@@ -25,7 +27,13 @@ export default function home()
     const [password,setpassword] = useState("");
     const [passwrong,setpasswrong] = useState("");
     const router = useRouter();
-    
+
+    console.log(username);
+    //console.log(localStorage.setItem('data', username))
+
+    useEffect(()=>{
+        console.log(localStorage.setItem('data', username))
+    })
     
 
     const login = async(e) => {
@@ -40,7 +48,7 @@ export default function home()
             document.getElementById("errpassword").innerHTML = text;
         }
 
-
+        
 
         const res = await fetch(`http://localhost:3000/api/admin/login/`,{
             method: "POST",
@@ -51,15 +59,27 @@ export default function home()
         const data=await res.json()
         //console.log(data)
 
+        
+
         if(data != "")
         {
             var dbpass=data[0].password;
-            console.log(dbpass)
-            console.log(password)
+            //console.log(dbpass)
+            //console.log(password)
+
+            var role = data[0].role
+            console.log(role)
+
 
             if(dbpass == password)
             {
-                router.push("/admin/dashboard");
+                if(role==='admin'){
+                    router.push("/admin/dashboard");
+                }
+                else if(role==='user'){
+                    router.push("/user");
+                }
+                
                 //alert("Sucess")
             }
             else{
@@ -71,6 +91,19 @@ export default function home()
         else{
             //alert("Failed")
         }
+        
+        /*const formdata = data[0].username;
+
+        console.log(localStorage.setItem('data', formdata))
+        //console.log(formdata)
+
+        //console.log(localStorage.setItem('data', formdata));
+
+        React.useEffect(()=>{
+            localStorage.setItem('formdata', JSON.stringify(formdata))
+        },[formdata])*/
+        
+        
 }
 
 

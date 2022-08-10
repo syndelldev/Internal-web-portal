@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useRouter } from 'next/router'
 import classNames from "classnames";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -22,7 +23,20 @@ import useWindowSize from "components/Hooks/useWindowSize.js";
 
 import styles from "assets/jss/nextjs-material-dashboard/components/headerLinksStyle.js";
 
+const getUserData = () => {
+  let getData = localStorage.getItem('data')
+  console.log(getData)
+}
+
 export default function AdminNavbarLinks() {
+  const router = useRouter();
+  
+    const logoutfunc = () => {
+      //localStorage.removeItem('data');
+      localStorage.clear('data');
+      router.push("/login");
+    }
+  
   const size = useWindowSize();
   const useStyles = makeStyles(styles);
   const classes = useStyles();
@@ -165,6 +179,7 @@ export default function AdminNavbarLinks() {
           aria-haspopup="true"
           onClick={handleClickProfile}
           className={classes.buttonLink}
+          
         >
           <Person className={classes.icons} />
           <Hidden mdUp implementation="css">
@@ -208,7 +223,8 @@ export default function AdminNavbarLinks() {
                     </MenuItem>
                     <Divider light />
                     <MenuItem
-                      onClick={handleCloseProfile}
+                      /*onClick={handleCloseProfile}*/
+                      onClick={logoutfunc}
                       className={classes.dropdownItem}
                     >
                       Logout
