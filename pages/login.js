@@ -2,19 +2,8 @@ import React from 'react';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router'
 import { useState } from "react";
-import { IoMdEye , IoMdEyeOff , IoMdMail } from "react-icons/io"
-//import { useForm  } from 'react-hook-form';
-//import { useSession } from "next-auth/react"
-
-/*export async function getServerSideProps(context){
-
-    const res = await fetch(`http://localhost:3000/api/admin/`);
-    const data = await res.json();
-    //console.log(data)
-    return{
-        props:{data},
-    }
-}*/
+import { IoMdEye , IoMdEyeOff , IoMdMail } from "react-icons/io";
+import { server } from 'config';
 
 export default function home()
 {
@@ -52,7 +41,7 @@ export default function home()
 
         
 
-        const res = await fetch(`/api/admin/login/`,{
+        const res = await fetch(`${server}/api/admin/login/`,{
             method: "POST",
             headers: { "Content-Type": "application/json",},
             body:JSON.stringify({username,password}),

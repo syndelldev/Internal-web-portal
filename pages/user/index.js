@@ -37,8 +37,8 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardIcon from "components/Card/CardIcon.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
-
-import { bugs, website, server } from "variables/general.js";
+import { server } from 'config';
+//import { bugs, website, server } from "variables/general.js";
 
 import {
   dailySalesChart,
@@ -54,7 +54,7 @@ import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js
 
 
 export async function getServerSideProps(content){
-    const res = await fetch(`/api/user`)
+    const res = await fetch(`${server}/api/user`)
     const tasklist = await res.json()
     console.log(tasklist);
   

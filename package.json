@@ -26,6 +26,7 @@
     "jsonwebtoken": "^8.5.1",
     "mysql": "^2.18.1",
     "next": "10.0.5",
+    "next-absolute-url": "^1.2.2",
     "next-auth": "^4.10.3",
     "next-compose-plugins": "2.2.1",
     "next-connect": "^0.13.0",
