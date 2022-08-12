@@ -25,7 +25,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import '../styles/login.css'
 
 import PageChange from "components/PageChange/PageChange.js";
-
+import { SessionProvider } from "next-auth/react"
 
 import "assets/css/nextjs-material-dashboard.css?v=1.1.0";
 
@@ -92,7 +92,9 @@ export default class MyApp extends App {
           <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
         </Head>
         <Layout>
-          <Component {...pageProps} />
+          <SessionProvider session={pageProps.session}>
+            <Component {...pageProps} />
+          </SessionProvider>
         </Layout>
       </React.Fragment>
     );
