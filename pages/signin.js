@@ -2,8 +2,8 @@ import { useRef, useState } from "react";
 import { useRouter } from 'next/router'
 import { IoMdEye , IoMdEyeOff , IoMdArrowDropdown } from "react-icons/io";
 import { useForm } from 'react-hook-form';
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+// import DatePicker from "react-datepicker";
+// import "react-datepicker/dist/react-datepicker.css";
 import { server } from 'config';
 
 const options = [
@@ -116,7 +116,7 @@ export default  function SignIn(){
                                     className="form-control signup-input"
                                     selected={Startdate} 
                                     onChange={(date) => setStartDate(date)}
-    />*/}
+                                />*/}
                                 <input type="text" className="form-control signup-input" name="dob" {...register('dob',  { required: "Please enter your DOB", pattern: {value: /^[0-9]+$/ , message: 'Only Numbers allow',} })}  />
                                 <div className="error-msg">{errors.dob && <p>{errors.dob.message}</p>}</div>
                             </div>
