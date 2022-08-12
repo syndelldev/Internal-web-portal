@@ -55,8 +55,8 @@ export default function home()
         if(data != "")
         {
             var dbpass=data[0].password;
-            //console.log(dbpass)
-            //console.log(password)
+            console.log(dbpass)
+            console.log(password)
 
             var role = data[0].role
             console.log(role)
@@ -108,7 +108,7 @@ return(
                         <form method='POST' className="login-main" onSubmit={login} >
                             <div id='personal-account'>
                                 <div className="form-group"  >
-                                    <label htmlFor="ba-num"  className='form-label'>Email</label>
+                                    <label htmlFor="ba-num"  className='form-label'>Username</label>
                                     <input type="text" name="username" value={username} onChange={e=>setusername(e.target.value)} className='form-control login-input' />
                                     <span className='icon-eyes'><IoMdMail /></span>
                                     <span className='error-msg' id='erremail'></span>
@@ -124,14 +124,14 @@ return(
                                         <input type="checkbox" /><label className="check" htmlFor="">Remember me</label>
                                     </div>
                                     <div className='login-two'>
-                                        {/*<Link href='#'><a><span className='login-text-login'>Forgot Password?</span></a></Link>*/}
                                         <a href='#'><span className='login-text-login'>Forgot Password?</span></a>
+                                        <a href='/signin'><span className='login-text-login'>Create Account</span></a>
                                     </div>
                                 </div> 
                                 <p className='error-msg'>{passwrong}</p>
                                 <div className="login-btn">
                                     <button type="submit" className="login-create-acc-btn">Login</button>  
-                                </div>         
+                                </div>      
                             </div>
                         </form>
                     </div>
