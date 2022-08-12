@@ -68,7 +68,7 @@ export default function home()
                     router.push("/admin/dashboard");
                 }
                 else if(role==='user'){
-                    router.push("/user");
+                    router.push("/user/dashboard");
                 }
                 
                 //alert("Sucess")
