@@ -4,12 +4,12 @@ import { useRouter } from 'next/router'
 import { useState } from "react";
 import { IoMdEye , IoMdEyeOff , IoMdMail } from "react-icons/io";
 import { server } from 'config';
-
+//import Cookies from 'js-cookie';
+import { useCookies } from 'react-cookie';
 export default function home()
 {
-    
-    
     //const { register,  watch, handleSubmit, formState: { errors }, control } = useForm(); 
+    const [cookies, setCookie] = useCookies(['name']);
 
     const [username,setusername] = useState("");
     const [password,setpassword] = useState("");
@@ -20,12 +20,6 @@ export default function home()
     const [isRevealPwd, setIsRevealPwd] = useState(false);
 
     console.log(username);
-    //console.log(localStorage.setItem('data', username))
-
-    useEffect(()=>{
-        console.log(localStorage.setItem('data', username))
-    })
-    
 
     const login = async(e) => {
         e.preventDefault();
@@ -49,7 +43,7 @@ export default function home()
 
         const data=await res.json()
         console.log(data)
-
+        console.log(data[0].username);
         
 
         if(data != "")
@@ -65,12 +59,25 @@ export default function home()
             if(dbpass == password)
             {
                 if(role==='admin'){
+                    setCookie('name', data[0].username);
+                    setCookie('Email', data[0].email);
+                    setCookie('Mobile_num', data[0].mobile_no);
+                    setCookie('DOB', data[0].dob);
+                    setCookie('Department', data[0].department);
+                    setCookie('Position', data[0].position);
+                    setCookie('Role', data[0].role);
                     router.push("/admin/dashboard");
                 }
                 else if(role==='user'){
+                    setCookie('name', data[0].username);
+                    setCookie('Email', data[0].email);
+                    setCookie('Mobile_num', data[0].mobile_no);
+                    setCookie('DOB', data[0].dob);
+                    setCookie('Department', data[0].department);
+                    setCookie('Position', data[0].position);
+                    setCookie('Role', data[0].role);
                     router.push("/user/dashboard");
                 }
-                
                 //alert("Sucess")
             }
             else{
@@ -82,19 +89,6 @@ export default function home()
         else{
             //alert("Failed")
         }
-        
-        /*const formdata = data[0].username;
-
-        console.log(localStorage.setItem('data', formdata))
-        //console.log(formdata)
-
-        //console.log(localStorage.setItem('data', formdata));
-
-        React.useEffect(()=>{
-            localStorage.setItem('formdata', JSON.stringify(formdata))
-        },[formdata])*/
-        
-        
 }
 
 
@@ -131,7 +125,7 @@ return(
                                 <p className='error-msg'>{passwrong}</p>
                                 <div className="login-btn">
                                     <button type="submit" className="login-create-acc-btn">Login</button>  
-                                </div>      
+                                </div> 
                             </div>
                         </form>
                     </div>

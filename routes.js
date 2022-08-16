@@ -42,11 +42,11 @@ const dashboardRoutes = [
     layout: "/admin",
   },
   {
-    path: "/userdetail",
-    name: "User Detail",
+    path: "/adminprofile",
+    name: "Admin Profile",
     rtlName: "ملف تعريفي للمستخدم",
     icon: Person,
-    layout: "/user",
+    layout: "/admin",
   },
   {
     path: "/table-list",

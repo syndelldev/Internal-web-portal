@@ -25,9 +25,10 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import '../styles/login.css'
 
 import PageChange from "components/PageChange/PageChange.js";
-import { SessionProvider } from "next-auth/react"
 
 import "assets/css/nextjs-material-dashboard.css?v=1.1.0";
+import { CookiesProvider } from 'react-cookie';
+
 
 Router.events.on("routeChangeStart", (url) => {
   console.log(`Loading: ${url}`);
@@ -92,9 +93,9 @@ export default class MyApp extends App {
           <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
         </Head>
         <Layout>
-          <SessionProvider session={pageProps.session}>
+          <CookiesProvider>
             <Component {...pageProps} />
-          </SessionProvider>
+          </CookiesProvider>
         </Layout>
       </React.Fragment>
     );

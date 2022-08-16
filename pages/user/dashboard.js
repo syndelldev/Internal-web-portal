@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-
+import React, { useEffect, useState } from "react";
+//import Cookies from 'js-cookie';
 // react plugin for creating charts
 import ChartistGraph from "react-chartist";
 // @material-ui/core
@@ -18,7 +18,7 @@ import BugReport from "@material-ui/icons/BugReport";
 import Code from "@material-ui/icons/Code";
 import Cloud from "@material-ui/icons/Cloud";
 // layout for this page
-import Admin from "layouts/Admin.js";
+import User from "layouts/User.js";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -32,7 +32,8 @@ import CardIcon from "components/Card/CardIcon.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 
-import { bugs, website, server } from "variables/general.js";
+//import { bugs, website, server } from "variables/general.js";
+import { server } from 'config';
 
 import {
   dailySalesChart,
@@ -41,17 +42,41 @@ import {
 } from "variables/charts.js";
 
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
+import { useCookies } from 'react-cookie';
 
 function Dashboard() {
+  
+  
+  // const [data,setData] = useState('')
+  // useEffect(()=>{
+  //   const url=`${server}/api/admin/login/`;
+  //   const fetchData=async()=>{
+  //     try{
+  //       const response=await fetch(url);
+  //       const json=await response.json();
+  //       console.log(response)
+  //     }
+  //     catch(err){
+  //       console.log(err)
+  //     }
+  //   }
+  //   fetchData();
+  // },[])
+
+  const [cookies, setCookie] = useCookies('');
+  //console.log(cookies.name);
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   return (
-    <div>
-      
-    </div>
+    <>
+      <div>
+        <button>view</button>
+        <h1>Welcome {cookies.name} </h1>
+      </div>
+    </>
   );
 }
 
-Dashboard.layout = Admin;
+Dashboard.layout = User;
 
 export default Dashboard;
