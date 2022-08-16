@@ -98,7 +98,9 @@ button.login-create-acc-btn {
     border: 1px solid #4C4D4D;
     padding: 12px 22px;
 }
-
+.signup-text-login{
+    color: #000!important;
+}
 @media only screen and (max-width: 767px) {
 .login-div {
     padding: 20px;}

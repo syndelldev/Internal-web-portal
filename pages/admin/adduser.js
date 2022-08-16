@@ -1,4 +1,6 @@
 import React from "react";
+import { useState } from "react";
+import { useRouter } from 'next/router'
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -14,10 +16,12 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
-import { IoMdEye , IoMdEyeOff , IoMdArrowDropdown } from "react-icons/io";
+import { IoMdArrowDropdown } from "react-icons/io";
 import { useForm  } from 'react-hook-form';
 import { server } from 'config';
 import avatar from "assets/img/faces/marc.jpg";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const styles = {
   cardCategoryWhite: {
@@ -41,21 +45,30 @@ const styles = {
 function AddUser() {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
-  const { register,  watch, handleSubmit, formState: { errors }, control } = useForm(); 
+  const { register,  watch, handleSubmit, formState: { errors }, setValue } = useForm(); 
+  const [startDate, setStartDate] = useState();
+  const router = useRouter();
 
   const onSubmit = async (result) =>{
-    // console.log(result.name);console.log(result.email);console.log(result.password);
-    // console.log(result.mobile_num);console.log(result.dob);console.log(result.department);
     
-    console.log(result.position);console.log(result.status);console.log(result.role);
+    console.log(result);
     
     const res = await fetch(`${server}/api/admin/adduser/`,{
       method: "POST",
       headers: { "Content-Type": "application/json",},
-      body:JSON.stringify({username:result.name, password:result.password, email:result.email, PhoneNum:result.mobile_num, DOB:result.dob, department:result.department, position:result.position, status:result.status, role:result.role }),
+      body:JSON.stringify({username:result.name, password:result.password, email:result.email, PhoneNum:result.mobile_num, DOB:startDate, department:result.department, position:result.position, status:result.status, role:result.role }),
     })
     const data=await res.json()
     console.log(data)
+    if(res.status==200)
+    {
+      //alert("sucess")
+      router.push("/admin/userdetail");
+    }
+    else
+    {
+      //alert("Fail")
+    }
   }
   return (
     <div>
@@ -109,8 +122,21 @@ function AddUser() {
                         </GridItem>
                         <GridItem xs={12} sm={12} md={6}>
                           <div className="form-group">
-                            <input type="text" className="form-control signup-input" placeholder="Date Of Birth" {...register('dob',  { required: "Please enter your DOB", pattern: {value: /^[0-9]+$/ , message: 'Only Numbers allow',} })}   />
-                            <div className="error-msg">{errors.dob && <p>{errors.dob.message}</p>}</div>
+                            <DatePicker
+                              placeholderText="mm/dd/yyyy"
+                              isClearable
+                              name="datetime1"
+                              className={"form-control"}
+                              selected={startDate}
+                              onChange={val => {
+                                setStartDate(val);
+                                setValue("start", val);
+                              }}
+                              dateFormat="MM-dd-yyyy"
+                            />
+                          <div className="error-msg">{errors.dob && <p>{errors.dob.message}</p>}</div>
+                            {/*<input type="text" className="form-control signup-input" placeholder="Date Of Birth" {...register('dob',  { required: "Please enter your DOB", pattern: {value: /^[0-9]+$/ , message: 'Only Numbers allow',} })}   />
+                            <div className="error-msg">{errors.dob && <p>{errors.dob.message}</p>}</div>*/}
                           </div> 
                         </GridItem>
                       </GridContainer><br/>
@@ -128,13 +154,13 @@ function AddUser() {
                             {/*<input type="text" className="form-control signup-input" placeholder="Department" {...register('department',  { required: "Please enter your Department", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
                             <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>*/}
                             <select name="Department" id="Department" className="form-control signup-input" {...register('department', {required:true ,message:'Please select atleast one option', })}>
-                              <option value="Select...">Select Your Department...</option>
+                              <option value="">Select Your Department...</option>
                               <option value="HR">HR</option>
                               <option value="UI & UX">UI & UX</option>
                               <option value="Web development">Web development</option>
                               <option value="Content writer">Content writer</option>
                               <option value="Project manager">Project manager</option>
-                              <option value="Mobille App developer">Mobille App developer</option>
+                              <option value="Mobile App developer">Mobile App developer</option>
                               <option value="SEO">SEO</option>
                             </select>
                             <span className='icon-eyes'><IoMdArrowDropdown /></span>
@@ -173,8 +199,8 @@ function AddUser() {
                             <div className="error-msg">{errors.role && <p>{errors.role.message}</p>}</div>*/}
                             <select name="Role" id="Role" className="form-control signup-input" {...register('role', {required:true ,message:'Please select atleast one option', })}>
                               <option value="Select...">Select Your Role...</option>
-                              <option value="user">user</option>
-                              <option value="admin">admin</option>
+                              <option value="User">User</option>
+                              <option value="Admin">Admin</option>
                             </select>
                             <span className='icon-eyes'><IoMdArrowDropdown /></span>
                             <div className="error-msg">{errors.role && <p>{errors.role.message}</p>}</div>

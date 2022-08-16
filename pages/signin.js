@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from 'next/router'
 import { IoMdEye , IoMdEyeOff , IoMdArrowDropdown } from "react-icons/io";
 import { useForm } from 'react-hook-form';
@@ -59,23 +59,22 @@ export default  function SignIn(){
 
                             <div className="form-group">
                                 <label htmlFor="username" className='form-label label' >Name</label>
-                                <input type="text" className="form-control signup-input" name="username" placeholder="Enter Your Name" {...register('username',  { required: "Please enter your Username", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
+                                <input type="text" className="form-control signup-input" name="username" placeholder="Enter Your Name" {...register('username',  { required: "Please enter your name", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
                                 <div className="error-msg">{errors.username && <p>{errors.username.message}</p>}</div>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="email" className='form-label label' >Email</label>
-                                <input type="text" className="form-control signup-input" name="email" placeholder="Enter Your Email" {...register('email', { required: 'Email is required', pattern: {value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, message: 'Please enter a valid email',},} )} />
+                                <input type="text" className="form-control signup-input" name="email" placeholder="Enter Your Email" {...register('email', { required: 'Please enter your email', pattern: {value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, message: 'Please enter a valid email',},} )} />
                                 <div className="error-msg">{errors.email && <p>{errors.email.message}</p>}</div>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="PhoneNum" className='form-label label' >Phone Number</label>
-                                <input type="text" className="form-control signup-input" name="PhoneNum" placeholder="Enter Your Phone Number" {...register('PhoneNum',  { required: "Please enter your PhoneNum", pattern: {value: /^[0-9]+$/ , message: 'Only Numbers allow',} })}  />
+                                <input type="text" className="form-control signup-input" name="PhoneNum" placeholder="Enter Your Phone Number" {...register('PhoneNum',  { required: "Please enter your phone number", pattern: {value: /^[0-9]+$/ , message: 'Only Numbers allow',} })}  />
                                 <div className="error-msg">{errors.PhoneNum && <p>{errors.PhoneNum.message}</p>}</div>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="dob" className='form-label label' >Date of Birth</label>
                                 <DatePicker
-                                    
                                     placeholderText="mm/dd/yyyy"
                                     isClearable
                                     name="datetime1"
@@ -94,14 +93,14 @@ export default  function SignIn(){
 
                             <div className="form-group">
                                 <label htmlFor="password" className='form-label label' >Password</label>
-                                <input type={isRevealPwd ? 'text' : 'password'} name="password" placeholder="Enter Your Password" className="form-control signup-input" {...register('password', { required: "You must specify a password",minLength: {value: 8, message: "Password must have at least 8 characters" }, pattern: {value: /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/, message: 'must include lower, upper, number, and special chars',} })}  />
+                                <input type={isRevealPwd ? 'text' : 'password'} name="password" placeholder="Enter Your Password" className="form-control signup-input" {...register('password', { required: "Please enter your password",minLength: {value: 8, message: "Password must have at least 8 characters" }, pattern: {value: /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/, message: 'must include lower, upper, number, and special chars',} })}  />
                                 <span className='icon-eyes' onClick={() => setIsRevealPwd((prevState) => !prevState)} >{isRevealPwd ? <IoMdEyeOff /> : <IoMdEye/>}</span>
                                 <div className="error-msg">{errors.password && <p>{errors.password.message}</p>}</div>
                             </div>
 
                             <div className="form-group">
                                 <label htmlFor="confirm-pwd" className='form-label label'>Confirm Password</label>
-                                <input type={isRevealconPwd ? 'text' : 'password'} className="form-control signup-input" placeholder="Plase Confirm Your Password" {...register('confirmPwd', {  validate: value =>value === password.current || "The passwords do not match" })}  />
+                                <input type={isRevealconPwd ? 'text' : 'password'} className="form-control signup-input" placeholder="Please confirm your password" {...register('confirmPwd', {  validate: value =>value === password.current || "The passwords do not match" })}  />
                                 <a><span className='icon-eyes' onClick={() => setIsRevealconPwd((prevState) => !prevState)}>{isRevealconPwd ? <IoMdEyeOff /> : <IoMdEye/>}</span></a>
                                 <div className="">{errors.confirmPwd && <p>{errors.confirmPwd.message}</p>}</div>
                             </div>
@@ -118,7 +117,7 @@ export default  function SignIn(){
                                     <option value="Web development">Web development</option>
                                     <option value="Content writer">Content writer</option>
                                     <option value="Project manager">Project manager</option>
-                                    <option value="Mobille App developer">Mobille App developer</option>
+                                    <option value="Mobile App developer">Mobile App developer</option>
                                     <option value="SEO">SEO</option>
                                 </select>
                                 <span className='icon-eyes'><IoMdArrowDropdown /></span>

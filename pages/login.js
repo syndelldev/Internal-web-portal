@@ -58,7 +58,7 @@ export default function home()
 
             if(dbpass == password)
             {
-                if(role==='admin'){
+                if(role==='Admin'){
                     setCookie('name', data[0].username);
                     setCookie('Email', data[0].email);
                     setCookie('Mobile_num', data[0].mobile_no);
@@ -68,7 +68,7 @@ export default function home()
                     setCookie('Role', data[0].role);
                     router.push("/admin/dashboard");
                 }
-                else if(role==='user'){
+                else if(role==='User'){
                     setCookie('name', data[0].username);
                     setCookie('Email', data[0].email);
                     setCookie('Mobile_num', data[0].mobile_no);
@@ -103,13 +103,13 @@ return(
                             <div id='personal-account'>
                                 <div className="form-group"  >
                                     <label htmlFor="ba-num"  className='form-label'>Username</label>
-                                    <input type="text" name="username" value={username} onChange={e=>setusername(e.target.value)} className='form-control login-input' />
+                                    <input type="text" name="username" value={username} placeholder="Enter your name" onChange={e=>setusername(e.target.value)} className='form-control login-input' />
                                     <span className='icon-eyes'><IoMdMail /></span>
                                     <span className='error-msg' id='erremail'></span>
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="pwd" className='form-label label'>Password</label>
-                                    <input type={isRevealPwd ? 'text' : 'password'}  name="password" value={password} onChange={e=>setpassword(e.target.value)}  className='form-control login-input' />
+                                    <input type={isRevealPwd ? 'text' : 'password'} placeholder="Enter your password" name="password" value={password} onChange={e=>setpassword(e.target.value)}  className='form-control login-input' />
                                     <span className='icon-eyes' onClick={() => setIsRevealPwd((prevState) => !prevState)} >{isRevealPwd ? <IoMdEyeOff /> : <IoMdEye/>}</span>
                                     <span className='error-msg' id='errpassword'></span>
                                 </div>  
@@ -117,8 +117,6 @@ return(
                                     <div className='login-col'>
                                         <input type="checkbox" /><label className="check" htmlFor="">Remember me</label>
                                     </div>
-
-                                    
 
                                     <div className='login-two'>
                                         <a href='#'><span className='login-text-login'>Forgot Password?</span></a>
