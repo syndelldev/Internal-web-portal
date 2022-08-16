@@ -44,14 +44,15 @@ function AddUser() {
   const { register,  watch, handleSubmit, formState: { errors }, control } = useForm(); 
 
   const onSubmit = async (result) =>{
-    console.log(result.name);console.log(result.email);console.log(result.password);
-    console.log(result.position);console.log(result.mobile_num);console.log(result.department);
-    console.log(result.role);console.log(result.status);console.log(result.dob);
-
+    // console.log(result.name);console.log(result.email);console.log(result.password);
+    // console.log(result.mobile_num);console.log(result.dob);console.log(result.department);
+    
+    console.log(result.position);console.log(result.status);console.log(result.role);
+    
     const res = await fetch(`${server}/api/admin/adduser/`,{
       method: "POST",
       headers: { "Content-Type": "application/json",},
-      body:JSON.stringify({username:result.name, password:result.password, email:result.email, PhoneNum:result.mobile_num, DOB:result.dob, department:result.department, status:result.status, position:result.position, role:result.role }),
+      body:JSON.stringify({username:result.name, password:result.password, email:result.email, PhoneNum:result.mobile_num, DOB:result.dob, department:result.department, position:result.position, status:result.status, role:result.role }),
     })
     const data=await res.json()
     console.log(data)

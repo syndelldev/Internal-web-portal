@@ -117,15 +117,23 @@ return(
                                     <div className='login-col'>
                                         <input type="checkbox" /><label className="check" htmlFor="">Remember me</label>
                                     </div>
+
+                                    
+
                                     <div className='login-two'>
                                         <a href='#'><span className='login-text-login'>Forgot Password?</span></a>
-                                        <a href='/signin'><span className='login-text-login'>Create Account</span></a>
+                                        {/*<a href='/signin'><span className='login-text-login'>Create Account</span></a>*/}
                                     </div>
                                 </div> 
+
                                 <p className='error-msg'>{passwrong}</p>
                                 <div className="login-btn">
                                     <button type="submit" className="login-create-acc-btn">Login</button>  
                                 </div> 
+                                <div className='login-text'>
+                                    <p>Don&apos;t have an account? <a href='/signin'><span className='signup-text-login'>Sign In</span></a></p>
+                                </div>
+
                             </div>
                         </form>
                     </div>

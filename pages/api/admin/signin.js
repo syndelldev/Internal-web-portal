@@ -7,7 +7,10 @@ async function signin(req,res){
         try{
 
             console.log(req.body);
-            //console.log(req.body.pass);
+            console.log(req.body.dob);
+
+            // var signinQuery = await executeQuery("INSERT INTO `tbl_user` ( `username`, `password`, `email`, `mobile_no`, `dob`, `department`) VALUES (?,?,?,?,?,? ) WHERE NOT EXISTS (SELECT 1 FROM tbl_user WHERE email = ?)" , 
+            // [req.body.username, req.body.password, req.body.email, req.body.PhoneNum, req.body.dob, req.body.department ] );
 
             var signinQuery = await executeQuery("INSERT INTO `tbl_user` ( `username`, `password`, `email`, `mobile_no`, `dob`, `department`) VALUES (?,?,?,?,?,? )", 
             [req.body.username, req.body.password, req.body.email, req.body.PhoneNum, req.body.dob, req.body.department ] );
