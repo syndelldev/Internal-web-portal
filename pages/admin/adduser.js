@@ -163,7 +163,7 @@ function AddUser() {
                               <option value="Mobile App developer">Mobile App developer</option>
                               <option value="SEO">SEO</option>
                             </select>
-                            <span className='icon-eyes'><IoMdArrowDropdown /></span>
+                            <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                             <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>
                           </div> 
                         </GridItem>
@@ -188,7 +188,7 @@ function AddUser() {
                               <option value="Active">Active</option>
                               <option value="Deactive">Deactive</option>
                             </select>
-                            <span className='icon-eyes'><IoMdArrowDropdown /></span>
+                            <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                             <div className="error-msg">{errors.status && <p>{errors.status.message}</p>}</div>
                           </div> 
                         </GridItem>
@@ -202,7 +202,7 @@ function AddUser() {
                               <option value="User">User</option>
                               <option value="Admin">Admin</option>
                             </select>
-                            <span className='icon-eyes'><IoMdArrowDropdown /></span>
+                            <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                             <div className="error-msg">{errors.role && <p>{errors.role.message}</p>}</div>
                           </div> 
                         </GridItem>
