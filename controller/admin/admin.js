@@ -39,15 +39,6 @@ const UpdateUser = async (req,res) =>{
 
     console.log(req.body)
 
-    console.log(req.body.username)
-    console.log(req.body.password)
-    console.log(req.body.email)
-    console.log(req.body.mobile_no)
-    console.log(req.body.department)
-    console.log(req.body.position)
-    console.log(req.body.status)
-    console.log(req.body.role)
-
     try{
         let UpdataUser = await executeQuery(" UPDATE tbl_user SET ? WHERE id = ? ", [req.body, id])
         res.status(200).json(UpdataUser);
@@ -60,9 +51,10 @@ const UpdateUser = async (req,res) =>{
 
 
 const deleteUser = async (req,res) => {
-    //let id = req.query.id;
+    let id = req.query.id;
     try{
-        let delUser = await executeQuery(` DELETE FROM tbl_user WHERE id = ?", [req.query.id] `)
+        //let delUser = await executeQuery(` DELETE FROM tbl_user WHERE id = ?`, [id] )
+        let delUser = await executeQuery(` SELECT * FROM tbl_user WHERE status = Active`, [Active] )
         res.status(200).json(delUser);
     }
     catch(err){

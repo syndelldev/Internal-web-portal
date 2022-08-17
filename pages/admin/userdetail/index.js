@@ -28,34 +28,16 @@ import axios from "axios";
 
 import { server } from 'config';
 
-export async function getServerSideProps(content){
+export async function getServerSideProps(context){
   const res = await fetch(`${server}/api/admin`)
   const UserDetail = await res.json()
   console.log(UserDetail);
 
   return{ props: {UserDetail} }
 } 
-/*const styles = {
-  cardCategoryWhite: {
-    color: "rgba(255,255,255,.62)",
-    margin: "0",
-    fontSize: "14px",
-    marginTop: "0",
-    marginBottom: "0",
-  },
-  cardTitleWhite: {
-    color: "#FFFFFF",
-    marginTop: "0px",
-    minHeight: "auto",
-    fontWeight: "300",
-    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
-    marginBottom: "3px",
-    textDecoration: "none",
-  },
-};*/
 
 function UserDetail({UserDetail}) {
-  console.log(UserDetail)
+  //console.log(UserDetail)
 
   const deleteUser = async(id) =>{
     let delUser = await axios.delete(`http://localhost:3000/api/admin/${id}`)
@@ -112,7 +94,7 @@ function UserDetail({UserDetail}) {
                       <TableCell>{user.creation_time}</TableCell>
                       <TableCell>
                         <a href={`/admin/userdetail/${user.id}`}>Edit</a>&nbsp;&nbsp;&nbsp;
-                        <a href={`#`} onClick={()=>deleteUser(user.id)}>Delete</a>
+                        <a href={`/admin/userdetail/`} onClick={()=>deleteUser(user.id)}>Delete</a>
                       </TableCell>
                     </TableRow>
                   )
