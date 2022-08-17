@@ -32,7 +32,7 @@ export default  function SignIn(){
 
         //console.log(result.username);console.log(result.email);console.log(result.password);console.log(result.PhoneNum);console.log(result.start);console.log(result.department);
         console.log(startDate)
-        const res = await fetch(`${server}/api/admin/signin/`,{
+        const res = await fetch(`${server}/api/admin/signin`,{
             method: "POST",
             headers: { "Content-Type": "application/json",},
             body:JSON.stringify({username:result.username, password:result.password, email:result.email, PhoneNum:result.PhoneNum, dob:startDate, department:result.department}),
@@ -46,7 +46,7 @@ export default  function SignIn(){
         }
         else
         {
-            //alert("Fail")
+            alert("Fail");
         }
     }
     return(
