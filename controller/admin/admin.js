@@ -3,7 +3,7 @@ import { executeQuery } from "../../config/db";
 
 const getAllUser = async (req,res) =>{
     try{
-        let userData=await executeQuery(" SELECT * FROM `tbl_user` ", [] );
+        let userData=await executeQuery(" SELECT * FROM `tbl_user` where status='Active' ", [] );
         res.send(userData);
     }
     catch(err){
@@ -54,7 +54,7 @@ const deleteUser = async (req,res) => {
     let id = req.query.id;
     try{
         //let delUser = await executeQuery(` DELETE FROM tbl_user WHERE id = ?`, [id] )
-        let delUser = await executeQuery(` SELECT * FROM tbl_user WHERE status = Active`, [id] )
+        let delUser = await executeQuery(" UPDATE `tbl_user` SET `status`='Deactive' WHERE id=?", [id] )
         res.status(200).json(delUser);
     }
     catch(err){
