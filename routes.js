@@ -36,20 +36,18 @@ const dashboardRoutes = [
   },
   {
     path: "/userdetail",
-    //path: "/user-profile",
     name: "User Detail",
     rtlName: "ملف تعريفي للمستخدم",
     icon: Person,
     layout: "/admin",
   },
-  // {
-  //   path: "/user-profile",
-  //   name: "User Profile",
-  //   rtlName: "ملف تعريفي للمستخدم",
-  //   icon: Person,
-
-  //   layout: "/admin",
-  // },
+  {
+    path: "/adminprofile",
+    name: "Admin Profile",
+    rtlName: "ملف تعريفي للمستخدم",
+    icon: Person,
+    layout: "/admin",
+  },
   {
     path: "/table-list",
     name: "Table List",

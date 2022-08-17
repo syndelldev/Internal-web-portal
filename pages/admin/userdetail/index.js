@@ -57,15 +57,10 @@ export async function getServerSideProps(content){
 function UserDetail({UserDetail}) {
   console.log(UserDetail)
 
-  /*const deleteUser = async(id) =>{
-    try{
-      await axios.delete("/api/admin/" + id);
-      router.push("/");
-    }
-    catch(err){
-      console.error(err);
-    }    
-  }*/
+  const deleteUser = async(id) =>{
+    let delUser = await axios.delete(`http://localhost:3000/api/admin/${id}`)
+    router.push("/user/dashboard");
+  }
 
   const onSubmit = async(data) =>{
     console.log(data);
@@ -91,6 +86,7 @@ function UserDetail({UserDetail}) {
                     <TableCell>ID</TableCell>
                     <TableCell>Username</TableCell>
                     <TableCell>Password</TableCell>
+                    <TableCell>Email</TableCell>
                     <TableCell>Mobile No</TableCell>
                     <TableCell>Department</TableCell>
                     <TableCell>Position</TableCell>
@@ -107,6 +103,7 @@ function UserDetail({UserDetail}) {
                       <TableCell>{user.id}</TableCell>
                       <TableCell>{user.username}</TableCell>
                       <TableCell>{user.password}</TableCell>
+                      <TableCell>{user.email}</TableCell>
                       <TableCell>{user.mobile_no}</TableCell>
                       <TableCell>{user.department}</TableCell>
                       <TableCell>{user.position}</TableCell>
@@ -114,8 +111,8 @@ function UserDetail({UserDetail}) {
                       <TableCell>{user.role}</TableCell>
                       <TableCell>{user.creation_time}</TableCell>
                       <TableCell>
-                        <a href={''}>Edit</a>&nbsp;&nbsp;&nbsp;
-                        <a onClick={()=>deleteUser(user.id)}>Delete</a>
+                        <a href={`/admin/userdetail/${user.id}`}>Edit</a>&nbsp;&nbsp;&nbsp;
+                        <a href={`#`} onClick={()=>deleteUser(user.id)}>Delete</a>
                       </TableCell>
                     </TableRow>
                   )

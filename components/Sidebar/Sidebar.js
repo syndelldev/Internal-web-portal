@@ -85,7 +85,7 @@ export default function Sidebar(props) {
   var brand = (
     <div className={classes.logo}>
       <a
-        href="https://www.creative-tim.com?ref=njsmd-sidebar"
+        href="/"
         className={classNames(classes.logoLink, {
           [classes.logoLinkRTL]: props.rtlActive,
         })}
@@ -100,7 +100,7 @@ export default function Sidebar(props) {
   );
   return (
     <div>
-      <Hidden mdUp implementation="css">
+      {/*<Hidden mdUp implementation="css">
         <Drawer
           variant="temporary"
           anchor={props.rtlActive ? "left" : "right"}
@@ -127,7 +127,7 @@ export default function Sidebar(props) {
             />
           ) : null}
         </Drawer>
-      </Hidden>
+          </Hidden>*/}
       <Hidden smDown implementation="css">
         <Drawer
           anchor={props.rtlActive ? "right" : "left"}

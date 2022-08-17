@@ -22,21 +22,23 @@ import Button from "components/CustomButtons/Button.js";
 import useWindowSize from "components/Hooks/useWindowSize.js";
 
 import styles from "assets/jss/nextjs-material-dashboard/components/headerLinksStyle.js";
+//import Cookies from "js-cookie";
 
-const getUserData = () => {
-  let getData = localStorage.getItem('data')
-  console.log(getData)
-}
+import { useCookies } from 'react-cookie';
 
 export default function AdminNavbarLinks() {
   const router = useRouter();
-  
-    const logoutfunc = () => {
-      //localStorage.removeItem('data');
-      localStorage.clear('data');
-      router.push("/login");
-    }
-  
+  const [cookies, setCookie, removeCookie ] = useCookies();
+  const logoutfunc = () => {
+    removeCookie('name')
+    removeCookie('Email')
+    removeCookie('Mobile_num')
+    removeCookie('DOB')
+    removeCookie('Department')
+    removeCookie('Position')
+    removeCookie('Role')
+    router.push("/login");
+  }
   const size = useWindowSize();
   const useStyles = makeStyles(styles);
   const classes = useStyles();
@@ -213,7 +215,7 @@ export default function AdminNavbarLinks() {
                       onClick={handleCloseProfile}
                       className={classes.dropdownItem}
                     >
-                      Profile
+                      Profile({cookies.name})
                     </MenuItem>
                     <MenuItem
                       onClick={handleCloseProfile}
