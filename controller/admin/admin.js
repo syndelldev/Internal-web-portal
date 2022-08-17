@@ -59,6 +59,7 @@ const deleteUser = async (req,res) => {
     }
     catch(err){
         res.status(500).json(err);
+        
     }
 }
 export { getAllUser,getUserById,UpdateUser,deleteUser }
