@@ -11,7 +11,7 @@ export default function home()
     //const { register,  watch, handleSubmit, formState: { errors }, control } = useForm(); 
     const [cookies, setCookie] = useCookies(['name']);
 
-    const [username,setusername] = useState("");
+    const [email,setemail] = useState("");
     const [password,setpassword] = useState("");
     const [passwrong,setpasswrong] = useState("");
     const router = useRouter();
@@ -19,12 +19,14 @@ export default function home()
     //Password Hide and Show
     const [isRevealPwd, setIsRevealPwd] = useState(false);
 
-    console.log(username);
-
     const login = async(e) => {
         e.preventDefault();
 
-        if (username == "") {
+        console.log(email);
+        console.log(password);
+    
+
+        if (email == "") {
             let text = "Enter your Email ID";
             document.getElementById("erremail").innerHTML = text;
         }
@@ -35,30 +37,30 @@ export default function home()
 
         
 
-        const res = await fetch(`${server}/api/admin/login/`,{
+        const res = await fetch(`${server}/api/admin/login`,{
             method: "POST",
-            headers: { "Content-Type": "application/json",},
-            body:JSON.stringify({username,password}),
-        })
+            body:JSON.stringify({email: email, password : password}),
+        });
 
-        const data=await res.json()
-        console.log(data)
-        console.log(data[0].username);
-        
+        const data = await res.json();
+        console.log("data");
+        console.log("data");
+        console.log("data");
+        console.log(data);
 
         if(data != "")
         {
             var dbpass=data[0].password;
-            console.log(dbpass)
-            console.log(password)
+            console.log(dbpass);
+            console.log(password);
 
-            var role = data[0].role
-            console.log(role)
+            var role = data[0].role;
+            console.log(role);
 
 
             if(dbpass == password)
             {
-                if(role==='Admin'){
+                if(role =='Admin'){
                     setCookie('name', data[0].username);
                     setCookie('Email', data[0].email);
                     setCookie('Mobile_num', data[0].mobile_no);
@@ -68,7 +70,7 @@ export default function home()
                     setCookie('Role', data[0].role);
                     router.push("/admin/dashboard");
                 }
-                else if(role==='User'){
+                else if(role =='User'){
                     setCookie('name', data[0].username);
                     setCookie('Email', data[0].email);
                     setCookie('Mobile_num', data[0].mobile_no);
@@ -82,7 +84,7 @@ export default function home()
             }
             else{
                 //alert("password wrong")
-                setpasswrong("Username and Password Not matched!")
+                setpasswrong("email and Password Not matched!")
             }
             
         }
@@ -102,8 +104,8 @@ return(
                         <form method='POST' className="login-main" onSubmit={login} >
                             <div id='personal-account'>
                                 <div className="form-group"  >
-                                    <label htmlFor="ba-num"  className='form-label'>Username</label>
-                                    <input type="text" name="username" value={username} placeholder="Enter your name" onChange={e=>setusername(e.target.value)} className='form-control login-input' />
+                                    <label htmlFor="ba-num"  className='form-label'>Email ID</label>
+                                    <input type="text" name="email" value={email} placeholder="Enter your name" onChange={e=>setemail(e.target.value)} className='form-control login-input' />
                                     <span className='icon-eyes'><IoMdMail /></span>
                                     <span className='error-msg' id='erremail'></span>
                                 </div>

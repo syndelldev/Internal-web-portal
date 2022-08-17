@@ -3,40 +3,33 @@ import { executeQuery } from "../../../config/db";
 const handler=nc();
 
 async function login(req,res){
-    if(req.method === 'POST')
+    if(req.method == 'POST')
     {
         try{
-            const username = req.body.username;
-            const password = req.body.password;
+            const data = req.body;
+            console.log(data);
+            console.log(data.email);
+            console.log(data.password);
 
-            console.log(username)
-            var loginQuery = await executeQuery("select * from tbl_user where username= ? ", [req.body.username] );
-            res.status(200).json(loginQuery);
-            
-            
-            //console.log(loginQuery)
+           const loginQuery = await executeQuery("select * from `tbl_user` where `email` = ? ", [data.email] );
 
-            var dbpassword = loginQuery[0].password;
-            //console.log(dbpassword)
-            //console.log(password)
+            const dbpassword = loginQuery[0].password;
+            console.log(loginQuery);
+            console.log(loginQuery[0].email);
+            console.log(dbpassword);
 
-            if(dbpassword == req.body.password)
+            if(dbpassword == data.password)
             {
-                console.log("Sucess")
+                console.log("Success")
             }
             else 
             {
-                console.log("Fail")
-            }
-            
+                console.log("fetch password fail")
+            }            
         }
         catch(err){
             console.log(err)
-        }
-        
-        
-        
+        }        
     }
-}
- 
+} 
 export default login;
