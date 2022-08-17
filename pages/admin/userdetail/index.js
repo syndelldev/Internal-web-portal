@@ -74,7 +74,7 @@ function UserDetail({UserDetail}) {
                     <TableCell>Position</TableCell>
                     <TableCell>Status</TableCell>
                     <TableCell>Role</TableCell>
-                    <TableCell>Createtion Time</TableCell>
+                    <TableCell>Creation Time</TableCell>
                     <TableCell>Action</TableCell>
                   </TableRow>
                 </TableHead>
