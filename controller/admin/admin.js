@@ -33,6 +33,32 @@ const AddUser = async (req,res) =>{
     }
 }
 
+const UpdateUser = async (req,res) =>{
+    let id = req.query.id;
+    console.log(id)
+
+    console.log(req.body)
+
+    console.log(req.body.username)
+    console.log(req.body.password)
+    console.log(req.body.email)
+    console.log(req.body.mobile_no)
+    console.log(req.body.department)
+    console.log(req.body.position)
+    console.log(req.body.status)
+    console.log(req.body.role)
+
+    try{
+        let UpdataUser = await executeQuery(" UPDATE tbl_user SET ? WHERE id = ? ", [req.body, id])
+        res.status(200).json(UpdataUser);
+        console.log(UpdataUser)
+    }
+    catch(err){
+        console.log(err)
+    }
+}
+
+
 const deleteUser = async (req,res) => {
     //let id = req.query.id;
     try{
@@ -43,4 +69,4 @@ const deleteUser = async (req,res) => {
         res.status(500).json(err);
     }
 }
-export { getAllUser,getUserById,AddUser,deleteUser }
+export { getAllUser,getUserById,UpdateUser,deleteUser }
