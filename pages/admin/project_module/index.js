@@ -85,6 +85,89 @@ function AddUser({ Username }) {
       //alert("Fail")
     }
   }
+
+  // const options = {
+  //   options: [{cat: 'Group 1',key: 'Option 1'},{cat: 'Group 1',key: 'Option 2'}]
+  // };
+
+  function data(){
+  {Username.map((data) => {
+
+    const employee = data.username;
+    console.log(employee);
+
+    const options = {
+      options: [{key: `${employee}`, value: 'option'}]
+    };
+    console.log(options.options);
+
+    return(
+      <>
+      <p>`{employee}`</p>
+      </>
+    )
+  })}}
+
+
+// console.log(`${Username.employee}`);
+
+  const options = {
+    options: [{cat: 'Group 1',key: 'Option 1'},{cat: 'Group 1',key: 'Option 2'}]
+  };
+
+
+  const Users = () => {
+    return (
+      <div className="users">
+        {Username.map((user) => (
+          <div>{user.username}</div>
+        ))}
+      </div>
+    );
+  };
+
+  const a1 = Users().props['children'];
+  console.log(a1);
+  console.log("a1");
+
+  const b1 = [a1][0];
+  console.log(b1);
+  console.log("b1");
+
+const a = Users().props['children'];
+  console.log(a);
+  console.log(Users());
+  console.log("a");
+const b = a[0].props['children'];
+  console.log(b);
+  console.log("b");
+
+  for (let i = 0; i < a.length; i++) {
+    const c = a[i].props['children'];
+    console.log(c);
+    console.log("b");
+    }
+  // const UserName = () => {
+  //   for (let i = 0; i < a.length; i++) {
+  //     const uName = [{key: a[i].props['children']}];
+  //     console.log(uName);
+  //     console.log('uName');
+  //     console.log('uName');
+  //   }
+  // }
+
+  console.log("UserName");
+  console.log("UserName");
+
+console.log(Users().props.children);
+console.log(b);
+console.log(b);
+console.log(Users().props['children']);
+
+  // const options = options: [{Username.map((user)=>{ 
+  //    {cat: 'Group 1',key: `${user.username}`},{cat: 'Group 1',key: 'Option 2'}
+  // })}]
+  
   return (
     <div>
       <GridContainer>
@@ -185,44 +268,43 @@ function AddUser({ Username }) {
                           <div className="form-group">
 
                           {/* {Username.map((user)=>{ <p>{user.username}</p>})} */}
-                          <Multiselect
+
+                          {/* {Username.map((data) => {
+
+                            const employee = data.username;
+                            console.log(employee);
+
+                            const options = {
+                              options: [{key: `${employee}`}]
+                            };
+                            console.log(options.options);
+                            })} */}
+
+                          {/* <Multiselect
                               displayValue="key"
                               onKeyPressFn={function noRefCheck(){}}
                               onRemove={function noRefCheck(){}}
                               onSearch={function noRefCheck(){}}
                               onSelect={function noRefCheck(){}}
-                              options={[
-                                {
-                                  cat: 'Group 1',
-                                  key: 'Option 1'
-                                },
-                                {
-                                  cat: 'Group 1',
-                                  key: 'Option 2'
-                                },
-                                {
-                                  cat: 'Group 1',
-                                  key: 'Option 3'
-                                },
-                                {
-                                  cat: 'Group 2',
-                                  key: 'Option 4'
-                                },
-                                {
-                                  cat: 'Group 2',
-                                  key: 'Option 5'
-                                },
-                                {
-                                  cat: 'Group 2',
-                                  key: 'Option 6'
-                                },
-                                {
-                                  cat: 'Group 2',
-                                  key: 'Option 7'
-                                }
-                              ]}
+                              options = {
+                                [{cat: 'Group 1',key: 'Option 1'},{cat: 'Group 1',key: 'Option 2'}]
+                              }
+                              showCheckbox>
+                              </Multiselect> */}
+
+                          <Multiselect
+                              displayValue={b1.props}
+                              onKeyPressFn={function noRefCheck(){}}
+                              onRemove={function noRefCheck(){}}
+                              onSearch={function noRefCheck(){}}
+                              onSelect={function noRefCheck(){}}
+                              options= {
+                                [{cat: 'Group 1',key: `${b1}`}]
+                              }
+                              placeholder="Select Employee"
                               showCheckbox
                             />
+
                             <div className="error-msg">{errors.role && <p>{errors.role.message}</p>}</div>
                           </div> 
                         </GridItem>
