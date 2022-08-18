@@ -1,19 +1,20 @@
 import { useRef, useState } from "react";
 import { useRouter } from 'next/router'
 import { IoMdEye , IoMdEyeOff , IoMdArrowDropdown } from "react-icons/io";
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { server } from 'config';
-
+import 'react-phone-number-input/style.css'
+import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input'
   
 export default  function SignIn(){
-    const { register, watch, handleSubmit, formState: { errors }, setValue } = useForm({mode: "onBlur"}); 
+    const { register, watch, handleSubmit, formState: { errors }, setValue, control } = useForm({mode: "onBlur"}); 
     const router = useRouter();
 
     const [startDate, setStartDate] = useState();
     //console.log(startDate)
-
+    const [phonenum, setphonenum] = useState()
 
     //Password Hide & Show Toggle
     const [pwd, setPwd] = useState('');
@@ -73,9 +74,23 @@ export default  function SignIn(){
                             </div>
                             <div className="form-group">
                                 <label htmlFor="PhoneNum" className='form-label label' >Phone Number</label>
-                                <input type="text" className="form-control signup-input" name="PhoneNum" placeholder="Enter Your Phone Number" {...register('PhoneNum',  { required: "Please enter your phone number", minLength: {value: 10, message: "enter least 10 digits" }, maxLength: {value: 12, message: "phone number is too large" }, pattern: {value: /^[0-9]+$/ , message: 'Only Numbers allow', } })}  />
-                                <div className="error-msg">{errors.PhoneNum && <p>{errors.PhoneNum.message}</p>}</div>
-                                
+                                {/*<input type="text" className="form-control signup-input" name="PhoneNum" placeholder="Enter Your Phone Number" {...register('PhoneNum',  { required: "Please enter your phone number", minLength: {value: 10, message: "enter least 10 digits" }, maxLength: {value: 12, message: "phone number is too large" }, pattern: {value: /^[0-9]+$/ , message: 'Only Numbers allow', } })}  />
+                                <div className="error-msg">{errors.PhoneNum && <p>{errors.PhoneNum.message}</p>}</div>*/}
+                                <Controller
+                                name="phone-input"
+                                control={control}
+                                rules={{ required: true }}
+                                render={({ field: { onChange, value } }) => (
+                                <PhoneInput
+                                    className="form-control signup-input"
+                                    defaultCountry={"IN"}
+                                    maxLength={11}
+                                    placeholder="Enter phone number"
+                                    value={phonenum}
+                                    onChange={setphonenum}
+                                />
+                                )}
+                                />
                             </div>
                             <div className="form-group">
                                 <label htmlFor="dob" className='form-label label' >Date of Birth</label>
