@@ -24,6 +24,7 @@
     "classnames": "2.2.6",
     "history": "5.0.0",
     "jsonwebtoken": "^8.5.1",
+    "multiselect-react-dropdown": "^2.0.25",
     "mysql": "^2.18.1",
     "next": "10.0.5",
     "next-absolute-url": "^1.2.2",
