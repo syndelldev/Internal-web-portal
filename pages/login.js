@@ -58,7 +58,7 @@ export default function home()
 
             if(dbpass == password)
             {
-                if(role==='Admin'){
+                if(role=='Admin'){
                     setCookie('name', data[0].username);
                     setCookie('Email', data[0].email);
                     setCookie('Mobile_num', data[0].mobile_no);
@@ -68,7 +68,7 @@ export default function home()
                     setCookie('Role', data[0].role);
                     router.push("/admin/dashboard");
                 }
-                else if(role==='User'){
+                else if(role=='User'){
                     setCookie('name', data[0].username);
                     setCookie('Email', data[0].email);
                     setCookie('Mobile_num', data[0].mobile_no);
@@ -142,4 +142,3 @@ return(
 
 
 }
-

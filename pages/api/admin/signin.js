@@ -3,7 +3,30 @@ import { executeQuery } from "../../../config/db";
 const handler=nc();
 
 async function signin(req,res){
-    if(req.method === 'POST'){
+
+    if(req.method == 'POST'){
+
+        // const Sparkpost = require('sparkpost');
+        // const client = new Sparkpost("AIzaSyBiyd6ffWdkMbLeT1pSwkeG94pR0xj0MaQ");
+    
+        // client.transmissions.send({
+        //     content: {
+        //     from: "ktechnosoftdev04@gmail.com",
+        //     subject: "Web portal",
+        //     html: `<p>Hello world</p>`
+        //     },
+        //     recipients: [{ address: 'ktechnosoftdev04@gmail.com' }]
+        // })
+        // .then(() => {
+        //     console.log('Woohoo! You just sent your first mailing!');
+        // })
+        // .catch((err) => {
+        //     console.log('Something went wrong!');
+        //     console.log(err);
+        //     console.log(client);
+        // });
+    
+          
         try{
 
             console.log(req.body);
