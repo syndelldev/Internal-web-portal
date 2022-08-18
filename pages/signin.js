@@ -58,6 +58,10 @@ export default  function SignIn(){
                         <form method="POST" onSubmit={handleSubmit(onSubmit)} >
 
                             <div className="form-group">
+                                <input type="hidden" className="form-control signup-input" name="role" value="User" {...register('role',  { required: "Please enter your name", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
+                                <div className="error-msg">{errors.role && <p>{errors.role.message}</p>}</div>
+                            </div>
+                            <div className="form-group">
                                 <label htmlFor="username" className='form-label label' >Name</label>
                                 <input type="text" className="form-control signup-input" name="username" placeholder="Enter Your Name" {...register('username',  { required: "Please enter your name", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
                                 <div className="error-msg">{errors.username && <p>{errors.username.message}</p>}</div>
@@ -69,8 +73,9 @@ export default  function SignIn(){
                             </div>
                             <div className="form-group">
                                 <label htmlFor="PhoneNum" className='form-label label' >Phone Number</label>
-                                <input type="text" className="form-control signup-input" name="PhoneNum" placeholder="Enter Your Phone Number" {...register('PhoneNum',  { required: "Please enter your phone number", pattern: {value: /^[0-9]+$/ , message: 'Only Numbers allow',} })}  />
+                                <input type="text" className="form-control signup-input" name="PhoneNum" placeholder="Enter Your Phone Number" {...register('PhoneNum',  { required: "Please enter your phone number", minLength: {value: 10, message: "enter least 10 digits" }, maxLength: {value: 12, message: "phone number is too large" }, pattern: {value: /^[0-9]+$/ , message: 'Only Numbers allow', } })}  />
                                 <div className="error-msg">{errors.PhoneNum && <p>{errors.PhoneNum.message}</p>}</div>
+                                
                             </div>
                             <div className="form-group">
                                 <label htmlFor="dob" className='form-label label' >Date of Birth</label>
