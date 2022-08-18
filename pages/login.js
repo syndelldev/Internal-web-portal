@@ -43,7 +43,7 @@ export default function home()
 
         const data=await res.json()
         console.log(data)
-        console.log(data[0].username);
+        //console.log(data[0].username);
         
 
         if(data != "")

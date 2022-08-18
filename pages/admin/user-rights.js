@@ -8,6 +8,12 @@ import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 
+import Table from "@material-ui/core/Table";
+import TableHead from "@material-ui/core/TableHead";
+import TableBody from "@material-ui/core/TableBody";
+import TableRow from "@material-ui/core/TableRow";
+import TableCell from "@material-ui/core/TableCell";
+
 const styles = {
     cardCategoryWhite: {
       color: "rgba(255,255,255,.62)",
@@ -48,7 +54,52 @@ function UserRights(){
                                     </select>
                                     <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                                 </div> 
-                            </GridItem>
+                            </GridItem><br/><br/>
+                            <div className={classes.tableResponsive}>
+                                <Table className={classes.table}>
+                                    <TableHead className={classes.TableHeader}>
+                                        <TableRow className={classes.tableHeadRow}>
+                                            <TableCell>Role</TableCell>
+                                            <TableCell>User List</TableCell>
+                                            <TableCell>Add User</TableCell>
+                                            <TableCell>Edit User</TableCell>
+                                            <TableCell>Delete User</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        <TableRow className={classes.tableHeadRow}>
+                                            <TableCell>Admin</TableCell>
+                                            <TableCell>
+                                                <input type="checkbox" id="" name="" value=""/>
+                                            </TableCell>
+                                            <TableCell>
+                                                <input type="checkbox" id="" name="" value=""/>
+                                            </TableCell>
+                                            <TableCell>
+                                                <input type="checkbox" id="" name="" value=""/>
+                                            </TableCell>
+                                            <TableCell>
+                                                <input type="checkbox" id="" name="" value=""/>
+                                            </TableCell>
+                                        </TableRow>
+                                        <TableRow className={classes.tableHeadRow}>
+                                            <TableCell>User</TableCell>
+                                            <TableCell>
+                                                <input type="checkbox" id="" name="" value=""/>
+                                            </TableCell>
+                                            <TableCell>
+                                                <input type="checkbox" id="" name="" value=""/>
+                                            </TableCell>
+                                            <TableCell>
+                                                <input type="checkbox" id="" name="" value=""/>
+                                            </TableCell>
+                                            <TableCell>
+                                                <input type="checkbox" id="" name="" value=""/>
+                                            </TableCell>
+                                        </TableRow>
+                                    </TableBody>
+                                </Table>
+                            </div>
                         </CardBody>
                     </Card>
                 </GridItem>
