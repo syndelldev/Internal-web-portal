@@ -24,7 +24,7 @@ import BugReport from "@material-ui/icons/BugReport";
 import Code from "@material-ui/icons/Code";
 import Cloud from "@material-ui/icons/Cloud";
 // layout for this page
-import Admin from "layouts/Admin.js";
+import User from "layouts/User.js";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -149,6 +149,6 @@ function AllTask({ tasklist }){
     );
 }
 
-AllTask.layout = Admin;
+AllTask.layout = User;
 
 export default AllTask;

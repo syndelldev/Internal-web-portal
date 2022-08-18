@@ -3,7 +3,7 @@ import { executeQuery } from "../../config/db";
 
 const getAllUser = async (req,res) =>{
     try{
-        let userData=await executeQuery(" SELECT * FROM `tbl_user` ", [] );
+        let userData=await executeQuery(" SELECT * FROM `tbl_user` where status='Active' ", [] );
         res.send(userData);
     }
     catch(err){
@@ -33,14 +33,33 @@ const AddUser = async (req,res) =>{
     }
 }
 
-const deleteUser = async (req,res) => {
-    //let id = req.query.id;
+const UpdateUser = async (req,res) =>{
+    let id = req.query.id;
+    console.log(id)
+
+    console.log(req.body)
+
     try{
-        let delUser = await executeQuery(` DELETE FROM tbl_user WHERE id = ?", [req.query.id] `)
+        let UpdataUser = await executeQuery(" UPDATE tbl_user SET ? WHERE id = ? ", [req.body, id])
+        res.status(200).json(UpdataUser);
+        console.log(UpdataUser)
+    }
+    catch(err){
+        console.log(err)
+    }
+}
+
+
+const deleteUser = async (req,res) => {
+    let id = req.query.id;
+    try{
+        //let delUser = await executeQuery(` DELETE FROM tbl_user WHERE id = ?`, [id] )
+        let delUser = await executeQuery(" UPDATE `tbl_user` SET `status`='Deactive' WHERE id=?", [id] )
         res.status(200).json(delUser);
     }
     catch(err){
         res.status(500).json(err);
+        
     }
 }
-export { getAllUser,getUserById,AddUser,deleteUser }
+export { getAllUser,getUserById,UpdateUser,deleteUser }
