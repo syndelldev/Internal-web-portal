@@ -1,19 +1,20 @@
 import { useRef, useState } from "react";
 import { useRouter } from 'next/router'
 import { IoMdEye , IoMdEyeOff , IoMdArrowDropdown } from "react-icons/io";
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { server } from 'config';
-
+import 'react-phone-number-input/style.css'
+import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input'
   
 export default  function SignIn(){
-    const { register, watch, handleSubmit, formState: { errors }, setValue } = useForm({mode: "onBlur"}); 
+    const { register, watch, handleSubmit, formState: { errors }, setValue, control } = useForm({mode: "onBlur"}); 
     const router = useRouter();
 
     const [startDate, setStartDate] = useState();
     //console.log(startDate)
-
+    const [phonenum, setphonenum] = useState()
 
     //Password Hide & Show Toggle
     const [pwd, setPwd] = useState('');
@@ -29,13 +30,12 @@ export default  function SignIn(){
     const onSubmit= async(result) =>{
         //e.preventDefault();
         console.log(result);
-
-        //console.log(result.username);console.log(result.email);console.log(result.password);console.log(result.PhoneNum);console.log(result.start);console.log(result.department);
         console.log(startDate)
+
         const res = await fetch(`${server}/api/admin/signin/`,{
             method: "POST",
             headers: { "Content-Type": "application/json",},
-            body:JSON.stringify({username:result.username, password:result.password, email:result.email, PhoneNum:result.PhoneNum, dob:startDate, department:result.department, role:"User"}),
+            body:JSON.stringify({username:result.username, password:result.password, email:result.email, PhoneNum:result.PhoneNum, dob:startDate, department:result.department, position:result.position, role:"User", status:"Active"}),
         })
         const data=await res.json()
 
@@ -46,7 +46,7 @@ export default  function SignIn(){
         }
         else
         {
-            //alert("Fail")
+            alert("Fail")
         }
     }
     return(
@@ -62,20 +62,41 @@ export default  function SignIn(){
                                 <div className="error-msg">{errors.role && <p>{errors.role.message}</p>}</div>
                             </div>
                             <div className="form-group">
+                                <input type="hidden" className="form-control signup-input" name="status" value="Active" {...register('status',  { required: "Please enter your name", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
+                                <div className="error-msg">{errors.status && <p>{errors.status.message}</p>}</div>
+                            </div>
+
+                            <div className="form-group">
                                 <label htmlFor="username" className='form-label label' >Name</label>
-                                <input type="text" className="form-control signup-input" name="username" placeholder="Enter Your Name" {...register('username',  { required: "Please enter your name", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
+                                <input type="text" className="form-control signup-input" name="username" placeholder="enter your name" {...register('username',  { required: "Please enter your name", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
                                 <div className="error-msg">{errors.username && <p>{errors.username.message}</p>}</div>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="email" className='form-label label' >Email</label>
-                                <input type="text" className="form-control signup-input" name="email" placeholder="Enter Your Email" {...register('email', { required: 'Please enter your email', pattern: {value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, message: 'Please enter a valid email',},} )} />
+                                <input type="text" className="form-control signup-input" name="email" placeholder="email@syndelltech.in" {...register('email', { required: 'Please enter your email', pattern: {value: /^[a-z0-9]+(?!.*(?:\+{2,}|\-{2,}|\.{2,}))(?:[\.+\-]{0,1}[a-z0-9])*@syndelltech\.in$/ , message: 'Please enter a valid email',},} )} />
                                 <div className="error-msg">{errors.email && <p>{errors.email.message}</p>}</div>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="PhoneNum" className='form-label label' >Phone Number</label>
-                                <input type="text" className="form-control signup-input" name="PhoneNum" placeholder="Enter Your Phone Number" {...register('PhoneNum',  { required: "Please enter your phone number", minLength: {value: 10, message: "enter least 10 digits" }, maxLength: {value: 12, message: "phone number is too large" }, pattern: {value: /^[0-9]+$/ , message: 'Only Numbers allow', } })}  />
+                                {/*<input type="text" className="form-control signup-input" name="PhoneNum" placeholder="Enter Your Phone Number" {...register('PhoneNum',  { required: "Please enter your phone number", minLength: {value: 10, message: "enter least 10 digits" }, maxLength: {value: 12, message: "phone number is too large" }, pattern: {value: /^[0-9]+$/ , message: 'Only Numbers allow', } })}  />
+                                <div className="error-msg">{errors.PhoneNum && <p>{errors.PhoneNum.message}</p>}</div>*/}
+                                <Controller
+                                    name="PhoneNum"
+                                    control={control}
+                                    rules={{ required: true }}
+                                    render={({ field: { onChange, value } }) => (
+                                        <PhoneInput
+                                            className="form-control signup-input"
+                                            {...register('PhoneNum',  { required: "Please enter your phone number", message: 'Only Numbers allow', })} 
+                                            defaultCountry={"IN"}
+                                            maxLength={11}
+                                            placeholder="enter phone number"
+                                            value={phonenum}
+                                            onChange={setphonenum}
+                                        />
+                                    )}
+                                />
                                 <div className="error-msg">{errors.PhoneNum && <p>{errors.PhoneNum.message}</p>}</div>
-                                
                             </div>
                             <div className="form-group">
                                 <label htmlFor="dob" className='form-label label' >Date of Birth</label>
@@ -98,16 +119,16 @@ export default  function SignIn(){
 
                             <div className="form-group">
                                 <label htmlFor="password" className='form-label label' >Password</label>
-                                <input type={isRevealPwd ? 'text' : 'password'} name="password" placeholder="Enter Your Password" className="form-control signup-input" {...register('password', { required: "Please enter your password",minLength: {value: 8, message: "Password must have at least 8 characters" }, pattern: {value: /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/, message: 'must include lower, upper, number, and special chars',} })}  />
+                                <input type={isRevealPwd ? 'text' : 'password'} name="password" placeholder="enter your password" className="form-control signup-input" {...register('password', { required: "Please enter your password",minLength: {value: 8, message: "Password must have at least 8 characters" }, pattern: {value: /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/, message: 'must include lower, upper, number, and special chars',} })}  />
                                 <span className='icon-eyes' onClick={() => setIsRevealPwd((prevState) => !prevState)} >{isRevealPwd ? <IoMdEyeOff /> : <IoMdEye/>}</span>
                                 <div className="error-msg">{errors.password && <p>{errors.password.message}</p>}</div>
                             </div>
 
                             <div className="form-group">
                                 <label htmlFor="confirm-pwd" className='form-label label'>Confirm Password</label>
-                                <input type={isRevealconPwd ? 'text' : 'password'} className="form-control signup-input" placeholder="Please confirm your password" {...register('confirmPwd', {  validate: value =>value === password.current || "The passwords do not match" })}  />
+                                <input type={isRevealconPwd ? 'text' : 'password'} className="form-control signup-input" placeholder="confirm your password" {...register('confirmPwd', {  validate: value =>value === password.current || "The passwords do not match" })}  />
                                 <a><span className='icon-eyes' onClick={() => setIsRevealconPwd((prevState) => !prevState)}>{isRevealconPwd ? <IoMdEyeOff /> : <IoMdEye/>}</span></a>
-                                <div className="">{errors.confirmPwd && <p>{errors.confirmPwd.message}</p>}</div>
+                                <div className="error-msg">{errors.confirmPwd && <p>{errors.confirmPwd.message}</p>}</div>
                             </div>
 
                             <div className="form-group">
@@ -128,6 +149,19 @@ export default  function SignIn(){
                                 <span className='icon-eyes'><IoMdArrowDropdown /></span>
                                 <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>
                             </div>
+
+                            <div className="form-group">
+                                <label htmlFor="position" className='form-label label' >Position</label><br/>
+                                <select name="position" id="position" className="form-control signup-input" {...register('position', {required: "Please enter your department" ,message:'Please select atleast one option', })}>
+                                    <option value="">Select Your Position</option>
+                                    <option value="Senior">Senior</option>
+                                    <option value="Junior">Junior</option>
+                                    <option value="Team Lead">Team Lead</option>
+                                </select>
+                                <span className='icon-eyes'><IoMdArrowDropdown /></span>
+                                <div className="error-msg">{errors.position && <p>{errors.position.message}</p>}</div>
+                            </div>
+
 
                             <div className='login-btn'>
                                 <button type="submit" className="login-create-acc-btn" >Create Account</button>

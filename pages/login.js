@@ -129,7 +129,7 @@ return(
                                     <button type="submit" className="login-create-acc-btn">Login</button>  
                                 </div> 
                                 <div className='login-text'>
-                                    <p>Don&apos;t have an account? <a href='/signin'><span className='signup-text-login'>Sign In</span></a></p>
+                                    <p>Don&apos;t have an account? <a href='/signup'><span className='signup-text-login'>Sign Up</span></a></p>
                                 </div>
 
                             </div>
