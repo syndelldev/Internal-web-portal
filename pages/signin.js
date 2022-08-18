@@ -35,7 +35,7 @@ export default  function SignIn(){
         const res = await fetch(`${server}/api/admin/signin`,{
             method: "POST",
             headers: { "Content-Type": "application/json",},
-            body:JSON.stringify({username:result.username, password:result.password, email:result.email, PhoneNum:result.PhoneNum, dob:startDate, department:result.department}),
+            body:JSON.stringify({username:result.username, password:result.password, email:result.email, PhoneNum:result.PhoneNum, dob:startDate, department:result.department, role:"User"}),
         })
         const data=await res.json()
 
@@ -56,6 +56,11 @@ export default  function SignIn(){
                     <div className='login-div'>
                         <h2 className='login-title'>Automation Tool SignIn</h2>
                         <form method="POST" onSubmit={handleSubmit(onSubmit)} >
+
+                            <div className="form-group">
+                                <input type="text" className="form-control signup-input" name="role" placeholder="Enter Your Name" value="User" {...register('role',  { required: "Please enter your name", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
+                                <div className="error-msg">{errors.role && <p>{errors.role.message}</p>}</div>
+                            </div>
 
                             <div className="form-group">
                                 <label htmlFor="username" className='form-label label' >Name</label>
