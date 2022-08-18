@@ -128,7 +128,7 @@ export default  function SignIn(){
                                 <label htmlFor="confirm-pwd" className='form-label label'>Confirm Password</label>
                                 <input type={isRevealconPwd ? 'text' : 'password'} className="form-control signup-input" placeholder="confirm your password" {...register('confirmPwd', {  validate: value =>value === password.current || "The passwords do not match" })}  />
                                 <a><span className='icon-eyes' onClick={() => setIsRevealconPwd((prevState) => !prevState)}>{isRevealconPwd ? <IoMdEyeOff /> : <IoMdEye/>}</span></a>
-                                <div className="">{errors.confirmPwd && <p>{errors.confirmPwd.message}</p>}</div>
+                                <div className="error-msg">{errors.confirmPwd && <p>{errors.confirmPwd.message}</p>}</div>
                             </div>
 
                             <div className="form-group">
