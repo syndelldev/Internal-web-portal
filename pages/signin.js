@@ -35,7 +35,7 @@ export default  function SignIn(){
         const res = await fetch(`${server}/api/admin/signin/`,{
             method: "POST",
             headers: { "Content-Type": "application/json",},
-            body:JSON.stringify({username:result.username, password:result.password, email:result.email, PhoneNum:result.PhoneNum, dob:startDate, department:result.department}),
+            body:JSON.stringify({username:result.username, password:result.password, email:result.email, PhoneNum:result.PhoneNum, dob:startDate, department:result.department, role:"User"}),
         })
         const data=await res.json()
 
