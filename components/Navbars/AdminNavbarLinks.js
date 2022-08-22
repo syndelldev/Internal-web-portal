@@ -30,13 +30,14 @@ export default function AdminNavbarLinks() {
   const router = useRouter();
   const [cookies, setCookie, removeCookie ] = useCookies();
   const logoutfunc = () => {
-    removeCookie('name')
-    removeCookie('Email')
-    removeCookie('Mobile_num')
-    removeCookie('DOB')
-    removeCookie('Department')
-    removeCookie('Position')
-    removeCookie('Role')
+    removeCookie('name', { path:'/' } );
+    removeCookie('Email', { path:'/' } );
+    removeCookie('Mobile_num', { path:'/' } );
+    removeCookie('DOB', { path:'/' } );
+    removeCookie('Department', { path:'/' } );
+    removeCookie('Position', { path:'/' } );
+    removeCookie('Role', { path:'/' } );
+
     router.push("/login");
   }
   const size = useWindowSize();

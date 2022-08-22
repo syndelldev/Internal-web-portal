@@ -70,7 +70,6 @@ function Dashboard() {
   return (
     <>
       <div>
-        <button>view</button>
         <h1>Welcome {cookies.name} </h1>
       </div>
     </>

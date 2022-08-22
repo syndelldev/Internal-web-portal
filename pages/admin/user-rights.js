@@ -1,5 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
 import { IoMdArrowDropdown } from "react-icons/io";
+import { useState,useEffect } from "react";
 
 import Admin from "layouts/Admin.js";
 import GridItem from "components/Grid/GridItem.js";
@@ -7,12 +8,17 @@ import GridContainer from "components/Grid/GridContainer.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
+import Button from "components/CustomButtons/Button.js";
 
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableBody from "@material-ui/core/TableBody";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
+
+import { server } from 'config';
+
+import { DropdownButton, Dropdown } from "react-bootstrap";
 
 const styles = {
     cardCategoryWhite: {
@@ -33,9 +39,38 @@ const styles = {
     },
 };
 
-function UserRights(){
+export async function getServerSideProps(context){
+    const res = await fetch(`${server}/api/rights`)
+    const rights = await res.json()
+    
+  
+    return{ props: {rights} }
+} 
+
+function UserRights({rights}){
     const useStyles = makeStyles(styles);
     const classes = useStyles();
+
+    const [query, setQuery] = useState();
+    useEffect(() => {
+        query && console.log("fetch", `${server}/api/rights/${query}`);
+
+    }, [query]);
+
+    const AdminRights = async () => {
+        const req = await fetch(`http://localhost:3000/api/rights/1`);
+        const admin = await req.json();
+        console.log(admin)
+        //return { data: data.results };
+    };
+
+    const UserRights = async () => {
+        const req = await fetch(`http://localhost:3000/api/rights/2`);
+        const user = await req.json();
+        console.log(user)
+        //return { data: data.results };
+    };
+
     return(
         <>
             <GridContainer>
@@ -47,12 +82,15 @@ function UserRights(){
                         <CardBody>
                             <GridItem xs={12} sm={12} md={6}>
                                 <div className="form-group">
-                                    <select name="department" id="Department" className="form-control signup-input" >
-                                        <option value="" ></option>
+                                <DropdownButton id="dropdown-item-button" title="API Links"  onSelect={setQuery}>
+                                    <Dropdown.Item as="button" eventKey="1" onClick={AdminRights}>Admin</Dropdown.Item>
+                                    <Dropdown.Item as="button" eventKey="2" onClick={UserRights}>User</Dropdown.Item>
+                                </DropdownButton>
+                                    {/*<select name="department" id="Department" className="form-control signup-input" onClick={AdminRights}  >
                                         <option value="Admin">Admin</option>
-                                        <option value="User">User</option>
+                                        <option value="User" >User</option>
                                     </select>
-                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>*/}
                                 </div> 
                             </GridItem><br/><br/>
                             <div className={classes.tableResponsive}>
@@ -66,8 +104,31 @@ function UserRights(){
                                             <TableCell>Delete User</TableCell>
                                         </TableRow>
                                     </TableHead>
+                                    
                                     <TableBody>
-                                        <TableRow className={classes.tableHeadRow}>
+                                    {
+                                        rights.map((rights)=>{
+                                            return(
+                                                <TableRow key={rights.id}>
+                                                    <TableCell>{rights.id}</TableCell>
+                                                    <TableCell>
+                                                        <input type="checkbox"  value={rights.user_list} defaultChecked={rights.user_list === '1'} />{rights.user_list}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <input type="checkbox"  value={rights.add_user} defaultChecked={rights.add_user === '1'} />{rights.add_user}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <input type="checkbox"  value={rights.edit_user} defaultChecked={rights.edit_user === '1'} />{rights.edit_user}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <input type="checkbox"  value={rights.delete_user} defaultChecked={rights.delete_user === '1'} />{rights.delete_user}
+                                                    </TableCell>
+                                                </TableRow>
+                                                
+                                            )
+                                        })
+                                    }
+                                        {/*<TableRow className={classes.tableHeadRow}>
                                             <TableCell>Admin</TableCell>
                                             <TableCell>
                                                 <input type="checkbox" id="" name="" value=""/>
@@ -96,7 +157,7 @@ function UserRights(){
                                             <TableCell>
                                                 <input type="checkbox" id="" name="" value=""/>
                                             </TableCell>
-                                        </TableRow>
+                                        </TableRow>*/}
                                     </TableBody>
                                 </Table>
                             </div>

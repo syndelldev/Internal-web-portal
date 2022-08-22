@@ -54,7 +54,7 @@ function UserDetail({UserDetail}) {
     <div>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-        <Button><a href='/admin/adduser'>Add New User</a></Button>
+        <Button color="primary"><a href='/admin/adduser'>Add New User</a></Button>
           <Card>
             <CardHeader color="primary">
               <h4 className={classes.cardTitleWhite}>User Details</h4>
@@ -89,7 +89,19 @@ function UserDetail({UserDetail}) {
                       <TableCell>{user.mobile_no}</TableCell>
                       <TableCell>{user.department}</TableCell>
                       <TableCell>{user.position}</TableCell>
-                      <TableCell>{user.status}</TableCell>
+                      <TableCell>
+                        {/*{user.status}*/}
+                        <div>
+                        <label className="switch">
+                          
+                          <a href={`/admin/userdetail/`} onClick={()=>deleteUser(user.id)} >
+                            <input type="checkbox" defaultChecked />
+                            <span className="slider round" > 
+                          </span>
+                          </a>
+                        </label>
+                        </div>
+                      </TableCell>
                       <TableCell>{user.role}</TableCell>
                       <TableCell>{user.creation_time}</TableCell>
                       <TableCell>
