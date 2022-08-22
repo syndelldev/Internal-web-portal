@@ -38,18 +38,23 @@ const styles = {
 };
 
 export async function getServerSideProps(context){
-    const res = await fetch(`${server}/api/admin/rights`)
-    const UserDetail = await res.json()
-    console.log(UserDetail);
+    const res = await fetch(`${server}/api/rights`)
+    const rights = await res.json()
+    
   
-    return{ props: {UserDetail} }
+    return{ props: {rights} }
 } 
 
-function UserRights(){
+function UserRights({rights}){
     const useStyles = makeStyles(styles);
     const classes = useStyles();
 
+    //console.log(rights);
     
+    const UserRights = async() =>{
+        let rightsId = await axios.get(`http://localhost:3000/api/rights/2`)
+        console.log(rightsId)
+    }
     return(
         <>
             <GridContainer>
@@ -62,8 +67,8 @@ function UserRights(){
                             <GridItem xs={12} sm={12} md={6}>
                                 <div className="form-group">
                                     <select name="department" id="Department" className="form-control signup-input" >
-                                        <option value="Admin">Admin</option>
-                                        <option value="User">User</option>
+                                        <option value="Admin" >Admin</option>
+                                        <option value="User" onClick={()=>UserRights()}>User</option>
                                     </select>
                                     <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                                 </div> 
@@ -79,8 +84,31 @@ function UserRights(){
                                             <TableCell>Delete User</TableCell>
                                         </TableRow>
                                     </TableHead>
+                                    
                                     <TableBody>
-                                        <TableRow className={classes.tableHeadRow}>
+                                    {
+                                        rights.map((rights)=>{
+                                            return(
+                                                <TableRow key={rights.id}>
+                                                    <TableCell>{rights.id}</TableCell>
+                                                    <TableCell>
+                                                        <input type="checkbox"  value={rights.user_list} defaultChecked={rights.user_list === '1'} />{rights.user_list}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <input type="checkbox"  value={rights.add_user} defaultChecked={rights.add_user === '1'} />{rights.add_user}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <input type="checkbox"  value={rights.edit_user} defaultChecked={rights.edit_user === '1'} />{rights.edit_user}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <input type="checkbox"  value={rights.delete_user} defaultChecked={rights.delete_user === '1'} />{rights.delete_user}
+                                                    </TableCell>
+                                                </TableRow>
+                                                
+                                            )
+                                        })
+                                    }
+                                        {/*<TableRow className={classes.tableHeadRow}>
                                             <TableCell>Admin</TableCell>
                                             <TableCell>
                                                 <input type="checkbox" id="" name="" value=""/>
@@ -109,7 +137,7 @@ function UserRights(){
                                             <TableCell>
                                                 <input type="checkbox" id="" name="" value=""/>
                                             </TableCell>
-                                        </TableRow>
+                                        </TableRow>*/}
                                     </TableBody>
                                 </Table>
                             </div>
