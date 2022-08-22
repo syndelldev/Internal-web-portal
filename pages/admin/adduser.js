@@ -22,6 +22,7 @@ import { server } from 'config';
 import avatar from "assets/img/faces/marc.jpg";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import axios from "axios";
 
 const styles = {
   cardCategoryWhite: {
@@ -52,8 +53,13 @@ function AddUser() {
   const onSubmit = async (result) =>{
     
     console.log(result);
+    let addUser = axios.post(`${server}/api/admin/`, {
+      username:result.name, password:result.password, email:result.email, PhoneNum:result.mobile_num, DOB:startDate, department:result.department, position:result.position, status:result.status, role:result.role 
+    })
+    console.log(addUser)
+    router.push("/admin/userdetail");
     
-    const res = await fetch(`${server}/api/admin/adduser/`,{
+    /*const res = await fetch(`${server}/api/admin/adduser/`,{
       method: "POST",
       headers: { "Content-Type": "application/json",},
       body:JSON.stringify({username:result.name, password:result.password, email:result.email, PhoneNum:result.mobile_num, DOB:startDate, department:result.department, position:result.position, status:result.status, role:result.role }),
@@ -68,7 +74,7 @@ function AddUser() {
     else
     {
       //alert("Fail")
-    }
+    }*/
   }
   return (
     <div>
@@ -171,10 +177,22 @@ function AddUser() {
 
                       <GridContainer>
                         <GridItem xs={12} sm={12} md={12}>
-                          <div className="form-group">
+                          {/*<div className="form-group">
                             <input type="text" className="form-control signup-input" placeholder="Position" {...register('position',  { required: "Please enter your Position", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
                             <div className="error-msg">{errors.position && <p>{errors.position.message}</p>}</div>
-                          </div> 
+                          </div>*/} 
+
+                          <div className="form-group">
+                            <select name="position" id="position" className="form-control signup-input" {...register('position', {required: "Please enter your department" ,message:'Please select atleast one option', })}>
+                              <option value="">Select Your Position</option>
+                              <option value="Senior">Senior</option>
+                              <option value="Junior">Junior</option>
+                              <option value="Team Lead">Team Lead</option>
+                            </select>
+                            <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                            <div className="error-msg">{errors.position && <p>{errors.position.message}</p>}</div>
+                          </div>
+
                         </GridItem>
                       </GridContainer><br/>
                       

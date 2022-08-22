@@ -7,12 +7,16 @@ import GridContainer from "components/Grid/GridContainer.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
+import Button from "components/CustomButtons/Button.js";
 
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableBody from "@material-ui/core/TableBody";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
+
+import axios from "axios";
+import { server } from 'config';
 
 const styles = {
     cardCategoryWhite: {
@@ -33,9 +37,19 @@ const styles = {
     },
 };
 
+export async function getServerSideProps(context){
+    const res = await fetch(`${server}/api/admin/rights`)
+    const UserDetail = await res.json()
+    console.log(UserDetail);
+  
+    return{ props: {UserDetail} }
+} 
+
 function UserRights(){
     const useStyles = makeStyles(styles);
     const classes = useStyles();
+
+    
     return(
         <>
             <GridContainer>
@@ -48,7 +62,6 @@ function UserRights(){
                             <GridItem xs={12} sm={12} md={6}>
                                 <div className="form-group">
                                     <select name="department" id="Department" className="form-control signup-input" >
-                                        <option value="" ></option>
                                         <option value="Admin">Admin</option>
                                         <option value="User">User</option>
                                     </select>

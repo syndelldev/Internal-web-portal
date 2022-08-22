@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useRouter } from 'next/router'
 import { IoMdEye , IoMdEyeOff , IoMdArrowDropdown } from "react-icons/io";
 import { useForm, Controller } from 'react-hook-form';
@@ -7,13 +7,17 @@ import "react-datepicker/dist/react-datepicker.css";
 import { server } from 'config';
 import 'react-phone-number-input/style.css'
 import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input'
-  
+
+// import "react-modern-calendar-datepicker/lib/DatePicker.css";
+// import DatePicker from "react-modern-calendar-datepicker";
+
 export default  function SignIn(){
     const { register, watch, handleSubmit, formState: { errors }, setValue, control } = useForm({mode: "onBlur"}); 
     const router = useRouter();
 
+
     const [startDate, setStartDate] = useState();
-    //console.log(startDate)
+    console.log(startDate)
     const [phonenum, setphonenum] = useState()
 
     //Password Hide & Show Toggle
@@ -56,7 +60,7 @@ export default  function SignIn(){
                     <div className='login-div'>
                         <h2 className='login-title'>Automation Tool SignIn</h2>
                         <form method="POST" onSubmit={handleSubmit(onSubmit)} >
-
+                        
                             <div className="form-group">
                                 <input type="hidden" className="form-control signup-input" name="role" value="User" {...register('role',  { required: "Please enter your name", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
                                 <div className="error-msg">{errors.role && <p>{errors.role.message}</p>}</div>
@@ -112,7 +116,10 @@ export default  function SignIn(){
                                     }}
                                     dateFormat="MM-dd-yyyy"
                                 />
-                                <div className="error-msg">{errors.dob && <p>{errors.dob.message}</p>}</div>
+                                
+                            
+
+                                {/*<div className="error-msg">{errors.dob && <p>{errors.dob.message}</p>}</div>
                                 {/*<input type="text" className="form-control signup-input" name="dob" {...register('dob',  { required: "Please enter your DOB", pattern: {value: /^[0-9]+$/ , message: 'Only Numbers allow',} })}  />
                                 <div className="error-msg">{errors.dob && <p>{errors.dob.message}</p>}</div>*/}
                             </div>

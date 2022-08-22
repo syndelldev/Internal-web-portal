@@ -6,6 +6,8 @@ import { IoMdEye , IoMdEyeOff , IoMdMail } from "react-icons/io";
 import { server } from 'config';
 //import Cookies from 'js-cookie';
 import { useCookies } from 'react-cookie';
+
+
 export default function home()
 {
     //const { register,  watch, handleSubmit, formState: { errors }, control } = useForm(); 
@@ -59,23 +61,23 @@ export default function home()
             if(dbpass == password)
             {
                 if(role=='Admin'){
-                    setCookie('name', data[0].username);
-                    setCookie('Email', data[0].email);
-                    setCookie('Mobile_num', data[0].mobile_no);
-                    setCookie('DOB', data[0].dob);
-                    setCookie('Department', data[0].department);
-                    setCookie('Position', data[0].position);
-                    setCookie('Role', data[0].role);
+                    setCookie('name', data[0].username, { path:'/' , maxAge:3600, sameSite:true, });
+                    setCookie('Email', data[0].email, { path:'/' , maxAge:3600, sameSite:true, });
+                    setCookie('Mobile_num', data[0].mobile_no, { path:'/' , maxAge:3600, sameSite:true, });
+                    setCookie('DOB', data[0].dob, { path:'/' , maxAge:3600, sameSite:true, });
+                    setCookie('Department', data[0].department, { path:'/' , maxAge:3600, sameSite:true, });
+                    setCookie('Position', data[0].position, { path:'/' , maxAge:3600, sameSite:true, });
+                    setCookie('Role', data[0].role, { path:'/' , maxAge:3600, sameSite:true, });
                     router.push("/admin/dashboard");
                 }
                 else if(role=='User'){
-                    setCookie('name', data[0].username);
-                    setCookie('Email', data[0].email);
-                    setCookie('Mobile_num', data[0].mobile_no);
-                    setCookie('DOB', data[0].dob);
-                    setCookie('Department', data[0].department);
-                    setCookie('Position', data[0].position);
-                    setCookie('Role', data[0].role);
+                    setCookie('name', data[0].username, { path:'/' , maxAge:3600, sameSite:true, });
+                    setCookie('Email', data[0].email, { path:'/' , maxAge:3600, sameSite:true, });
+                    setCookie('Mobile_num', data[0].mobile_no, { path:'/' , maxAge:3600, sameSite:true, });
+                    setCookie('DOB', data[0].dob, { path:'/' , maxAge:3600, sameSite:true, });
+                    setCookie('Department', data[0].department, { path:'/' , maxAge:3600, sameSite:true, });
+                    setCookie('Position', data[0].position, { path:'/' , maxAge:3600, sameSite:true, });
+                    setCookie('Role', data[0].role, { path:'/' , maxAge:3600, sameSite:true, });
                     router.push("/user/dashboard");
                 }
                 //alert("Sucess")
