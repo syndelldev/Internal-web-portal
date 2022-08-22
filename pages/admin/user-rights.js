@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
 import { IoMdArrowDropdown } from "react-icons/io";
-import { useState,useEffect } from "react";
+import React,{ useState,useEffect } from "react";
 
 import Admin from "layouts/Admin.js";
 import GridItem from "components/Grid/GridItem.js";
@@ -16,6 +16,7 @@ import TableBody from "@material-ui/core/TableBody";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 
+import axios from "axios";
 import { server } from 'config';
 
 import { DropdownButton, Dropdown } from "react-bootstrap";
@@ -39,38 +40,23 @@ const styles = {
     },
 };
 
-export async function getServerSideProps(context){
-    const res = await fetch(`${server}/api/rights`)
-    const rights = await res.json()
-    
-  
-    return{ props: {rights} }
-} 
-
 function UserRights({rights}){
     const useStyles = makeStyles(styles);
     const classes = useStyles();
 
-    const [query, setQuery] = useState();
-    useEffect(() => {
-        query && console.log("fetch", `${server}/api/rights/${query}`);
+    const [query, setQuery] = useState(1);
+    const [admin,setadmin] =  useState([])
 
-    }, [query]);
-
-    const AdminRights = async () => {
-        const req = await fetch(`http://localhost:3000/api/rights/1`);
-        const admin = await req.json();
-        console.log(admin)
-        //return { data: data.results };
-    };
-
-    const UserRights = async () => {
-        const req = await fetch(`http://localhost:3000/api/rights/2`);
-        const user = await req.json();
-        console.log(user)
-        //return { data: data.results };
-    };
-
+    useEffect(()=>{
+        console.log(query);
+        axios.get(`${server}/api/rights/${query}`)
+        .then((res) =>{
+            setadmin(res.data);
+            //console.log(res.data);
+        })
+    },[query])
+    console.log(admin) 
+    
     return(
         <>
             <GridContainer>
@@ -82,15 +68,10 @@ function UserRights({rights}){
                         <CardBody>
                             <GridItem xs={12} sm={12} md={6}>
                                 <div className="form-group">
-                                <DropdownButton id="dropdown-item-button" title="API Links"  onSelect={setQuery}>
-                                    <Dropdown.Item as="button" eventKey="1" onClick={AdminRights}>Admin</Dropdown.Item>
-                                    <Dropdown.Item as="button" eventKey="2" onClick={UserRights}>User</Dropdown.Item>
+                                <DropdownButton id="dropdown-item-button" title="API Links" onSelect={setQuery} >{/*onSelect={setQuery}*/}
+                                    <Dropdown.Item as="button" eventKey="1" >Admin</Dropdown.Item>
+                                    <Dropdown.Item as="button" eventKey="2" >User</Dropdown.Item>
                                 </DropdownButton>
-                                    {/*<select name="department" id="Department" className="form-control signup-input" onClick={AdminRights}  >
-                                        <option value="Admin">Admin</option>
-                                        <option value="User" >User</option>
-                                    </select>
-                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>*/}
                                 </div> 
                             </GridItem><br/><br/>
                             <div className={classes.tableResponsive}>
@@ -107,57 +88,27 @@ function UserRights({rights}){
                                     
                                     <TableBody>
                                     {
-                                        rights.map((rights)=>{
+                                        admin.map((rights)=>{
                                             return(
                                                 <TableRow key={rights.id}>
-                                                    <TableCell>{rights.id}</TableCell>
+                                                    <TableCell>{rights.role}</TableCell>
                                                     <TableCell>
-                                                        <input type="checkbox"  value={rights.user_list} defaultChecked={rights.user_list === '1'} />{rights.user_list}
+                                                        <input type="checkbox"  value={rights.user_list} defaultChecked={rights.user_list === '1'} />
                                                     </TableCell>
                                                     <TableCell>
-                                                        <input type="checkbox"  value={rights.add_user} defaultChecked={rights.add_user === '1'} />{rights.add_user}
+                                                        <input type="checkbox"  value={rights.add_user} defaultChecked={rights.add_user === '1'} />
                                                     </TableCell>
                                                     <TableCell>
-                                                        <input type="checkbox"  value={rights.edit_user} defaultChecked={rights.edit_user === '1'} />{rights.edit_user}
+                                                        <input type="checkbox"  value={rights.edit_user} defaultChecked={rights.edit_user === '1'} />
                                                     </TableCell>
                                                     <TableCell>
-                                                        <input type="checkbox"  value={rights.delete_user} defaultChecked={rights.delete_user === '1'} />{rights.delete_user}
+                                                        <input type="checkbox"  value={rights.delete_user} defaultChecked={rights.delete_user === '1'} />
                                                     </TableCell>
                                                 </TableRow>
                                                 
                                             )
                                         })
                                     }
-                                        {/*<TableRow className={classes.tableHeadRow}>
-                                            <TableCell>Admin</TableCell>
-                                            <TableCell>
-                                                <input type="checkbox" id="" name="" value=""/>
-                                            </TableCell>
-                                            <TableCell>
-                                                <input type="checkbox" id="" name="" value=""/>
-                                            </TableCell>
-                                            <TableCell>
-                                                <input type="checkbox" id="" name="" value=""/>
-                                            </TableCell>
-                                            <TableCell>
-                                                <input type="checkbox" id="" name="" value=""/>
-                                            </TableCell>
-                                        </TableRow>
-                                        <TableRow className={classes.tableHeadRow}>
-                                            <TableCell>User</TableCell>
-                                            <TableCell>
-                                                <input type="checkbox" id="" name="" value=""/>
-                                            </TableCell>
-                                            <TableCell>
-                                                <input type="checkbox" id="" name="" value=""/>
-                                            </TableCell>
-                                            <TableCell>
-                                                <input type="checkbox" id="" name="" value=""/>
-                                            </TableCell>
-                                            <TableCell>
-                                                <input type="checkbox" id="" name="" value=""/>
-                                            </TableCell>
-                                        </TableRow>*/}
                                     </TableBody>
                                 </Table>
                             </div>
