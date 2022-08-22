@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { useRouter } from 'next/router'
 // @material-ui/core components
@@ -22,6 +22,8 @@ import { server } from 'config';
 import avatar from "assets/img/faces/marc.jpg";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Multiselect from 'multiselect-react-dropdown';
+
 
 const styles = {
   cardCategoryWhite: {
@@ -43,21 +45,15 @@ const styles = {
 };
 
 
-
-
-
-
- import Multiselect from 'multiselect-react-dropdown';
-
  export async function getServerSideProps(content){
   const res = await fetch(`${server}/api/admin`)
-  const Username = await res.json()
-  console.log(Username);
+  const User_name = await res.json();
+  console.log(User_name);
 
-  return{ props: {Username} }
-} 
+  return{ props: {User_name} }
+}
 
-function AddUser({ Username }) {
+function AddUser({ User_name }) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   const { register,  watch, handleSubmit, formState: { errors }, setValue } = useForm(); 
@@ -86,88 +82,22 @@ function AddUser({ Username }) {
     }
   }
 
-  // const options = {
-  //   options: [{cat: 'Group 1',key: 'Option 1'},{cat: 'Group 1',key: 'Option 2'}]
-  // };
+const [uoptions, setOptions] = useState([]);
 
-  function data(){
-  {Username.map((data) => {
+useEffect(() =>{
+  const u_data = async() =>{
 
-    const employee = data.username;
-    console.log(employee);
+    const getUsername = [];
 
-    const options = {
-      options: [{key: `${employee}`, value: 'option'}]
-    };
-    console.log(options.options);
+    User_name.map((user)=>{
+      getUsername.push( user.username );
+    });
+    setOptions(getUsername);
+    console.log(getUsername);
+  }
+  u_data();
+},[]);
 
-    return(
-      <>
-      <p>`{employee}`</p>
-      </>
-    )
-  })}}
-
-
-// console.log(`${Username.employee}`);
-
-  const options = {
-    options: [{cat: 'Group 1',key: 'Option 1'},{cat: 'Group 1',key: 'Option 2'}]
-  };
-
-
-  const Users = () => {
-    return (
-      <div className="users">
-        {Username.map((user) => (
-          <div>{user.username}</div>
-        ))}
-      </div>
-    );
-  };
-
-  const a1 = Users().props['children'];
-  console.log(a1);
-  console.log("a1");
-
-  const b1 = [a1][0];
-  console.log(b1);
-  console.log("b1");
-
-const a = Users().props['children'];
-  console.log(a);
-  console.log(Users());
-  console.log("a");
-const b = a[0].props['children'];
-  console.log(b);
-  console.log("b");
-
-  for (let i = 0; i < a.length; i++) {
-    const c = a[i].props['children'];
-    console.log(c);
-    console.log("b");
-    }
-  // const UserName = () => {
-  //   for (let i = 0; i < a.length; i++) {
-  //     const uName = [{key: a[i].props['children']}];
-  //     console.log(uName);
-  //     console.log('uName');
-  //     console.log('uName');
-  //   }
-  // }
-
-  console.log("UserName");
-  console.log("UserName");
-
-console.log(Users().props.children);
-console.log(b);
-console.log(b);
-console.log(Users().props['children']);
-
-  // const options = options: [{Username.map((user)=>{ 
-  //    {cat: 'Group 1',key: `${user.username}`},{cat: 'Group 1',key: 'Option 2'}
-  // })}]
-  
   return (
     <div>
       <GridContainer>
@@ -267,41 +197,15 @@ console.log(Users().props['children']);
                         <GridItem xs={12} sm={12} md={6}>
                           <div className="form-group">
 
-                          {/* {Username.map((user)=>{ <p>{user.username}</p>})} */}
-
-                          {/* {Username.map((data) => {
-
-                            const employee = data.username;
-                            console.log(employee);
-
-                            const options = {
-                              options: [{key: `${employee}`}]
-                            };
-                            console.log(options.options);
-                            })} */}
-
-                          {/* <Multiselect
-                              displayValue="key"
-                              onKeyPressFn={function noRefCheck(){}}
-                              onRemove={function noRefCheck(){}}
-                              onSearch={function noRefCheck(){}}
-                              onSelect={function noRefCheck(){}}
-                              options = {
-                                [{cat: 'Group 1',key: 'Option 1'},{cat: 'Group 1',key: 'Option 2'}]
-                              }
-                              showCheckbox>
-                              </Multiselect> */}
-
                           <Multiselect
-                              displayValue={b1.props}
+                              isObject= {false}
                               onKeyPressFn={function noRefCheck(){}}
                               onRemove={function noRefCheck(){}}
                               onSearch={function noRefCheck(){}}
                               onSelect={function noRefCheck(){}}
-                              options= {
-                                [{cat: 'Group 1',key: `${b1}`}]
+                              options= {uoptions
                               }
-                              placeholder="Select Employee"
+                              placeholder="Select Developer"
                               showCheckbox
                             />
 
