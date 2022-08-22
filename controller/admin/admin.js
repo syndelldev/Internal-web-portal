@@ -22,7 +22,7 @@ const getUserById = async (req,res) => {
 }
 
 const AddUser = async (req,res) =>{
-    console.log(req.body)
+    console.log(req.body.PhoneNum)
     try{
         var createUser = await executeQuery("INSERT INTO `tbl_user` ( `username`, `password`, `email`, `mobile_no`, `dob`, `department`,`position`,`status`,`role` ) VALUES (?,?,?,?,?,?,?,?,? )", 
             [req.body.username, req.body.password, req.body.email, req.body.PhoneNum, req.body.DOB, req.body.department, req.body.position, req.body.status,  req.body.role ] );

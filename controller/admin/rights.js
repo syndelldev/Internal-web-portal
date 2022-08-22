@@ -22,4 +22,20 @@ const rightsById = async (req,res) => {
     }
 }
 
-export { rights,rightsById }
+const UpdateUserRights = async (req,res) =>{
+    let id = req.query.id;
+    console.log(id)
+
+    console.log(req.body)
+
+    try{
+        let UpdataUser = await executeQuery(" UPDATE tbl_rights SET ? WHERE id = ? ", [req.body, id])
+        res.status(200).json(UpdataUser);
+        console.log(UpdataUser)
+    }
+    catch(err){
+        console.log(err)
+    }
+}
+
+export { rights,rightsById,UpdateUserRights }

@@ -104,8 +104,7 @@ function UserRights({rights}){
                                                     <TableCell>
                                                         <input type="checkbox"  value={rights.delete_user} defaultChecked={rights.delete_user === '1'} />
                                                     </TableCell>
-                                                </TableRow>
-                                                
+                                                </TableRow>    
                                             )
                                         })
                                     }
