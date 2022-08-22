@@ -1,5 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
 import { IoMdArrowDropdown } from "react-icons/io";
+import { useState,useEffect } from "react";
 
 import Admin from "layouts/Admin.js";
 import GridItem from "components/Grid/GridItem.js";
@@ -15,8 +16,9 @@ import TableBody from "@material-ui/core/TableBody";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 
-import axios from "axios";
 import { server } from 'config';
+
+import { DropdownButton, Dropdown } from "react-bootstrap";
 
 const styles = {
     cardCategoryWhite: {
@@ -49,12 +51,26 @@ function UserRights({rights}){
     const useStyles = makeStyles(styles);
     const classes = useStyles();
 
-    //console.log(rights);
-    
-    const UserRights = async() =>{
-        let rightsId = await axios.get(`http://localhost:3000/api/rights/2`)
-        console.log(rightsId)
-    }
+    const [query, setQuery] = useState();
+    useEffect(() => {
+        query && console.log("fetch", `${server}/api/rights/${query}`);
+
+    }, [query]);
+
+    const AdminRights = async () => {
+        const req = await fetch(`http://localhost:3000/api/rights/1`);
+        const admin = await req.json();
+        console.log(admin)
+        //return { data: data.results };
+    };
+
+    const UserRights = async () => {
+        const req = await fetch(`http://localhost:3000/api/rights/2`);
+        const user = await req.json();
+        console.log(user)
+        //return { data: data.results };
+    };
+
     return(
         <>
             <GridContainer>
@@ -66,11 +82,15 @@ function UserRights({rights}){
                         <CardBody>
                             <GridItem xs={12} sm={12} md={6}>
                                 <div className="form-group">
-                                    <select name="department" id="Department" className="form-control signup-input" >
-                                        <option value="Admin" >Admin</option>
-                                        <option value="User" onClick={()=>UserRights()}>User</option>
+                                <DropdownButton id="dropdown-item-button" title="API Links"  onSelect={setQuery}>
+                                    <Dropdown.Item as="button" eventKey="1" onClick={AdminRights}>Admin</Dropdown.Item>
+                                    <Dropdown.Item as="button" eventKey="2" onClick={UserRights}>User</Dropdown.Item>
+                                </DropdownButton>
+                                    {/*<select name="department" id="Department" className="form-control signup-input" onClick={AdminRights}  >
+                                        <option value="Admin">Admin</option>
+                                        <option value="User" >User</option>
                                     </select>
-                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>*/}
                                 </div> 
                             </GridItem><br/><br/>
                             <div className={classes.tableResponsive}>

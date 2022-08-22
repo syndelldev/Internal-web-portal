@@ -36,6 +36,7 @@
     "perfect-scrollbar": "1.5.0",
     "prop-types": "15.7.2",
     "react": "17.0.1",
+    "react-bootstrap": "^2.5.0",
     "react-calendar": "^3.7.0",
     "react-chartist": "0.14.3",
     "react-cookie": "^4.1.1",
