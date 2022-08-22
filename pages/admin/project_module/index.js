@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { useRouter } from 'next/router'
 // @material-ui/core components
@@ -22,6 +22,8 @@ import { server } from 'config';
 import avatar from "assets/img/faces/marc.jpg";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Multiselect from 'multiselect-react-dropdown';
+
 
 const styles = {
   cardCategoryWhite: {
@@ -43,21 +45,15 @@ const styles = {
 };
 
 
-
-
-
-
- import Multiselect from 'multiselect-react-dropdown';
-
- export async function getServerSideProps(content){
+ export async function getServerSideProps(){
   const res = await fetch(`${server}/api/admin`)
-  const Username = await res.json()
-  console.log(Username);
+  const User_name = await res.json();
+  // console.log(User_name);
 
-  return{ props: {Username} }
-} 
+  return{ props: {User_name} }
+}
 
-function AddUser({ Username }) {
+function AddUser({ User_name }) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   const { register,  watch, handleSubmit, formState: { errors }, setValue } = useForm(); 
@@ -68,17 +64,17 @@ function AddUser({ Username }) {
     
     console.log(result);
     
-    const res = await fetch(`${server}/api/admin/`,{
+    const res = await fetch(`${server}/api/project/addproject`,{
       method: "POST",
       headers: { "Content-Type": "application/json",},
-      body:JSON.stringify({username:result.name, password:result.password, email:result.email, PhoneNum:result.mobile_num, DOB:startDate, department:result.department, position:result.position, status:result.status, role:result.role }),
+      body:JSON.stringify({project_title:result.project_title, project_description:result.project_description, project_language:result.project_language, project_created_by:result.project_created_by, project_comment:result.project_comment, project_priority:result.project_priority, project_person:result.project_person }),
     })
     const data=await res.json()
     console.log(data)
     if(res.status==200)
     {
-      //alert("sucess")
-      router.push("/admin/userdetail");
+      alert("success");
+      // router.push("/admin/userdetail");
     }
     else
     {
@@ -86,88 +82,22 @@ function AddUser({ Username }) {
     }
   }
 
-  // const options = {
-  //   options: [{cat: 'Group 1',key: 'Option 1'},{cat: 'Group 1',key: 'Option 2'}]
-  // };
+const [uoptions, setOptions] = useState([]);
 
-  function data(){
-  {Username.map((data) => {
+useEffect(() =>{
+  const u_data = async() =>{
 
-    const employee = data.username;
-    console.log(employee);
+    const getUsername = [];
 
-    const options = {
-      options: [{key: `${employee}`, value: 'option'}]
-    };
-    console.log(options.options);
+    User_name.map((user)=>{
+      getUsername.push( user.username );
+    });
+    setOptions(getUsername);
+    console.log(getUsername);
+  }
+  u_data();
+},[]);
 
-    return(
-      <>
-      <p>`{employee}`</p>
-      </>
-    )
-  })}}
-
-
-// console.log(`${Username.employee}`);
-
-  const options = {
-    options: [{cat: 'Group 1',key: 'Option 1'},{cat: 'Group 1',key: 'Option 2'}]
-  };
-
-
-  const Users = () => {
-    return (
-      <div className="users">
-        {Username.map((user) => (
-          <div>{user.username}</div>
-        ))}
-      </div>
-    );
-  };
-
-  const a1 = Users().props['children'];
-  console.log(a1);
-  console.log("a1");
-
-  const b1 = [a1][0];
-  console.log(b1);
-  console.log("b1");
-
-const a = Users().props['children'];
-  console.log(a);
-  console.log(Users());
-  console.log("a");
-const b = a[0].props['children'];
-  console.log(b);
-  console.log("b");
-
-  for (let i = 0; i < a.length; i++) {
-    const c = a[i].props['children'];
-    console.log(c);
-    console.log("b");
-    }
-  // const UserName = () => {
-  //   for (let i = 0; i < a.length; i++) {
-  //     const uName = [{key: a[i].props['children']}];
-  //     console.log(uName);
-  //     console.log('uName');
-  //     console.log('uName');
-  //   }
-  // }
-
-  console.log("UserName");
-  console.log("UserName");
-
-console.log(Users().props.children);
-console.log(b);
-console.log(b);
-console.log(Users().props['children']);
-
-  // const options = options: [{Username.map((user)=>{ 
-  //    {cat: 'Group 1',key: `${user.username}`},{cat: 'Group 1',key: 'Option 2'}
-  // })}]
-  
   return (
     <div>
       <GridContainer>
@@ -176,7 +106,7 @@ console.log(Users().props['children']);
             <Card>
                 <CardHeader color="primary">
                     <h4 className={classes.cardTitleWhite}>Create Project</h4>
-                    <p className={classes.cardCategoryWhite}>Your new project details</p>
+                    <p className={classes.cardCategoryWhite}>Enter your new project details</p>
                 </CardHeader>
                   <CardBody><br/>
                     <GridContainer>
@@ -195,7 +125,7 @@ console.log(Users().props['children']);
 
                         <GridItem xs={12} sm={12} md={12}>                      
                           <div className="form-group">
-                            <input type="text" className="form-control signup-input" placeholder="Project Title" {...register('name',  { required: "Please enter project title", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
+                            <input type="text" className="form-control signup-input" placeholder="Project Title" {...register('project_title',  { required: "Please enter project title", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
                             <div className="error-msg">{errors.name && <p>{errors.name.message}</p>}</div>
                           </div> 
                           <div className="error-msg">{errors.username && <p>{errors.username.message}</p>}</div>
@@ -205,7 +135,7 @@ console.log(Users().props['children']);
                       <GridContainer>  
                         <GridItem xs={12} sm={12} md={12}>
                           <div className="form-group">
-                            <input type="text" className="form-control signup-input" placeholder="Project Description" {...register('email', { required: 'Description is required', pattern: {value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, message: 'Please enter a valid email',},} )}  />
+                            <input type="text" className="form-control signup-input" placeholder="Project Description" {...register('project_description', { required: 'Description is required', } )}  />
                             <div className="error-msg">{errors.email && <p>{errors.email.message}</p>}</div>
                           </div> 
                         </GridItem>
@@ -214,7 +144,7 @@ console.log(Users().props['children']);
                       <GridContainer>  
                         <GridItem xs={12} sm={12} md={6}>
                           <div className="form-group">
-                            <input type="password" className="form-control signup-input" placeholder="Language" {...register('password', { required: "You must specify language", })}  />
+                            <input type="text" className="form-control signup-input" placeholder="Language" {...register('project_language', { required: "You must specify language", })}  />
                             <div className="error-msg">{errors.password && <p>{errors.password.message}</p>}</div>
                           </div> 
                         </GridItem>
@@ -222,7 +152,7 @@ console.log(Users().props['children']);
                           <div className="form-group">
                             {/*<input type="text" className="form-control signup-input" placeholder="Department" {...register('department',  { required: "Please enter your Department", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
                             <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>*/}
-                            <select name="Department" id="Department" className="form-control signup-input" {...register('department', {required:true ,message:'Please select atleast one option', })}>
+                            <select name="Project_created_by" id="Project_created_by" className="form-control signup-input" {...register('project_created_by', {required:true ,message:'Please select atleast one option', })}>
                               <option value="">Created by</option>
                               <option value="HR">HR</option>
                               <option value="UI & UX">UI & UX</option>
@@ -242,7 +172,7 @@ console.log(Users().props['children']);
                       <GridContainer>
                         <GridItem xs={12} sm={12} md={12}>
                           <div className="form-group">
-                            <input type="text" className="form-control signup-input" placeholder="Comment" {...register('position',  { required: "Please enter your Position", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
+                            <input type="text" className="form-control signup-input" placeholder="Comment" {...register('project_comment')} />
                             <div className="error-msg">{errors.position && <p>{errors.position.message}</p>}</div>
                           </div> 
                         </GridItem>
@@ -253,7 +183,7 @@ console.log(Users().props['children']);
                           <div className="form-group">
                             {/*<input type="text" className="form-control signup-input" placeholder="Status" {...register('status',  { required: "Please enter your Status", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
                             <div className="error-msg">{errors.status && <p>{errors.status.message}</p>}</div>*/}
-                            <select name="Status" id="Status" className="form-control signup-input" {...register('status', {required:true ,message:'Please select atleast one option', })}>
+                            <select name="Status" id="Status" className="form-control signup-input" {...register('project_priority', {required:true ,message:'Please select atleast one option', })}>
                               <option value="Select...">Select Project Priority</option>
                               <option value="High">High</option>
                               <option value="Medium">Medium</option>
@@ -267,41 +197,17 @@ console.log(Users().props['children']);
                         <GridItem xs={12} sm={12} md={6}>
                           <div className="form-group">
 
-                          {/* {Username.map((user)=>{ <p>{user.username}</p>})} */}
-
-                          {/* {Username.map((data) => {
-
-                            const employee = data.username;
-                            console.log(employee);
-
-                            const options = {
-                              options: [{key: `${employee}`}]
-                            };
-                            console.log(options.options);
-                            })} */}
-
-                          {/* <Multiselect
-                              displayValue="key"
-                              onKeyPressFn={function noRefCheck(){}}
-                              onRemove={function noRefCheck(){}}
-                              onSearch={function noRefCheck(){}}
-                              onSelect={function noRefCheck(){}}
-                              options = {
-                                [{cat: 'Group 1',key: 'Option 1'},{cat: 'Group 1',key: 'Option 2'}]
-                              }
-                              showCheckbox>
-                              </Multiselect> */}
+                          {console.log("uoptions")}
 
                           <Multiselect
-                              displayValue={b1.props}
+                              isObject= {false}
                               onKeyPressFn={function noRefCheck(){}}
                               onRemove={function noRefCheck(){}}
                               onSearch={function noRefCheck(){}}
                               onSelect={function noRefCheck(){}}
-                              options= {
-                                [{cat: 'Group 1',key: `${b1}`}]
-                              }
-                              placeholder="Select Employee"
+                              options={ uoptions }
+                              {...register('project_person')}
+                              placeholder="Select Developer"
                               showCheckbox
                             />
 
