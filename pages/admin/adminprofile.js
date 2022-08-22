@@ -8,6 +8,15 @@ import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import { useCookies } from 'react-cookie';
 
+import { server } from 'config';
+
+export async function getServerSideProps(context){
+    const res = await fetch(`${server}/api/admin/adminprofile`)
+    const AdminProfile = await res.json()
+    console.log(AdminProfile);
+  
+    return{ props: {AdminProfile} }
+}
 const styles = {
     typo: {
       paddingLeft: "25%",
@@ -45,9 +54,10 @@ const styles = {
     },
 };
 
-function AdminProfile(){  
+function AdminProfile({AdminProfile}){  
     const [cookies, setCookie] = useCookies(['name']);
-    console.log(cookies)
+    const admin =  AdminProfile[0];
+    console.log(admin)
     
     const useStyles = makeStyles(styles);
     const classes = useStyles();
@@ -64,27 +74,37 @@ function AdminProfile(){
                     <CardBody><br/>
                         <div className={classes.typo}>
                             <div className={classes.note}>Username</div>
-                            <h5>{cookies.name}</h5>
+                            {/*<h5>{cookies.name}</h5>*/}
+                            <h5>{admin.username}</h5>
                         </div>
                         <div className={classes.typo}>
                             <div className={classes.note}>Position</div>
-                            <h5>{cookies.Position}</h5>
+                            {/*<h5>{cookies.Position}</h5>*/}
+                            <h5>{admin.position}</h5>
                         </div>
                         <div className={classes.typo}>
                             <div className={classes.note}>Department</div>
-                            <h5>{cookies.Department}</h5>
+                            {/*<h5>{cookies.Department}</h5>*/}
+                            <h5>{admin.department}</h5>
                         </div>
                         <div className={classes.typo}>
                             <div className={classes.note}>Email</div>
-                            <h5>{cookies.Email}</h5>
+                            {/*<h5>{cookies.Email}</h5>*/}
+                            <h5>{admin.email}</h5>
                         </div>
                         <div className={classes.typo}>
                             <div className={classes.note}>Mobile No.</div>
-                            <h5>{cookies.Mobile_num}</h5>
+                            {/*<h5>{cookies.Mobile_num}</h5>*/}
+                            <h5>{admin.mobile_no}</h5>
                         </div>
                         <div className={classes.typo}>
                             <div className={classes.note}>Date of Birth</div>
-                            <h5>{cookies.DOB}</h5>
+                            {/*<h5>{cookies.DOB}</h5>*/}
+                            <h5>{admin.dob}</h5>
+                        </div>
+                        <div className={classes.typo}>
+                            <div className={classes.note}>Role</div>
+                            <h5>{admin.role}</h5>
                         </div>
                     </CardBody>
                 </Card>

@@ -1,4 +1,3 @@
-//import pool from "../../config/db";
 import { executeQuery } from "../../config/db";
 
 const getAllUser = async (req,res) =>{
@@ -23,9 +22,10 @@ const getUserById = async (req,res) => {
 }
 
 const AddUser = async (req,res) =>{
-    let id = req.query.id;
+    console.log(req.body)
     try{
-        let createUser = await executeQuery(" INSERT INTO `tbl_user`( `username`, `password`, `mobile_no`, `department`, `position`, `status`, `role`, `creation_time`) VALUES (?,?,?,?,?,?,?,?) ")
+        var createUser = await executeQuery("INSERT INTO `tbl_user` ( `username`, `password`, `email`, `mobile_no`, `dob`, `department`,`position`,`status`,`role` ) VALUES (?,?,?,?,?,?,?,?,? )", 
+            [req.body.username, req.body.password, req.body.email, req.body.PhoneNum, req.body.DOB, req.body.department, req.body.position, req.body.status,  req.body.role ] );
         res.status(200).json(createUser);
     }
     catch(err){
@@ -58,8 +58,18 @@ const deleteUser = async (req,res) => {
         res.status(200).json(delUser);
     }
     catch(err){
-        res.status(500).json(err);
-        
+        res.status(500).json(err);    
     }
 }
-export { getAllUser,getUserById,UpdateUser,deleteUser }
+
+const adminProfile = async (req, res) => {
+    try{
+        let AdminData=await executeQuery(" SELECT * FROM `tbl_user` where role='Admin' ", [] );
+        res.send(AdminData);
+    }
+    catch(err){
+        res.status(500).json(err);
+    }
+}
+
+export { getAllUser,getUserById,UpdateUser,deleteUser, adminProfile,AddUser }
