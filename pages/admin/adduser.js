@@ -60,10 +60,27 @@ function AddUser() {
     
     console.log(result);
     let addUser = axios.post(`${server}/api/admin/`, {
-      username:result.name, password:result.password, email:result.email, PhoneNum:result.mobile_num, DOB:startDate, department:result.department, position:result.position, status:result.status, role:result.role 
+      role_id:result.role_id, username:result.name, password:result.password, email:result.email, PhoneNum:result.PhoneNum, DOB:startDate, department:result.department, position:result.position, status:result.status, role:result.role 
     })
     console.log(addUser)
     router.push("/admin/userdetail");
+
+    // const res = await fetch(`${server}/api/admin/adduser/`,{
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json",},
+    //   body:JSON.stringify({role_id:result.role_id, username:result.name, password:result.password, email:result.email, PhoneNum:result.PhoneNum, DOB:startDate, department:result.department, position:result.position, status:result.status, role:result.role }),
+    // })
+    // const data=await res.json()
+    // console.log(data)
+    // if(res.status==200)
+    // {
+    //   //alert("sucess")
+    //   router.push("/admin/userdetail");
+    // }
+    // else
+    // {
+    //   //alert("Fail")
+    // }
     
   }
   return (
@@ -77,6 +94,14 @@ function AddUser() {
                     <p className={classes.cardCategoryWhite}>Complete your profile</p>
                 </CardHeader>
                   <CardBody><br/>
+                    <GridContainer>  
+                        <GridItem xs={12} sm={12} md={12}>
+                          <div className="form-group">
+                            <input type="text" className="form-control signup-input" placeholder="role_id" value={2} {...register('role_id', { required: 'Please enter your role_id'} )} />
+                            <div className="error-msg">{errors.role_id && <p>{errors.role_id.message}</p>}</div>
+                          </div> 
+                        </GridItem>
+                      </GridContainer><br/>
                     <GridContainer>
                         {/*<GridItem xs={12} sm={12} md={5}>
                         <CustomInput

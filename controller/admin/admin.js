@@ -2,7 +2,7 @@ import { executeQuery } from "../../config/db";
 
 const getAllUser = async (req,res) =>{
     try{
-        let userData=await executeQuery(" SELECT * FROM `tbl_user` where status='Active' ", [] );
+        let userData=await executeQuery(" SELECT * FROM `tbl_user` ", [] );
         res.send(userData);
     }
     catch(err){
@@ -22,11 +22,26 @@ const getUserById = async (req,res) => {
 }
 
 const AddUser = async (req,res) =>{
+    console.log(req.body)
+    console.log(req.body.role_id)
     console.log(req.body.username)
+    console.log(req.body.password)
+    console.log(req.body.email)
+    console.log(req.body.mobile_num)
+    console.log(req.body.DOB)
+    console.log(req.body.department)
+    console.log(req.body.position)
+    console.log(req.body.status)
+    console.log(req.body.role)
     try{
-        var createUser = await executeQuery("INSERT INTO `tbl_user` ( `username`, `password`, `email`, `mobile_no`, `dob`, `department`,`position`,`status`,`role` ) VALUES (?,?,?,?,?,?,?,?,? )", 
-            [req.body.username, req.body.password, req.body.email, req.body.PhoneNum, req.body.DOB, req.body.department, req.body.position, req.body.status,  req.body.role ] );
-        res.status(200).json(createUser);
+        //var createUser = await executeQuery("INSERT INTO `tbl_user` ( `username`, `password`, `email`, `mobile_no`, `dob`, `department`,`position`,`status`,`role` ) VALUES (?,?,?,?,?,?,?,?,? )", 
+            //[req.body.username, req.body.password, req.body.email, req.body.PhoneNum, req.body.DOB, req.body.department, req.body.position, req.body.status,  req.body.role ] );
+        var createUser = await executeQuery("INSERT INTO `tbl_user`( `role_id`, `username`, `password`, `email`, `mobile_no`, `dob`, `department`, `position`, `status`, `role`) VALUES (?,?,?,?,?,?,?,?,?,?)",
+        [req.body.role_id, req.body.username, req.body.password, req.body.email, req.body.PhoneNum, req.body.DOB, req.body.department, req.body.position, req.body.status,  req.body.role ])
+        
+        res.status(201).json(createUser);
+
+        console.log(createUser)
     }
     catch(err){
         res.status(500).json(err);
@@ -52,9 +67,12 @@ const UpdateUser = async (req,res) =>{
 
 const deleteUser = async (req,res) => {
     let id = req.query.id;
+    //let value = req.body.value;
+    console.log(req.body.value)
     try{
         //let delUser = await executeQuery(` DELETE FROM tbl_user WHERE id = ?`, [id] )
-        let delUser = await executeQuery(" UPDATE `tbl_user` SET `status`='Deactive' WHERE id=?", [id] )
+        //let delUser = await executeQuery(" UPDATE `tbl_user` SET `status`='Deactive' WHERE id=?", [id] )
+        let delUser = await executeQuery("UPDATE `tbl_user` SET `status`=? WHERE id=?", [id] )
         res.status(200).json(delUser);
     }
     catch(err){
