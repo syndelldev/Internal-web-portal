@@ -37,11 +37,28 @@ export async function getServerSideProps(context){
 } 
 
 function UserDetail({UserDetail}) {
-  //console.log(UserDetail)
 
-  const [ value, setvalue ] = useState('Deactive')
 
-  const toggleChange = async(id) => {
+  const [value, setvalue] = useState('Active');
+
+  const toggleChange = () => {
+    // if(value==='Active'){
+    //   setvalue('Deactive')
+    // }
+    // else if(value==='Deactive'){
+    //   setvalue('Active')
+    // }
+   
+  }
+
+  const deleteUser = async(id) =>{
+
+    let delUser = await axios.put(`http://localhost:3000/api/admin/${id}`,{status:value})
+    router.push("/admin/userdetail");
+  
+    //console.log(delUser);
+    console.log(value)
+
     if(value==='Active'){
       setvalue('Deactive')
     }
@@ -49,19 +66,11 @@ function UserDetail({UserDetail}) {
       setvalue('Active')
     }
    
-  }
-  //console.log(value)
-
-  const deleteUser = async(id) =>{
-
-    let delUser = await axios.delete(`http://localhost:3000/api/admin/${id}`,value)
-    router.push("/admin/userdetail");
 
   }
-  //console.log(value)
 
   const onSubmit = async(data) =>{
-    console.log(data);
+    //console.log(data);
   }
   const router = useRouter();
   const useStyles = makeStyles(styles);
@@ -106,32 +115,29 @@ function UserDetail({UserDetail}) {
                       <TableCell>{user.department}</TableCell>
                       <TableCell>{user.position}</TableCell>
                       <TableCell>
-                        
-                        {value}
+                      <div>
                         <label className="switch">
-                          <a onClick={()=>deleteUser(user.id)} >
-                            <input type="checkbox" onChange={toggleChange} />
+                          <a  >
+                            <input type="checkbox" name="status" value={user.status} defaultChecked={user.status === 'Active'}  onClick={()=>deleteUser(user.id)} />
                             <span className="slider round" ></span>
                           </a> 
                         </label>
-
-
-                        <div>
-                        <label className="switch">
-                          
-                          {/*<a href={`/admin/userdetail/`} onClick={()=>deleteUser(user.id)} >
+                      </div>
+                        {/*<label className="switch">
+                          <a href={`/admin/userdetail/`} onClick={()=>deleteUser(user.id)} >
                             <input type="checkbox" value={user.status} defaultChecked={user.status === 'Active'  } onChange={toggleChange} />
                             <span className="slider round" > 
                           </span>
-                          </a>*/}
-                        </label>
-                      </div>
+                          </a>
+                        </label>*/}
+                      
                       </TableCell>
                       <TableCell>{user.role}</TableCell>
                       <TableCell>{user.creation_time}</TableCell>
                       <TableCell>
                         <a href={`/admin/userdetail/${user.id}`}>Edit</a>&nbsp;&nbsp;&nbsp;
-                        <a href={`/admin/userdetail/`} onClick={()=>deleteUser(user.id)}>Delete</a>
+                        <a href={`/admin/userdetail/`} onClick={()=>deleteUser(user.id)}>Delete</a>&nbsp;&nbsp;&nbsp;
+                        <a href={`/admin/viewuser/${user.id}`}>View</a>
                       </TableCell>
                     </TableRow>
                   )

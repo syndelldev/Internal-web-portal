@@ -43,7 +43,7 @@ const styles = {
 
 export async function getServerSideProps(context){
     const id = context.params.userdetailid;
-    const res = await fetch(`http://localhost:3000/api/admin/${id}`)
+    const res = await fetch(`${server}/api/admin/${id}`)
     const data = await res.json()
     //console.log(data)
 
