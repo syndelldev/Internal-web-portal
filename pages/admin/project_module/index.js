@@ -46,44 +46,90 @@ const styles = {
 
 
 export async function getServerSideProps(){
-  const res = await fetch(`${server}/api/project`)
+  const res = await fetch(`${server}/api/project`);
   const project_details = await res.json();
   // console.log(project_details);
 
   return{ props: {project_details} }
 }
 
+const onSubmit = async () =>{
+    
+  //console.log(result);
+  
+  const res = await fetch(`${server}/api/project/delete_project_api`,{
+    method: "GET",
+    headers: { "Content-Type": "application/json",},
+    // body:JSON.stringify({project_person:allSelectedUser, project_title:result.project_title, project_description:result.project_description, project_language:result.project_language, project_comment:result.project_comment, project_priority:result.project_priority }),
+  })
+  const data=await res.json();
+  console.log(data)
+  if(res.status==200)
+  {
+    alert("success");
+    // router.push("/admin/userdetail");
+  }
+  else
+  {
+    alert("Fail");
+  }
+}
+
+
 function AddUser({ project_details }) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
 
   return (
-    <div>
+    <>
+      <Button type="submit" ><a href='/admin/project_module/create_project'  color="primary">Create Project</a></Button>
+
+    {project_details.map((project)=>{
+    return(<>
+
       <GridContainer>
-        <GridItem xs={12} sm={12} md={8}>
-            <form>
+        <GridItem xs={12} sm={12} md={6}>
+            <form onSubmit={onSubmit}>
             <Card>
                 <CardHeader color="primary">
-                    <h4 className={classes.cardTitleWhite}>Projects</h4>
-                    {/* <p className={classes.cardCategoryWhite}>Enter your new project details</p> */}
+                    <h4 className={classes.cardTitleWhite}>Project</h4>
+                    <p className={classes.cardCategoryWhite}>{project.project_title}</p>
                 </CardHeader>
-                  <CardBody><br/>
-                    </CardBody>
-                    {project_details.map((user)=>{
-                      return(<>
-                        <h2>{user.project_title}</h2>{console.log(user.project_title)}
-                      </>
-                      )
-                    })
-                    }
+
+                  <CardBody>
+                      <h5>Project Priority:</h5>
+                      <p>{project.project_priority}</p>
+
+                      <h5>Project Description:</h5>
+                      <p>{project.project_description}</p>
+
+                      <h5>Project Language:</h5>
+                      <p>{project.project_language}</p>
+
+                      <h5>Project Comment:</h5>
+                      <p>{project.project_comment}</p>
+
+                      <h5>Project Members:</h5>
+                      <p>{project.project_person}</p>
+                      <Button color="primary" type="submit">Edit</Button>
+                      <Button color="primary" type="submit" id={project.project_id}>Delete</Button>
+
+                  </CardBody>
+
                     <CardFooter>
-                        {/* <Button color="primary" type="submit">Add Project</Button> */}
+                        {/* <Button color="primary" type="submit">Edit</Button>
+                        <Button color="primary" type="submit">Delete</Button> */}
                     </CardFooter>
                 </Card>
             </form>
         </GridItem>
       </GridContainer>
-    </div>
+      </>
+                      )
+                    })
+                    }
+
+    </>
   );
 }
 
