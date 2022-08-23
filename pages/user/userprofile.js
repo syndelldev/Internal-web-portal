@@ -76,27 +76,27 @@ function UserProfile(){
                     </CardHeader>
                     <CardBody><br/>
                         <div className={classes.typo}>
-                            <div className={classes.note}>Username</div>
+                            <div className={classes.note}>Username</div><br/>
                             <h5>{cookies.name}</h5>
                         </div>
                         <div className={classes.typo}>
-                            <div className={classes.note}>Position</div>
+                            <div className={classes.note}>Position</div><br/>
                             <h5>{cookies.Position}</h5>
                         </div>
                         <div className={classes.typo}>
-                            <div className={classes.note}>Department</div>
+                            <div className={classes.note}>Department</div><br/>
                             <h5>{cookies.Department}</h5>
                         </div>
                         <div className={classes.typo}>
-                            <div className={classes.note}>Email</div>
+                            <div className={classes.note}>Email</div><br/>
                             <h5>{cookies.Email}</h5>
                         </div>
                         <div className={classes.typo}>
-                            <div className={classes.note}>Mobile No.</div>
+                            <div className={classes.note}>Mobile No.</div><br/>
                             <h5>{cookies.Mobile_num}</h5>
                         </div>
                         <div className={classes.typo}>
-                            <div className={classes.note}>Date of Birth</div>
+                            <div className={classes.note}>Date of Birth</div><br/>
                             <h5>{cookies.DOB}</h5>
                         </div>
                     </CardBody>

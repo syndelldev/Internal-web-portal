@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from 'next/router'
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -39,10 +39,26 @@ export async function getServerSideProps(context){
 function UserDetail({UserDetail}) {
   //console.log(UserDetail)
 
-  const deleteUser = async(id) =>{
-    let delUser = await axios.delete(`http://localhost:3000/api/admin/${id}`)
-    router.push("/user/dashboard");
+  const [ value, setvalue ] = useState('Deactive')
+
+  const toggleChange = async(id) => {
+    if(value==='Active'){
+      setvalue('Deactive')
+    }
+    else if(value==='Deactive'){
+      setvalue('Active')
+    }
+   
   }
+  //console.log(value)
+
+  const deleteUser = async(id) =>{
+
+    let delUser = await axios.delete(`http://localhost:3000/api/admin/${id}`,value)
+    router.push("/admin/userdetail");
+
+  }
+  //console.log(value)
 
   const onSubmit = async(data) =>{
     console.log(data);
@@ -90,17 +106,26 @@ function UserDetail({UserDetail}) {
                       <TableCell>{user.department}</TableCell>
                       <TableCell>{user.position}</TableCell>
                       <TableCell>
-                        {/*{user.status}*/}
+                        
+                        {value}
+                        <label className="switch">
+                          <a onClick={()=>deleteUser(user.id)} >
+                            <input type="checkbox" onChange={toggleChange} />
+                            <span className="slider round" ></span>
+                          </a> 
+                        </label>
+
+
                         <div>
                         <label className="switch">
                           
-                          <a href={`/admin/userdetail/`} onClick={()=>deleteUser(user.id)} >
-                            <input type="checkbox" defaultChecked />
+                          {/*<a href={`/admin/userdetail/`} onClick={()=>deleteUser(user.id)} >
+                            <input type="checkbox" value={user.status} defaultChecked={user.status === 'Active'  } onChange={toggleChange} />
                             <span className="slider round" > 
                           </span>
-                          </a>
+                          </a>*/}
                         </label>
-                        </div>
+                      </div>
                       </TableCell>
                       <TableCell>{user.role}</TableCell>
                       <TableCell>{user.creation_time}</TableCell>
@@ -117,6 +142,7 @@ function UserDetail({UserDetail}) {
           </CardBody>
         </Card>
       </GridItem>
+      
 
         {/*<GridItem xs={12} sm={12} md={8}>
           <Card>

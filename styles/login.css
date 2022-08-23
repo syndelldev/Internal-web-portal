@@ -176,13 +176,15 @@ button.login-create-acc-btn:active{
     display: inline-block;
     width: 60px;
     height: 34px;
-}
-.switch input { 
+  }
+  
+  .switch input { 
     opacity: 0;
     width: 0;
     height: 0;
-}
-.slider {
+  }
+  
+  .slider {
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -192,7 +194,8 @@ button.login-create-acc-btn:active{
     background-color: #ccc;
     -webkit-transition: .4s;
     transition: .4s;
-} 
+  }
+  
   .slider:before {
     position: absolute;
     content: "";
@@ -203,21 +206,27 @@ button.login-create-acc-btn:active{
     background-color: white;
     -webkit-transition: .4s;
     transition: .4s;
-}
-input:checked + .slider {
-    background-color: #ADD8E6;
-}
-input:focus + .slider {
-    box-shadow: 0 0 1px #ADD8E6;
-}
-input:checked + .slider:before {
+  }
+  
+  input:checked + .slider {
+    background-color: #2196F3;
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+  }
+  
+  input:checked + .slider:before {
     -webkit-transform: translateX(26px);
     -ms-transform: translateX(26px);
     transform: translateX(26px);
-}
+  }
 .slider.round {
     border-radius: 34px;
-}
+  } 
 .slider.round:before {
     border-radius: 50%;
+}
+.makeStyles-typo-165{
+    margin-bottom: 15px!important;
 }
