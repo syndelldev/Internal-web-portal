@@ -17,11 +17,15 @@ import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 import { IoMdArrowDropdown } from "react-icons/io";
-import { useForm  } from 'react-hook-form';
+import { useForm, Controller  } from 'react-hook-form';
 import { server } from 'config';
 import avatar from "assets/img/faces/marc.jpg";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+
+import 'react-phone-number-input/style.css'
+import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input'
+
 import axios from "axios";
 
 const styles = {
@@ -46,9 +50,11 @@ const styles = {
 function AddUser() {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
-  const { register,  watch, handleSubmit, formState: { errors }, setValue } = useForm(); 
+  const { register,  watch, handleSubmit, formState: { errors }, setValue, control } = useForm({mode: "onBlur"}); 
   const [startDate, setStartDate] = useState();
   const router = useRouter();
+
+  const [phonenum, setphonenum] = useState()
 
   const onSubmit = async (result) =>{
     
@@ -59,22 +65,6 @@ function AddUser() {
     console.log(addUser)
     router.push("/admin/userdetail");
     
-    /*const res = await fetch(`${server}/api/admin/adduser/`,{
-      method: "POST",
-      headers: { "Content-Type": "application/json",},
-      body:JSON.stringify({username:result.name, password:result.password, email:result.email, PhoneNum:result.mobile_num, DOB:startDate, department:result.department, position:result.position, status:result.status, role:result.role }),
-    })
-    const data=await res.json()
-    console.log(data)
-    if(res.status==200)
-    {
-      //alert("sucess")
-      router.push("/admin/userdetail");
-    }
-    else
-    {
-      //alert("Fail")
-    }*/
   }
   return (
     <div>
@@ -113,7 +103,7 @@ function AddUser() {
                       <GridContainer>  
                         <GridItem xs={12} sm={12} md={12}>
                           <div className="form-group">
-                            <input type="text" className="form-control signup-input" placeholder="Email" {...register('email', { required: 'Email is required', pattern: {value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, message: 'Please enter a valid email',},} )}  />
+                            <input type="text" className="form-control signup-input" placeholder="Email" {...register('email', { required: 'Please enter your email', pattern: {value: /^[a-z0-9]+(?!.*(?:\+{2,}|\-{2,}|\.{2,}))(?:[\.+\-]{0,1}[a-z0-9])*@syndelltech\.in$/ , message: 'Please enter a valid email ex:email@syndelltech.in',},} )} />
                             <div className="error-msg">{errors.email && <p>{errors.email.message}</p>}</div>
                           </div> 
                         </GridItem>
@@ -150,9 +140,24 @@ function AddUser() {
                       <GridContainer>
                         <GridItem xs={12} sm={12} md={6}>
                           <div className="form-group">
-                            <input type="text" className="form-control signup-input" placeholder="Mobile No" {...register('mobile_num',  { required: "Please enter your Mobile Num", pattern: {value: /^[0-9]+$/ , message: 'Only characters Numbers allow',} })} />
-                            <div className="error-msg">{errors.mobile_num && <p>{errors.mobile_num.message}</p>}</div>
-                            
+                            {/*<input type="text" className="form-control signup-input" placeholder="Mobile No" {...register('mobile_num',  { required: "Please enter your Mobile Num", pattern: {value: /^[0-9]+$/ , message: 'Only characters Numbers allow',} })} />
+                            <div className="error-msg">{errors.mobile_num && <p>{errors.mobile_num.message}</p>}</div>*/}
+                            <Controller
+                              name="PhoneNum"
+                              control={control}
+                              rules={{ required: true }}
+                              render={({ field: { onChange, value } }) => (
+                              <PhoneInput
+                                className="form-control signup-input"
+                                {...register('PhoneNum',  { required: "Please enter your phone number", message: 'Only Numbers allow', })} 
+                                defaultCountry={"IN"}
+                                maxLength={11}
+                                placeholder="Phone Number"
+                                value={phonenum}
+                                onChange={setphonenum}
+                              />
+                              )}
+                            />
                           </div> 
                         </GridItem>
                         <GridItem xs={12} sm={12} md={6}>

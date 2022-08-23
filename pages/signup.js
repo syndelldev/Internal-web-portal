@@ -77,7 +77,7 @@ export default  function SignIn(){
                             </div>
                             <div className="form-group">
                                 <label htmlFor="email" className='form-label label' >Email</label>
-                                <input type="text" className="form-control signup-input" name="email" placeholder="email@syndelltech.in" {...register('email', { required: 'Please enter your email', pattern: {value: /^[a-z0-9]+(?!.*(?:\+{2,}|\-{2,}|\.{2,}))(?:[\.+\-]{0,1}[a-z0-9])*@syndelltech\.in$/ , message: 'Please enter a valid email',},} )} />
+                                <input type="text" className="form-control signup-input" name="email" placeholder="email@syndelltech.in" {...register('email', { required: 'Please enter your email', pattern: {value: /^[a-z0-9]+(?!.*(?:\+{2,}|\-{2,}|\.{2,}))(?:[\.+\-]{0,1}[a-z0-9])*@syndelltech\.in$/ , message: 'Please enter a valid email ex:email@syndelltech.in',},} )} />
                                 <div className="error-msg">{errors.email && <p>{errors.email.message}</p>}</div>
                             </div>
                             <div className="form-group">
@@ -116,8 +116,6 @@ export default  function SignIn(){
                                     }}
                                     dateFormat="MM-dd-yyyy"
                                 />
-                                
-                            
 
                                 {/*<div className="error-msg">{errors.dob && <p>{errors.dob.message}</p>}</div>
                                 {/*<input type="text" className="form-control signup-input" name="dob" {...register('dob',  { required: "Please enter your DOB", pattern: {value: /^[0-9]+$/ , message: 'Only Numbers allow',} })}  />
@@ -173,7 +171,9 @@ export default  function SignIn(){
                             <div className='login-btn'>
                                 <button type="submit" className="login-create-acc-btn" >Create Account</button>
                             </div>  
-
+                            <div className='login-text'>
+                                <p>Already have an Account ? <a href='/login'><span className='signup-text-login'>Login</span></a></p>
+                            </div>
                         </form>
                     </div>
                 </div>

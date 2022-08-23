@@ -31,7 +31,7 @@ import { server } from 'config';
 export async function getServerSideProps(context){
   const res = await fetch(`${server}/api/admin`)
   const UserDetail = await res.json()
-  console.log(UserDetail);
+  //console.log(UserDetail);
 
   return{ props: {UserDetail} }
 } 
