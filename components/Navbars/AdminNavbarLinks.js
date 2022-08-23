@@ -82,8 +82,8 @@ export default function AdminNavbarLinks() {
         <Button color="white" aria-label="edit" justIcon round>
           <Search />
         </Button>
-      </div>
-      <Button
+        </div>
+      {/*<Button
         color={size.width > 959 ? "transparent" : "white"}
         justIcon={size.width > 959}
         simple={!(size.width > 959)}
@@ -94,7 +94,7 @@ export default function AdminNavbarLinks() {
         <Hidden mdUp implementation="css">
           <p className={classes.linkText}>Dashboard</p>
         </Hidden>
-      </Button>
+      </Button>*/}
       <div className={classes.manager}>
         <Button
           color={size.width > 959 ? "transparent" : "white"}
@@ -181,8 +181,7 @@ export default function AdminNavbarLinks() {
           aria-owns={openProfile ? "profile-menu-list-grow" : null}
           aria-haspopup="true"
           onClick={handleClickProfile}
-          className={classes.buttonLink}
-          
+          className={classes.buttonLink}  
         >
           <Person className={classes.icons} />
           <Hidden mdUp implementation="css">
@@ -212,25 +211,15 @@ export default function AdminNavbarLinks() {
               <Paper>
                 <ClickAwayListener onClickAway={handleCloseProfile}>
                   <MenuList role="menu">
-                    <MenuItem
-                      onClick={handleCloseProfile}
-                      className={classes.dropdownItem}
-                    >
-                      Profile({cookies.name})
-                    </MenuItem>
-                    <MenuItem
-                      onClick={handleCloseProfile}
-                      className={classes.dropdownItem}
-                    >
-                      Settings
+                    {/*<MenuItem onClick={handleCloseProfile} className={classes.dropdownItem}>
+                      <a href="/user/userprofile">Profile({cookies.name})</a>
+                    </MenuItem>*/}
+                    <MenuItem onClick={handleCloseProfile} className={classes.dropdownItem}>
+                      <a href="#">Settings</a>
                     </MenuItem>
                     <Divider light />
-                    <MenuItem
-                      /*onClick={handleCloseProfile}*/
-                      onClick={logoutfunc}
-                      className={classes.dropdownItem}
-                    >
-                      Logout
+                    <MenuItem /*onClick={handleCloseProfile}*/ onClick={logoutfunc} className={classes.dropdownItem}>
+                      <a href="#">Logout</a>
                     </MenuItem>
                   </MenuList>
                 </ClickAwayListener>

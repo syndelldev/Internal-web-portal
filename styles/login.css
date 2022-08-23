@@ -221,3 +221,7 @@ input:checked + .slider:before {
 .slider.round:before {
     border-radius: 50%;
 }
+
+.makeStyles-typo-165{
+    margin-bottom: 15px!important;
+}
