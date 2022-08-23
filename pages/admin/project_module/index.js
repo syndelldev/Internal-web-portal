@@ -55,7 +55,7 @@ export async function getServerSideProps(){
 
 const onSubmit = async () =>{
     
-  //console.log(result);
+  console.log(project_id);
   
   const res = await fetch(`${server}/api/project/delete_project_api`,{
     method: "GET",
@@ -89,7 +89,7 @@ function AddUser({ project_details }) {
 
       <GridContainer>
         <GridItem xs={12} sm={12} md={6}>
-            <form onSubmit={onSubmit}>
+            <form>
             <Card>
                 <CardHeader color="primary">
                     <h4 className={classes.cardTitleWhite}>Project</h4>
@@ -111,9 +111,9 @@ function AddUser({ project_details }) {
 
                       <h5>Project Members:</h5>
                       <p>{project.project_person}</p>
-                      <Button color="primary" type="submit">Edit</Button>
+                      {/* <Button color="primary" type="submit" id={project.project_id}>Edit</Button> */}
                       <Button color="primary" type="submit" id={project.project_id}>Delete</Button>
-
+                      {console.log(project.project_id)}
                   </CardBody>
 
                     <CardFooter>

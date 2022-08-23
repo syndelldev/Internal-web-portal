@@ -58,19 +58,22 @@ function AddUser({ User_name }) {
   const classes = useStyles();
   const { register,  watch, handleSubmit, formState: { errors }, setValue } = useForm(); 
   const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
   const router = useRouter();
 
   const onSubmit = async (result) =>{
     
+    console.log("result");
     console.log(result);
     
     const res = await fetch(`${server}/api/project/addproject`,{
       method: "POST",
       headers: { "Content-Type": "application/json",},
-    //   body:JSON.stringify({project_person:allSelectedUser, project_title:result.project_title, project_description:result.project_description, project_language:result.project_language, project_comment:result.project_comment, project_priority:result.project_priority }),
+      body:JSON.stringify({project_person:allSelectedUser, project_title:result.project_title, project_description:result.project_description, project_language:result.project_language, project_comment:result.project_comment, project_priority:result.project_priority, project_start: result.start , project_deadline: result.end }),
     })
     const data=await res.json()
-    console.log(data)
+    console.log("data");
+    console.log(data);
     if(res.status==200)
     {
       alert("success");
@@ -154,7 +157,7 @@ for(var i=0; i<selected.length; i++){
                             <div className="error-msg">{errors.password && <p>{errors.password.message}</p>}</div>
                           </div> 
                         </GridItem> */}
-                        <GridItem xs={12} sm={12} md={6}>
+                        <GridItem xs={12} sm={12} md={12}>
                           <div className="form-group">
                             {/*<input type="text" className="form-control signup-input" placeholder="Department" {...register('department',  { required: "Please enter your Department", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
                             <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>*/}
@@ -169,6 +172,50 @@ for(var i=0; i<selected.length; i++){
                             </select>
                             <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                             <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>
+                          </div> 
+                        </GridItem>
+                      </GridContainer><br/>
+
+                      <GridContainer>  
+                        {/* <GridItem xs={12} sm={12} md={6}>
+                          <div className="form-group">
+                            <input type="text" className="form-control signup-input" placeholder="Language" {...register('project_language', { required: "You must specify language", })}  />
+                            <div className="error-msg">{errors.password && <p>{errors.password.message}</p>}</div>
+                          </div> 
+                        </GridItem> */}
+                        <GridItem xs={12} sm={12} md={6}>
+                          <div className="form-group" {...register('project_start')}>
+                            <DatePicker
+                              placeholderText="Start_Date : dd/mm/yyyy"
+                              isClearable
+                              name="datetime1"
+                              className={"form-control"}
+                              selected={startDate}
+                              onChange={val => {
+                                setStartDate(val);
+                                setValue("start", val);
+                              }}
+                              dateFormat="dd-MM-yyyy"
+                            />
+                          <div className="error-msg">{errors.dob && <p>{errors.dob.message}</p>}</div>
+                          </div> 
+                        </GridItem>
+
+                        <GridItem xs={12} sm={12} md={6}>
+                          <div className="form-group" {...register('project_deadline')}>
+                            <DatePicker
+                              placeholderText="End_Date : dd/mm/yyyy"
+                              isClearable
+                              name="datetime1"
+                              className={"form-control"}
+                              selected={endDate}
+                              onChange={val => {
+                                setEndDate(val);
+                                setValue("end", val);
+                              }}
+                              dateFormat="dd-MM-yyyy"
+                            />
+                          <div className="error-msg">{errors.dob && <p>{errors.dob.message}</p>}</div>
                           </div> 
                         </GridItem>
                       </GridContainer><br/>
@@ -206,13 +253,31 @@ for(var i=0; i<selected.length; i++){
                             options={uoptions}
                             value={selected}
                             onChange={setSelected}
-                            labelledBy="Select"
+                            labelledBy="Select project"
                           />
                           
                             <div className="error-msg">{errors.role && <p>{errors.role.message}</p>}</div>
                           </div> 
                         </GridItem>
-                      </GridContainer>
+                      </GridContainer><br/>
+
+                      {/* <GridContainer>
+                        <GridItem xs={12} sm={12} md={6}>
+                          <div className="form-group">
+                            <input type="file" className="form-control signup-input" placeholder="project_file" {...register('project_file')} />
+                            {/* <div className="error-msg">{errors.status && <p>{errors.status.message}</p>}</div> */}
+                            
+                            {/* <div className="error-msg">{errors.status && <p>{errors.status.message}</p>}</div> */}
+                          {/* </div> 
+                        </GridItem>
+                      
+                        <GridItem xs={12} sm={12} md={6}>
+                          <div className="form-group">
+                            <div className="error-msg">{errors.role && <p>{errors.role.message}</p>}</div>
+                          </div>
+                        </GridItem>
+                      </GridContainer> */}
+
                     </CardBody>
 
                     <CardFooter>
