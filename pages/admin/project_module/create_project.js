@@ -67,7 +67,7 @@ function AddUser({ User_name }) {
     const res = await fetch(`${server}/api/project/addproject`,{
       method: "POST",
       headers: { "Content-Type": "application/json",},
-      body:JSON.stringify({project_person:allSelectedUser, project_title:result.project_title, project_description:result.project_description, project_language:result.project_language, project_created_by:result.project_created_by, project_comment:result.project_comment, project_priority:result.project_priority }),
+    //   body:JSON.stringify({project_person:allSelectedUser, project_title:result.project_title, project_description:result.project_description, project_language:result.project_language, project_comment:result.project_comment, project_priority:result.project_priority }),
     })
     const data=await res.json()
     console.log(data)
@@ -131,7 +131,7 @@ for(var i=0; i<selected.length; i++){
 
                         <GridItem xs={12} sm={12} md={12}>                      
                           <div className="form-group">
-                            <input type="text" className="form-control signup-input" placeholder="Project Title" {...register('project_title',  { required: "Please enter project title", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
+                            <input type="text" className="form-control signup-input" placeholder="Project Title" {...register('project_title',  { required: "Please enter project title"})} />
                             <div className="error-msg">{errors.name && <p>{errors.name.message}</p>}</div>
                           </div> 
                           <div className="error-msg">{errors.username && <p>{errors.username.message}</p>}</div>
@@ -148,25 +148,24 @@ for(var i=0; i<selected.length; i++){
                       </GridContainer><br/>
 
                       <GridContainer>  
-                        <GridItem xs={12} sm={12} md={6}>
+                        {/* <GridItem xs={12} sm={12} md={6}>
                           <div className="form-group">
                             <input type="text" className="form-control signup-input" placeholder="Language" {...register('project_language', { required: "You must specify language", })}  />
                             <div className="error-msg">{errors.password && <p>{errors.password.message}</p>}</div>
                           </div> 
-                        </GridItem>
+                        </GridItem> */}
                         <GridItem xs={12} sm={12} md={6}>
                           <div className="form-group">
                             {/*<input type="text" className="form-control signup-input" placeholder="Department" {...register('department',  { required: "Please enter your Department", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
                             <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>*/}
-                            <select name="Project_created_by" id="Project_created_by" className="form-control signup-input" {...register('project_created_by', {required:true ,message:'Please select atleast one option', })}>
-                              <option value="">Created by</option>
-                              <option value="HR">HR</option>
-                              <option value="UI & UX">UI & UX</option>
-                              <option value="Web development">Web development</option>
-                              <option value="Content writer">Content writer</option>
-                              <option value="Project manager">Project manager</option>
-                              <option value="Mobile App developer">Mobile App developer</option>
-                              <option value="SEO">SEO</option>
+                            <select name="Project_created_by" id="Project_created_by" className="form-control signup-input" {...register('project_language', {required:true ,message:'Please select atleast one option', })}>
+                              <option value="">Select Language</option>
+                              <option value="Wordpress">Wordpress</option>
+                              <option value="Shopify">Shopify</option>
+                              <option value="ReactJS">ReactJS</option>
+                              <option value="Laravel">Laravel</option>
+                              <option value="Android">Android</option>
+                              <option value="Bubble">Bubble</option>
                             </select>
                             <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                             <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>

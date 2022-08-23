@@ -22,25 +22,25 @@ const getUserById = async (req,res) => {
     }
 }
 
-const AddUser = async (req,res) =>{
-    let id = req.query.id;
-    try{
-        let createUser = await executeQuery(" INSERT INTO `tbl_project`( `username`, `password`, `mobile_no`, `department`, `position`, `status`, `role`, `creation_time`) VALUES (?,?,?,?,?,?,?,?) ")
-        res.status(200).json(createUser);
-    }
-    catch(err){
-        res.status(500).json(err);
-    }
-}
+// const AddUser = async (req,res) =>{
+//     let id = req.query.id;
+//     try{
+//         let createUser = await executeQuery(" INSERT INTO `tbl_project`( `username`, `password`, `mobile_no`, `department`, `position`, `status`, `role`, `creation_time`) VALUES (?,?,?,?,?,?,?,?) ")
+//         res.status(200).json(createUser);
+//     }
+//     catch(err){
+//         res.status(500).json(err);
+//     }
+// }
 
 const deleteUser = async (req,res) => {
     //let id = req.query.id;
     try{
-        let delUser = await executeQuery(` DELETE FROM tbl_project WHERE id = ?", [req.query.id] `)
+        let delUser = await executeQuery("UPDATE `tbl_project` SET `project_status` = 'Inactive' WHERE `tbl_project`.`project_id` = ", [req.query.id] )
         res.status(200).json(delUser);
     }
     catch(err){
         res.status(500).json(err);
     }
 }
-export { getAllUser,getUserById,AddUser,deleteUser }
+export { getAllUser,getUserById,deleteUser }
