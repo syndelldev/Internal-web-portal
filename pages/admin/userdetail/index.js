@@ -37,11 +37,10 @@ export async function getServerSideProps(context){
 } 
 
 function UserDetail({UserDetail}) {
-  //console.log(UserDetail)
 
-  const [ value, setvalue ] = useState('Deactive')
+  const [ value, setvalue ] = useState({})
 
-  const toggleChange = async(id) => {
+  const toggleChange = () => {
     if(value==='Active'){
       setvalue('Deactive')
     }
@@ -50,18 +49,18 @@ function UserDetail({UserDetail}) {
     }
    
   }
-  //console.log(value)
 
   const deleteUser = async(id) =>{
 
-    let delUser = await axios.delete(`http://localhost:3000/api/admin/${id}`,value)
+    let delUser = await axios.put(`http://localhost:3000/api/admin/${id}`,value)
     router.push("/admin/userdetail");
-
+  
+    console.log(delUser);
+    console.log(value)
   }
-  //console.log(value)
 
   const onSubmit = async(data) =>{
-    console.log(data);
+    //console.log(data);
   }
   const router = useRouter();
   const useStyles = makeStyles(styles);
@@ -110,7 +109,7 @@ function UserDetail({UserDetail}) {
                         {value}
                         <label className="switch">
                           <a onClick={()=>deleteUser(user.id)} >
-                            <input type="checkbox" onChange={toggleChange} />
+                            <input type="checkbox" name="status" value={user.status} defaultChecked={user.status === 'Active'  } onChange={toggleChange} />
                             <span className="slider round" ></span>
                           </a> 
                         </label>
@@ -131,7 +130,8 @@ function UserDetail({UserDetail}) {
                       <TableCell>{user.creation_time}</TableCell>
                       <TableCell>
                         <a href={`/admin/userdetail/${user.id}`}>Edit</a>&nbsp;&nbsp;&nbsp;
-                        <a href={`/admin/userdetail/`} onClick={()=>deleteUser(user.id)}>Delete</a>
+                        <a href={`/admin/userdetail/`} onClick={()=>deleteUser(user.id)}>Delete</a>&nbsp;&nbsp;&nbsp;
+                        <a href={`/admin/viewuser/${user.id}`}>View</a>
                       </TableCell>
                     </TableRow>
                   )
