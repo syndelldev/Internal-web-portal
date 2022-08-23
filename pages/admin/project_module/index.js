@@ -63,8 +63,6 @@ function AddUser({ User_name }) {
   const onSubmit = async (result) =>{
     
     console.log(result);
-    console.log({project_person:allSelectedUser});
-    console.log(allSelectedUser);
     
     const res = await fetch(`${server}/api/project/addproject`,{
       method: "POST",
