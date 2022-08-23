@@ -111,7 +111,7 @@ function AddUser({ project_details }) {
 
                       <h5>Project Members:</h5>
                       <p>{project.project_person}</p>
-                      <Button color="primary" type="submit" id={project.project_id}>Edit</Button>
+                      {/* <Button color="primary" type="submit" id={project.project_id}>Edit</Button> */}
                       <Button color="primary" type="submit" id={project.project_id}>Delete</Button>
 
                   </CardBody>
