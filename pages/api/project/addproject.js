@@ -14,7 +14,7 @@ async function addProject(req,res){
             [req.body.project_title, req.body.project_description, req.body.project_language, req.body.project_created_by , req.body.project_comment , req.body.project_priority ] );
         
             res.status(200).json(addUserQuery);
-            console.log("addUserQuery");
+            console.log(addUserQuery);
         }
         catch(err){
             console.log(err)

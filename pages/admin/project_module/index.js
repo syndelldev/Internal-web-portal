@@ -22,7 +22,7 @@ import { server } from 'config';
 import avatar from "assets/img/faces/marc.jpg";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import Multiselect from 'multiselect-react-dropdown';
+import { MultiSelect } from "react-multi-select-component";
 
 
 const styles = {
@@ -63,11 +63,13 @@ function AddUser({ User_name }) {
   const onSubmit = async (result) =>{
     
     console.log(result);
+    console.log({project_person:allSelectedUser});
+    console.log(allSelectedUser);
     
     const res = await fetch(`${server}/api/project/addproject`,{
       method: "POST",
       headers: { "Content-Type": "application/json",},
-      body:JSON.stringify({project_title:result.project_title, project_description:result.project_description, project_language:result.project_language, project_created_by:result.project_created_by, project_comment:result.project_comment, project_priority:result.project_priority, project_person:result.project_person }),
+      body:JSON.stringify({project_person:allSelectedUser, project_title:result.project_title, project_description:result.project_description, project_language:result.project_language, project_created_by:result.project_created_by, project_comment:result.project_comment, project_priority:result.project_priority }),
     })
     const data=await res.json()
     console.log(data)
@@ -90,13 +92,29 @@ useEffect(() =>{
     const getUsername = [];
 
     User_name.map((user)=>{
-      getUsername.push( user.username );
+      getUsername.push( {'label' :user.username, 'value' :user.username} );
     });
     setOptions(getUsername);
-    console.log(getUsername);
+    // console.log(getUsername);
   }
   u_data();
 },[]);
+
+// var [selected , getSelect] = useState([]);
+// var get_value = async() =>{
+//   const getUser = [];
+//   Array.isArray(user)? user.map(user=>{
+//     getUser.push(user.value);
+//   }): console.log("no data")
+//   getSelect(getUser);
+// }
+
+const [selected, setSelected] = useState([]);
+const allSelectedUser = [];
+for(var i=0; i<selected.length; i++){
+  allSelectedUser.push(selected[i].value);
+}
+
 
   return (
     <div>
@@ -135,7 +153,7 @@ useEffect(() =>{
                       <GridContainer>  
                         <GridItem xs={12} sm={12} md={12}>
                           <div className="form-group">
-                            <input type="text" className="form-control signup-input" placeholder="Project Description" {...register('project_description', { required: 'Description is required', } )}  />
+                            <textarea className="form-control signup-input" placeholder="Project Description" {...register('project_description', { required: 'Description is required', } )}  />
                             <div className="error-msg">{errors.email && <p>{errors.email.message}</p>}</div>
                           </div> 
                         </GridItem>
@@ -172,7 +190,7 @@ useEffect(() =>{
                       <GridContainer>
                         <GridItem xs={12} sm={12} md={12}>
                           <div className="form-group">
-                            <input type="text" className="form-control signup-input" placeholder="Comment" {...register('project_comment')} />
+                            <textarea className="form-control signup-input" placeholder="Comment" {...register('project_comment')} />
                             <div className="error-msg">{errors.position && <p>{errors.position.message}</p>}</div>
                           </div> 
                         </GridItem>
@@ -195,22 +213,17 @@ useEffect(() =>{
                         </GridItem>
                       
                         <GridItem xs={12} sm={12} md={6}>
-                          <div className="form-group">
+                          <div className="form-group" {...register('project_person')}>
 
-                          {console.log("uoptions")}
-
-                          <Multiselect
-                              isObject= {false}
-                              onKeyPressFn={function noRefCheck(){}}
-                              onRemove={function noRefCheck(){}}
-                              onSearch={function noRefCheck(){}}
-                              onSelect={function noRefCheck(){}}
-                              options={ uoptions }
-                              {...register('project_person')}
-                              placeholder="Select Developer"
-                              showCheckbox
-                            />
-
+                          {/* {console.log("uoptions")} */}
+                          <pre>{JSON.stringify(selected)}</pre>
+                          <MultiSelect
+                            options={uoptions}
+                            value={selected}
+                            onChange={setSelected}
+                            labelledBy="Select"
+                          />
+                          {/* {console.log(selected)} */}
                             <div className="error-msg">{errors.role && <p>{errors.role.message}</p>}</div>
                           </div> 
                         </GridItem>
