@@ -84,11 +84,12 @@ function UserById(data){
         e.preventDefault();
 
         let data = await axios.put(`${server}/api/admin/${user.id}`, userdata);
-        console.log(data)
+        //console.log(data)
 
         if(data) router.push("/admin/userdetail")
 
         setuserdata({
+          role_id:"",
           username:"",
           password:"",
           email:"",
@@ -110,6 +111,15 @@ function UserById(data){
                     <p className={classes.cardCategoryWhite}>Complete your profile</p>
                 </CardHeader>
                   <CardBody><br/>
+
+                    <GridContainer>  
+                        <GridItem xs={12} sm={12} md={12}>
+                          <div className="form-group">
+                            <input type="num" className="form-control signup-input" name="role_id" placeholder="enter your email" value={userdata.role_id} onChange={handleChange}  />
+                          </div> 
+                        </GridItem>
+                      </GridContainer><br/>
+
                     <GridContainer>
                         <GridItem xs={12} sm={12} md={12}>
                           <div className="form-group">
