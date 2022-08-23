@@ -67,12 +67,12 @@ const UpdateUser = async (req,res) =>{
 
 const deleteUser = async (req,res) => {
     let id = req.query.id;
-    //let value = req.body.value;
-    console.log(req.body)
+    console.log(id)
+    console.log(req.body.status)
     try{
         //let delUser = await executeQuery(` DELETE FROM tbl_user WHERE id = ?`, [id] )
         //let delUser = await executeQuery(" UPDATE `tbl_user` SET `status`='Deactive' WHERE id=?", [id] )
-        let delUser = await executeQuery("UPDATE `tbl_user` SET `status`=? WHERE id=?", [id, req.body.value] )
+        let delUser = await executeQuery("UPDATE `tbl_user` SET `status`=? WHERE id=?", [req.body.status, id] )
         res.status(200).json(delUser);
     }
     catch(err){

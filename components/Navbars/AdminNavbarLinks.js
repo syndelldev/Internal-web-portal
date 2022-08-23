@@ -95,7 +95,7 @@ export default function AdminNavbarLinks() {
           <p className={classes.linkText}>Dashboard</p>
         </Hidden>
       </Button>*/}
-      <div className={classes.manager}>
+      {/*<div className={classes.manager}>
         <Button
           color={size.width > 959 ? "transparent" : "white"}
           justIcon={size.width > 959}
@@ -113,7 +113,7 @@ export default function AdminNavbarLinks() {
             </p>
           </Hidden>
         </Button>
-        <Poppers
+        {/*<Poppers
           open={Boolean(openNotification)}
           anchorEl={openNotification}
           transition
@@ -171,8 +171,8 @@ export default function AdminNavbarLinks() {
               </Paper>
             </Grow>
           )}
-        </Poppers>
-      </div>
+            </Poppers>
+        </div>*/}
       <div className={classes.manager}>
         <Button
           color={size.width > 959 ? "transparent" : "white"}
