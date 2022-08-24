@@ -106,8 +106,6 @@ function AddProject({ project_details }) {
 
       const bDate = ((project.project_deadline).substr(0,10).split("-",3));
       console.log(bDate);
-      // const blogDate = (bDate[2]).concat(".",bDate[1]).concat(".",bDate[0]);
-      console.log(bDate[1]);
     return(
     <>
         <GridItem xs={6} sm={6} md={3}>
@@ -117,7 +115,7 @@ function AddProject({ project_details }) {
 
                   {project.project_language}
 
-                  <img src="/reactlogo.png" className={classes.img}/>
+                  <img src={`${server}/reactlogo.png`} className={classes.img}/>
 
                     <h4 className={classes.cardTitleWhite}>{project.project_title}</h4>
                     <p className={classes.cardCategoryWhite}></p>

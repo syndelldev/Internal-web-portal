@@ -77,7 +77,7 @@ function AddUser({ User_name }) {
     if(res.status==200)
     {
       // alert("success");
-      router.push("/admin/project_module");
+      router.push(`${server}/admin/project_module`);
     }
     else
     {
