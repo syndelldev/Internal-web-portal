@@ -6,10 +6,9 @@ async function login(req,res){
     if(req.method === 'POST')
     {
         try{
-            const username = req.body.username;
-            const password = req.body.password;
 
-            var loginQuery = await executeQuery("select * from tbl_user where username= ? ", [req.body.username] );
+            console.log(req.body)
+            var loginQuery = await executeQuery("select * from tbl_user where email= ? ", [req.body.email] );
             res.status(200).json(loginQuery);
             
             

@@ -15,20 +15,21 @@ export default function home()
     //const { register,  watch, handleSubmit, formState: { errors }, control } = useForm(); 
     const [cookies, setCookie] = useCookies(['name']);
 
-    const [username,setusername] = useState("");
+    const [email,setemail] = useState("");
     const [password,setpassword] = useState("");
+
     const [passwrong,setpasswrong] = useState("");
     const router = useRouter();
 
     //Password Hide and Show
     const [isRevealPwd, setIsRevealPwd] = useState(false);
 
-    console.log(username);
+    console.log(email);
 
     const login = async(e) => {
         e.preventDefault();
 
-        if (username == "") {
+        if (email == "") {
             let text = "Enter your Email ID";
             document.getElementById("erremail").innerHTML = text;
         }
@@ -42,7 +43,7 @@ export default function home()
         const res = await fetch(`${server}/api/admin/login/`,{
             method: "POST",
             headers: { "Content-Type": "application/json",},
-            body:JSON.stringify({username,password}),
+            body:JSON.stringify({email,password}),
         })
 
         const data=await res.json()
@@ -121,7 +122,7 @@ return(
                             <div id='personal-account'>
                                 <div className="form-group"  >
                                     <label htmlFor="ba-num"  className='form-label'>Username</label>
-                                    <input type="text" name="username" value={username} placeholder="Enter your name" onChange={e=>setusername(e.target.value)} className='form-control login-input' />
+                                    <input type="email" name="email" value={email} placeholder="Enter your name" onChange={e=>setemail(e.target.value)} className='form-control login-input' />
                                     <span className='icon-eyes'><IoMdMail /></span>
                                     <span className='error-msg' id='erremail'></span>
                                 </div>
