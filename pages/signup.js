@@ -8,8 +8,8 @@ import { server } from 'config';
 import 'react-phone-number-input/style.css'
 import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input'
 
-import PopUp from "components/PopUp/SignUpModel.js";
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // import "react-modern-calendar-datepicker/lib/DatePicker.css";
 // import DatePicker from "react-modern-calendar-datepicker";
 
@@ -20,25 +20,7 @@ function SignIn(){
     const { register, watch, handleSubmit, formState: { errors }, setValue, control } = useForm({mode: "onBlur"}); 
     const router = useRouter();
     
-    const [isShown, setIsShown] = useState(false);
-    const showModal = () => {
-        setIsShown(true);
-    };
-    const closeModal = () => {
-        setIsShown(false);
-    };
-    const dynammicModalClass = () => (isShown ? { display: 'block' } : '');
-
-    useEffect(() => {
-        if (!sessionStorage.popupModal) {
-          const timer = setTimeout(() => {
-            setIsShown(true);
-            sessionStorage.popupModal = 1;
-          }, 2000);
-    
-          return () => clearTimeout(timer);
-        }
-    }, []);
+    //const notify = () => toast("Wow so easy!");
 
 
     const [startDate, setStartDate] = useState();
@@ -70,8 +52,12 @@ function SignIn(){
 
         if(res.status==200)
         {
-            //alert("sucess")
-            router.push("/login");
+            toast.success('SignUp Successfully !', {
+                position: "top-right",
+                autoClose:5000,
+                onClose: () => router.push("/login")
+            });
+            //router.push("/login");
         }
         else
         {
@@ -80,13 +66,12 @@ function SignIn(){
     }
     return(
         <>
-
+           
             <section className='login-section'>
                 <div className='container login-container'>
                     <div className='login-div'>
                         <h2 className='login-title'>Automation Tool SignIn</h2>
 
-                        
 
                         <form method="POST" onSubmit={handleSubmit(onSubmit)} >
 
@@ -207,7 +192,8 @@ function SignIn(){
                     </div>
                 </div>
             </section>
-           
+            <ToastContainer />
+
         </>
     )
 } 

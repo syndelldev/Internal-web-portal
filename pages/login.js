@@ -7,6 +7,8 @@ import { server } from 'config';
 //import Cookies from 'js-cookie';
 import { useCookies } from 'react-cookie';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function home()
 {
@@ -68,7 +70,14 @@ export default function home()
                     setCookie('Department', data[0].department, { path:'/' , maxAge:3600, sameSite:true, });
                     setCookie('Position', data[0].position, { path:'/' , maxAge:3600, sameSite:true, });
                     setCookie('Role', data[0].role, { path:'/' , maxAge:3600, sameSite:true, });
-                    router.push("/admin/dashboard");
+
+                    toast.success('Login Successfully! 🎉', {
+                        position: "top-right",
+                        autoClose:5000,
+                        onClose: () => router.push("/admin/dashboard")
+                    });
+
+                    //router.push("/admin/dashboard");
                 }
                 else if(role=='User'){
                     setCookie('name', data[0].username, { path:'/' , maxAge:3600, sameSite:true, });
@@ -78,7 +87,14 @@ export default function home()
                     setCookie('Department', data[0].department, { path:'/' , maxAge:3600, sameSite:true, });
                     setCookie('Position', data[0].position, { path:'/' , maxAge:3600, sameSite:true, });
                     setCookie('Role', data[0].role, { path:'/' , maxAge:3600, sameSite:true, });
-                    router.push("/user/dashboard");
+
+                    toast.success('Login Successfully! 🎉', {
+                        position: "top-right",
+                        autoClose:5000,
+                        onClose: () => router.push("/user/dashboard")
+                    });
+
+                    //router.push("/user/dashboard");
                 }
                 //alert("Sucess")
             }
@@ -139,6 +155,7 @@ return(
                     </div>
                 </div>
             </section>
+            <ToastContainer />
         </>
     );
 

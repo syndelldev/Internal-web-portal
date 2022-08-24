@@ -21,6 +21,9 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const styles = {
   cardCategoryWhite: {
     color: "rgba(255,255,255,.62)",
@@ -92,22 +95,29 @@ function UserById(data){
         let data = await axios.put(`${server}/api/admin/${user.id}`, userdata);
         console.log(data)
         console.log(userdata)
-        if(data) router.push("/admin/userdetail")
+        if(data) 
+        toast.success('User Updated Successfully! 🎉', {
+          position: "top-right",
+          autoClose:5000,
+          onClose: () => router.push("/admin/userdetail")
+        });
+        //router.push("/admin/userdetail")
 
-        setuserdata({
-          role_id:"",
-          username:"",
-          password:"",
-          email:"",
-          mobile_no:"",
-          department:"",
-          position:"",
-          status:"",
-          role:""
-        })
+        // setuserdata({
+        //   role_id:"",
+        //   username:"",
+        //   password:"",
+        //   email:"",
+        //   mobile_no:"",
+        //   department:"",
+        //   position:"",
+        //   status:"",
+        //   role:""
+        // })
     }
     return(
         <div>
+          <ToastContainer />
       <GridContainer>
         <GridItem xs={12} sm={12} md={8}>
             <form onSubmit={onSubmit}>              

@@ -28,6 +28,10 @@ import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input'
 
 import axios from "axios";
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 const styles = {
   cardCategoryWhite: {
     color: "rgba(255,255,255,.62)",
@@ -62,8 +66,12 @@ function AddUser() {
     let addUser = axios.post(`${server}/api/admin/`, {
       role_id:result.role_id, username:result.name, password:result.password, email:result.email, PhoneNum:result.PhoneNum, DOB:startDate, department:result.department, position:result.position, status:result.status, role:result.role 
     })
-    console.log(addUser)
-    router.push("/admin/userdetail");
+    toast.success('User Created Successfully! 🎉', {
+      position: "top-right",
+      autoClose:5000,
+      onClose: () => router.push("/admin/userdetail")
+    });
+    //router.push("/admin/userdetail");
 
     // const res = await fetch(`${server}/api/admin/adduser/`,{
     //   method: "POST",
@@ -85,6 +93,7 @@ function AddUser() {
   }
   return (
     <div>
+      <ToastContainer />
       <GridContainer>
         <GridItem xs={12} sm={12} md={8}>
             <form onSubmit={handleSubmit(onSubmit)}>              
@@ -97,7 +106,7 @@ function AddUser() {
                     <GridContainer>  
                         <GridItem xs={12} sm={12} md={12}>
                           <div className="form-group">
-                            <input type="text" className="form-control signup-input" placeholder="role_id" value={2} {...register('role_id', { required: 'Please enter your role_id'} )} />
+                            <input type="hidden" className="form-control signup-input" placeholder="role_id" value={2} {...register('role_id', { required: 'Please enter your role_id'} )} />
                             <div className="error-msg">{errors.role_id && <p>{errors.role_id.message}</p>}</div>
                           </div> 
                         </GridItem>
@@ -286,6 +295,7 @@ function AddUser() {
         </GridItem>*/}
       </GridContainer>
     </div>
+    
   );
 }
 
