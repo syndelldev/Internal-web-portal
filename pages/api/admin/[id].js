@@ -4,7 +4,7 @@ import { getUserById, deleteUser , UpdateUser } from '../../../controller/admin/
 const handler=nc();
 
 handler.get(getUserById);
-handler.put(deleteUser);
+handler.delete(deleteUser);
 handler.put(UpdateUser);
 
 export default handler;

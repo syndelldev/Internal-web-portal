@@ -79,6 +79,11 @@ function UserById(data){
     const handleChange = ({ target: { name, value } }) =>{
       setuserdata({ ...userdata, [name]: value });
     }
+    // const handleChange = (e) =>{
+    //   const value = e.target.value;
+    //   console.log('value', value)
+    //   setuserdata({...userdata, [e.target.name]:value })
+    // }
 
     console.log(userdata);
     const onSubmit = async (e) =>{
@@ -190,7 +195,14 @@ function UserById(data){
                       <GridContainer>
                         <GridItem xs={12} sm={12} md={12}>
                           <div className="form-group">
-                            <input type="text" className="form-control signup-input" name="position" placeholder="enter your position" value={userdata.position} onChange={handleChange} autoComplete="off"  />
+                            {/*<input type="text" className="form-control signup-input" name="position" placeholder="enter your position" value={userdata.position} onChange={handleChange} autoComplete="off"  />*/}
+                            <select name="position" id="position" className="form-control signup-input" value={userdata.position} onChange={handleChange}  >
+                              <option value="">Select Your Position</option>
+                              <option value="Senior">Senior</option>
+                              <option value="Junior">Junior</option>
+                              <option value="Team Lead">Team Lead</option>
+                            </select>
+                            <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                           </div> 
                         </GridItem>
                       </GridContainer><br/>

@@ -25,8 +25,6 @@ const AddUser = async (req,res) =>{
     console.log(req.body)
     
     try{
-        //var createUser = await executeQuery("INSERT INTO `tbl_user` ( `username`, `password`, `email`, `mobile_no`, `dob`, `department`,`position`,`status`,`role` ) VALUES (?,?,?,?,?,?,?,?,? )", 
-            //[req.body.username, req.body.password, req.body.email, req.body.PhoneNum, req.body.DOB, req.body.department, req.body.position, req.body.status,  req.body.role ] );
         var createUser = await executeQuery("INSERT INTO `tbl_user`( `role_id`, `username`, `password`, `email`, `mobile_no`, `dob`, `department`, `position`, `status`, `role`) VALUES (?,?,?,?,?,?,?,?,?,?)",
         [req.body.role_id, req.body.username, req.body.password, req.body.email, req.body.PhoneNum, req.body.DOB, req.body.department, req.body.position, req.body.status,  req.body.role ])
         
@@ -59,7 +57,7 @@ const UpdateUser = async (req,res) =>{
 const deleteUser = async (req,res) => {
     let id = req.query.id;
     console.log(id)
-    //console.log(req.body.status)
+    console.log(req.body)
     try{
         //let delUser = await executeQuery(` DELETE FROM tbl_user WHERE id = ?`, [id] )
         //let delUser = await executeQuery(" UPDATE `tbl_user` SET `status`='Deactive' WHERE id=?", [id] )

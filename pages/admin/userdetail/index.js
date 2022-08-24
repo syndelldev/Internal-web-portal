@@ -42,29 +42,29 @@ function UserDetail({UserDetail}) {
   const [value, setvalue] = useState('Active');
 
   const toggleChange = () => {
-    // if(value==='Active'){
-    //   setvalue('Deactive')
-    // }
-    // else if(value==='Deactive'){
-    //   setvalue('Active')
-    // }
-   
-  }
-
-  const deleteUser = async(id) =>{
-
-    let delUser = await axios.put(`http://localhost:3000/api/admin/${id}`,{status:value})
-    router.push("/admin/userdetail");
-  
-    //console.log(delUser);
-    console.log(value)
-
     if(value==='Active'){
       setvalue('Deactive')
     }
     else if(value==='Deactive'){
       setvalue('Active')
     }
+   
+  }
+
+  const deleteUser = async(id) =>{
+
+    let delUser = await axios.put(`${server}/api/admin/${id}`,{status:value})
+    router.push("/admin/userdetail");
+  
+    //console.log(delUser);
+    console.log(value)
+
+    // if(value==='Active'){
+    //   setvalue('Deactive')
+    // }
+    // else if(value==='Deactive'){
+    //   setvalue('Active')
+    //}
    
 
   }
@@ -117,7 +117,7 @@ function UserDetail({UserDetail}) {
                       <TableCell>
                       <div>
                         <label className="switch">
-                          <a  >
+                          <a>
                             <input type="checkbox" name="status" value={user.status} defaultChecked={user.status === 'Active'}  onClick={()=>deleteUser(user.id)} />
                             <span className="slider round" ></span>
                           </a> 
