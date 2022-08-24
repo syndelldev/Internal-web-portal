@@ -76,8 +76,8 @@ function AddUser({ User_name }) {
     console.log(data);
     if(res.status==200)
     {
-      alert("success");
-      // router.push("/admin/userdetail");
+      // alert("success");
+      router.push("/admin/project_module");
     }
     else
     {
@@ -196,6 +196,7 @@ for(var i=0; i<selected.length; i++){
                                 setValue("start", val);
                               }}
                               dateFormat="dd-MM-yyyy"
+                              minDate={new Date()}
                             />
                           <div className="error-msg">{errors.dob && <p>{errors.dob.message}</p>}</div>
                           </div> 
@@ -214,6 +215,7 @@ for(var i=0; i<selected.length; i++){
                                 setValue("end", val);
                               }}
                               dateFormat="dd-MM-yyyy"
+                              minDate={startDate}
                             />
                           <div className="error-msg">{errors.dob && <p>{errors.dob.message}</p>}</div>
                           </div> 
