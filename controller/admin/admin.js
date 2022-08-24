@@ -59,7 +59,7 @@ const UpdateUser = async (req,res) =>{
 const deleteUser = async (req,res) => {
     let id = req.query.id;
     console.log(id)
-    console.log(req.body.status)
+    //console.log(req.body.status)
     try{
         //let delUser = await executeQuery(` DELETE FROM tbl_user WHERE id = ?`, [id] )
         //let delUser = await executeQuery(" UPDATE `tbl_user` SET `status`='Deactive' WHERE id=?", [id] )

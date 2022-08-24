@@ -230,3 +230,6 @@ button.login-create-acc-btn:active{
 /* .makeStyles-typo-165{
     margin-bottom: 15px!important;
 } */
+.MuiButton-label a{
+    color: #000!important;
+}

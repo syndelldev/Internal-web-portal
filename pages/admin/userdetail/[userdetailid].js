@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useRouter } from 'next/router'
 import { makeStyles } from "@material-ui/core/styles";
 import { IoMdArrowDropdown } from "react-icons/io";
-import { useForm  } from 'react-hook-form';
 import { server } from 'config';
 
 import React from "react";
@@ -53,19 +52,19 @@ export async function getServerSideProps(context){
 function UserById(data){
     const useStyles = makeStyles(styles);
     const classes = useStyles();
-    //const { register,  watch, handleSubmit, formState: { errors }, setValue } = useForm(); 
+
     const [startDate, setStartDate] = useState();
     const router = useRouter();
 
     const user = data.data[0];
-    console.log(user)
+    //console.log(user)
 
     const [userdata, setuserdata] = useState({
       role_id:"",
       username: "",
       password: "",
       email: "",
-      mobile_num: "",
+      mobile_no: "",
       department: "",
       position: "",
       status: "",
@@ -76,6 +75,7 @@ function UserById(data){
     useEffect(()=>{
       setuserdata(user);
     },[data])
+    
     const handleChange = ({ target: { name, value } }) =>{
       setuserdata({ ...userdata, [name]: value });
     }
@@ -85,8 +85,8 @@ function UserById(data){
         e.preventDefault();
 
         let data = await axios.put(`${server}/api/admin/${user.id}`, userdata);
-        //console.log(data)
-
+        console.log(data)
+        console.log(userdata)
         if(data) router.push("/admin/userdetail")
 
         setuserdata({
