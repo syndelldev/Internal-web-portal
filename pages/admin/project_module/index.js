@@ -76,7 +76,7 @@ const onSubmit = async () =>{
 }
 
 
-function AddUser({ project_details }) {
+function AddProject({ project_details }) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
 
@@ -112,7 +112,9 @@ function AddUser({ project_details }) {
                       <h5>Project Members:</h5>
                       <p>{project.project_person}</p>
                       {/* <Button color="primary" type="submit" id={project.project_id}>Edit</Button> */}
-                      <Button color="primary" type="submit" id={project.project_id}>Delete</Button>
+                      {/* <Button color="primary" id={project.project_id}  >Delete</Button>
+                      <button color="primary" id={project.project_id}>Delete</button> */}
+                      
                       {console.log(project.project_id)}
                   </CardBody>
 
@@ -133,6 +135,6 @@ function AddUser({ project_details }) {
   );
 }
 
-AddUser.layout = Admin;
+AddProject.layout = Admin;
 
-export default AddUser;
+export default AddProject;

@@ -44,35 +44,71 @@ import {
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 import { useCookies } from 'react-cookie';
 
-function Dashboard() {
-  
-  
-  // const [data,setData] = useState('')
-  // useEffect(()=>{
-  //   const url=`${server}/api/admin/login/`;
-  //   const fetchData=async()=>{
-  //     try{
-  //       const response=await fetch(url);
-  //       const json=await response.json();
-  //       console.log(response)
-  //     }
-  //     catch(err){
-  //       console.log(err)
-  //     }
-  //   }
-  //   fetchData();
-  // },[])
+export async function getServerSideProps(){
+  const res = await fetch(`${server}/api/user/user_project_list`);
+  const project_details = await res.json();
+  // console.log(project_details);
 
+  return{ props: {project_details} }
+}
+
+function Dashboard( {project_details} ) {
+ 
   const [cookies, setCookie] = useCookies('');
-  //console.log(cookies.name);
+  console.log(cookies.name);
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   return (
     <>
       <div>
-        <button>view</button>
-        <h1>Welcome {cookies.name} </h1>
+        <h6>Welcome {cookies.name} </h6>
       </div>
+      {project_details.map((project)=>{
+      return(<>
+
+      <GridContainer>
+        <GridItem xs={12} sm={12} md={6}>
+            <form>
+            <Card>
+                <CardHeader color="primary">
+                    <h4 className={classes.cardTitleWhite}>Project</h4>
+                    <p className={classes.cardCategoryWhite}>{project.project_title}</p>
+                </CardHeader>
+
+                  <CardBody>
+                      <h5>Project Priority:</h5>
+                      <p>{project.project_priority}</p>
+
+                      <h5>Project Description:</h5>
+                      <p>{project.project_description}</p>
+
+                      <h5>Project Language:</h5>
+                      <p>{project.project_language}</p>
+
+                      <h5>Project Comment:</h5>
+                      <p>{project.project_comment}</p>
+
+                      <h5>Project Members:</h5>
+                      <p>{project.project_person}</p>
+                      {/* <Button color="primary" type="submit" id={project.project_id}>Edit</Button> */}
+                      {/* <Button color="primary" id={project.project_id}  >Delete</Button>
+                      <button color="primary" id={project.project_id}>Delete</button> */}
+                      
+                      {console.log(project.project_id)}
+                  </CardBody>
+
+                    <CardFooter>
+                        {/* <Button color="primary" type="submit">Edit</Button>
+                        <Button color="primary" type="submit">Delete</Button> */}
+                    </CardFooter>
+                </Card>
+            </form>
+        </GridItem>
+      </GridContainer>
+      </>
+              )
+            })
+            }
     </>
   );
 }
