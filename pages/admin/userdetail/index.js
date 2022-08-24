@@ -23,6 +23,8 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import styles from "assets/jss/nextjs-material-dashboard/components/tableStyle.js";
 
+import Search from "@material-ui/icons/Search";
+
 import avatar from "assets/img/faces/marc.jpg";
 import axios from "axios";
 
@@ -37,20 +39,37 @@ export async function getServerSideProps(context){
 } 
 
 function UserDetail({UserDetail}) {
+  console.log(UserDetail);
 
+  //Search Filter
+  const [filteredResults, setFilteredResults] = useState([]);
+  const [searchInput, setSearchInput] = useState('');
 
+  const searchItems = (searchValue) => {
+    setSearchInput(searchValue)
+    if (searchInput !== '') {
+        const filteredData = UserDetail.filter((item) => {
+            return Object.values(item).join('').toLowerCase().includes(searchInput.toLowerCase())
+        })
+        setFilteredResults(filteredData)
+    }
+    else{
+        setFilteredResults(UserDetail)
+    }
+  }
+  console.log(filteredResults)
+  //Status Active
   const [value, setvalue] = useState('Active');
 
   const toggleChange = () => {
-    if(value==='Active'){
-      setvalue('Deactive')
-    }
-    else if(value==='Deactive'){
-      setvalue('Active')
-    }
-   
+    // if(value==='Active'){
+    //   setvalue('Deactive')
+    // }
+    // else if(value==='Deactive'){
+    //   setvalue('Active')
+    // }
   }
-
+  //Delete User
   const deleteUser = async(id) =>{
 
     let delUser = await axios.put(`${server}/api/admin/${id}`,{status:value})
@@ -59,12 +78,12 @@ function UserDetail({UserDetail}) {
     //console.log(delUser);
     console.log(value)
 
-    // if(value==='Active'){
-    //   setvalue('Deactive')
-    // }
-    // else if(value==='Deactive'){
-    //   setvalue('Active')
-    //}
+    if(value==='Active'){
+      setvalue('Deactive')
+    }
+    else if(value==='Deactive'){
+      setvalue('Active')
+    }
    
 
   }
@@ -77,6 +96,21 @@ function UserDetail({UserDetail}) {
   const classes = useStyles();
   return (
     <div>
+      <div className={classes.searchWrapper}>
+        <CustomInput
+          formControlProps={{
+            className: classes.margin + " " + classes.search,
+          }}
+          onChange={(e) => searchItems(e.target.value)}
+        />
+        <Button color="white" aria-label="edit" justIcon round>
+          <Search />
+        </Button>
+        <input icon='search'
+          placeholder='Search...'
+          onChange={(e) => searchItems(e.target.value)}
+        />
+      </div>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
         <Button color="primary"><a href='/admin/adduser'>Add New User</a></Button>
@@ -103,6 +137,48 @@ function UserDetail({UserDetail}) {
                     <TableCell>Action</TableCell>
                   </TableRow>
                 </TableHead>
+                {searchInput.length > 1 ? (
+                <TableBody>
+                {filteredResults.map((user)=>{
+                  return(
+                    <TableRow key={user.id} className={classes.tableHeadRow}>
+                      <TableCell>{user.id}</TableCell>
+                      <TableCell>{user.username}</TableCell>
+                      <TableCell>{user.password}</TableCell>
+                      <TableCell>{user.email}</TableCell>
+                      <TableCell>{user.mobile_no}</TableCell>
+                      <TableCell>{user.department}</TableCell>
+                      <TableCell>{user.position}</TableCell>
+                      <TableCell>
+                      <div>
+                        <label className="switch">
+                          <a>
+                            <input type="checkbox" name="status" value={user.status} defaultChecked={user.status === 'Active'}  onClick={()=>deleteUser(user.id)} />
+                            <span className="slider round" ></span>
+                          </a> 
+                        </label>
+                      </div>
+                        {/*<label className="switch">
+                          <a href={`/admin/userdetail/`} onClick={()=>deleteUser(user.id)} >
+                            <input type="checkbox" value={user.status} defaultChecked={user.status === 'Active'  } onChange={toggleChange} />
+                            <span className="slider round" > 
+                          </span>
+                          </a>
+                        </label>*/}
+                      
+                      </TableCell>
+                      <TableCell>{user.role}</TableCell>
+                      <TableCell>{user.creation_time}</TableCell>
+                      <TableCell>
+                        <a href={`/admin/userdetail/${user.id}`}>Edit</a>&nbsp;&nbsp;&nbsp;
+                        {/*<a href={`/admin/userdetail/`} onClick={()=>deleteUser(user.id)}>Delete</a>&nbsp;&nbsp;&nbsp;*/}
+                        <a href={`/admin/viewuser/${user.id}`}>View</a>
+                      </TableCell>
+                    </TableRow>
+                  )
+                })}
+                </TableBody>
+                ) : (
                 <TableBody>
                 {UserDetail.map((user)=>{
                   return(
@@ -143,6 +219,7 @@ function UserDetail({UserDetail}) {
                   )
                 })}
                 </TableBody>
+                )}
               </Table>
             </div>
           </CardBody>
