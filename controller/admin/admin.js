@@ -23,16 +23,7 @@ const getUserById = async (req,res) => {
 
 const AddUser = async (req,res) =>{
     console.log(req.body)
-    console.log(req.body.role_id)
-    console.log(req.body.username)
-    console.log(req.body.password)
-    console.log(req.body.email)
-    console.log(req.body.mobile_num)
-    console.log(req.body.DOB)
-    console.log(req.body.department)
-    console.log(req.body.position)
-    console.log(req.body.status)
-    console.log(req.body.role)
+    
     try{
         //var createUser = await executeQuery("INSERT INTO `tbl_user` ( `username`, `password`, `email`, `mobile_no`, `dob`, `department`,`position`,`status`,`role` ) VALUES (?,?,?,?,?,?,?,?,? )", 
             //[req.body.username, req.body.password, req.body.email, req.body.PhoneNum, req.body.DOB, req.body.department, req.body.position, req.body.status,  req.body.role ] );

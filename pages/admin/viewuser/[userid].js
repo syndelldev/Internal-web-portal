@@ -84,27 +84,27 @@ function ViewUser({UserDetail}){
                     </CardHeader>
                     <CardBody><br/>
                         <div className={classes.typo}>
-                            <div className={classes.note}>Username</div><br/>
+                            <div className={classes.note}>Username</div>
                             <h5>{UserDetail[0].username}</h5>
                         </div>
                         <div className={classes.typo}>
-                            <div className={classes.note}>Position</div><br/>
+                            <div className={classes.note}>Position</div>
                             <h5>{UserDetail[0].position}</h5>
                         </div>
                         <div className={classes.typo}>
-                            <div className={classes.note}>Department</div><br/>
+                            <div className={classes.note}>Department</div>
                             <h5>{UserDetail[0].department}</h5>
                         </div>
                         <div className={classes.typo}>
-                            <div className={classes.note}>Email</div><br/>
+                            <div className={classes.note}>Email</div>
                             <h5>{UserDetail[0].email}</h5>
                         </div>
                         <div className={classes.typo}>
-                            <div className={classes.note}>Mobile No.</div><br/>
+                            <div className={classes.note}>Mobile No.</div>
                             <h5>{UserDetail[0].mobile_no}</h5>
                         </div>
                         <div className={classes.typo}>
-                            <div className={classes.note}>Date of Birth</div><br/>
+                            <div className={classes.note}>Date of Birth</div>
                             <h5>{UserDetail[0].dob}</h5>
                         </div>
                     </CardBody>
