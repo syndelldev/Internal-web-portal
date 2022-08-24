@@ -71,6 +71,7 @@ export default function home()
                     setCookie('Department', data[0].department, { path:'/' , maxAge:3600, sameSite:true, });
                     setCookie('Position', data[0].position, { path:'/' , maxAge:3600, sameSite:true, });
                     setCookie('Role', data[0].role, { path:'/' , maxAge:3600, sameSite:true, });
+                    setCookie('Position', data[0].position, { path:'/' , maxAge:3600, sameSite:true, });
 
                     toast.success('Login Successfully! 🎉', {
                         position: "top-right",
@@ -88,6 +89,7 @@ export default function home()
                     setCookie('Department', data[0].department, { path:'/' , maxAge:3600, sameSite:true, });
                     setCookie('Position', data[0].position, { path:'/' , maxAge:3600, sameSite:true, });
                     setCookie('Role', data[0].role, { path:'/' , maxAge:3600, sameSite:true, });
+                    setCookie('Position', data[0].position, { path:'/' , maxAge:3600, sameSite:true, });
 
                     toast.success('Login Successfully! 🎉', {
                         position: "top-right",
