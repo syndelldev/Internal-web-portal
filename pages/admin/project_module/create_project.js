@@ -68,7 +68,7 @@ function AddUser({ User_name }) {
     
     const res = await fetch(`${server}/api/project/addproject`,{
       method: "POST",
-      headers: { "Content-Type": "application/json",},
+      headers: { "Content-Type": "application/json" },
       body:JSON.stringify({project_person:allSelectedUser, project_title:result.project_title, project_description:result.project_description, project_language:result.project_language, project_comment:result.project_comment, project_priority:result.project_priority, project_start: result.start , project_deadline: result.end }),
     })
     const data=await res.json()

@@ -22,7 +22,7 @@ import { server } from 'config';
 import avatar from "assets/img/faces/marc.jpg";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { MultiSelect } from "react-multi-select-component";
+import LibraryBooks from "@material-ui/icons/LibraryBooks";
 
 
 const styles = {
@@ -42,6 +42,22 @@ const styles = {
     marginBottom: "3px",
     textDecoration: "none",
   },
+  cardWhite: {
+    color: "#FFFFFF",
+    marginTop: "0px",
+    minHeight: "auto",
+    fontWeight: "300",
+    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+    marginBottom: "3px",
+    textDecoration: "none",
+    background: "linear-gradient(60deg, #ab47bc, #8e24aa)",
+    float: "right",
+  },
+  img:{
+    marginLeft: "auto",
+    marginRight: "auto",
+    width: "35px",
+  }
 };
 
 
@@ -79,44 +95,55 @@ const onSubmit = async () =>{
 function AddProject({ project_details }) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
-
   return (
     <>
-      <Button type="submit" ><a href='/admin/project_module/create_project'  color="primary">Create Project</a></Button>
+      <Button type="submit" className={classes.cardWhite}><a href='/admin/project_module/create_project' className={classes.cardWhite}>Create Project</a></Button><br/><br/>
 
+    <GridContainer>
     {project_details.map((project)=>{
-    return(<>
 
-      <GridContainer>
-        <GridItem xs={12} sm={12} md={6}>
+    if(project.project_status == "active"){
+
+      const bDate = ((project.project_deadline).substr(0,10).split("-",3));
+      console.log(bDate);
+      // const blogDate = (bDate[2]).concat(".",bDate[1]).concat(".",bDate[0]);
+      console.log(bDate[1]);
+    return(
+    <>
+        <GridItem xs={6} sm={6} md={3}>
             <form>
             <Card>
                 <CardHeader color="primary">
-                    <h4 className={classes.cardTitleWhite}>Project</h4>
-                    <p className={classes.cardCategoryWhite}>{project.project_title}</p>
+
+                  {project.project_language}
+
+                  <img src="/reactlogo.png" className={classes.img}/>
+
+                    <h4 className={classes.cardTitleWhite}>{project.project_title}</h4>
+                    <p className={classes.cardCategoryWhite}></p>
                 </CardHeader>
 
                   <CardBody>
-                      <h5>Project Priority:</h5>
-                      <p>{project.project_priority}</p>
+                    <GridContainer>
+                      <GridItem>
+                        <p>Project Priority:</p>
+                        <p>{project.project_priority}</p>
+                      </GridItem>
+                      
+                      <GridItem>
+                        <p>Project Deadline:</p>
+                        <p>{bDate[2]}/{bDate[1]}/{bDate[0]}</p>
+                      </GridItem>
+                    </GridContainer>
 
-                      <h5>Project Description:</h5>
-                      <p>{project.project_description}</p>
-
-                      <h5>Project Language:</h5>
-                      <p>{project.project_language}</p>
-
-                      <h5>Project Comment:</h5>
-                      <p>{project.project_comment}</p>
-
-                      <h5>Project Members:</h5>
+                      <p>Project Members:</p>
                       <p>{project.project_person}</p>
+
                       {/* <Button color="primary" type="submit" id={project.project_id}>Edit</Button> */}
                       {/* <Button color="primary" id={project.project_id}  >Delete</Button>
                       <button color="primary" id={project.project_id}>Delete</button> */}
                       
-                      {console.log(project.project_id)}
-                  </CardBody>
+                    </CardBody>
 
                     <CardFooter>
                         {/* <Button color="primary" type="submit">Edit</Button>
@@ -125,12 +152,11 @@ function AddProject({ project_details }) {
                 </Card>
             </form>
         </GridItem>
-      </GridContainer>
       </>
-                      )
-                    })
-                    }
-
+            )}
+        })
+     }
+</GridContainer>
     </>
   );
 }

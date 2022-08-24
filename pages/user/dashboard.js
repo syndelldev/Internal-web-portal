@@ -42,12 +42,19 @@ import {
 } from "variables/charts.js";
 
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
-import { useCookies } from 'react-cookie';
+import { Cookies, useCookies } from 'react-cookie';
 
-export async function getServerSideProps(){
-  const res = await fetch(`${server}/api/user/user_project_list`);
+export async function getServerSideProps(request){
+  const res = await fetch(`${server}/api/user/user_project_list`,{
+    method: "GET",
+    headers: { cookie: request.headers }
+  });
   const project_details = await res.json();
   // console.log(project_details);
+  // console.log(request);
+  console.log("cookie1");
+  console.log(request.req.cookies.name);
+  console.log("cookie");
 
   return{ props: {project_details} }
 }
@@ -94,7 +101,7 @@ function Dashboard( {project_details} ) {
                       {/* <Button color="primary" id={project.project_id}  >Delete</Button>
                       <button color="primary" id={project.project_id}>Delete</button> */}
                       
-                      {console.log(project.project_id)}
+                      
                   </CardBody>
 
                     <CardFooter>
