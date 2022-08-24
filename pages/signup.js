@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState,useEffect } from "react";
 import { useRouter } from 'next/router'
 import { IoMdEye , IoMdEyeOff , IoMdArrowDropdown } from "react-icons/io";
 import { useForm, Controller } from 'react-hook-form';
@@ -8,12 +8,37 @@ import { server } from 'config';
 import 'react-phone-number-input/style.css'
 import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input'
 
+import PopUp from "components/PopUp/SignUpModel.js";
+
 // import "react-modern-calendar-datepicker/lib/DatePicker.css";
 // import DatePicker from "react-modern-calendar-datepicker";
 
-export default  function SignIn(){
+
+
+
+function SignIn(){
     const { register, watch, handleSubmit, formState: { errors }, setValue, control } = useForm({mode: "onBlur"}); 
     const router = useRouter();
+    
+    const [isShown, setIsShown] = useState(false);
+    const showModal = () => {
+        setIsShown(true);
+    };
+    const closeModal = () => {
+        setIsShown(false);
+    };
+    const dynammicModalClass = () => (isShown ? { display: 'block' } : '');
+
+    useEffect(() => {
+        if (!sessionStorage.popupModal) {
+          const timer = setTimeout(() => {
+            setIsShown(true);
+            sessionStorage.popupModal = 1;
+          }, 2000);
+    
+          return () => clearTimeout(timer);
+        }
+    }, []);
 
 
     const [startDate, setStartDate] = useState();
@@ -55,12 +80,16 @@ export default  function SignIn(){
     }
     return(
         <>
+
             <section className='login-section'>
                 <div className='container login-container'>
                     <div className='login-div'>
                         <h2 className='login-title'>Automation Tool SignIn</h2>
-                        <form method="POST" onSubmit={handleSubmit(onSubmit)} >
+
                         
+
+                        <form method="POST" onSubmit={handleSubmit(onSubmit)} >
+
                             <div className="form-group">
                                 <input type="hidden" className="form-control signup-input" name="role" value="User" {...register('role',  { required: "Please enter your name", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
                                 <div className="error-msg">{errors.role && <p>{errors.role.message}</p>}</div>
@@ -178,6 +207,9 @@ export default  function SignIn(){
                     </div>
                 </div>
             </section>
+           
         </>
     )
 } 
+
+export default SignIn
