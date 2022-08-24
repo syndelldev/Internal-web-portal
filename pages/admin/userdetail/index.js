@@ -96,28 +96,24 @@ function UserDetail({UserDetail}) {
   const classes = useStyles();
   return (
     <div>
-      <div className={classes.searchWrapper}>
-        <CustomInput
-          formControlProps={{
-            className: classes.margin + " " + classes.search,
-          }}
-          onChange={(e) => searchItems(e.target.value)}
-        />
-        <Button color="white" aria-label="edit" justIcon round>
-          <Search />
-        </Button>
-        <input icon='search'
-          placeholder='Search...'
-          onChange={(e) => searchItems(e.target.value)}
-        />
-      </div>
+          
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-        <Button color="primary"><a href='/admin/adduser'>Add New User</a></Button>
+          <div className="userdetail_searchbar">
+              <div><Button color="primary"><a href='/admin/adduser'>Add New User</a></Button></div>
+              <div>
+              <div className="MuiInputBase-root MuiInput-root makeStyles-marginTop-212 MuiInput-underline makeStyles-underline-205 MuiInputBase-formControl MuiInput-formControl">
+                <input type="text" placeholder="Search User Detail" className="MuiInputBase-input MuiInput-input"  onChange={(e) => searchItems(e.target.value)} />
+              </div>
+              <Button color="white" aria-label="edit" justIcon round>
+                <Search />
+              </Button>
+              </div>
+          </div>
+       
           <Card>
             <CardHeader color="primary">
               <h4 className={classes.cardTitleWhite}>User Details</h4>
-              {/*<p className={classes.cardCategoryWhite}>Here is a subtitle for this table</p>*/}
             </CardHeader>
             <CardBody>
             <div className={classes.tableResponsive}>

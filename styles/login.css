@@ -234,3 +234,8 @@ button.login-create-acc-btn:active{
     color: #000!important;
 }
 
+/*userdetail css start*/
+.userdetail_searchbar{
+    display: flex!important;
+    justify-content: space-between!important;
+  }
