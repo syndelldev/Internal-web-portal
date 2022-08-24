@@ -136,7 +136,7 @@ function UserDetail({UserDetail}) {
                       <TableCell>{user.creation_time}</TableCell>
                       <TableCell>
                         <a href={`/admin/userdetail/${user.id}`}>Edit</a>&nbsp;&nbsp;&nbsp;
-                        <a href={`/admin/userdetail/`} onClick={()=>deleteUser(user.id)}>Delete</a>&nbsp;&nbsp;&nbsp;
+                        {/*<a href={`/admin/userdetail/`} onClick={()=>deleteUser(user.id)}>Delete</a>&nbsp;&nbsp;&nbsp;*/}
                         <a href={`/admin/viewuser/${user.id}`}>View</a>
                       </TableCell>
                     </TableRow>

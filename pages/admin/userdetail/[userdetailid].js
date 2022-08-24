@@ -61,6 +61,7 @@ function UserById(data){
     console.log(user)
 
     const [userdata, setuserdata] = useState({
+      role_id:"",
       username: "",
       password: "",
       email: "",
@@ -115,7 +116,7 @@ function UserById(data){
                     <GridContainer>  
                         <GridItem xs={12} sm={12} md={12}>
                           <div className="form-group">
-                            <input type="num" className="form-control signup-input" name="role_id" placeholder="enter your email" value={userdata.role_id} onChange={handleChange}  />
+                            <input type="hidden" className="form-control signup-input" name="role_id" placeholder="enter your email" value={userdata.role_id} onChange={handleChange}  />
                           </div> 
                         </GridItem>
                       </GridContainer><br/>
