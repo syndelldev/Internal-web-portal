@@ -69,28 +69,6 @@ export async function getServerSideProps(){
   return{ props: {project_details} }
 }
 
-const onSubmit = async () =>{
-    
-  console.log(project_id);
-  
-  const res = await fetch(`${server}/api/project/delete_project_api`,{
-    method: "GET",
-    headers: { "Content-Type": "application/json",},
-    // body:JSON.stringify({project_person:allSelectedUser, project_title:result.project_title, project_description:result.project_description, project_language:result.project_language, project_comment:result.project_comment, project_priority:result.project_priority }),
-  })
-  const data=await res.json();
-  console.log(data)
-  if(res.status==200)
-  {
-    alert("success");
-    // router.push("/admin/userdetail");
-  }
-  else
-  {
-    alert("Fail");
-  }
-}
-
 
 function AddProject({ project_details }) {
   const useStyles = makeStyles(styles);
@@ -105,7 +83,7 @@ function AddProject({ project_details }) {
     if(project.project_status == "active"){
 
       const bDate = ((project.project_deadline).substr(0,10).split("-",3));
-      console.log(bDate);
+      // console.log(bDate);
     return(
     <>
         <GridItem xs={6} sm={6} md={3}>
@@ -138,8 +116,7 @@ function AddProject({ project_details }) {
                       <p>{project.project_person}</p>
 
                       {/* <Button color="primary" type="submit" id={project.project_id}>Edit</Button> */}
-                      {/* <Button color="primary" id={project.project_id}  >Delete</Button>
-                      <button color="primary" id={project.project_id}>Delete</button> */}
+                      <a href={`${server}/api/project/${project.project_id}`}>Delete</a>
                       
                     </CardBody>
 

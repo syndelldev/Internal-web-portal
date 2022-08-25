@@ -1,9 +1,9 @@
 import nc from "next-connect";
-import { getAllUser } from "../../../controller/project";
+import { getAllProject } from "../../../controller/project";
 
 const handler=nc();
 
-handler.get(getAllUser);
+handler.get(getAllProject);
 
 
 export default handler;

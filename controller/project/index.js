@@ -1,21 +1,25 @@
 //import pool from "../../config/db";
 import { executeQuery } from "../../config/db";
 
-const getAllUser = async (req,res) =>{
+const getAllProject = async (req,res) =>{
     try{
-        let userData=await executeQuery(" SELECT * FROM `tbl_project` ", [] );
-        res.send(userData);
+        let projectData=await executeQuery(" SELECT * FROM `tbl_project` ", [] );
+        res.send(projectData);
     }
     catch(err){
         res.status(500).json(err);
     }
 }
 
-const getUserById = async (req,res) => {
-    let id = req.query.id;
+const getProjectById = async (req,res) => {
+    let id = req.query.project_id;
+    console.log(req.query);
+    console.log(req.query);
+
     try{
-        let userDataById=await executeQuery(` SELECT * FROM tbl_project where id= ${id}`, [] );
-        res.status(200).json(userDataById);
+        // let projectById=await executeQuery(` SELECT * FROM tbl_project`);
+        let projectById=await executeQuery(` SELECT * FROM tbl_project where project_id= ${id}`, [] );
+        res.status(200).json(projectById);
     }
     catch(err){
         res.status(500).json(err);
@@ -33,14 +37,16 @@ const getUserById = async (req,res) => {
 //     }
 // }
 
-const deleteUser = async (req,res) => {
-    //let id = req.query.id;
+const deleteProject = async (req,res) => {
+    let id = req.query.project_id;
+    console.log(req.query.project_id);
+
     try{
-        let delUser = await executeQuery("UPDATE `tbl_project` SET `project_status` = 'Inactive' WHERE `tbl_project`.`project_id` = ", [req.query.id] )
-        res.status(200).json(delUser);
+        let delProject = await executeQuery("UPDATE `tbl_project` SET `project_status` = 'deactivate' WHERE `tbl_project`.`project_id` = ?", [req.query.project_id] )
+        res.status(200).json(delProject);
     }
     catch(err){
         res.status(500).json(err);
     }
 }
-export { getAllUser,getUserById,deleteUser }
+export { getAllProject,getProjectById,deleteProject }
