@@ -56,6 +56,14 @@ const dashboardRoutes = [
     layout: "/admin",
   },
   {
+    path: "/project_module",
+    name: "Create Project",
+    rtlName: "قائمة الجدول",
+    icon: "person",
+
+    layout: "/admin",
+  },
+  {
     path: "/user-rights",
     name: "User Rights",
     rtlName: "قائمة الجدول",
