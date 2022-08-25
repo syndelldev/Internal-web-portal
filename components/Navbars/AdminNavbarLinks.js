@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from 'next/router'
 import classNames from "classnames";
 // @material-ui/core components
@@ -27,6 +27,8 @@ import styles from "assets/jss/nextjs-material-dashboard/components/headerLinksS
 import { useCookies } from 'react-cookie';
 
 export default function AdminNavbarLinks() {
+  const [avtar, setavtar] = useState('');
+
   const router = useRouter();
   const [cookies, setCookie, removeCookie ] = useCookies();
   const logoutfunc = () => {
@@ -184,10 +186,25 @@ export default function AdminNavbarLinks() {
           className={classes.buttonLink}  
         >
           <Person className={classes.icons} />
+          
           <Hidden mdUp implementation="css">
             <p className={classes.linkText}>Profile</p>
           </Hidden>
-        </Button>
+        </Button>{/*/public/avtar.png*/}
+        <img src="/avtar.png" alt="/avtar.png" width={100} height={100} />
+        <input 
+            type='file' 
+            accept="/image/*"
+            onChange={(e)=>{
+              const file = e.target.files[0];
+              if(file && file.type.substring(0,5)==="image"){
+                setavtar(file);
+              }
+              else{
+                setavtar(null)
+              }
+            }}
+          />
         <Poppers
           open={Boolean(openProfile)}
           anchorEl={openProfile}

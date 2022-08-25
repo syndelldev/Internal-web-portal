@@ -44,22 +44,22 @@ function UserRights({rights}){
     const useStyles = makeStyles(styles);
     const classes = useStyles();
 
-    const [query, setQuery] = useState(1);
-    const [admin,setadmin] =  useState([])
+    // const [query, setQuery] = useState(1);
+    // const [admin,setadmin] =  useState([])
 
-    useEffect(()=>{
-        console.log(query);
-        axios.get(`${server}/api/rights/${query}`)
-        .then((res) =>{
-            setadmin(res.data);
-            //console.log(res.data);
-        })
-    },[query])
-    console.log(admin) 
+    // useEffect(()=>{
+    //     console.log(query);
+    //     axios.get(`${server}/api/rights/${query}`)
+    //     .then((res) =>{
+    //         setadmin(res.data);
+    //         //console.log(res.data);
+    //     })
+    // },[query])
+    // console.log(admin) 
     
     return(
         <>
-            <GridContainer>
+            {/*<GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                     <Card>
                         <CardHeader color="primary">
@@ -68,7 +68,7 @@ function UserRights({rights}){
                         <CardBody>
                             <GridItem xs={12} sm={12} md={6}>
                                 <div className="form-group">
-                                <DropdownButton id="dropdown-item-button" title="API Links" onSelect={setQuery} >{/*onSelect={setQuery}*/}
+                                <DropdownButton id="dropdown-item-button" title="API Links" onSelect={setQuery} >
                                     <Dropdown.Item as="button" eventKey="1" >Admin</Dropdown.Item>
                                     <Dropdown.Item as="button" eventKey="2" >User</Dropdown.Item>
                                 </DropdownButton>
@@ -114,7 +114,7 @@ function UserRights({rights}){
                         </CardBody>
                     </Card>
                 </GridItem>
-            </GridContainer>
+                                </GridContainer>*/}
         </>
     )
 }
