@@ -32,7 +32,7 @@ import CardIcon from "components/Card/CardIcon.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 
-//import { bugs, website, server } from "variables/general.js";
+
 import { server } from 'config';
 
 import {
@@ -71,6 +71,7 @@ function Dashboard() {
     <>
       <div>
         <h1>Welcome {cookies.name} </h1>
+
       </div>
     </>
   );
