@@ -224,9 +224,20 @@ function AddUser() {
                           <div className="form-group">
                             <select name="position" id="position" className="form-control signup-input" {...register('position', {required: "Please enter your department" ,message:'Please select atleast one option', })}>
                               <option value="">Select Your Position</option>
-                              <option value="Senior">Senior</option>
-                              <option value="Junior">Junior</option>
-                              <option value="Team Lead">Team Lead</option>
+                              <option value="Junior HR">Junior HR</option>
+                              <option value="Junior UI & UX">Junior UI & UX</option>
+                              <option value="Junior Web development">Junior Web development</option>
+                              <option value="Junior Content writer">Junior Content writer</option>
+                              <option value="Junior Project manager">Junior Project manager</option>
+                              <option value="Junior Mobile App developer">Junior Mobile App developer</option>
+                              <option value="Junior SEO">Junior SEO</option>
+                              <option value="Senior HR">Senior HR</option>
+                              <option value="Senior UI & UX">Senior UI & UX</option>
+                              <option value="Senior Web development">Senior Web development</option>
+                              <option value="Senior Content writer">Senior Content writer</option>
+                              <option value="Senior Project manager">Senior Project manager</option>
+                              <option value="Senior Mobile App developer">Senior Mobile App developer</option>
+                              <option value="Senior SEO">Senior SEO</option>
                             </select>
                             <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                             <div className="error-msg">{errors.position && <p>{errors.position.message}</p>}</div>
