@@ -70,9 +70,18 @@ export async function getServerSideProps(){
 }
 
 
+
+
 function AddProject({ project_details }) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
+  
+  const deleteProject = async(id) =>{
+    console.log('delete');
+    console.log(id);
+
+    const res = await fetch(`${server}/api/project/${id}`);
+  }
   return (
     <>
       <Button type="submit" className={classes.cardWhite}><a href='/admin/project_module/create_project' className={classes.cardWhite}>Create Project</a></Button><br/><br/>
@@ -116,7 +125,8 @@ function AddProject({ project_details }) {
                       <p>{project.project_person}</p>
 
                       {/* <Button color="primary" type="submit" id={project.project_id}>Edit</Button> */}
-                      <a href={`${server}/api/project/${project.project_id}`}>Delete</a>
+                      <a href={`${server}/admin/project_module/${project.project_id}`}>Edit</a>
+                      <button onClick={()=>deleteProject(project.project_id)}>Delete</button>
                       
                     </CardBody>
 
