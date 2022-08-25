@@ -81,6 +81,7 @@ function AddProject({ project_details }) {
     console.log(id);
 
     const res = await fetch(`${server}/api/project/${id}`);
+    
   }
   return (
     <>
