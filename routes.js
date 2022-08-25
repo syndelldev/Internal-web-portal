@@ -55,14 +55,14 @@ const dashboardRoutes = [
     icon: Person,
     layout: "/admin",
   },
-  // {
-  //   path: "/user-rights",
-  //   name: "User Rights",
-  //   rtlName: "قائمة الجدول",
-  //   icon: "content_paste",
+  {
+    path: "/user-rights",
+    name: "User Rights",
+    rtlName: "قائمة الجدول",
+    icon: "content_paste",
 
-  //   layout: "/admin",
-  // },
+    layout: "/admin",
+  },
   // {
   //   path: "/typography",
   //   name: "Typography",

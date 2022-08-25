@@ -7,13 +7,13 @@ async function signin(req,res){
         try{
 
             console.log(req.body);
-            console.log(req.body.position);
+            console.log(req.body.avtar);
 
             // var signinQuery = await executeQuery("INSERT INTO `tbl_user` ( `username`, `password`, `email`, `mobile_no`, `dob`, `department`) VALUES (?,?,?,?,?,? ) WHERE NOT EXISTS (SELECT 1 FROM tbl_user WHERE email = ?)" , 
             // [req.body.username, req.body.password, req.body.email, req.body.PhoneNum, req.body.dob, req.body.department ] );
 
-            var signinQuery = await executeQuery("INSERT INTO `tbl_user` ( `username`, `password`, `email`, `mobile_no`, `dob`, `department`, `position` ,`role`,`status` ) VALUES (?,?,?,?,?,?,?,?,? )", 
-            [req.body.username, req.body.password, req.body.email, req.body.PhoneNum, req.body.dob, req.body.department, req.body.position, req.body.role, req.body.status ] );
+            var signinQuery = await executeQuery("INSERT INTO `tbl_user` ( `role_id`,`username`, `password`, `email`, `mobile_no`, `dob`, `department`, `position` ,`role`,`status`,`avtar` ) VALUES (?,?,?,?,?,?,?,?,?,?,? )", 
+            [req.body.role_id, req.body.username, req.body.password, req.body.email, req.body.PhoneNum, req.body.dob, req.body.department, req.body.position, req.body.role, req.body.status, req.body.avtar ] );
 
             res.status(200).json(signinQuery);
 

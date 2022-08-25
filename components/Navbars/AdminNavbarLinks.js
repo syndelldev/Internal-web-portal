@@ -21,16 +21,30 @@ import CustomInput from "components/CustomInput/CustomInput.js";
 import Button from "components/CustomButtons/Button.js";
 import useWindowSize from "components/Hooks/useWindowSize.js";
 
+import axios from "axios";
 import styles from "assets/jss/nextjs-material-dashboard/components/headerLinksStyle.js";
-//import Cookies from "js-cookie";
-
+import { server } from 'config';
 import { useCookies } from 'react-cookie';
 
-export default function AdminNavbarLinks() {
-  const [avtar, setavtar] = useState('');
+axios.defaults.withCredentials=true;
+
+export default function AdminNavbarLinks({useravtar}) {
+
+  
+  useEffect(async() => {
+
+    const res = await fetch(`${server}/api/admin/${cookies.Id}`)
+    const useravtar=await res.json()
+    
+    console.log(useravtar)
+
+  }, []);
+  
+  console.log(useravtar)
 
   const router = useRouter();
   const [cookies, setCookie, removeCookie ] = useCookies();
+  console.log(cookies.Id)
   const logoutfunc = () => {
     removeCookie('name', { path:'/' } );
     removeCookie('Email', { path:'/' } );
@@ -39,9 +53,14 @@ export default function AdminNavbarLinks() {
     removeCookie('Department', { path:'/' } );
     removeCookie('Position', { path:'/' } );
     removeCookie('Role', { path:'/' } );
+    removeCookie('Avtar', { path:'/' } );
+    removeCookie('Id', { path:'/' } );
 
     router.push("/login");
   }
+ 
+
+
   const size = useWindowSize();
   const useStyles = makeStyles(styles);
   const classes = useStyles();
@@ -85,6 +104,15 @@ export default function AdminNavbarLinks() {
           <Search />
         </Button>
         </div>
+        
+       {/*} {useravtar.map((avtar)=>{
+          return(
+            <div key={avtar.id}>
+              <p>{avtar.id}</p>
+            </div>
+          )
+        })}*/}
+        
       {/*<Button
         color={size.width > 959 ? "transparent" : "white"}
         justIcon={size.width > 959}
@@ -190,9 +218,9 @@ export default function AdminNavbarLinks() {
           <Hidden mdUp implementation="css">
             <p className={classes.linkText}>Profile</p>
           </Hidden>
-        </Button>{/*/public/avtar.png*/}
-        <img src="/avtar.png" alt="/avtar.png" width={100} height={100} />
-        <input 
+        </Button>
+        
+        {/*<input 
             type='file' 
             accept="/image/*"
             onChange={(e)=>{
@@ -204,7 +232,7 @@ export default function AdminNavbarLinks() {
                 setavtar(null)
               }
             }}
-          />
+          />*/}
         <Poppers
           open={Boolean(openProfile)}
           anchorEl={openProfile}
