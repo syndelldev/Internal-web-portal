@@ -89,7 +89,7 @@ export default function home()
                     setCookie('Department', data[0].department, { path:'/' , maxAge:3600, sameSite:true, });
                     setCookie('Position', data[0].position, { path:'/' , maxAge:3600, sameSite:true, });
                     setCookie('Role', data[0].role, { path:'/' , maxAge:3600, sameSite:true, });
-                    setCookie('Position', data[0].position, { path:'/' , maxAge:3600, sameSite:true, });
+                    
 
                     toast.success('Login Successfully! 🎉', {
                         position: "top-right",
@@ -123,8 +123,8 @@ return(
                         <form method='POST' className="login-main" onSubmit={login} >
                             <div id='personal-account'>
                                 <div className="form-group"  >
-                                    <label htmlFor="ba-num"  className='form-label'>Username</label>
-                                    <input type="email" name="email" value={email} placeholder="Enter your name" onChange={e=>setemail(e.target.value)} className='form-control login-input' />
+                                    <label htmlFor="ba-num"  className='form-label'>Email</label>
+                                    <input type="email" name="email" value={email} placeholder="Enter your email" onChange={e=>setemail(e.target.value)} className='form-control login-input' />
                                     <span className='icon-eyes'><IoMdMail /></span>
                                     <span className='error-msg' id='erremail'></span>
                                 </div>

@@ -91,7 +91,7 @@ function SignIn(){
                             </div>
                             <div className="form-group">
                                 <label htmlFor="email" className='form-label label' >Email</label>
-                                <input type="text" className="form-control signup-input" name="email" placeholder="email@syndelltech.in" {...register('email', { required: 'Please enter your email', pattern: {value: /^[a-z0-9]+(?!.*(?:\+{2,}|\-{2,}|\.{2,}))(?:[\.+\-]{0,1}[a-z0-9])*@syndelltech\.in$/ , message: 'Please enter a valid email ex:email@syndelltech.in',},} )} />
+                                <input type="text" className="form-control signup-input" name="email" placeholder="email@syndelltech.in" {...register('email', { required: 'Please enter your email', pattern: {value: /^[a-zA-Z0-9]+@+syndelltech+.+[A-z]$/ , message: 'Please enter a valid email ex:email@syndelltech.in',},} )} />
                                 <div className="error-msg">{errors.email && <p>{errors.email.message}</p>}</div>
                             </div>
                             <div className="form-group">
@@ -173,9 +173,23 @@ function SignIn(){
                                 <label htmlFor="position" className='form-label label' >Position</label><br/>
                                 <select name="position" id="position" className="form-control signup-input" {...register('position', {required: "Please enter your department" ,message:'Please select atleast one option', })}>
                                     <option value="">Select Your Position</option>
-                                    <option value="Senior">Senior</option>
+                                    {/*<option value="Senior">Senior</option>
                                     <option value="Junior">Junior</option>
-                                    <option value="Team Lead">Team Lead</option>
+                                    <option value="Team Lead">Team Lead</option>*/}
+                                    <option value="Junior HR">Junior HR</option>
+                                    <option value="Junior UI & UX">Junior UI & UX</option>
+                                    <option value="Junior Web development">Junior Web development</option>
+                                    <option value="Junior Content writer">Junior Content writer</option>
+                                    <option value="Junior Project manager">Junior Project manager</option>
+                                    <option value="Junior Mobile App developer">Junior Mobile App developer</option>
+                                    <option value="Junior SEO">Junior SEO</option>
+                                    <option value="Senior HR">Senior HR</option>
+                                    <option value="Senior UI & UX">Senior UI & UX</option>
+                                    <option value="Senior Web development">Senior Web development</option>
+                                    <option value="Senior Content writer">Senior Content writer</option>
+                                    <option value="Senior Project manager">Senior Project manager</option>
+                                    <option value="Senior Mobile App developer">Senior Mobile App developer</option>
+                                    <option value="Senior SEO">Senior SEO</option>
                                 </select>
                                 <span className='icon-eyes'><IoMdArrowDropdown /></span>
                                 <div className="error-msg">{errors.position && <p>{errors.position.message}</p>}</div>
