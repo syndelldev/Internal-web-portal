@@ -161,19 +161,28 @@ function UserById(data){
                         <GridItem xs={12} sm={12} md={6}>
                           <div className="form-group">
                             <DatePicker
+                              className={"form-control"}
+                              name="dob"
+                              value={userdata.dob}
+                              onChange={handleChange}
+                              /*onChange={(val) => { setStartDate(val);}}*/
+                              
+                            />
+                            {/*<DatePicker
                               isClearable
                               name="dob"
-                              /*placeholderText={user.dob}
-                              value={userdata.dob}*/
+                              
+                              value={userdata.dob}
                               autoComplete="off"
                               className={"form-control"}
                               selected={startDate}
                               onChange={val => {
                                 setStartDate(val);
-                                setValue("start", val);
+                                //setValue("start", val);
+                                handleChange
                               }}
                               dateFormat="MM-dd-yyyy"
-                            />
+                            />*/}
                             </div>
                         </GridItem>
                       </GridContainer><br/>

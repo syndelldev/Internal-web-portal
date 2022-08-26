@@ -106,12 +106,12 @@ function UserDetail({UserDetail}) {
           <div className="userdetail_searchbar">
               <div><Button color="primary"><a href='/admin/adduser'>Add New User</a></Button></div>
               <div>
-              <div className="MuiInputBase-root MuiInput-root makeStyles-marginTop-212 MuiInput-underline makeStyles-underline-205 MuiInputBase-formControl MuiInput-formControl">
+              {/*<div className="MuiInputBase-root MuiInput-root makeStyles-marginTop-212 MuiInput-underline makeStyles-underline-205 MuiInputBase-formControl MuiInput-formControl">
                 <input type="text" placeholder="Search User Detail" className="MuiInputBase-input MuiInput-input"  onChange={(e) => searchItems(e.target.value)} />
               </div>
               <Button color="white" aria-label="edit" justIcon round>
                 <Search />
-              </Button>
+              </Button>*/}
               </div>
           </div>
        
@@ -137,7 +137,7 @@ function UserDetail({UserDetail}) {
                     <TableCell>Action</TableCell>
                   </TableRow>
                 </TableHead>
-                {searchInput.length > 1 ? (
+              {/*}  {searchInput.length > 1 ? (
                 <TableBody>
                 {filteredResults.map((user)=>{
                   return(
@@ -158,27 +158,21 @@ function UserDetail({UserDetail}) {
                           </a> 
                         </label>
                       </div>
-                        {/*<label className="switch">
-                          <a href={`/admin/userdetail/`} onClick={()=>deleteUser(user.id)} >
-                            <input type="checkbox" value={user.status} defaultChecked={user.status === 'Active'  } onChange={toggleChange} />
-                            <span className="slider round" > 
-                          </span>
-                          </a>
-                        </label>*/}
+                        
                       
                       </TableCell>
                       <TableCell>{user.role}</TableCell>
                       <TableCell>{user.dob}</TableCell>
                       <TableCell>
                         <a href={`/admin/userdetail/${user.id}`}><FiEdit/></a>&nbsp;&nbsp;&nbsp;
-                        {/*<a href={`/admin/userdetail/`} onClick={()=>deleteUser(user.id)}>Delete</a>&nbsp;&nbsp;&nbsp;*/}
+                        
                         <a href={`/admin/viewuser/${user.id}`}><FaEye/></a>
                       </TableCell>
                     </TableRow>
                   )
                 })}
                 </TableBody>
-                ) : (
+                ) : ( */}
                 <TableBody>
                 {UserDetail.map((user)=>{
                   return(
@@ -219,7 +213,7 @@ function UserDetail({UserDetail}) {
                   )
                 })}
                 </TableBody>
-                )}
+              {/*}  )}*/}
               </Table>
             </div>
           </CardBody>
