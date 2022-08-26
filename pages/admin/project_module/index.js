@@ -104,20 +104,27 @@ function AddProject({ project_details }) {
                 </CardHeader>
 
                   <CardBody>
-                    <GridContainer>
+                  <GridContainer>
                       <GridItem>
-                        <p>Project Priority:</p>
-                        <p>{project.project_priority}</p>
-                      </GridItem>
-                      
-                      <GridItem>
-                        <p>Project Deadline:</p>
-                        <p>{bDate[2]}/{bDate[1]}/{bDate[0]}</p>
+                        <p>{project.project_language}</p>
                       </GridItem>
                     </GridContainer>
 
-                      <p>Project Members:</p>
-                      <p>{project.project_person}</p>
+                    <GridContainer>
+                      <GridItem>
+                        <p>{project.project_person}</p>
+                      </GridItem>
+                    </GridContainer>
+
+                    <GridContainer>
+                      <GridItem>
+                        <p>Project Priority : {project.project_priority}</p>
+                      </GridItem>
+                      
+                      <GridItem>
+                        <p>Project Deadline : {bDate[2]}/{bDate[1]}/{bDate[0]}</p>
+                      </GridItem>
+                    </GridContainer>
 
                       {/* <Button color="primary" type="submit" id={project.project_id}>Edit</Button> */}
                       <a href={`${server}/admin/project_module/${project.project_id}`}>Edit</a>

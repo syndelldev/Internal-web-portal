@@ -28,14 +28,14 @@ import Multiselect from "multiselect-react-dropdown";
 
 const styles = {
   cardCategoryWhite: {
-    color: "rgba(255,255,255,.62)",
+    color: "#000000",
     margin: "0",
     fontSize: "14px",
     marginTop: "0",
     marginBottom: "0",
   },
   cardTitleWhite: {
-    color: "#FFFFFF",
+    color: "#000000",
     marginTop: "0px",
     minHeight: "auto",
     fontWeight: "300",
