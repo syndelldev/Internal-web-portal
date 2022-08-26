@@ -89,17 +89,20 @@ function AddProject({ project_details }) {
     if(project.project_status == "active"){
 
       const bDate = ((project.project_deadline).substr(0,10).split("-",3));
+      var person = project.project_person.split(",");
+      console.log(person);
+
       // console.log(bDate);
     return(
     <>
-        <GridItem xs={6} sm={6} md={3}>
+        <GridItem xs={6} sm={6} md={4}>
             <form>
             <Card>
                 <CardHeader color="primary">
 
                   <img src={`${server}/reactlogo.png`} className={classes.img}/>
 
-                    <h4 className={classes.cardTitleWhite}>{project.project_title}</h4>
+                    <h4 className="projectTitle">{project.project_title}</h4>
                     <p className={classes.cardCategoryWhite}></p>
                 </CardHeader>
 
@@ -112,7 +115,14 @@ function AddProject({ project_details }) {
 
                     <GridContainer>
                       <GridItem>
-                        <p className="projectPerson">{project.project_person}</p>
+                        {person.map((data)=>{
+                          return(
+                            <>
+                              <p className="projectPerson">{data}</p>
+                            </>
+                          )
+                        })
+                        }
                       </GridItem>
                     </GridContainer>
 
