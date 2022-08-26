@@ -28,14 +28,14 @@ import Multiselect from "multiselect-react-dropdown";
 
 const styles = {
   cardCategoryWhite: {
-    color: "rgba(255,255,255,.62)",
+    color: "#000000",
     margin: "0",
     fontSize: "14px",
     marginTop: "0",
     marginBottom: "0",
   },
   cardTitleWhite: {
-    color: "#FFFFFF",
+    color: "#000000",
     marginTop: "0px",
     minHeight: "auto",
     fontWeight: "300",
@@ -70,28 +70,22 @@ function AddUser({ User_name,project_details }) {
   const [endDate, setEndDate] = useState();
   const router = useRouter();
 
-//   project_details.map((project)=>{
-//     return(
-//         <>
-//             <h2>{project.project_description}</h2>
-//             {console.log("1")}
-//         </>
-//     )
-//   });
-
   const onSubmit = async (result) =>{
     
     console.log("result");
-    console.log(result);
+    alert(uoption.project_id);
+    alert(result.start);
     
     const res = await fetch(`${server}/api/project/update_project`,{
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body:JSON.stringify({project_person:allSelectedUser, project_title:result.project_title, project_description:result.project_description, project_language:result.project_language, project_comment:result.project_comment, project_priority:result.project_priority, project_start: result.start , project_deadline: result.end }),
+      body: JSON.stringify({ project_id:uoption.project_id, project_person:allSelectedUser, project_title: uoption.project_title , project_description:uoption.project_description, project_language:uoption.project_language, project_comment:uoption.project_comment, project_priority:uoption.project_priority, project_start: uoption.start , project_deadline: uoption.end }),
     })
+
     const data=await res.json()
     console.log("data");
     console.log(data);
+
     if(res.status==200)
     {
       // alert("success");
@@ -123,14 +117,8 @@ const allSelectedUser = [];
 for(var i=0; i<selected.length; i++){
   allSelectedUser.push(selected[i].value);
 }
-project_details.map((user)=>{
-  // console.log(user);
-});
-// console.log(project_details[0])
+console.log(allSelectedUser);
 
-// const user = project_details[0].project_title;
-// console.log("user");
-// console.log(user);
 
 const [uoption, setOption] = useState({ 
   project_title: "",
@@ -152,32 +140,40 @@ useEffect(() =>{
   }
   u_data();
 },[]);
-console.log(uoption);
+// console.log(uoption);
 
 const handleChange = ({ target: { name, value } }) =>{
+  console.log("name");
+  console.log([name]);
+
   setOption({ ...uoption, [name]: value });
 }
-console.log("projectInfo");
-console.log(uoption);
+
+// function handleChange(event) {
+//   console.log(event.target.value);
+// }
+
+// console.log("projectInfo");
+// console.log(uoption.project_title);
 
 const allSelectedMember = [];
 const projectMember = (uoption.project_person).split(",");
-console.log(projectMember.length);
+// console.log(projectMember.length);
 
 for(var i=0; i<projectMember.length; i++){
   allSelectedMember.push({'label' :projectMember[i] , 'value' : projectMember[i]});
+  allSelectedUser.push({'label' :projectMember[i] , 'value' : projectMember[i]});
   // var member_project = projectMember[i];
 }
 console.log(allSelectedMember);
-// console.log(member_project);
-
+console.log(selected);
 
 
   return (
     <div>
       <GridContainer>
         <GridItem xs={12} sm={12} md={8}>
-            <form onSubmit={handleSubmit(onSubmit)}>              
+            <form onSubmit={onSubmit}>              
             <Card>
                 <CardHeader color="primary">
                     <h4 className={classes.cardTitleWhite}>Edit Project</h4>
@@ -200,9 +196,9 @@ console.log(allSelectedMember);
 
                         <GridItem xs={12} sm={12} md={12}>                      
                           <div className="form-group">
-                            <input type="text" className="form-control signup-input" name="project_title" value={uoption.project_title} onChange={handleChange} placeholder="Project Title" {...register('project_title',  { required: "Please enter project title"})} />
+                            <input type="text" className="form-control signup-input" name="project_title" value={uoption.project_title} onChange={handleChange} placeholder="Project Title" />
                           <div className="error-msg">{errors.name && <p>{errors.name.message}</p>}</div>
-                          </div> 
+                          </div>
                           <div className="error-msg">{errors.username && <p>{errors.username.message}</p>}</div>
                         </GridItem>
                       </GridContainer><br/>
@@ -210,7 +206,7 @@ console.log(allSelectedMember);
                       <GridContainer>  
                         <GridItem xs={12} sm={12} md={12}>
                           <div className="form-group">
-                            <textarea className="form-control signup-input" name="project_description" value={uoption.project_description} onChange={handleChange} placeholder="Project Description" {...register('project_description', { required: 'Description is required', } )}  />
+                            <textarea className="form-control signup-input" name="project_description" value={uoption.project_description} onChange={handleChange} placeholder="Project Description"   />
                             <div className="error-msg">{errors.email && <p>{errors.email.message}</p>}</div>
                           </div> 
                         </GridItem>
@@ -227,7 +223,7 @@ console.log(allSelectedMember);
                           <div className="form-group">
                             {/*<input type="text" className="form-control signup-input" placeholder="Department" {...register('department',  { required: "Please enter your Department", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
                             <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>*/}
-                            <select name="project_language" id="Project_created_by" value={uoption.project_language} onChange={handleChange} className="form-control signup-input" {...register('project_language', {required:true ,message:'Please select atleast one option', })}>
+                            <select name="project_language" id="Project_created_by" value={uoption.project_language} onChange={handleChange} className="form-control signup-input">
                               <option value="">Select Language</option>
                               <option value="Wordpress">Wordpress</option>
                               <option value="Shopify">Shopify</option>
@@ -250,7 +246,7 @@ console.log(allSelectedMember);
                           </div> 
                         </GridItem> */}
                         <GridItem xs={12} sm={12} md={6}>
-                          <div className="form-group" {...register('project_start')}>
+                          <div className="form-group">
                             <DatePicker
                               placeholderText="Start_Date : dd/mm/yyyy"
                               isClearable
@@ -270,7 +266,7 @@ console.log(allSelectedMember);
                         </GridItem>
 
                         <GridItem xs={12} sm={12} md={6}>
-                          <div className="form-group" {...register('project_deadline')}>
+                          <div className="form-group">
                             <DatePicker
                               placeholderText="End_Date : dd/mm/yyyy"
                               isClearable
@@ -294,7 +290,7 @@ console.log(allSelectedMember);
                       <GridContainer>
                         <GridItem xs={12} sm={12} md={12}>
                           <div className="form-group">
-                            <textarea className="form-control signup-input" name="project_comment" value={uoption.project_comment} onChange={handleChange} placeholder="Comment" {...register('project_comment')} />
+                            <textarea className="form-control signup-input" name="project_comment" value={uoption.project_comment} onChange={handleChange} placeholder="Comment" />
                             <div className="error-msg">{errors.position && <p>{errors.position.message}</p>}</div>
                           </div> 
                         </GridItem>
@@ -305,7 +301,7 @@ console.log(allSelectedMember);
                           <div className="form-group">
                             {/*<input type="text" className="form-control signup-input" placeholder="Status" {...register('status',  { required: "Please enter your Status", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
                             <div className="error-msg">{errors.status && <p>{errors.status.message}</p>}</div>*/}
-                            <select name="project_priority" id="Status" value={uoption.project_priority} onChange={handleChange} className="form-control signup-input" {...register('project_priority', {required:true ,message:'Please select atleast one option', })}>
+                            <select name="project_priority" id="Status" value={uoption.project_priority} onChange={handleChange} className="form-control signup-input">
                               <option value="Select...">Select Project Priority</option>
                               <option value="High">High</option>
                               <option value="Medium">Medium</option>
@@ -317,19 +313,14 @@ console.log(allSelectedMember);
                         </GridItem>
                       
                         <GridItem xs={12} sm={12} md={6}>
-                          <div className="form-group" {...register('project_person')}>
+                          <div className="form-group">
                          
                           <Multiselect
                           displayValue="value"
                             options={uoptions}
+                            selectedValues={allSelectedMember}
                             value={selected}
                             onChange={setSelected}
-                            labelledBy="Select project"
-                            selectedValues={allSelectedMember}
-                            onKeyPressFn={function noRefCheck(){}}
-                            onRemove={function noRefCheck(){}}
-                            onSearch={function noRefCheck(){}}
-                            onSelect={function noRefCheck(){}}
                           />
                           
                             <div className="error-msg">{errors.role && <p>{errors.role.message}</p>}</div>
