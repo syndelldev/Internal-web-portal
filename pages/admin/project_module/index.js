@@ -106,23 +106,23 @@ function AddProject({ project_details }) {
                   <CardBody>
                   <GridContainer>
                       <GridItem>
-                        <p>{project.project_language}</p>
+                        <p className={classes.cardTitleWhite}>{project.project_language}</p>
                       </GridItem>
                     </GridContainer>
 
                     <GridContainer>
                       <GridItem>
-                        <p>{project.project_person}</p>
+                        <p className={classes.cardTitleWhite}>{project.project_person}</p>
                       </GridItem>
                     </GridContainer>
 
                     <GridContainer>
                       <GridItem>
-                        <p>Project Priority : {project.project_priority}</p>
+                        <p className={classes.cardTitleWhite}>Project Priority : {project.project_priority}</p>
                       </GridItem>
                       
                       <GridItem>
-                        <p>Project Deadline : {bDate[2]}/{bDate[1]}/{bDate[0]}</p>
+                        <p className={classes.cardTitleWhite}>Project Deadline : {bDate[2]}/{bDate[1]}/{bDate[0]}</p>
                       </GridItem>
                     </GridContainer>
 
