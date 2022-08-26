@@ -27,14 +27,14 @@ import LibraryBooks from "@material-ui/icons/LibraryBooks";
 
 const styles = {
   cardCategoryWhite: {
-    color: "rgba(255,255,255,.62)",
+    color: "rgba(0,0,0,.62)",
     margin: "0",
     fontSize: "14px",
     marginTop: "0",
     marginBottom: "0",
   },
   cardTitleWhite: {
-    color: "#FFFFFF",
+    color: "#000000",
     marginTop: "0px",
     minHeight: "auto",
     fontWeight: "300",
@@ -43,20 +43,20 @@ const styles = {
     textDecoration: "none",
   },
   cardWhite: {
-    color: "#FFFFFF",
+    color: "#000000",
     marginTop: "0px",
     minHeight: "auto",
     fontWeight: "300",
     fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
     marginBottom: "3px",
     textDecoration: "none",
-    background: "linear-gradient(60deg, #ab47bc, #8e24aa)",
+    background: "#ADD8E6",
     float: "right",
   },
   img:{
     marginLeft: "auto",
     marginRight: "auto",
-    width: "35px",
+    width: "40px",
   }
 };
 
@@ -81,7 +81,7 @@ function AddProject({ project_details }) {
   }
   return (
     <>
-      <Button type="submit" className={classes.cardWhite}><a href='/admin/project_module/create_project' className={classes.cardWhite}>Create Project</a></Button><br/><br/>
+      <Button type="submit" color="primary" className={classes.cardWhite}><a href='/admin/project_module/create_project' className={classes.cardWhite}>Create Project</a></Button><br/><br/>
 
     <GridContainer>
     {project_details.map((project)=>{
@@ -96,8 +96,6 @@ function AddProject({ project_details }) {
             <form>
             <Card>
                 <CardHeader color="primary">
-
-                  {project.project_language}
 
                   <img src={`${server}/reactlogo.png`} className={classes.img}/>
 
