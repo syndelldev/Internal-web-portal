@@ -20,64 +20,61 @@ export async function getServerSideProps(context){
 
   return{ props: {subtasklist} }
 } 
+
 function SubTask({subtasklist}){
     console.log(subtasklist);
     const useStyles = makeStyles(styles);
     const classes = useStyles();
+
+    // onDragEnd = (result) =>{
+    //     if(!result.destination){
+    //         return;
+    //     }
+    //     //const reorderItems = 
+    // }
     return(
         <>
             <h3>Tasks Management</h3>
             <div>
                 <h6>In Progress</h6>
+                    {/*<DragDropContext onDragEnd={onDragEnd}>
+                    <Droppable droppableId="characters">
+                    {(provided,snapshot) => (
+                    <div {...provided.droppableProps} ref={provided.innerRef}>
+                    {subtasklist.map(({task,id},index)=>{
+                        return(
+                            <Draggable key={id} draggableId={id} index={index}>
+                                {(provided) => (
+                                    <li ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                                        <div key={task.subtask_id}>
+                                            <GridContainer>
+                                                <GridItem xs={6} sm={6} md={4}>
+                                                    <Card>
+                                                        <CardHeader color="primary">
+                                                            <h4 className={classes.cardTitleWhite}>{task.subtask_id}</h4>
+                                                            <p>{task.subtask_priority}</p>
+                                                        </CardHeader>
+                                                        <CardBody>
+                                                            <p>{task.subtask_description}</p>
+                                                        </CardBody>
+                                                        <CardFooter>
+                                                            <p>iiiiii</p>
+                                                        </CardFooter>
+                                                    </Card>
+                                                </GridItem>
+                                            </GridContainer>
+                                        </div>
+                                    </li>
+                                )})
+                            </Draggable>
+                            )
+                        }) 
+                    }
+                    </div>
+                    )}
+                    </Droppable>
+                </DragDropContext>*/}
                     
-                        
-                    
-
-
-                <GridContainer>
-                    
-  
-                    <GridItem xs={6} sm={6} md={4}>
-                        <Card>
-                            <CardHeader color="primary">
-                                <h4 className={classes.cardTitleWhite}>Website Design</h4>
-                            </CardHeader>
-                            <CardBody>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In id nec scelerisque massa.</p>
-                            </CardBody>
-                        </Card>
-                    </GridItem>
-                    <GridItem xs={6} sm={6} md={4}>
-                        <Card>
-                            <CardHeader color="primary">
-                                <h4 className={classes.cardTitleWhite}>Website Design</h4>
-                            </CardHeader>
-                            <CardBody>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In id nec scelerisque massa.</p>
-                            </CardBody>
-                        </Card>
-                    </GridItem>
-                    <GridItem xs={6} sm={6} md={4}>
-                        <Card>
-                            <CardHeader color="primary">
-                                <h4 className={classes.cardTitleWhite}>Website Design</h4>
-                            </CardHeader>
-                            <CardBody>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In id nec scelerisque massa.</p>
-                            </CardBody>
-                        </Card>
-                    </GridItem>
-                    <GridItem xs={6} sm={6} md={4}>
-                        <Card>
-                            <CardHeader color="primary">
-                                <h4 className={classes.cardTitleWhite}>Website Design</h4>
-                            </CardHeader>
-                            <CardBody>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In id nec scelerisque massa.</p>
-                            </CardBody>
-                        </Card>
-                    </GridItem>
-                </GridContainer>
             </div>
         </>
     )
