@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import { useRouter } from 'next/router'
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
+
+import { FiEdit } from 'react-icons/fi'
+import { FaEye } from 'react-icons/fa'
+
 import InputLabel from "@material-ui/core/InputLabel";
 // layout for this page
 import Admin from "layouts/Admin.js";
@@ -166,9 +170,9 @@ function UserDetail({UserDetail}) {
                       <TableCell>{user.role}</TableCell>
                       <TableCell>{user.dob}</TableCell>
                       <TableCell>
-                        <a href={`/admin/userdetail/${user.id}`}>Edit</a>&nbsp;&nbsp;&nbsp;
+                        <a href={`/admin/userdetail/${user.id}`}><FiEdit/></a>&nbsp;&nbsp;&nbsp;
                         {/*<a href={`/admin/userdetail/`} onClick={()=>deleteUser(user.id)}>Delete</a>&nbsp;&nbsp;&nbsp;*/}
-                        <a href={`/admin/viewuser/${user.id}`}>View</a>
+                        <a href={`/admin/viewuser/${user.id}`}><FaEye/></a>
                       </TableCell>
                     </TableRow>
                   )
@@ -207,9 +211,9 @@ function UserDetail({UserDetail}) {
                       <TableCell>{user.role}</TableCell>
                       <TableCell>{user.dob}</TableCell>
                       <TableCell>
-                        <a href={`/admin/userdetail/${user.id}`}>Edit</a>&nbsp;&nbsp;&nbsp;
+                        <a href={`/admin/userdetail/${user.id}`}><FiEdit/></a>&nbsp;&nbsp;&nbsp;
                         {/*<a href={`/admin/userdetail/`} onClick={()=>deleteUser(user.id)}>Delete</a>&nbsp;&nbsp;&nbsp;*/}
-                        <a href={`/admin/viewuser/${user.id}`}>View</a>
+                        <a href={`/admin/viewuser/${user.id}`}><FaEye/></a>
                       </TableCell>
                     </TableRow>
                   )
