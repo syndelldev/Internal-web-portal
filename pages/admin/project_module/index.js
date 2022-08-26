@@ -111,6 +111,11 @@ function AddProject({ project_details }) {
                       <GridItem>
                         <p className="projectLanguage">{project.project_language}</p>
                       </GridItem>
+
+                      <GridItem>
+                        <a href={`${server}/admin/project_module/${project.project_id}`}>Edit</a>
+                        <button onClick={()=>deleteProject(project.project_id)}>Delete</button>
+                      </GridItem>
                     </GridContainer>
 
                     <GridContainer>
@@ -137,8 +142,6 @@ function AddProject({ project_details }) {
                     </GridContainer>
 
                       {/* <Button color="primary" type="submit" id={project.project_id}>Edit</Button> */}
-                      <a href={`${server}/admin/project_module/${project.project_id}`}>Edit</a>
-                      <button onClick={()=>deleteProject(project.project_id)}>Delete</button>
                       
                     </CardBody>
 
