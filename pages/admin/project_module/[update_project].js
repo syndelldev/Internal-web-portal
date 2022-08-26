@@ -23,6 +23,7 @@ import avatar from "assets/img/faces/marc.jpg";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { MultiSelect } from "react-multi-select-component";
+import Multiselect from "multiselect-react-dropdown";
 
 
 const styles = {
@@ -47,19 +48,21 @@ const styles = {
 
  export async function getServerSideProps(context){
     const id = context.params.update_project;
+    console.log("id");
     console.log(id);
 
   const res = await fetch(`${server}/api/admin`)
   const User_name = await res.json();
+  // console.log(User_name);
 
-  const response = await fetch(`${server}/api/project/${id}`);
+  const response = await fetch(`${server}/api/project/update/${id}`)
   const project_details = await response.json();
-  console.log("data");
+  // console.log(project_details);
 
   return{ props: { User_name , project_details } }
 }
 
-function AddUser({ User_name , project_details }) {
+function AddUser({ User_name,project_details }) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   const { register,  watch, handleSubmit, formState: { errors }, setValue } = useForm(); 
@@ -81,7 +84,7 @@ function AddUser({ User_name , project_details }) {
     console.log("result");
     console.log(result);
     
-    const res = await fetch(`${server}/api/project/addproject`,{
+    const res = await fetch(`${server}/api/project/update_project`,{
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body:JSON.stringify({project_person:allSelectedUser, project_title:result.project_title, project_description:result.project_description, project_language:result.project_language, project_comment:result.project_comment, project_priority:result.project_priority, project_start: result.start , project_deadline: result.end }),
@@ -120,6 +123,54 @@ const allSelectedUser = [];
 for(var i=0; i<selected.length; i++){
   allSelectedUser.push(selected[i].value);
 }
+project_details.map((user)=>{
+  // console.log(user);
+});
+// console.log(project_details[0])
+
+// const user = project_details[0].project_title;
+// console.log("user");
+// console.log(user);
+
+const [uoption, setOption] = useState({ 
+  project_title: "",
+  project_description: "",
+  project_language: "",
+  project_start: "",
+  project_deadline: "",
+  project_comment: "",
+  project_priority: "",
+  project_person: ""
+});
+
+useEffect(() =>{
+  const u_data = async() =>{
+
+    project_details.map((project)=>{
+      setOption(project);
+    });
+  }
+  u_data();
+},[]);
+console.log(uoption);
+
+const handleChange = ({ target: { name, value } }) =>{
+  setOption({ ...uoption, [name]: value });
+}
+console.log("projectInfo");
+console.log(uoption);
+
+const allSelectedMember = [];
+const projectMember = (uoption.project_person).split(",");
+console.log(projectMember.length);
+
+for(var i=0; i<projectMember.length; i++){
+  allSelectedMember.push({'label' :projectMember[i] , 'value' : projectMember[i]});
+  // var member_project = projectMember[i];
+}
+console.log(allSelectedMember);
+// console.log(member_project);
+
 
 
   return (
@@ -129,8 +180,8 @@ for(var i=0; i<selected.length; i++){
             <form onSubmit={handleSubmit(onSubmit)}>              
             <Card>
                 <CardHeader color="primary">
-                    <h4 className={classes.cardTitleWhite}>Create Project</h4>
-                    <p className={classes.cardCategoryWhite}>Enter your new project details</p>
+                    <h4 className={classes.cardTitleWhite}>Edit Project</h4>
+                    <p className={classes.cardCategoryWhite}>Update your project details</p>
                 </CardHeader>
                   <CardBody><br/>
                     <GridContainer>
@@ -149,8 +200,8 @@ for(var i=0; i<selected.length; i++){
 
                         <GridItem xs={12} sm={12} md={12}>                      
                           <div className="form-group">
-                            <input type="text" className="form-control signup-input" placeholder="Project Title" {...register('project_title',  { required: "Please enter project title"})} />
-                            <div className="error-msg">{errors.name && <p>{errors.name.message}</p>}</div>
+                            <input type="text" className="form-control signup-input" name="project_title" value={uoption.project_title} onChange={handleChange} placeholder="Project Title" {...register('project_title',  { required: "Please enter project title"})} />
+                          <div className="error-msg">{errors.name && <p>{errors.name.message}</p>}</div>
                           </div> 
                           <div className="error-msg">{errors.username && <p>{errors.username.message}</p>}</div>
                         </GridItem>
@@ -159,7 +210,7 @@ for(var i=0; i<selected.length; i++){
                       <GridContainer>  
                         <GridItem xs={12} sm={12} md={12}>
                           <div className="form-group">
-                            <textarea className="form-control signup-input" placeholder="Project Description" {...register('project_description', { required: 'Description is required', } )}  />
+                            <textarea className="form-control signup-input" name="project_description" value={uoption.project_description} onChange={handleChange} placeholder="Project Description" {...register('project_description', { required: 'Description is required', } )}  />
                             <div className="error-msg">{errors.email && <p>{errors.email.message}</p>}</div>
                           </div> 
                         </GridItem>
@@ -176,7 +227,7 @@ for(var i=0; i<selected.length; i++){
                           <div className="form-group">
                             {/*<input type="text" className="form-control signup-input" placeholder="Department" {...register('department',  { required: "Please enter your Department", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
                             <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>*/}
-                            <select name="Project_created_by" id="Project_created_by" className="form-control signup-input" {...register('project_language', {required:true ,message:'Please select atleast one option', })}>
+                            <select name="project_language" id="Project_created_by" value={uoption.project_language} onChange={handleChange} className="form-control signup-input" {...register('project_language', {required:true ,message:'Please select atleast one option', })}>
                               <option value="">Select Language</option>
                               <option value="Wordpress">Wordpress</option>
                               <option value="Shopify">Shopify</option>
@@ -203,7 +254,7 @@ for(var i=0; i<selected.length; i++){
                             <DatePicker
                               placeholderText="Start_Date : dd/mm/yyyy"
                               isClearable
-                              name="datetime1"
+                              name="project_start"
                               className={"form-control"}
                               selected={startDate}
                               onChange={val => {
@@ -212,6 +263,7 @@ for(var i=0; i<selected.length; i++){
                               }}
                               dateFormat="dd-MM-yyyy"
                               minDate={new Date()}
+                              value={uoption.project_start}
                             />
                           <div className="error-msg">{errors.dob && <p>{errors.dob.message}</p>}</div>
                           </div> 
@@ -222,7 +274,7 @@ for(var i=0; i<selected.length; i++){
                             <DatePicker
                               placeholderText="End_Date : dd/mm/yyyy"
                               isClearable
-                              name="datetime1"
+                              name="project_deadline"
                               className={"form-control"}
                               selected={endDate}
                               onChange={val => {
@@ -231,6 +283,7 @@ for(var i=0; i<selected.length; i++){
                               }}
                               dateFormat="dd-MM-yyyy"
                               minDate={startDate}
+                              value={uoption.project_deadline}
                             />
                           <div className="error-msg">{errors.dob && <p>{errors.dob.message}</p>}</div>
                           </div> 
@@ -241,7 +294,7 @@ for(var i=0; i<selected.length; i++){
                       <GridContainer>
                         <GridItem xs={12} sm={12} md={12}>
                           <div className="form-group">
-                            <textarea className="form-control signup-input" placeholder="Comment" {...register('project_comment')} />
+                            <textarea className="form-control signup-input" name="project_comment" value={uoption.project_comment} onChange={handleChange} placeholder="Comment" {...register('project_comment')} />
                             <div className="error-msg">{errors.position && <p>{errors.position.message}</p>}</div>
                           </div> 
                         </GridItem>
@@ -252,7 +305,7 @@ for(var i=0; i<selected.length; i++){
                           <div className="form-group">
                             {/*<input type="text" className="form-control signup-input" placeholder="Status" {...register('status',  { required: "Please enter your Status", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
                             <div className="error-msg">{errors.status && <p>{errors.status.message}</p>}</div>*/}
-                            <select name="Status" id="Status" className="form-control signup-input" {...register('project_priority', {required:true ,message:'Please select atleast one option', })}>
+                            <select name="project_priority" id="Status" value={uoption.project_priority} onChange={handleChange} className="form-control signup-input" {...register('project_priority', {required:true ,message:'Please select atleast one option', })}>
                               <option value="Select...">Select Project Priority</option>
                               <option value="High">High</option>
                               <option value="Medium">Medium</option>
@@ -266,11 +319,17 @@ for(var i=0; i<selected.length; i++){
                         <GridItem xs={12} sm={12} md={6}>
                           <div className="form-group" {...register('project_person')}>
                          
-                          <MultiSelect
+                          <Multiselect
+                          displayValue="value"
                             options={uoptions}
                             value={selected}
                             onChange={setSelected}
                             labelledBy="Select project"
+                            selectedValues={allSelectedMember}
+                            onKeyPressFn={function noRefCheck(){}}
+                            onRemove={function noRefCheck(){}}
+                            onSearch={function noRefCheck(){}}
+                            onSelect={function noRefCheck(){}}
                           />
                           
                             <div className="error-msg">{errors.role && <p>{errors.role.message}</p>}</div>
@@ -298,7 +357,7 @@ for(var i=0; i<selected.length; i++){
                     </CardBody>
 
                     <CardFooter>
-                        <Button color="primary" type="submit">Add Project</Button>
+                        <Button color="primary" type="submit">Save</Button>
                     </CardFooter>
                 </Card>
             </form>

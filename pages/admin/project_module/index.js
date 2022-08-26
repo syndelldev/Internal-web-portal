@@ -64,13 +64,10 @@ const styles = {
 export async function getServerSideProps(){
   const res = await fetch(`${server}/api/project`);
   const project_details = await res.json();
-  console.log(project_details);
+  // console.log(project_details);
 
   return{ props: {project_details} }
 }
-
-
-
 
 function AddProject({ project_details }) {
   const useStyles = makeStyles(styles);
@@ -81,7 +78,6 @@ function AddProject({ project_details }) {
     console.log(id);
 
     const res = await fetch(`${server}/api/project/${id}`);
-    
   }
   return (
     <>
