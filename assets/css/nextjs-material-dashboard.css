@@ -552,6 +552,8 @@ p.projectPerson {
   border-radius: 30px!important;
   padding: 10px!important;
   font-weight: 500!important;
+  margin-left: 10px;
+    display: inline-flex;
 }
 p.projectLanguage {
   font-weight: 600;
