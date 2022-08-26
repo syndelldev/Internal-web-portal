@@ -26,21 +26,21 @@ import styles from "assets/jss/nextjs-material-dashboard/components/headerLinksS
 import { server } from 'config';
 import { useCookies } from 'react-cookie';
 
-axios.defaults.withCredentials=true;
+//axios.defaults.withCredentials=true;
 
 export default function AdminNavbarLinks({useravtar}) {
 
   
-  useEffect(async() => {
+  // useEffect(async() => {
 
-    const res = await fetch(`${server}/api/admin/${cookies.Id}`)
-    const useravtar=await res.json()
+  //   const res = await fetch(`${server}/api/admin/${cookies.Id}`)
+  //   const useravtar=await res.json()
     
-    console.log(useravtar)
+  //   console.log(useravtar)
 
-  }, []);
+  // }, []);
   
-  console.log(useravtar)
+  // console.log(useravtar)
 
   const router = useRouter();
   const [cookies, setCookie, removeCookie ] = useCookies();

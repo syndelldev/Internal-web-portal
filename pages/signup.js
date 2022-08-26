@@ -51,12 +51,12 @@ function SignIn(){
     const onSubmit= async(result) =>{
         //e.preventDefault();
         //console.log(result);
-        console.log(result.avtar[0].name)
+        //console.log(result.avtar[0].name)
 
         const res = await fetch(`${server}/api/admin/signin/`,{
             method: "POST",
             headers: { "Content-Type": "application/json",},
-            body:JSON.stringify({role_id:result.role_id, username:result.username, password:result.password, email:result.email, PhoneNum:result.PhoneNum, dob:startDate, department:result.department, position:result.position, role:"User", status:"Active", avtar:result.avtar[0].name}),
+            body:JSON.stringify({role_id:result.role_id, username:result.username, password:result.password, email:result.email, PhoneNum:result.PhoneNum, dob:startDate, department:result.department, position:result.position, role:"User", status:"Active"}),
         })
         const data=await res.json()
 
@@ -85,11 +85,10 @@ function SignIn(){
 
                         <form method="POST" onSubmit={handleSubmit(onSubmit)} >
                             
-                            <div className="form-group">
+                            {/*<div className="form-group">
                                 <input type="file" name="avtar" onChange={(e)=>setimg(e.target.files)} {...register('avtar',  { required: "Please enter avtar" })} />
                                 <div className="error-msg">{errors.avtar && <p>{errors.avtar.message}</p>}</div> 
-                                {/*<img src="/avtar.png" alt="/avtar.png" width={100} height={100} />*/}
-                            </div>
+                            </div>*/}
 
                             <div className="form-group">
                                 <input type="hidden" className="form-control signup-input" name="role_id" value="2" {...register('role_id',  { required: "Please enter your name" })} />

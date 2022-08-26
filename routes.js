@@ -42,13 +42,6 @@ const dashboardRoutes = [
     layout: "/admin",
   },
   {
-    path: "/project_module",
-    name: "Create Project",
-    rtlName: "ملف تعريفي للمستخدم",
-    icon: Person,
-    layout: "/admin",
-  },
-  {
     path: "/adminprofile",
     name: "Admin Profile",
     rtlName: "ملف تعريفي للمستخدم",
@@ -56,10 +49,10 @@ const dashboardRoutes = [
     layout: "/admin",
   },
   {
-    path: "/project_module",
-    name: "Create Project",
+    path: "/subtask_module",
+    name: "Sub Task",
     rtlName: "قائمة الجدول",
-    icon: "person",
+    icon: "content_paste",
 
     layout: "/admin",
   },
