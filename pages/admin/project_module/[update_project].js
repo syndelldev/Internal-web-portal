@@ -72,14 +72,17 @@ function AddUser({ User_name,project_details }) {
 
   const onSubmit = async (result) =>{
     
-    console.log("result");
-    alert(uoption.project_id);
-    alert(result.start);
-    
+    alert(selected);
+
+    for(var i=0; i<=selected.length; i++){
+          var person = selected[i].value;
+          alert(person);
+    }
+
     const res = await fetch(`${server}/api/project/update_project`,{
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ project_id:uoption.project_id, project_person:allSelectedUser, project_title: uoption.project_title , project_description:uoption.project_description, project_language:uoption.project_language, project_comment:uoption.project_comment, project_priority:uoption.project_priority, project_start: uoption.start , project_deadline: uoption.end }),
+      body: JSON.stringify({ project_id:uoption.project_id, project_person:person, project_title: uoption.project_title , project_description:uoption.project_description, project_language:uoption.project_language, project_comment:uoption.project_comment, project_priority:uoption.project_priority, project_start: uoption.start , project_deadline: uoption.end }),
     })
 
     const data=await res.json()
@@ -165,8 +168,10 @@ for(var i=0; i<projectMember.length; i++){
   allSelectedUser.push({'label' :projectMember[i] , 'value' : projectMember[i]});
   // var member_project = projectMember[i];
 }
-console.log(allSelectedMember);
-console.log(selected);
+allSelectedUser.push(allSelectedMember);
+
+console.log(allSelectedUser[1]);
+console.log(allSelectedUser[4]);
 
 
   return (
@@ -320,7 +325,8 @@ console.log(selected);
                             options={uoptions}
                             selectedValues={allSelectedMember}
                             value={selected}
-                            onChange={setSelected}
+                            // onChange={setSelected}
+                            onSelect={setSelected}
                           />
                           
                             <div className="error-msg">{errors.role && <p>{errors.role.message}</p>}</div>
