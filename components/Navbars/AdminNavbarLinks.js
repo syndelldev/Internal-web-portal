@@ -44,7 +44,7 @@ export default function AdminNavbarLinks({useravtar}) {
 
   const router = useRouter();
   const [cookies, setCookie, removeCookie ] = useCookies();
-  console.log(cookies.Id)
+  //console.log(cookies.Id)
   const logoutfunc = () => {
     removeCookie('name', { path:'/' } );
     removeCookie('Email', { path:'/' } );

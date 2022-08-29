@@ -40,22 +40,46 @@ const styles = {
     },
 };
 
-function UserRights({rights}){
+export async function getServerSideProps(context){
+    //const id = context.params.userdetailid;
+    const res = await fetch(`${server}/api/rights/`)
+    const data = await res.json()
+    //console.log(data)
+
+    return { props: {data}, }
+}
+function UserRights({data}){
+    //console.log(data)
     const useStyles = makeStyles(styles);
     const classes = useStyles();
 
-    const [query, setQuery] = useState(1);
-    const [admin,setadmin] =  useState([])
-
-    useEffect(()=>{
-        console.log(query);
-        axios.get(`${server}/api/rights/${query}`)
-        .then((res) =>{
-            setadmin(res.data);
-            //console.log(res.data);
+    const [value, setValue] = useState(1)
+    const [users, setusers] = useState([])
+    const logValue =() =>{
+        //console.log(value)
+    }
+    useEffect(async()=>{
+        console.log(value)
+        axios.get(`${server}/api/rights/${value}`)
+        .then((res)=>{
+            setusers(res.data)
+            console.log(res.data)
         })
-    },[query])
-    console.log(admin) 
+    },[value])
+    console.log(users)
+
+    // const [query, setQuery] = useState(1);
+    // const [admin,setadmin] =  useState([])
+
+    // useEffect(()=>{
+    //     console.log(query);
+    //     axios.get(`${server}/api/rights/${query}`)
+    //     .then((res) =>{
+    //         setadmin(res.data);
+    //         //console.log(res.data);
+    //     })
+    // },[query])
+    //console.log(admin) 
     
     return(
         <>
@@ -63,35 +87,45 @@ function UserRights({rights}){
                 <GridItem xs={12} sm={12} md={12}>
                     <Card>
                         <CardHeader color="primary">
-                            <h4 className={classes.cardTitleWhite}>User Details</h4>
+                            <h4 className={classes.cardTitleWhite}>User Rights</h4>
                         </CardHeader><br/><br/>
                         <CardBody>
                             <GridItem xs={12} sm={12} md={6}>
                                 <div className="form-group">
-                                <DropdownButton id="dropdown-item-button" title="API Links" onSelect={setQuery} >
+                                {/*<DropdownButton id="dropdown-item-button" title="API Links" onSelect={setQuery} >
                                     <Dropdown.Item as="button" eventKey="1" >Admin</Dropdown.Item>
                                     <Dropdown.Item as="button" eventKey="2" >User</Dropdown.Item>
-                                </DropdownButton>
+                                </DropdownButton>*/}
+                                <select value={value} onChange={(e) => {setValue(e.target.value)}} onClick={logValue} className="form-control signup-input" >
+                                    {
+                                        data.map((users)=>{
+                                            return(
+                                                <option key={users.id} value={users.id}>{users.username}</option>        
+                                            )
+                                        })
+                                    }
+                                </select>
+                                <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                                 </div> 
                             </GridItem><br/><br/>
                             <div className={classes.tableResponsive}>
                                 <Table className={classes.table}>
                                     <TableHead className={classes.TableHeader}>
                                         <TableRow className={classes.tableHeadRow}>
-                                            <TableCell>Role</TableCell>
-                                            <TableCell>User List</TableCell>
-                                            <TableCell>Add User</TableCell>
-                                            <TableCell>Edit User</TableCell>
-                                            <TableCell>Delete User</TableCell>
+                                            <TableCell>Modules Names</TableCell>
+                                            <TableCell>Show List</TableCell>
+                                            <TableCell>Add Rights</TableCell>
+                                            <TableCell>Edit Rights</TableCell>
+                                            <TableCell>Delete Rights</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     
                                     <TableBody>
                                     {
-                                        admin.map((rights)=>{
+                                        users.map((rights)=>{
                                             return(
                                                 <TableRow key={rights.id}>
-                                                    <TableCell>{rights.role}</TableCell>
+                                                    <TableCell>{rights.page_name}-{rights.username}</TableCell>
                                                     <TableCell>
                                                         <input type="checkbox"  value={rights.user_list} defaultChecked={rights.user_list === '1'} />
                                                     </TableCell>
