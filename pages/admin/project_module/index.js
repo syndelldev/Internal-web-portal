@@ -78,6 +78,7 @@ const styles = {
     marginLeft: "auto",
     fontSize: "40px",
     paddingRight: "10px",
+    cursor: "pointer",
   },
 };
 
@@ -151,13 +152,6 @@ const allSelectedUser = [];
 for(var i=0; i<selected.length; i++){
   allSelectedUser.push(selected[i].value);
 }
-
-function react(){
-  console.log("ReactJS");
-}
-
-var react = "ReactJS"
-
 
   return (
     <>

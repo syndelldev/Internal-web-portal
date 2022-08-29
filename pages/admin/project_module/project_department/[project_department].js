@@ -74,8 +74,13 @@ const styles = {
     color: "#000000",
     padding: "5px 10px",
   },
+  close:{
+    marginLeft: "auto",
+    fontSize: "40px",
+    paddingRight: "10px",
+    cursor: "pointer",
+  },
 };
-
 
 export async function getServerSideProps(context){
   const project_department = context.params.project_department;
@@ -150,13 +155,6 @@ for(var i=0; i<selected.length; i++){
   allSelectedUser.push(selected[i].value);
 }
 
-function react(){
-  console.log("ReactJS");
-}
-
-var react = "ReactJS"
-
-
   return (
     <>
       {/* <Button type="submit" color="primary" className={classes.cardWhite}><a href='/admin/project_module/create_project' className={classes.cardWhite}>Create Project</a></Button><br/><br/> */}
@@ -192,9 +190,11 @@ var react = "ReactJS"
       <p className={classes.cardCategoryWhite}>Enter your new project details</p>
     </GridItem>
 
-    <GridItem>
-      <a className="close" onClick={close}>&times;</a>
-    </GridItem>
+    {/* <GridItem> */}
+    <div className={classes.close}>
+        <a onClick={close}>&times;</a>
+      </div>
+    {/* </GridItem> */}
 </GridContainer>
 
               </CardHeader>
