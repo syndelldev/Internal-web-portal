@@ -68,16 +68,20 @@ const styles = {
     right: "0",
     bottom: "0",
     backgroundColor: "rgba(0,0,0,0.5)",
-  }
+  },
+  link:{
+    border: "1px solid #000000",
+    color: "#000000",
+    padding: "5px 10px",
+  },
 };
 
 
 export async function getServerSideProps(context){
-  const id = context.params.project_department;
-  console.log("id");
-  console.log(id);
+  const project_department = context.params.project_department;
+  console.log(project_department);
 
-  const res = await fetch(`${server}/api/project/project_department/${id}`);
+  const res = await fetch(`${server}/api/project/project_department/${project_department}`);
   const project_details = await res.json();
   // console.log(project_details);
   const response = await fetch(`${server}/api/admin`)
@@ -169,6 +173,9 @@ var react = "ReactJS"
       </Popup> */}
 
 {/* create project form start */}
+
+<GridContainer>
+      <GridItem>
 
         <Popup trigger={<div className={classes.img}><button>Project</button></div>} modal>
 
@@ -326,11 +333,18 @@ var react = "ReactJS"
       )}
         </Popup>
 {/* create project form end */}
+</GridItem>
 
-<a href={`${server}/admin/project_module/project_department/ReactJS`}>ReactJS</a>
-<a href={`${server}/admin/project_module/project_department/Wordpress`}>Wordpress</a>
-<a href={`${server}/admin/project_module/project_department/Bubble`}>Bubble</a>
+<GridItem>
+<a href={`${server}/admin/project_module`} className={classes.link}>All</a>
+<a href={`${server}/admin/project_module/project_department/ReactJS`} className={classes.link}>ReactJS</a>
+<a href={`${server}/admin/project_module/project_department/Wordpress`} className={classes.link}>Wordpress</a>
+<a href={`${server}/admin/project_module/project_department/Bubble`} className={classes.link}>Bubble</a>
 
+</GridItem>
+</GridContainer>
+
+{/* create project form end */}
 
     <GridContainer>
     {project_details.map((project)=>{

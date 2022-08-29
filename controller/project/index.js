@@ -38,12 +38,12 @@ const getProjectById = async (req,res) => {
 // }
 
 const projectDepartment = async (req,res) => {
-    let id = req.query.department;
+    let project_department = req.query.department;
     console.log(req.query.department);
     console.log(req.query);
 
     try{
-        let projectDepartment = await executeQuery("Select * from `tbl_project` WHERE `tbl_project`.`project_language` = ?", [req.query.department] )
+        let projectDepartment = await executeQuery("Select * from `tbl_project` WHERE `tbl_project`.`project_language` = ?", [project_department] )
         res.status(200).json(projectDepartment);
     }
     catch(err){

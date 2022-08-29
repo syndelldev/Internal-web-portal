@@ -68,7 +68,12 @@ const styles = {
     right: "0",
     bottom: "0",
     backgroundColor: "rgba(0,0,0,0.5)",
-  }
+  },
+  link:{
+    border: "1px solid #000000",
+    color: "#000000",
+    padding: "5px 10px",
+  },
 };
 
 
@@ -165,6 +170,9 @@ var react = "ReactJS"
       </Popup> */}
 
 {/* create project form start */}
+
+<GridContainer>
+      <GridItem>
 
         <Popup trigger={<div className={classes.img}><button>Project</button></div>} modal>
 
@@ -322,10 +330,16 @@ var react = "ReactJS"
       )}
         </Popup>
 {/* create project form end */}
+</GridItem>
 
-<a href={`${server}/admin/project_module/project_department/ReactJS`}>ReactJS</a>
-<a href={`${server}/admin/project_module/project_department/Wordpress`}>Wordpress</a>
-<a href={`${server}/admin/project_module/project_department/Bubble`}>Bubble</a>
+<GridItem>
+<a href={`${server}/admin/project_module`} className={classes.link}>All</a>
+<a href={`${server}/admin/project_module/project_department/ReactJS`} className={classes.link}>ReactJS</a>
+<a href={`${server}/admin/project_module/project_department/Wordpress`} className={classes.link}>Wordpress</a>
+<a href={`${server}/admin/project_module/project_department/Bubble`} className={classes.link}>Bubble</a>
+
+</GridItem>
+</GridContainer>
 
     <GridContainer>
     {project_details.map((project)=>{
