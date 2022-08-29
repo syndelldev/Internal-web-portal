@@ -160,7 +160,7 @@ for(var i=0; i<selected.length; i++){
         <Popup trigger={<div className={classes.img}><button>Project</button></div>} modal>
 
         {close => (
-    <div className={classes.popup}>
+    <div>
     <GridContainer>
       <GridItem xs={12} sm={12} md={12}>
           <form onSubmit={handleSubmit(onSubmit)}>              
