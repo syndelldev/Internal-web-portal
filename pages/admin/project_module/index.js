@@ -60,7 +60,7 @@ const styles = {
     width: "40px",
   },
   popup:{
-    position: "fixed",
+    // position: "fixed",
     width: "100%",
     height: "100%",
     top: "0",
@@ -157,12 +157,12 @@ for(var i=0; i<selected.length; i++){
         )}
       </Popup> */}
 
-        <Popup trigger={<div ><button>Project</button></div>} position="bottom center">
-          
+        <Popup trigger={<div className={classes.img}><button>Project</button></div>} modal>
+
         {close => (
     <div className={classes.popup}>
     <GridContainer>
-      <GridItem>
+      <GridItem xs={12} sm={12} md={12}>
           <form onSubmit={handleSubmit(onSubmit)}>              
           <Card>
               <CardHeader color="primary">
@@ -301,12 +301,23 @@ for(var i=0; i<selected.length; i++){
 
                   <CardFooter>
                       <Button color="primary" type="submit">Add Project</Button>
+                      <Button
+            className="button"
+            onClick={() => {
+              console.log('modal closed ');
+              close();
+            }}
+          >
+            Cancel
+          </Button>
                   </CardFooter>
               </Card>
           </form>
       </GridItem>
     </GridContainer>
+
   </div>
+  
       )}
         </Popup>
 
