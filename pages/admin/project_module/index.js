@@ -74,6 +74,11 @@ const styles = {
     color: "#000000",
     padding: "5px 10px",
   },
+  close:{
+    marginLeft: "auto",
+    fontSize: "40px",
+    paddingRight: "10px",
+  },
 };
 
 
@@ -171,6 +176,8 @@ var react = "ReactJS"
 
 {/* create project form start */}
 
+
+
 <GridContainer>
       <GridItem>
 
@@ -189,9 +196,11 @@ var react = "ReactJS"
       <p className={classes.cardCategoryWhite}>Enter your new project details</p>
     </GridItem>
 
-    <GridItem>
-      <a className="close" onClick={close}>&times;</a>
-    </GridItem>
+    {/* <GridItem> */}
+      <div className={classes.close}>
+        <a onClick={close}>&times;</a>
+      </div>
+    {/* </GridItem> */}
 </GridContainer>
 
               </CardHeader>
