@@ -238,4 +238,8 @@ button.login-create-acc-btn:active{
 .userdetail_searchbar{
     display: flex!important;
     justify-content: space-between!important;
-  }
+}
+
+.projectPriority{
+    font-size: 16px;
+}
