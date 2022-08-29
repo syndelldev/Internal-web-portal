@@ -301,15 +301,7 @@ for(var i=0; i<selected.length; i++){
 
                   <CardFooter>
                       <Button color="primary" type="submit">Add Project</Button>
-                      <Button
-            className="button"
-            onClick={() => {
-              console.log('modal closed ');
-              close();
-            }}
-          >
-            Cancel
-          </Button>
+                      <Button className="button" onClick={() => { close(); }}> Cancel </Button>
                   </CardFooter>
               </Card>
           </form>
