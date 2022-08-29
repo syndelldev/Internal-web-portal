@@ -35,7 +35,9 @@ import { useCookies } from 'react-cookie';
 
 
 export async function getServerSideProps(context){
-  const res = await fetch(`${server}/api/user_dashboard`)
+  //console.log(context.req.cookies);
+  var cookies = context.req.cookies
+  const res = await fetch(`${server}/api/user_dashboard`, cookies)
   const project = await res.json()
   //console.log(project)
 
@@ -46,7 +48,7 @@ function Dashboard({project}) {
   //console.log(project)
   const useStyles = makeStyles(styles);
   const classes = useStyles();
-
+  
   const [cookies, setCookie] = useCookies('');
   //console.log(cookies.Id);
 
@@ -56,14 +58,14 @@ function Dashboard({project}) {
     axios.get(`${server}/api/admin/${cookies.Id}` , {withCredentials: true} )
       .then((res)=>{
         setusers(res.data)
-        console.log(res.data[0].username)
+        //console.log(res)
       })    
   },[])
-  console.log(users)
+  // console.log(req)
 
   // const [personproject, setpersonproject] = useState([])
   // useEffect(async()=>{
-  //   axios.get(`${server}/api/user_dashboard` )
+  //   axios.get(`${server}/api/user_dashboard`)
   //     .then((res)=>{
   //       setpersonproject(res.data)
   //       //console.log(res.data)
