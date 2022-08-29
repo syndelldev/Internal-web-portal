@@ -562,3 +562,7 @@ p.projectLanguage {
 .popup-overlay {
   background-color: rgba(0,0,0,0.5);
 }
+button.addproject{
+  width: 95%!important;
+  margin-left: auto;
+}

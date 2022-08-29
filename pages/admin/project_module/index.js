@@ -157,7 +157,7 @@ for(var i=0; i<selected.length; i++){
         )}
       </Popup> */}
 
-        <Popup trigger={<div className={classes.img}><button>Project</button></div>} modal>
+        <Popup trigger={<div className={classes.img} class="add"><button class="addproject"> + Add new Project</button></div>} modal>
 
         {close => (
     <div>
