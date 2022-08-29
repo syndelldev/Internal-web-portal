@@ -24,7 +24,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import LibraryBooks from "@material-ui/icons/LibraryBooks";
 import Popup from "reactjs-popup";
-import AddUser from "./create_project";
+import AddUser from "../create_project";
 import Multiselect from "multiselect-react-dropdown";
 
 const styles = {
@@ -72,8 +72,12 @@ const styles = {
 };
 
 
-export async function getServerSideProps(){
-  const res = await fetch(`${server}/api/project`);
+export async function getServerSideProps(context){
+  const id = context.params.project_department;
+  console.log("id");
+  console.log(id);
+
+  const res = await fetch(`${server}/api/project/project_department/${id}`);
   const project_details = await res.json();
   // console.log(project_details);
   const response = await fetch(`${server}/api/admin`)
@@ -326,6 +330,7 @@ var react = "ReactJS"
 <a href={`${server}/admin/project_module/project_department/ReactJS`}>ReactJS</a>
 <a href={`${server}/admin/project_module/project_department/Wordpress`}>Wordpress</a>
 <a href={`${server}/admin/project_module/project_department/Bubble`}>Bubble</a>
+
 
     <GridContainer>
     {project_details.map((project)=>{
