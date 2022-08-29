@@ -1,4 +1,3 @@
-//import pool from "../../config/db";
 import { executeQuery } from "../../config/db";
 
 const getAllUser = async (req,res) =>{
@@ -23,24 +22,61 @@ const getUserById = async (req,res) => {
 }
 
 const AddUser = async (req,res) =>{
-    let id = req.query.id;
+    console.log(req.body)
+    
     try{
-        let createUser = await executeQuery(" INSERT INTO `tbl_user`( `username`, `password`, `mobile_no`, `department`, `position`, `status`, `role`, `creation_time`) VALUES (?,?,?,?,?,?,?,?) ")
-        res.status(200).json(createUser);
+        var createUser = await executeQuery("INSERT INTO `tbl_user`( `role_id`, `username`, `password`, `email`, `mobile_no`, `dob`, `department`, `position`, `status`, `role`) VALUES (?,?,?,?,?,?,?,?,?,?)",
+        [req.body.role_id, req.body.username, req.body.password, req.body.email, req.body.PhoneNum, req.body.DOB, req.body.department, req.body.position, req.body.status,  req.body.role ])
+        
+        res.status(201).json(createUser);
+
+        console.log(createUser)
     }
     catch(err){
         res.status(500).json(err);
     }
 }
 
-const deleteUser = async (req,res) => {
-    //let id = req.query.id;
+const UpdateUser = async (req,res) =>{
+    let id = req.query.id;
+    console.log(id)
+
+    console.log(req.body)
+
     try{
-        let delUser = await executeQuery(` DELETE FROM tbl_user WHERE id = ?", [req.query.id] `)
+        let UpdataUser = await executeQuery(" UPDATE tbl_user SET ? WHERE id = ? ", [req.body, id])
+        res.status(200).json(UpdataUser);
+        console.log(UpdataUser)
+    }
+    catch(err){
+        console.log(err)
+    }
+}
+
+
+const deleteUser = async (req,res) => {
+    let id = req.query.id;
+    console.log(id)
+    console.log(req.body)
+    try{
+        //let delUser = await executeQuery(` DELETE FROM tbl_user WHERE id = ?`, [id] )
+        //let delUser = await executeQuery(" UPDATE `tbl_user` SET `status`='Deactive' WHERE id=?", [id] )
+        let delUser = await executeQuery("UPDATE `tbl_user` SET `status`=? WHERE id=?", [req.body.status, id] )
         res.status(200).json(delUser);
+    }
+    catch(err){
+        res.status(500).json(err);    
+    }
+}
+
+const adminProfile = async (req, res) => {
+    try{
+        let AdminData=await executeQuery(" SELECT * FROM `tbl_user` where role='Admin' ", [] );
+        res.send(AdminData);
     }
     catch(err){
         res.status(500).json(err);
     }
 }
-export { getAllUser,getUserById,AddUser,deleteUser }
+
+export { getAllUser,getUserById,UpdateUser,deleteUser, adminProfile,AddUser }

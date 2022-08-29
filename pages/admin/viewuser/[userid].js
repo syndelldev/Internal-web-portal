@@ -1,5 +1,5 @@
 // layout for this page
-import User from "layouts/User.js";
+import Admin from "layouts/Admin.js";
 import { useState } from "react";
 
 //import { useEffect,useState } from 'react';
@@ -58,15 +58,23 @@ const styles = {
     },
 };
 
-function UserProfile(){  
-    const [cookies, setCookie] = useCookies(['name']);
-    console.log(cookies)
-    
+export async function getServerSideProps(context){
+    const id = context.params.userid;
+    const res = await fetch(`${server}/api/admin/${id}`)
+    const UserDetail = await res.json()
+    //console.log(id);
+  
+    return{ props: {UserDetail} }
+} 
+
+function ViewUser({UserDetail}){
+    //console.log(UserDetail[0]);
+
     const useStyles = makeStyles(styles);
     const classes = useStyles();
 
     return(
-        <>      
+        <>
         <GridContainer>
             <GridItem xs={12} sm={12} md={8}>      
                 <Card>
@@ -76,37 +84,37 @@ function UserProfile(){
                     </CardHeader>
                     <CardBody><br/>
                         <div className={classes.typo}>
-                            <div className={classes.note}>Username</div><br/>
-                            <h5>{cookies.name}</h5>
+                            <div className={classes.note}>Username</div>
+                            <h5>{UserDetail[0].username}</h5>
                         </div>
                         <div className={classes.typo}>
-                            <div className={classes.note}>Position</div><br/>
-                            <h5>{cookies.Position}</h5>
+                            <div className={classes.note}>Position</div>
+                            <h5>{UserDetail[0].position}</h5>
                         </div>
                         <div className={classes.typo}>
-                            <div className={classes.note}>Department</div><br/>
-                            <h5>{cookies.Department}</h5>
+                            <div className={classes.note}>Department</div>
+                            <h5>{UserDetail[0].department}</h5>
                         </div>
                         <div className={classes.typo}>
-                            <div className={classes.note}>Email</div><br/>
-                            <h5>{cookies.Email}</h5>
+                            <div className={classes.note}>Email</div>
+                            <h5>{UserDetail[0].email}</h5>
                         </div>
                         <div className={classes.typo}>
-                            <div className={classes.note}>Mobile No.</div><br/>
-                            <h5>{cookies.Mobile_num}</h5>
+                            <div className={classes.note}>Mobile No.</div>
+                            <h5>{UserDetail[0].mobile_no}</h5>
                         </div>
                         <div className={classes.typo}>
-                            <div className={classes.note}>Date of Birth</div><br/>
-                            <h5>{cookies.DOB}</h5>
+                            <div className={classes.note}>Date of Birth</div>
+                            <h5>{UserDetail[0].dob}</h5>
                         </div>
                     </CardBody>
                 </Card>
             </GridItem>
-        </GridContainer>
+        </GridContainer>  
         </>
     )
 }
 
-UserProfile.layout = User;
+ViewUser.layout = Admin;
 
-export default UserProfile;
+export default ViewUser;

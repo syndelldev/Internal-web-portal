@@ -6,25 +6,30 @@ import { IoMdEye , IoMdEyeOff , IoMdMail } from "react-icons/io";
 import { server } from 'config';
 //import Cookies from 'js-cookie';
 import { useCookies } from 'react-cookie';
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 export default function home()
 {
     //const { register,  watch, handleSubmit, formState: { errors }, control } = useForm(); 
     const [cookies, setCookie] = useCookies(['name']);
 
-    const [username,setusername] = useState("");
+    const [email,setemail] = useState("");
     const [password,setpassword] = useState("");
+
     const [passwrong,setpasswrong] = useState("");
     const router = useRouter();
 
     //Password Hide and Show
     const [isRevealPwd, setIsRevealPwd] = useState(false);
 
-    console.log(username);
+    console.log(email);
 
     const login = async(e) => {
         e.preventDefault();
 
-        if (username == "") {
+        if (email == "") {
             let text = "Enter your Email ID";
             document.getElementById("erremail").innerHTML = text;
         }
@@ -38,12 +43,12 @@ export default function home()
         const res = await fetch(`${server}/api/admin/login/`,{
             method: "POST",
             headers: { "Content-Type": "application/json",},
-            body:JSON.stringify({username,password}),
+            body:JSON.stringify({email,password}),
         })
 
         const data=await res.json()
         console.log(data)
-        console.log(data[0].username);
+        //console.log(data[0].username);
         
 
         if(data != "")
@@ -59,24 +64,44 @@ export default function home()
             if(dbpass == password)
             {
                 if(role=='Admin'){
-                    setCookie('name', data[0].username);
-                    setCookie('Email', data[0].email);
-                    setCookie('Mobile_num', data[0].mobile_no);
-                    setCookie('DOB', data[0].dob);
-                    setCookie('Department', data[0].department);
-                    setCookie('Position', data[0].position);
-                    setCookie('Role', data[0].role);
-                    router.push("/admin/dashboard");
+                    setCookie('name', data[0].username, { path:'/' , maxAge:3600, sameSite:true, });
+                    setCookie('Email', data[0].email, { path:'/' , maxAge:3600, sameSite:true, });
+                    setCookie('Mobile_num', data[0].mobile_no, { path:'/' , maxAge:3600, sameSite:true, });
+                    setCookie('DOB', data[0].dob, { path:'/' , maxAge:3600, sameSite:true, });
+                    setCookie('Department', data[0].department, { path:'/' , maxAge:3600, sameSite:true, });
+                    setCookie('Position', data[0].position, { path:'/' , maxAge:3600, sameSite:true, });
+                    setCookie('Role', data[0].role, { path:'/' , maxAge:3600, sameSite:true, });
+                    setCookie('Position', data[0].position, { path:'/' , maxAge:3600, sameSite:true, });
+                    setCookie('Id', data[0].id, { path:'/' , maxAge:3600, sameSite:true, });
+                    setCookie('Avtar', data[0].avtar, { path:'/' , maxAge:3600, sameSite:true, });
+
+                    toast.success('Login Successfully! 🎉', {
+                        position: "top-right",
+                        autoClose:5000,
+                        onClose: () => router.push("/admin/dashboard")
+                    });
+
+                    //router.push("/admin/dashboard");
                 }
                 else if(role=='User'){
-                    setCookie('name', data[0].username);
-                    setCookie('Email', data[0].email);
-                    setCookie('Mobile_num', data[0].mobile_no);
-                    setCookie('DOB', data[0].dob);
-                    setCookie('Department', data[0].department);
-                    setCookie('Position', data[0].position);
-                    setCookie('Role', data[0].role);
-                    router.push("/user/dashboard");
+                    setCookie('name', data[0].username, { path:'/' , maxAge:3600, sameSite:true, });
+                    setCookie('Email', data[0].email, { path:'/' , maxAge:3600, sameSite:true, });
+                    setCookie('Mobile_num', data[0].mobile_no, { path:'/' , maxAge:3600, sameSite:true, });
+                    setCookie('DOB', data[0].dob, { path:'/' , maxAge:3600, sameSite:true, });
+                    setCookie('Department', data[0].department, { path:'/' , maxAge:3600, sameSite:true, });
+                    setCookie('Position', data[0].position, { path:'/' , maxAge:3600, sameSite:true, });
+                    setCookie('Role', data[0].role, { path:'/' , maxAge:3600, sameSite:true, });
+                    setCookie('Id', data[0].id, { path:'/' , maxAge:3600, sameSite:true, });
+                    setCookie('Avtar', data[0].avtar, { path:'/' , maxAge:3600, sameSite:true, });
+                    
+
+                    toast.success('Login Successfully! 🎉', {
+                        position: "top-right",
+                        autoClose:5000,
+                        onClose: () => router.push("/user/dashboard")
+                    });
+
+                    //router.push("/user/dashboard");
                 }
                 //alert("Sucess")
             }
@@ -102,8 +127,8 @@ return(
                         <form method='POST' className="login-main" onSubmit={login} >
                             <div id='personal-account'>
                                 <div className="form-group"  >
-                                    <label htmlFor="ba-num"  className='form-label'>Username</label>
-                                    <input type="text" name="username" value={username} placeholder="Enter your name" onChange={e=>setusername(e.target.value)} className='form-control login-input' />
+                                    <label htmlFor="ba-num"  className='form-label'>Email</label>
+                                    <input type="email" name="email" value={email} placeholder="Enter your email" onChange={e=>setemail(e.target.value)} className='form-control login-input' />
                                     <span className='icon-eyes'><IoMdMail /></span>
                                     <span className='error-msg' id='erremail'></span>
                                 </div>
@@ -129,7 +154,7 @@ return(
                                     <button type="submit" className="login-create-acc-btn">Login</button>  
                                 </div> 
                                 <div className='login-text'>
-                                    <p>Don&apos;t have an account? <a href='/signin'><span className='signup-text-login'>Sign In</span></a></p>
+                                    <p>Don&apos;t have an account? <a href='/signup'><span className='signup-text-login'>Sign Up</span></a></p>
                                 </div>
 
                             </div>
@@ -137,6 +162,7 @@ return(
                     </div>
                 </div>
             </section>
+            <ToastContainer />
         </>
     );
 

@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from 'next/router'
 import { makeStyles } from "@material-ui/core/styles";
 import { IoMdArrowDropdown } from "react-icons/io";
-import { useForm  } from 'react-hook-form';
 import { server } from 'config';
 
 import React from "react";
@@ -20,6 +19,10 @@ import CardFooter from "components/Card/CardFooter.js";
 import avatar from "assets/img/faces/marc.jpg";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import axios from "axios";
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const styles = {
   cardCategoryWhite: {
@@ -44,7 +47,7 @@ export async function getServerSideProps(context){
     const id = context.params.userdetailid;
     const res = await fetch(`${server}/api/admin/${id}`)
     const data = await res.json()
-    console.log(data)
+    //console.log(data)
 
     return { props: {data}, }
 }
@@ -52,52 +55,91 @@ export async function getServerSideProps(context){
 function UserById(data){
     const useStyles = makeStyles(styles);
     const classes = useStyles();
-    const { register,  watch, handleSubmit, formState: { errors }, setValue } = useForm(); 
+
     const [startDate, setStartDate] = useState();
     const router = useRouter();
 
     const user = data.data[0];
     //console.log(user)
 
-    const onSubmit = async (result) =>{
-        console.log(result)
+    const [userdata, setuserdata] = useState({
+      role_id:"",
+      username: "",
+      password: "",
+      email: "",
+      mobile_no: "",
+      department: "",
+      position: "",
+      status: "",
+      role: ""
+    });
+    //console.log(userdata); 
 
-        const res = await fetch(`${server}/api/admin/adduser/`,{
-            method: "PUT",
-            headers: { "Content-Type": "application/json",},
-            body:JSON.stringify({username:result.name, password:result.password, email:result.email, PhoneNum:result.mobile_num, DOB:startDate, department:result.department, position:result.position, status:result.status, role:result.role }),
-          })
-          const data=await res.json()
+    useEffect(()=>{
+      setuserdata(user);
+    },[data])
+    
+    const handleChange = ({ target: { name, value } }) =>{
+      setuserdata({ ...userdata, [name]: value });
+    }
+    // const handleChange = (e) =>{
+    //   const value = e.target.value;
+    //   console.log('value', value)
+    //   setuserdata({...userdata, [e.target.name]:value })
+    // }
 
+    console.log(userdata);
+    const onSubmit = async (e) =>{
+        e.preventDefault();
+
+        let data = await axios.put(`${server}/api/admin/${user.id}`, userdata);
+        console.log(data)
+        console.log(userdata)
+        if(data) 
+        toast.success('User Updated Successfully! 🎉', {
+          position: "top-right",
+          autoClose:5000,
+          onClose: () => router.push("/admin/userdetail")
+        });
+        //router.push("/admin/userdetail")
+
+        // setuserdata({
+        //   role_id:"",
+        //   username:"",
+        //   password:"",
+        //   email:"",
+        //   mobile_no:"",
+        //   department:"",
+        //   position:"",
+        //   status:"",
+        //   role:""
+        // })
     }
     return(
         <div>
+          <ToastContainer />
       <GridContainer>
         <GridItem xs={12} sm={12} md={8}>
-            <form onSubmit={handleSubmit(onSubmit)}>              
+            <form onSubmit={onSubmit}>              
             <Card>
                 <CardHeader color="primary">
                     <h4 className={classes.cardTitleWhite}>Create User Profile</h4>
                     <p className={classes.cardCategoryWhite}>Complete your profile</p>
                 </CardHeader>
                   <CardBody><br/>
-                    <GridContainer>
-                        {/*<GridItem xs={12} sm={12} md={5}>
-                        <CustomInput
-                            labelText="Company (disabled)"
-                            id="company-disabled"
-                            formControlProps={{
-                            fullWidth: true,
-                            }}
-                            inputProps={{
-                            disabled: true,
-                            }}
-                        />
-                        </GridItem>*/}
-                            {user.name} 
+
+                    <GridContainer>  
                         <GridItem xs={12} sm={12} md={12}>
                           <div className="form-group">
-                            <input type="text" className="form-control signup-input" placeholder={user.username}  />
+                            <input type="hidden" className="form-control signup-input" name="role_id" placeholder="enter your email" value={userdata.role_id} onChange={handleChange}  />
+                          </div> 
+                        </GridItem>
+                      </GridContainer><br/>
+
+                    <GridContainer>
+                        <GridItem xs={12} sm={12} md={12}>
+                          <div className="form-group">
+                            <input type="text" className="form-control signup-input" name="username" placeholder="enter your name" value={userdata.username} onChange={handleChange} />
                           </div> 
                         </GridItem>
                       </GridContainer><br/>
@@ -105,7 +147,7 @@ function UserById(data){
                       <GridContainer>  
                         <GridItem xs={12} sm={12} md={12}>
                           <div className="form-group">
-                            <input type="text" className="form-control signup-input" placeholder={user.email} />
+                            <input type="text" className="form-control signup-input" name="email" placeholder="enter your email" value={userdata.email} onChange={handleChange} autoComplete="off"  />
                           </div> 
                         </GridItem>
                       </GridContainer><br/>
@@ -113,42 +155,49 @@ function UserById(data){
                       <GridContainer>  
                         <GridItem xs={12} sm={12} md={6}>
                           <div className="form-group">
-                            <input type="password" className="form-control signup-input" placeholder={user.password} />
+                            <input type="password" className="form-control signup-input" name="password" placeholder="enter your password" value={userdata.password} onChange={handleChange} autoComplete="off"  />
                           </div> 
                         </GridItem>
                         <GridItem xs={12} sm={12} md={6}>
                           <div className="form-group">
                             <DatePicker
-                              placeholderText="mm/dd/yyyy"
+                              className={"form-control"}
+                              name="dob"
+                              value={userdata.dob}
+                              onChange={handleChange}
+                              /*onChange={(val) => { setStartDate(val);}}*/
+                              
+                            />
+                            {/*<DatePicker
                               isClearable
-                              name="datetime1"
+                              name="dob"
+                              
+                              value={userdata.dob}
+                              autoComplete="off"
                               className={"form-control"}
                               selected={startDate}
                               onChange={val => {
                                 setStartDate(val);
-                                setValue("start", val);
+                                //setValue("start", val);
+                                handleChange
                               }}
                               dateFormat="MM-dd-yyyy"
-                            />
-                            {/*<input type="text" className="form-control signup-input" placeholder="Date Of Birth" {...register('dob',  { required: "Please enter your DOB", pattern: {value: /^[0-9]+$/ , message: 'Only Numbers allow',} })}   />
-                            <div className="error-msg">{errors.dob && <p>{errors.dob.message}</p>}</div>*/}
-                          </div> 
+                            />*/}
+                            </div>
                         </GridItem>
                       </GridContainer><br/>
 
                       <GridContainer>
                         <GridItem xs={12} sm={12} md={6}>
                           <div className="form-group">
-                            <input type="text" className="form-control signup-input" placeholder={user.mobile_no} />
+                            <input type="text" className="form-control signup-input" name="mobile_no" placeholder="enter your Mobile number" value={userdata.mobile_no} onChange={handleChange} autoComplete="off"  />
                             
                           </div> 
                         </GridItem>
                         <GridItem xs={12} sm={12} md={6}>
                           <div className="form-group">
-                            {/*<input type="text" className="form-control signup-input" placeholder="Department" {...register('department',  { required: "Please enter your Department", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
-                            <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>*/}
-                            <select name="Department" id="Department" className="form-control signup-input" >
-                              <option value="">{user.department}</option>
+                            <select name="department" id="Department" value={userdata.department} onChange={handleChange} autoComplete="off" className="form-control signup-input" >
+                              <option value="" >enter your department</option>
                               <option value="HR">HR</option>
                               <option value="UI & UX">UI & UX</option>
                               <option value="Web development">Web development</option>
@@ -165,7 +214,24 @@ function UserById(data){
                       <GridContainer>
                         <GridItem xs={12} sm={12} md={12}>
                           <div className="form-group">
-                            <input type="text" className="form-control signup-input" placeholder={user.position} />
+                            {/*<input type="text" className="form-control signup-input" name="position" placeholder="enter your position" value={userdata.position} onChange={handleChange} autoComplete="off"  />*/}
+                            <select name="position" id="position" className="form-control signup-input" value={userdata.position} onChange={handleChange}  >
+                              <option value="Junior HR">Junior HR</option>
+                              <option value="Junior UI & UX">Junior UI & UX</option>
+                              <option value="Junior Web development">Junior Web development</option>
+                              <option value="Junior Content writer">Junior Content writer</option>
+                              <option value="Junior Project manager">Junior Project manager</option>
+                              <option value="Junior Mobile App developer">Junior Mobile App developer</option>
+                              <option value="Junior SEO">Junior SEO</option>
+                              <option value="Senior HR">Senior HR</option>
+                              <option value="Senior UI & UX">Senior UI & UX</option>
+                              <option value="Senior Web development">Senior Web development</option>
+                              <option value="Senior Content writer">Senior Content writer</option>
+                              <option value="Senior Project manager">Senior Project manager</option>
+                              <option value="Senior Mobile App developer">Senior Mobile App developer</option>
+                              <option value="Senior SEO">Senior SEO</option>
+                            </select>
+                            <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                           </div> 
                         </GridItem>
                       </GridContainer><br/>
@@ -173,10 +239,8 @@ function UserById(data){
                       <GridContainer>
                         <GridItem xs={12} sm={12} md={6}>
                           <div className="form-group">
-                            {/*<input type="text" className="form-control signup-input" placeholder="Status" {...register('status',  { required: "Please enter your Status", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
-                            <div className="error-msg">{errors.status && <p>{errors.status.message}</p>}</div>*/}
-                            <select name="Status" id="Status" className="form-control signup-input" >
-                              <option value="">{user.status}</option>
+                            <select name="status" id="Status" className="form-control signup-input"  value={userdata.status} onChange={handleChange} autoComplete="off"   >
+                              <option value="">enter your status</option>
                               <option value="Active">Active</option>
                               <option value="Deactive">Deactive</option>
                             </select>
@@ -186,10 +250,8 @@ function UserById(data){
                       
                         <GridItem xs={12} sm={12} md={6}>
                           <div className="form-group">
-                            {/*<input type="text" className="form-control signup-input" placeholder="Role" {...register('role',  { required: "Please enter your Role", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
-                            <div className="error-msg">{errors.role && <p>{errors.role.message}</p>}</div>*/}
-                            <select name="Role" id="Role" className="form-control signup-input" >
-                              <option value="">{user.role}</option>
+                            <select name="role" id="Role" className="form-control signup-input" value={userdata.role} onChange={handleChange} autoComplete="off" >
+                              <option value="">enter your role</option>
                               <option value="User">User</option>
                               <option value="Admin">Admin</option>
                             </select>
@@ -200,32 +262,11 @@ function UserById(data){
                     </CardBody>
 
                     <CardFooter>
-                        <Button color="primary" type="submit">Add User</Button>
+                        <Button color="primary" type="submit">Update User</Button>
                     </CardFooter>
                 </Card>
             </form>
         </GridItem>
-        {/*<GridItem xs={12} sm={12} md={4}>
-          <Card profile>
-            <CardAvatar profile>
-              <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                <img src={avatar} alt="..." />
-              </a>
-            </CardAvatar>
-            <CardBody profile>
-              <h6 className={classes.cardCategory}>CEO / CO-FOUNDER</h6>
-              <h4 className={classes.cardTitle}>Alec Thompson</h4>
-              <p className={classes.description}>
-                Don{"'"}t be scared of the truth because we need to restart the
-                human foundation in truth And I love you like Kanye loves Kanye
-                I love Rick Owens’ bed design but the back is...
-              </p>
-              <Button color="primary" round>
-                Follow
-              </Button>
-            </CardBody>
-          </Card>
-        </GridItem>*/}
       </GridContainer>
     </div>
     )

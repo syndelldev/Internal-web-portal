@@ -547,3 +547,22 @@ footer ul li a:hover {
   position: absolute;
   background: rgba(0, 0, 0, 0.5);
 }
+p.projectPerson {
+  background:#eee5ff!important;
+  border-radius: 30px!important;
+  padding: 10px!important;
+  font-weight: 500!important;
+  margin-left: 10px;
+    display: inline-flex;
+}
+p.projectLanguage {
+  font-weight: 600;
+  font-size: 20px;
+}
+.popup-overlay {
+  background-color: rgba(0,0,0,0.5);
+}
+button.addproject{
+  width: 95%!important;
+  margin-left: auto;
+}

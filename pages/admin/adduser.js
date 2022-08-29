@@ -17,11 +17,20 @@ import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 import { IoMdArrowDropdown } from "react-icons/io";
-import { useForm  } from 'react-hook-form';
+import { useForm, Controller  } from 'react-hook-form';
 import { server } from 'config';
 import avatar from "assets/img/faces/marc.jpg";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+
+import 'react-phone-number-input/style.css'
+import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input'
+
+import axios from "axios";
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const styles = {
   cardCategoryWhite: {
@@ -45,33 +54,46 @@ const styles = {
 function AddUser() {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
-  const { register,  watch, handleSubmit, formState: { errors }, setValue } = useForm(); 
+  const { register,  watch, handleSubmit, formState: { errors }, setValue, control } = useForm({mode: "onBlur"}); 
   const [startDate, setStartDate] = useState();
   const router = useRouter();
+
+  const [phonenum, setphonenum] = useState()
 
   const onSubmit = async (result) =>{
     
     console.log(result);
-    
-    const res = await fetch(`${server}/api/admin/adduser/`,{
-      method: "POST",
-      headers: { "Content-Type": "application/json",},
-      body:JSON.stringify({username:result.name, password:result.password, email:result.email, PhoneNum:result.mobile_num, DOB:startDate, department:result.department, position:result.position, status:result.status, role:result.role }),
+    let addUser = axios.post(`${server}/api/admin/`, {
+      role_id:result.role_id, username:result.name, password:result.password, email:result.email, PhoneNum:result.PhoneNum, DOB:startDate, department:result.department, position:result.position, status:result.status, role:result.role 
     })
-    const data=await res.json()
-    console.log(data)
-    if(res.status==200)
-    {
-      //alert("sucess")
-      router.push("/admin/userdetail");
-    }
-    else
-    {
-      //alert("Fail")
-    }
+    toast.success('User Created Successfully! 🎉', {
+      position: "top-right",
+      autoClose:5000,
+      onClose: () => router.push("/admin/userdetail")
+    });
+    //router.push("/admin/userdetail");
+
+    // const res = await fetch(`${server}/api/admin/adduser/`,{
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json",},
+    //   body:JSON.stringify({role_id:result.role_id, username:result.name, password:result.password, email:result.email, PhoneNum:result.PhoneNum, DOB:startDate, department:result.department, position:result.position, status:result.status, role:result.role }),
+    // })
+    // const data=await res.json()
+    // console.log(data)
+    // if(res.status==200)
+    // {
+    //   //alert("sucess")
+    //   router.push("/admin/userdetail");
+    // }
+    // else
+    // {
+    //   //alert("Fail")
+    // }
+    
   }
   return (
     <div>
+      <ToastContainer />
       <GridContainer>
         <GridItem xs={12} sm={12} md={8}>
             <form onSubmit={handleSubmit(onSubmit)}>              
@@ -81,6 +103,14 @@ function AddUser() {
                     <p className={classes.cardCategoryWhite}>Complete your profile</p>
                 </CardHeader>
                   <CardBody><br/>
+                    <GridContainer>  
+                        <GridItem xs={12} sm={12} md={12}>
+                          <div className="form-group">
+                            <input type="hidden" className="form-control signup-input" placeholder="role_id" value={2} {...register('role_id', { required: 'Please enter your role_id'} )} />
+                            <div className="error-msg">{errors.role_id && <p>{errors.role_id.message}</p>}</div>
+                          </div> 
+                        </GridItem>
+                      </GridContainer><br/>
                     <GridContainer>
                         {/*<GridItem xs={12} sm={12} md={5}>
                         <CustomInput
@@ -107,7 +137,7 @@ function AddUser() {
                       <GridContainer>  
                         <GridItem xs={12} sm={12} md={12}>
                           <div className="form-group">
-                            <input type="text" className="form-control signup-input" placeholder="Email" {...register('email', { required: 'Email is required', pattern: {value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, message: 'Please enter a valid email',},} )}  />
+                            <input type="text" className="form-control signup-input" placeholder="Email" {...register('email', { required: 'Please enter your email', pattern: {value: /^[a-z0-9]+(?!.*(?:\+{2,}|\-{2,}|\.{2,}))(?:[\.+\-]{0,1}[a-z0-9])*@syndelltech\.in$/ , message: 'Please enter a valid email ex:email@syndelltech.in',},} )} />
                             <div className="error-msg">{errors.email && <p>{errors.email.message}</p>}</div>
                           </div> 
                         </GridItem>
@@ -144,9 +174,24 @@ function AddUser() {
                       <GridContainer>
                         <GridItem xs={12} sm={12} md={6}>
                           <div className="form-group">
-                            <input type="text" className="form-control signup-input" placeholder="Mobile No" {...register('mobile_num',  { required: "Please enter your Mobile Num", pattern: {value: /^[0-9]+$/ , message: 'Only characters Numbers allow',} })} />
-                            <div className="error-msg">{errors.mobile_num && <p>{errors.mobile_num.message}</p>}</div>
-                            
+                            {/*<input type="text" className="form-control signup-input" placeholder="Mobile No" {...register('mobile_num',  { required: "Please enter your Mobile Num", pattern: {value: /^[0-9]+$/ , message: 'Only characters Numbers allow',} })} />
+                            <div className="error-msg">{errors.mobile_num && <p>{errors.mobile_num.message}</p>}</div>*/}
+                            <Controller
+                              name="PhoneNum"
+                              control={control}
+                              rules={{ required: true }}
+                              render={({ field: { onChange, value } }) => (
+                              <PhoneInput
+                                className="form-control signup-input"
+                                {...register('PhoneNum',  { required: "Please enter your phone number", message: 'Only Numbers allow', })} 
+                                defaultCountry={"IN"}
+                                maxLength={11}
+                                placeholder="Phone Number"
+                                value={phonenum}
+                                onChange={setphonenum}
+                              />
+                              )}
+                            />
                           </div> 
                         </GridItem>
                         <GridItem xs={12} sm={12} md={6}>
@@ -171,10 +216,33 @@ function AddUser() {
 
                       <GridContainer>
                         <GridItem xs={12} sm={12} md={12}>
-                          <div className="form-group">
+                          {/*<div className="form-group">
                             <input type="text" className="form-control signup-input" placeholder="Position" {...register('position',  { required: "Please enter your Position", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
                             <div className="error-msg">{errors.position && <p>{errors.position.message}</p>}</div>
-                          </div> 
+                          </div>*/} 
+
+                          <div className="form-group">
+                            <select name="position" id="position" className="form-control signup-input" {...register('position', {required: "Please enter your department" ,message:'Please select atleast one option', })}>
+                              <option value="">Select Your Position</option>
+                              <option value="Junior HR">Junior HR</option>
+                              <option value="Junior UI & UX">Junior UI & UX</option>
+                              <option value="Junior Web development">Junior Web development</option>
+                              <option value="Junior Content writer">Junior Content writer</option>
+                              <option value="Junior Project manager">Junior Project manager</option>
+                              <option value="Junior Mobile App developer">Junior Mobile App developer</option>
+                              <option value="Junior SEO">Junior SEO</option>
+                              <option value="Senior HR">Senior HR</option>
+                              <option value="Senior UI & UX">Senior UI & UX</option>
+                              <option value="Senior Web development">Senior Web development</option>
+                              <option value="Senior Content writer">Senior Content writer</option>
+                              <option value="Senior Project manager">Senior Project manager</option>
+                              <option value="Senior Mobile App developer">Senior Mobile App developer</option>
+                              <option value="Senior SEO">Senior SEO</option>
+                            </select>
+                            <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                            <div className="error-msg">{errors.position && <p>{errors.position.message}</p>}</div>
+                          </div>
+
                         </GridItem>
                       </GridContainer><br/>
                       
@@ -238,6 +306,7 @@ function AddUser() {
         </GridItem>*/}
       </GridContainer>
     </div>
+    
   );
 }
 

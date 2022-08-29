@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from 'next/router'
 import classNames from "classnames";
 // @material-ui/core components
@@ -21,24 +21,46 @@ import CustomInput from "components/CustomInput/CustomInput.js";
 import Button from "components/CustomButtons/Button.js";
 import useWindowSize from "components/Hooks/useWindowSize.js";
 
+import axios from "axios";
 import styles from "assets/jss/nextjs-material-dashboard/components/headerLinksStyle.js";
-//import Cookies from "js-cookie";
-
+import { server } from 'config';
 import { useCookies } from 'react-cookie';
 
-export default function AdminNavbarLinks() {
+//axios.defaults.withCredentials=true;
+
+export default function AdminNavbarLinks({useravtar}) {
+
+  
+  // useEffect(async() => {
+
+  //   const res = await fetch(`${server}/api/admin/${cookies.Id}`)
+  //   const useravtar=await res.json()
+    
+  //   console.log(useravtar)
+
+  // }, []);
+  
+  // console.log(useravtar)
+
   const router = useRouter();
   const [cookies, setCookie, removeCookie ] = useCookies();
+  //console.log(cookies.Id)
   const logoutfunc = () => {
-    removeCookie('name')
-    removeCookie('Email')
-    removeCookie('Mobile_num')
-    removeCookie('DOB')
-    removeCookie('Department')
-    removeCookie('Position')
-    removeCookie('Role')
+    removeCookie('name', { path:'/' } );
+    removeCookie('Email', { path:'/' } );
+    removeCookie('Mobile_num', { path:'/' } );
+    removeCookie('DOB', { path:'/' } );
+    removeCookie('Department', { path:'/' } );
+    removeCookie('Position', { path:'/' } );
+    removeCookie('Role', { path:'/' } );
+    removeCookie('Avtar', { path:'/' } );
+    removeCookie('Id', { path:'/' } );
+
     router.push("/login");
   }
+ 
+
+
   const size = useWindowSize();
   const useStyles = makeStyles(styles);
   const classes = useStyles();
@@ -81,8 +103,17 @@ export default function AdminNavbarLinks() {
         <Button color="white" aria-label="edit" justIcon round>
           <Search />
         </Button>
-      </div>
-      <Button
+        </div>
+        
+       {/*} {useravtar.map((avtar)=>{
+          return(
+            <div key={avtar.id}>
+              <p>{avtar.id}</p>
+            </div>
+          )
+        })}*/}
+        
+      {/*<Button
         color={size.width > 959 ? "transparent" : "white"}
         justIcon={size.width > 959}
         simple={!(size.width > 959)}
@@ -93,8 +124,8 @@ export default function AdminNavbarLinks() {
         <Hidden mdUp implementation="css">
           <p className={classes.linkText}>Dashboard</p>
         </Hidden>
-      </Button>
-      <div className={classes.manager}>
+      </Button>*/}
+      {/*<div className={classes.manager}>
         <Button
           color={size.width > 959 ? "transparent" : "white"}
           justIcon={size.width > 959}
@@ -112,7 +143,7 @@ export default function AdminNavbarLinks() {
             </p>
           </Hidden>
         </Button>
-        <Poppers
+        {/*<Poppers
           open={Boolean(openNotification)}
           anchorEl={openNotification}
           transition
@@ -170,8 +201,8 @@ export default function AdminNavbarLinks() {
               </Paper>
             </Grow>
           )}
-        </Poppers>
-      </div>
+            </Poppers>
+        </div>*/}
       <div className={classes.manager}>
         <Button
           color={size.width > 959 ? "transparent" : "white"}
@@ -180,14 +211,28 @@ export default function AdminNavbarLinks() {
           aria-owns={openProfile ? "profile-menu-list-grow" : null}
           aria-haspopup="true"
           onClick={handleClickProfile}
-          className={classes.buttonLink}
-          
+          className={classes.buttonLink}  
         >
           <Person className={classes.icons} />
+          
           <Hidden mdUp implementation="css">
             <p className={classes.linkText}>Profile</p>
           </Hidden>
         </Button>
+        
+        {/*<input 
+            type='file' 
+            accept="/image/*"
+            onChange={(e)=>{
+              const file = e.target.files[0];
+              if(file && file.type.substring(0,5)==="image"){
+                setavtar(file);
+              }
+              else{
+                setavtar(null)
+              }
+            }}
+          />*/}
         <Poppers
           open={Boolean(openProfile)}
           anchorEl={openProfile}
@@ -211,25 +256,15 @@ export default function AdminNavbarLinks() {
               <Paper>
                 <ClickAwayListener onClickAway={handleCloseProfile}>
                   <MenuList role="menu">
-                    <MenuItem
-                      onClick={handleCloseProfile}
-                      className={classes.dropdownItem}
-                    >
-                      Profile({cookies.name})
-                    </MenuItem>
-                    <MenuItem
-                      onClick={handleCloseProfile}
-                      className={classes.dropdownItem}
-                    >
-                      Settings
+                    {/*<MenuItem onClick={handleCloseProfile} className={classes.dropdownItem}>
+                      <a href="/user/userprofile">Profile({cookies.name})</a>
+                    </MenuItem>*/}
+                    <MenuItem onClick={handleCloseProfile} className={classes.dropdownItem}>
+                      <a href="#">Settings</a>
                     </MenuItem>
                     <Divider light />
-                    <MenuItem
-                      /*onClick={handleCloseProfile}*/
-                      onClick={logoutfunc}
-                      className={classes.dropdownItem}
-                    >
-                      Logout
+                    <MenuItem /*onClick={handleCloseProfile}*/ onClick={logoutfunc} className={classes.dropdownItem}>
+                      <a href="#">Logout</a>
                     </MenuItem>
                   </MenuList>
                 </ClickAwayListener>
