@@ -65,24 +65,29 @@ const styles = {
 function AddUser({ User_name,project_details }) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
-  const { register,  watch, handleSubmit, formState: { errors }, setValue } = useForm(); 
-  const [startDate, setStartDate] = useState();
+  const { register,  watch, handleSubmit, formState: { errors }, setValue } = useForm();
   const [endDate, setEndDate] = useState();
   const router = useRouter();
 
   const onSubmit = async (result) =>{
     
-    alert(selected);
+    const allMember = [];
+    for(var i=0; i<selected.length; i++){
+          allMember.push(selected[i].value);
+    }
+    alert(allMember);
+    alert(projectMember);
 
-    for(var i=0; i<=selected.length; i++){
-          var person = selected[i].value;
-          alert(person);
+    if(allMember == ""){
+      var members = projectMember;
+    }else{
+      var members = allMember;
     }
 
     const res = await fetch(`${server}/api/project/update_project`,{
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ project_id:uoption.project_id, project_person:person, project_title: uoption.project_title , project_description:uoption.project_description, project_language:uoption.project_language, project_comment:uoption.project_comment, project_priority:uoption.project_priority, project_start: uoption.start , project_deadline: uoption.end }),
+      body: JSON.stringify({ project_id:uoption.project_id, project_person:members, project_title: uoption.project_title , project_description:uoption.project_description, project_language:uoption.project_language, project_comment:uoption.project_comment, project_priority:uoption.project_priority, project_start: uoption.start , project_deadline: uoption.end }),
     })
 
     const data=await res.json()
@@ -120,7 +125,6 @@ const allSelectedUser = [];
 for(var i=0; i<selected.length; i++){
   allSelectedUser.push(selected[i].value);
 }
-console.log(allSelectedUser);
 
 
 const [uoption, setOption] = useState({ 
@@ -143,7 +147,6 @@ useEffect(() =>{
   }
   u_data();
 },[]);
-// console.log(uoption);
 
 const handleChange = ({ target: { name, value } }) =>{
   console.log("name");
@@ -152,27 +155,18 @@ const handleChange = ({ target: { name, value } }) =>{
   setOption({ ...uoption, [name]: value });
 }
 
-// function handleChange(event) {
-//   console.log(event.target.value);
-// }
-
-// console.log("projectInfo");
-// console.log(uoption.project_title);
 
 const allSelectedMember = [];
 const projectMember = (uoption.project_person).split(",");
-// console.log(projectMember.length);
 
 for(var i=0; i<projectMember.length; i++){
   allSelectedMember.push({'label' :projectMember[i] , 'value' : projectMember[i]});
   allSelectedUser.push({'label' :projectMember[i] , 'value' : projectMember[i]});
-  // var member_project = projectMember[i];
 }
-allSelectedUser.push(allSelectedMember);
+var date = (uoption.project_start).substring(0,10);
+console.log(date);
 
-console.log(allSelectedUser[1]);
-console.log(allSelectedUser[4]);
-
+const [startDate, setStartDate] = useState();
 
   return (
     <div>
@@ -263,8 +257,13 @@ console.log(allSelectedUser[4]);
                                 setValue("start", val);
                               }}
                               dateFormat="dd-MM-yyyy"
-                              minDate={new Date()}
+                              // minDate={new Date()}
                               value={uoption.project_start}
+                              onSelect={val => {
+                                setStartDate(val);
+                                setValue("start", val);
+                              }}
+
                             />
                           <div className="error-msg">{errors.dob && <p>{errors.dob.message}</p>}</div>
                           </div> 
@@ -327,6 +326,7 @@ console.log(allSelectedUser[4]);
                             value={selected}
                             // onChange={setSelected}
                             onSelect={setSelected}
+                            onRemove={setSelected}
                           />
                           
                             <div className="error-msg">{errors.role && <p>{errors.role.message}</p>}</div>
