@@ -32,7 +32,7 @@ import CardIcon from "components/Card/CardIcon.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 
-
+import axios from "axios";
 import { server } from 'config';
 
 import {
@@ -44,34 +44,64 @@ import {
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 import { useCookies } from 'react-cookie';
 
-function Dashboard() {
-  
-  
-  // const [data,setData] = useState('')
-  // useEffect(()=>{
-  //   const url=`${server}/api/admin/login/`;
-  //   const fetchData=async()=>{
-  //     try{
-  //       const response=await fetch(url);
-  //       const json=await response.json();
-  //       console.log(response)
-  //     }
-  //     catch(err){
-  //       console.log(err)
-  //     }
-  //   }
-  //   fetchData();
-  // },[])
 
-  const [cookies, setCookie] = useCookies('');
-  //console.log(cookies.name);
+export async function getServerSideProps(context){
+  const res = await fetch(`${server}/api/project/`)
+  const project = await res.json()
+  //console.log(project)
+
+  return { props: {project}, }
+}
+
+function Dashboard({project}) {
+  console.log(project)
   const useStyles = makeStyles(styles);
   const classes = useStyles();
+
+  const [cookies, setCookie] = useCookies('');
+  console.log(cookies.Id);
+
+  const [users, setusers] = useState([])
+
+  useEffect(async()=>{
+    axios.get(`${server}/api/admin/${cookies.Id}`, {withCredentials: true})
+      .then((res)=>{
+        setusers(res.data)
+        //console.log(res.data)
+      })    
+  },[])
+  //console.log(users)
+
+
   return (
     <>
       <div>
-        <h1>Welcome {cookies.name} </h1>
+        {users.map((user)=>{
+          return(
+            <div key={user.id}>
+              <h1>Welcome {user.username} </h1>
+            </div>
+          )
+        })}
 
+        
+          <GridItem xs={6} sm={6} md={4}>
+            {
+              project.map((project)=>{
+                return(
+                  <Card key={project.project_id}>
+                    <CardHeader color="primary">
+                      
+                    </CardHeader>
+                    <CardBody>
+
+                    </CardBody>
+                  </Card>
+                )
+              })
+            }
+          </GridItem>
+        
       </div>
     </>
   );
