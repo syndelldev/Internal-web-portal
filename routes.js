@@ -50,7 +50,7 @@ const dashboardRoutes = [
   },
   {
     path: "/subtask_module",
-    name: "Sub Task",
+    name: "Task",
     rtlName: "قائمة الجدول",
     icon: "content_paste",
 
