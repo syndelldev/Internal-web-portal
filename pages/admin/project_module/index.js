@@ -27,14 +27,14 @@ import LibraryBooks from "@material-ui/icons/LibraryBooks";
 
 const styles = {
   cardCategoryWhite: {
-    color: "rgba(255,255,255,.62)",
+    color: "rgba(0,0,0,.62)",
     margin: "0",
     fontSize: "14px",
     marginTop: "0",
     marginBottom: "0",
   },
   cardTitleWhite: {
-    color: "#FFFFFF",
+    color: "#000000",
     marginTop: "0px",
     minHeight: "auto",
     fontWeight: "300",
@@ -43,20 +43,20 @@ const styles = {
     textDecoration: "none",
   },
   cardWhite: {
-    color: "#FFFFFF",
+    color: "#000000",
     marginTop: "0px",
     minHeight: "auto",
     fontWeight: "300",
     fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
     marginBottom: "3px",
     textDecoration: "none",
-    background: "linear-gradient(60deg, #ab47bc, #8e24aa)",
+    background: "#ADD8E6",
     float: "right",
   },
   img:{
     marginLeft: "auto",
     marginRight: "auto",
-    width: "35px",
+    width: "40px",
   }
 };
 
@@ -64,13 +64,10 @@ const styles = {
 export async function getServerSideProps(){
   const res = await fetch(`${server}/api/project`);
   const project_details = await res.json();
-  console.log(project_details);
+  // console.log(project_details);
 
   return{ props: {project_details} }
 }
-
-
-
 
 function AddProject({ project_details }) {
   const useStyles = makeStyles(styles);
@@ -81,11 +78,10 @@ function AddProject({ project_details }) {
     console.log(id);
 
     const res = await fetch(`${server}/api/project/${id}`);
-    
   }
   return (
     <>
-      <Button type="submit" className={classes.cardWhite}><a href='/admin/project_module/create_project' className={classes.cardWhite}>Create Project</a></Button><br/><br/>
+      <Button type="submit" color="primary" className={classes.cardWhite}><a href='/admin/project_module/create_project' className={classes.cardWhite}>Create Project</a></Button><br/><br/>
 
     <GridContainer>
     {project_details.map((project)=>{
@@ -93,41 +89,59 @@ function AddProject({ project_details }) {
     if(project.project_status == "active"){
 
       const bDate = ((project.project_deadline).substr(0,10).split("-",3));
+      var person = project.project_person.split(",");
+      console.log(person);
+
       // console.log(bDate);
     return(
     <>
-        <GridItem xs={6} sm={6} md={3}>
+        <GridItem xs={6} sm={6} md={4}>
             <form>
             <Card>
                 <CardHeader color="primary">
 
-                  {project.project_language}
+                  <img src={`${server}/Project icon.svg`} className={classes.img}/>
 
-                  <img src={`${server}/reactlogo.png`} className={classes.img}/>
-
-                    <h4 className={classes.cardTitleWhite}>{project.project_title}</h4>
+                    <h4 className="projectTitle">{project.project_title}</h4>
                     <p className={classes.cardCategoryWhite}></p>
                 </CardHeader>
 
                   <CardBody>
-                    <GridContainer>
+                  <GridContainer>
                       <GridItem>
-                        <p>Project Priority:</p>
-                        <p>{project.project_priority}</p>
+                        <p className="projectLanguage">{project.project_language}</p>
                       </GridItem>
-                      
+
                       <GridItem>
-                        <p>Project Deadline:</p>
-                        <p>{bDate[2]}/{bDate[1]}/{bDate[0]}</p>
+                        <a href={`${server}/admin/project_module/${project.project_id}`}>Edit</a>
+                        <button onClick={()=>deleteProject(project.project_id)}>Delete</button>
                       </GridItem>
                     </GridContainer>
 
-                      <p>Project Members:</p>
-                      <p>{project.project_person}</p>
+                    <GridContainer>
+                      <GridItem>
+                        {person.map((data)=>{
+                          return(
+                            <>
+                              <p className="projectPerson">{data}</p>
+                            </>
+                          )
+                        })
+                        }
+                      </GridItem>
+                    </GridContainer>
+
+                    <GridContainer>
+                      <GridItem>
+                        <p className="projectPriority">Project Priority : {project.project_priority}</p>
+                      </GridItem>
+                      
+                      <GridItem>
+                        <p className="projectDeadline">Project Deadline : {bDate[2]}/{bDate[1]}/{bDate[0]}</p>
+                      </GridItem>
+                    </GridContainer>
 
                       {/* <Button color="primary" type="submit" id={project.project_id}>Edit</Button> */}
-                      <a href={`${server}/admin/project_module/${project.project_id}`}>Edit</a>
-                      <button onClick={()=>deleteProject(project.project_id)}>Delete</button>
                       
                     </CardBody>
 
