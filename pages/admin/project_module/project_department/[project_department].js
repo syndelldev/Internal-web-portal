@@ -26,6 +26,8 @@ import LibraryBooks from "@material-ui/icons/LibraryBooks";
 import Popup from "reactjs-popup";
 import AddUser from "../create_project";
 import Multiselect from "multiselect-react-dropdown";
+import '../../../../styles/globals.css';
+
 
 const styles = {
   cardCategoryWhite: {
@@ -191,7 +193,7 @@ for(var i=0; i<selected.length; i++){
     </GridItem>
 
     {/* <GridItem> */}
-    <div className={classes.close}>
+      <div className={classes.close}>
         <a onClick={close}>&times;</a>
       </div>
     {/* </GridItem> */}
@@ -203,18 +205,19 @@ for(var i=0; i<selected.length; i++){
 
                       <GridItem xs={12} sm={12} md={12}>                      
                         <div className="form-group">
+                          <span>Project Title</span>
                           <input type="text" className="form-control signup-input" placeholder="Project Title" {...register('project_title',  { required: "Please enter project title"})} />
-                          <div className="error-msg">{errors.name && <p>{errors.name.message}</p>}</div>
+                          <div className="error-msg">{errors.project_title && <span>{errors.project_title.message}</span>}</div>
                         </div> 
-                        <div className="error-msg">{errors.username && <p>{errors.username.message}</p>}</div>
                       </GridItem>
                     </GridContainer><br/>
                     
                     <GridContainer>  
                       <GridItem xs={12} sm={12} md={12}>
                         <div className="form-group">
+                        <span>Project Description</span>
                           <textarea className="form-control signup-input" placeholder="Project Description" {...register('project_description', { required: 'Description is required', } )}  />
-                          <div className="error-msg">{errors.email && <p>{errors.email.message}</p>}</div>
+                          <div className="error-msg">{errors.project_description && <span>{errors.project_description.message}</span>}</div>
                         </div> 
                       </GridItem>
                     </GridContainer><br/>
@@ -222,6 +225,7 @@ for(var i=0; i<selected.length; i++){
                     <GridContainer>  
                       <GridItem xs={12} sm={12} md={12}>
                         <div className="form-group">
+                        <span>Project Language</span>
                           <select name="Project_created_by" id="Project_created_by" className="form-control signup-input" {...register('project_language', {required:true ,message:'Please select atleast one option', })}>
                             <option value="">Select Language</option>
                             <option value="Wordpress">Wordpress</option>
@@ -232,7 +236,7 @@ for(var i=0; i<selected.length; i++){
                             <option value="Bubble">Bubble</option>
                           </select>
                           <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                          <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>
+                          <div className="error-msg">{errors.project_language && <span>{errors.project_language.message}</span>}</div>
                         </div> 
                       </GridItem>
                     </GridContainer><br/>
@@ -240,6 +244,7 @@ for(var i=0; i<selected.length; i++){
                     <GridContainer>  
                       <GridItem xs={12} sm={12} md={6}>
                         <div className="form-group" {...register('project_start')}>
+                        <span>Project Start Date</span>
                           <DatePicker
                             placeholderText="Start_Date : dd/mm/yyyy"
                             isClearable
@@ -253,12 +258,13 @@ for(var i=0; i<selected.length; i++){
                             dateFormat="dd-MM-yyyy"
                             minDate={new Date()}
                           />
-                        <div className="error-msg">{errors.dob && <p>{errors.dob.message}</p>}</div>
+                        <div className="error-msg">{errors.project_start && <span>{errors.project_start.message}</span>}</div>
                         </div> 
                       </GridItem>
 
                       <GridItem xs={12} sm={12} md={6}>
                         <div className="form-group" {...register('project_deadline')}>
+                        <span>Project End Date</span>
                           <DatePicker
                             placeholderText="End_Date : dd/mm/yyyy"
                             isClearable
@@ -272,24 +278,37 @@ for(var i=0; i<selected.length; i++){
                             dateFormat="dd-MM-yyyy"
                             minDate={startDate}
                           />
-                        <div className="error-msg">{errors.dob && <p>{errors.dob.message}</p>}</div>
+                        <div className="error-msg">{errors.project_deadline && <span>{errors.project_deadline.message}</span>}</div>
                         </div> 
                       </GridItem>
                     </GridContainer><br/>
 
+                      <GridContainer>
+                        <GridItem xs={12} sm={12} md={12}>
+                          <div className="form-group">
+                            {/*<input type="text" className="form-control signup-input" placeholder="Department" {...register('department',  { required: "Please enter your Department", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
+                            <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>*/}
+                          <span>Project Department</span>
+                            <select name="Department" id="Department" className="form-control signup-input" {...register('project_department', {required:true ,message:'Please select atleast one option', })}>
+                              <option value="">Select Your Department...</option>
+                              <option value="HR">HR</option>
+                              <option value="UI & UX">UI & UX</option>
+                              <option value="Web development">Web development</option>
+                              <option value="Content writer">Content writer</option>
+                              <option value="Project manager">Project manager</option>
+                              <option value="Mobile App developer">Mobile App developer</option>
+                              <option value="SEO">SEO</option>
+                            </select>
+                            <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                            <div className="error-msg">{errors.project_department && <span>{errors.project_department.message}</span>}</div>
+                          </div> 
+                        </GridItem>
+                      </GridContainer><br/>
 
-                    <GridContainer>
-                      <GridItem xs={12} sm={12} md={12}>
-                        <div className="form-group">
-                          <textarea className="form-control signup-input" placeholder="Comment" {...register('project_comment')} />
-                          <div className="error-msg">{errors.position && <p>{errors.position.message}</p>}</div>
-                        </div> 
-                      </GridItem>
-                    </GridContainer><br/>
-                    
                     <GridContainer>
                       <GridItem xs={12} sm={12} md={6}>
                         <div className="form-group">
+                        <span>Project Priority</span>
                           <select name="Status" id="Status" className="form-control signup-input" {...register('project_priority', {required:true ,message:'Please select atleast one option', })}>
                             <option value="Select...">Select Project Priority</option>
                             <option value="High">High</option>
@@ -297,26 +316,42 @@ for(var i=0; i<selected.length; i++){
                             <option value="Low">Low</option>
                           </select>
                           <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                          <div className="error-msg">{errors.status && <p>{errors.status.message}</p>}</div>
+                          <div className="error-msg">{errors.project_priority && <span>{errors.project_priority.message}</span>}</div>
                         </div> 
                       </GridItem>
                     
                       <GridItem xs={12} sm={12} md={6}>
                         <div className="form-group" {...register('project_person')}>
                        
+                        <span>Project Members</span>
                         <Multiselect
                         displayValue="value"
                           options={uoptions}
                           value={selected}
                           onChange={setSelected}
-                          labelledBy="Select project"
+                          // onKeyPressFn={function noRefCheck(){}}
+                          onRemove={setSelected}
+                          // onSearch={function noRefCheck(){}}
+                          onSelect={setSelected}
+                          placeholder="Select Project Members"
+                          showArrow={true}
                         />
                         
-                          <div className="error-msg">{errors.role && <p>{errors.role.message}</p>}</div>
+                          <div className="error-msg">{errors.project_person && <span>{errors.project_person.message}</span>}</div>
                         </div> 
                       </GridItem>
                     </GridContainer><br/>
 
+                    <GridContainer>
+                      <GridItem xs={12} sm={12} md={12}>
+                        <div className="form-group">
+                        <span>Comments</span>
+                          <textarea className="form-control signup-input" placeholder="Comment" {...register('project_comment')} />
+                          <div className="error-msg">{errors.position && <span>{errors.position.message}</span>}</div>
+                        </div> 
+                      </GridItem>
+                    </GridContainer><br/>
+                    
                   </CardBody>
 
                   <CardFooter>
@@ -336,26 +371,30 @@ for(var i=0; i<selected.length; i++){
 </GridItem>
 
 <GridItem>
-<a href={`${server}/admin/project_module`} className={classes.link}>All</a>
-<a href={`${server}/admin/project_module/project_department/ReactJS`} className={classes.link}>ReactJS</a>
-<a href={`${server}/admin/project_module/project_department/Wordpress`} className={classes.link}>Wordpress</a>
-<a href={`${server}/admin/project_module/project_department/Bubble`} className={classes.link}>Bubble</a>
+
+<div class="departmet_dropdown">
+  <button class="dropdown_button">Project Department</button>
+      <div class="department-link">
+        <a href={`${server}/admin/project_module`}>All</a>
+        <a href={`${server}/admin/project_module/project_department/HR`}>HR</a>
+        <a href={`${server}/admin/project_module/project_department/UI & UX`}>UI & UX</a>
+        <a href={`${server}/admin/project_module/project_department/Web development`}>Web development</a>
+        <a href={`${server}/admin/project_module/project_department/Content writer`}>Content writer</a>
+        <a href={`${server}/admin/project_module/project_department/Project manager`}>Project manager</a>
+        <a href={`${server}/admin/project_module/project_department/Mobile App developer`}>Mobile App developer</a>
+        <a href={`${server}/admin/project_module/project_department/SEO`}>SEO</a>
+      </div>
+</div>
 
 </GridItem>
 </GridContainer>
-
-{/* create project form end */}
-
     <GridContainer>
     {project_details.map((project)=>{
 
     if(project.project_status == "active"){
 
-      const bDate = ((project.project_deadline).substr(0,10).split("-",3));
       var person = project.project_person.split(",");
-      console.log(person);
 
-      // console.log(bDate);
     return(
     <>
 
@@ -401,17 +440,13 @@ for(var i=0; i<selected.length; i++){
                       </GridItem>
                       
                       <GridItem>
-                        <p className="projectDeadline">Project Deadline : {bDate[2]}/{bDate[1]}/{bDate[0]}</p>
+                        {/* <p className="projectDeadline">Project Deadline : {bDate[2]}/{bDate[1]}/{bDate[0]}</p> */}
                       </GridItem>
                     </GridContainer>
-
-                      {/* <Button color="primary" type="submit" id={project.project_id}>Edit</Button> */}
-                      
+                    
                     </CardBody>
 
                     <CardFooter>
-                        {/* <Button color="primary" type="submit">Edit</Button>
-                        <Button color="primary" type="submit">Delete</Button> */}
                     </CardFooter>
                 </Card>
             </form>
