@@ -163,8 +163,8 @@ for(var i=0; i<projectMember.length; i++){
   allSelectedMember.push({'label' :projectMember[i] , 'value' : projectMember[i]});
   allSelectedUser.push({'label' :projectMember[i] , 'value' : projectMember[i]});
 }
-var date = (uoption.project_start).substring(0,10);
-console.log(date);
+// var date = (uoption.project_start).substring(0,10);
+// console.log(date);
 
 const [startDate, setStartDate] = useState();
 
@@ -259,11 +259,6 @@ const [startDate, setStartDate] = useState();
                               dateFormat="dd-MM-yyyy"
                               // minDate={new Date()}
                               value={uoption.project_start}
-                              onSelect={val => {
-                                setStartDate(val);
-                                setValue("start", val);
-                              }}
-
                             />
                           <div className="error-msg">{errors.dob && <p>{errors.dob.message}</p>}</div>
                           </div> 

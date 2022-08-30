@@ -43,7 +43,7 @@ const projectDepartment = async (req,res) => {
     console.log(req.query);
 
     try{
-        let projectDepartment = await executeQuery("Select * from `tbl_project` WHERE `tbl_project`.`project_language` = ?", [project_department] )
+        let projectDepartment = await executeQuery("Select * from `tbl_project` WHERE `tbl_project`.`project_department` = ?", [project_department] )
         res.status(200).json(projectDepartment);
     }
     catch(err){
