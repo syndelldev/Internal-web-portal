@@ -97,12 +97,12 @@ function UserById(data){
         console.log(data)
         console.log(userdata)
         if(data) 
-        // toast.success('User Updated Successfully! 🎉', {
-        //   position: "top-right",
-        //   autoClose:5000,
-        //   onClose: () => router.push("/admin/userdetail")
-        // });
-        router.push("/admin/userdetail")
+        toast.success('User Updated Successfully! 🎉', {
+          position: "top-right",
+          autoClose:5000,
+          onClose: () => router.push("/admin/userdetail")
+        });
+        //router.push("/admin/userdetail")
 
         // setuserdata({
         //   role_id:"",
