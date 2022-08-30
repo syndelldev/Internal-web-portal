@@ -36,8 +36,7 @@ import { useCookies } from 'react-cookie';
 
 export async function getServerSideProps(context){
   //console.log(context.req.cookies);
-  var cookies = context.req.cookies
-  const res = await fetch(`${server}/api/user_dashboard`, cookies)
+  const res = await fetch(`${server}/api/user_dashboard`)
   const project = await res.json()
   //console.log(project)
 
@@ -61,7 +60,7 @@ function Dashboard({project}) {
         //console.log(res)
       })    
   },[])
-  // console.log(req)
+  console.log(users)
 
   // const [personproject, setpersonproject] = useState([])
   // useEffect(async()=>{
