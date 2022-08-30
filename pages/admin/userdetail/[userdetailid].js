@@ -68,6 +68,7 @@ function UserById(data){
       password: "",
       email: "",
       mobile_no: "",
+      dob: "",
       department: "",
       position: "",
       status: "",
@@ -160,15 +161,15 @@ function UserById(data){
                         </GridItem>
                         <GridItem xs={12} sm={12} md={6}>
                           <div className="form-group">
-                            <DatePicker
+                            {/*<DatePicker
                               className={"form-control"}
                               name="dob"
                               value={userdata.dob}
                               onChange={handleChange}
-                              /*onChange={(val) => { setStartDate(val);}}*/
-                              
-                            />
-                            {/*<DatePicker
+                              onChange={(val) => { setStartDate(val);}}  
+                            />*/}
+
+                            <DatePicker
                               isClearable
                               name="dob"
                               
@@ -179,10 +180,9 @@ function UserById(data){
                               onChange={val => {
                                 setStartDate(val);
                                 //setValue("start", val);
-                                handleChange
                               }}
                               dateFormat="MM-dd-yyyy"
-                            />*/}
+                            />
                             </div>
                         </GridItem>
                       </GridContainer><br/>

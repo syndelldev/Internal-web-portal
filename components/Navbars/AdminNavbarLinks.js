@@ -38,15 +38,15 @@ export default function AdminNavbarLinks({useravtar}) {
   // }, []);
   // console.log(useravtar)
 
-  const [users, setusers] = useState([])
-  useEffect(async()=>{
-    axios.get(`${server}/api/admin/${cookies.Id}`, {withCredentials: true})
-      .then((res)=>{
-        setusers(res.data)
-        //console.log(res.data)
-      })    
-  },[])
-  console.log(users)
+  // const [users, setusers] = useState([])
+  // useEffect(async()=>{
+  //   axios.get(`${server}/api/admin/${cookies.Id}`, {withCredentials: true})
+  //     .then((res)=>{
+  //       setusers(res.data)
+  //       //console.log(res.data)
+  //     })    
+  // },[])
+  // console.log(users)
 
   const router = useRouter();
   const [cookies, setCookie, removeCookie ] = useCookies();
@@ -211,15 +211,15 @@ export default function AdminNavbarLinks({useravtar}) {
           onClick={handleClickProfile}
           className={classes.buttonLink}  
         >
-          {/*<Person className={classes.icons} />*/}
-          {users.map((avtar)=>{
+          <Person className={classes.icons} />
+          {/*{users.map((avtar)=>{
           return(
             <div key={avtar.id}>
               <p>{avtar.avtar}</p>
               <img src={`${server}/avtar.png`} width={40} height={40} className={classes.icons}/>
             </div>
           )
-        })}
+        })}*/}
           <Hidden mdUp implementation="css">
             <p className={classes.linkText}>Profile</p>
           </Hidden>
