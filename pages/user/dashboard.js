@@ -21,6 +21,12 @@ import CardIcon from "components/Card/CardIcon.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 
+import Table from "@material-ui/core/Table";
+import TableHead from "@material-ui/core/TableHead";
+import TableBody from "@material-ui/core/TableBody";
+import TableRow from "@material-ui/core/TableRow";
+import TableCell from "@material-ui/core/TableCell";
+
 import axios from "axios";
 import { server } from 'config';
 
@@ -32,6 +38,7 @@ import {
 
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 import { useCookies } from 'react-cookie';
+import { Button } from "@material-ui/core";
 
 
 export async function getServerSideProps(context){
@@ -39,11 +46,11 @@ export async function getServerSideProps(context){
   const res = await fetch(`${server}/api/user_dashboard`, {
     headers: {
       'Access-Control-Allow-Credentials': true,
-      Cookie: context.req.headers.cookie  
+      Cookie: context.req.headers.cookie
     },
   })
   const project = await res.json()
-  //console.log(res)
+  //console.log(project)
 
   return { props: {project}, }
 }
@@ -67,6 +74,18 @@ function Dashboard({project}) {
   },[])
   //console.log(users)
 
+  const [ userRights, setuserRights] = useState([])
+  useEffect(()=>{
+    //console.log(value)
+    axios.get(`${server}/api/rights/${cookies.Id}`)
+    .then((res)=>{
+      setuserRights(res.data)
+        console.log(res.data)
+    })
+  },[])
+  console.log(userRights)
+
+
   // const [personproject, setpersonproject] = useState([])
   // useEffect(async()=>{
   //   axios.get(`${server}/api/user_dashboard`)
@@ -89,7 +108,7 @@ function Dashboard({project}) {
         })}
       </div>
       <GridContainer>
-        {
+       {
           project.map((project)=>{
             const bDate = ((project.project_deadline).substr(0,10).split("-",3));
             return(
@@ -101,8 +120,40 @@ function Dashboard({project}) {
                   <CardFooter>
                     <p className="projectLanguage">{project.project_language}</p>
                     <p className="projectPriority">
-                      <a href={`#`} className="projectPriority"><FiEdit/></a>&nbsp;&nbsp;&nbsp;
-                      <a href={`#`} className="projectPriority"><FaEye/></a>
+                      
+                      {/*<a href={`#`} className="projectPriority"><FiEdit/></a>&nbsp;&nbsp;&nbsp;
+                      <a href={`#`} className="projectPriority"><FaEye/></a>*/}
+                      {
+                        userRights.map((rights)=>{
+                          if(rights.edit_user == 0)
+                          {
+                            return(
+                              <Button disabled key={rights.id}><a href={`#`} className="projectPriority"><FiEdit/></a></Button>
+                            )
+                          }
+                          else
+                          {
+                            return(
+                              <Button key={rights.id}><a href={`#`} className="projectPriority"><FiEdit/></a></Button>
+                            )
+                          } 
+                        })
+                      }
+                   
+                      {
+                        userRights.map((rights)=>{
+                          if(rights.user_list == 0){
+                            return(
+                              <Button disabled key={rights.id}><a href={`#`} className="projectPriority"><FaEye/></a></Button>
+                            )
+                          }
+                          else{
+                            return(
+                              <Button key={rights.id}><a href={`#`} className="projectPriority"><FaEye/></a></Button>
+                            )
+                          }
+                        })
+                      }
                     </p>
                   </CardFooter>
                   <CardFooter>
