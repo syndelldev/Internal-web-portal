@@ -11,3 +11,4 @@ module.exports = withPlugins([[withSass], [withImages], [withCSS]], {
     return config;
   },
 });
+future: { webpack5: true }

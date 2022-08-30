@@ -1,9 +1,9 @@
-import nc from "next-connect";
-import { userCreateTask } from '../../../controller/user/user'
+// import nc from "next-connect";
+// import { userCreateTask } from '../../../controller/user/user'
 
-const handler=nc();
+// const handler=nc();
 
-handler.get(userCreateTask);
+// handler.get(userCreateTask);
 
 
-export default handler;
+// export default handler;

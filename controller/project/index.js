@@ -37,6 +37,21 @@ const getProjectById = async (req,res) => {
 //     }
 // }
 
+const projectDepartment = async (req,res) => {
+    let project_department = req.query.department;
+    console.log(req.query.department);
+    console.log(req.query);
+
+    try{
+        let projectDepartment = await executeQuery("Select * from `tbl_project` WHERE `tbl_project`.`project_department` = ?", [project_department] )
+        res.status(200).json(projectDepartment);
+    }
+    catch(err){
+        res.status(500).json(err);
+    }
+}
+
+
 const deleteProject = async (req,res) => {
     let id = req.query.project_id;
     console.log(req.query.project_id);
@@ -49,4 +64,4 @@ const deleteProject = async (req,res) => {
         res.status(500).json(err);
     }
 }
-export { getAllProject,getProjectById,deleteProject }
+export { getAllProject,getProjectById,deleteProject,projectDepartment }

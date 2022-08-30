@@ -559,3 +559,10 @@ p.projectLanguage {
   font-weight: 600;
   font-size: 20px;
 }
+.popup-overlay {
+  background-color: rgba(0,0,0,0.5);
+}
+button.addproject{
+  width: 95%!important;
+  margin-left: auto;
+}
