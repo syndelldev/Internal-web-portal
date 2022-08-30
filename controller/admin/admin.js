@@ -12,6 +12,8 @@ const getAllUser = async (req,res) =>{
 
 const getUserById = async (req,res) => {
     let id = req.query.id;
+    console.log(req.query);
+    
     try{
         let userDataById=await executeQuery(` SELECT * FROM tbl_user where id= ${id}`, [] );
         res.status(200).json(userDataById);

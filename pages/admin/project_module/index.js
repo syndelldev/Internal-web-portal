@@ -117,7 +117,7 @@ function AddProject({ project_details , User_name }) {
     const res = await fetch(`${server}/api/project/addproject`,{
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body:JSON.stringify({project_person:selected,project_department:result.project_department, project_title:result.project_title, project_description:result.project_description, project_language:result.project_language, project_comment:result.project_comment, project_priority:result.project_priority, project_start: result.start , project_deadline: result.end }),
+      body:JSON.stringify({project_person:selected,project_department:result.project_department,project_status:result.project_status , project_title:result.project_title, project_description:result.project_description, project_language:result.project_language, project_comment:result.project_comment, project_priority:result.project_priority, project_start: result.start , project_deadline: result.end }),
     })
     const data=await res.json()
     
@@ -194,7 +194,7 @@ const [selected, setSelected] = useState([]);
 </GridContainer>
 
               </CardHeader>
-                <CardBody><br/>
+                <CardBody>
                   <GridContainer>
 
                       <GridItem xs={12} sm={12} md={12}>                      
@@ -216,12 +216,32 @@ const [selected, setSelected] = useState([]);
                       </GridItem>
                     </GridContainer><br/>
 
-                    <GridContainer>  
-                      <GridItem xs={12} sm={12} md={12}>
+                    <GridContainer>
+                      <GridItem xs={12} sm={12} md={6}>
+                          <div className="form-group">
+                            {/*<input type="text" className="form-control signup-input" placeholder="Department" {...register('department',  { required: "Please enter your Department", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
+                            <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>*/}
+                          <span>Project Department</span>
+                            <select name="Department" id="Department" className="form-control signup-input" {...register('project_department', {required:true ,message:'Please select atleast one option', })}>
+                              <option value=""  disabled selected>Select Your Department...</option>
+                              <option value="HR">HR</option>
+                              <option value="UI & UX">UI & UX</option>
+                              <option value="Web development">Web development</option>
+                              <option value="Content writer">Content writer</option>
+                              <option value="Project manager">Project manager</option>
+                              <option value="Mobile App developer">Mobile App developer</option>
+                              <option value="SEO">SEO</option>
+                            </select>
+                            <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                            <div className="error-msg">{errors.project_department && <span>{errors.project_department.message}</span>}</div>
+                          </div> 
+                      </GridItem>
+
+                      <GridItem xs={12} sm={12} md={6}>
                         <div className="form-group">
                         <span>Project Language</span>
                           <select name="Project_created_by" id="Project_created_by" className="form-control signup-input" {...register('project_language', {required:true ,message:'Please select atleast one option', })}>
-                            <option value="">Select Language</option>
+                            <option value="" disabled selected>Select Language</option>
                             <option value="Wordpress">Wordpress</option>
                             <option value="Shopify">Shopify</option>
                             <option value="ReactJS">ReactJS</option>
@@ -277,34 +297,12 @@ const [selected, setSelected] = useState([]);
                       </GridItem>
                     </GridContainer><br/>
 
-                      <GridContainer>
-                        <GridItem xs={12} sm={12} md={12}>
-                          <div className="form-group">
-                            {/*<input type="text" className="form-control signup-input" placeholder="Department" {...register('department',  { required: "Please enter your Department", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
-                            <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>*/}
-                          <span>Project Department</span>
-                            <select name="Department" id="Department" className="form-control signup-input" {...register('project_department', {required:true ,message:'Please select atleast one option', })}>
-                              <option value="">Select Your Department...</option>
-                              <option value="HR">HR</option>
-                              <option value="UI & UX">UI & UX</option>
-                              <option value="Web development">Web development</option>
-                              <option value="Content writer">Content writer</option>
-                              <option value="Project manager">Project manager</option>
-                              <option value="Mobile App developer">Mobile App developer</option>
-                              <option value="SEO">SEO</option>
-                            </select>
-                            <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                            <div className="error-msg">{errors.project_department && <span>{errors.project_department.message}</span>}</div>
-                          </div> 
-                        </GridItem>
-                      </GridContainer><br/>
-
                     <GridContainer>
                       <GridItem xs={12} sm={12} md={6}>
                         <div className="form-group">
                         <span>Project Priority</span>
-                          <select name="Status" id="Status" className="form-control signup-input" {...register('project_priority', {required:true ,message:'Please select atleast one option', })}>
-                            <option value="Select...">Select Project Priority</option>
+                          <select name="priority" id="priority" className="form-control signup-input" {...register('project_priority', {required:true ,message:'Please select atleast one option', })}>
+                            <option value=""  disabled selected>Select Project Priority</option>
                             <option value="High">High</option>
                             <option value="Medium">Medium</option>
                             <option value="Low">Low</option>
@@ -315,6 +313,24 @@ const [selected, setSelected] = useState([]);
                       </GridItem>
                     
                       <GridItem xs={12} sm={12} md={6}>
+                          <div className="form-group">
+                            {/*<input type="text" className="form-control signup-input" placeholder="Status" {...register('status',  { required: "Please enter your Status", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
+                            <div className="error-msg">{errors.status && <p>{errors.status.message}</p>}</div>*/}
+                            <span>Project Status</span>
+                            <select name="Status" id="Status" className="form-control signup-input" {...register('project_status', {required:true ,message:'Please select atleast one option', })}>
+                              <option value=""  disabled selected>Select Project Status</option>
+                              <option value="on hold">On hold</option>
+                              <option value="running">Running</option>
+                              <option value="completed">Completed</option>
+                            </select>
+                            <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                            {/* <div className="error-msg">{errors.status && <p>{errors.status.message}</p>}</div> */}
+                          </div> 
+                      </GridItem>
+                    </GridContainer><br/>
+
+                    <GridContainer>
+                    <GridItem xs={12} sm={12} md={12}>
                         <div className="form-group" {...register('project_person')}>
                        
                         <span>Project Members</span>
@@ -344,7 +360,7 @@ const [selected, setSelected] = useState([]);
                           <div className="error-msg">{errors.position && <span>{errors.position.message}</span>}</div>
                         </div> 
                       </GridItem>
-                    </GridContainer><br/>
+                    </GridContainer>
                     
                   </CardBody>
 
@@ -385,7 +401,7 @@ const [selected, setSelected] = useState([]);
     <GridContainer>
     {project_details.map((project)=>{
 
-    if(project.project_status == "active"){
+    if(project.project_delete == "no"){
 
       var person = project.project_person.split(",");
 
