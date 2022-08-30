@@ -36,9 +36,14 @@ import { useCookies } from 'react-cookie';
 
 export async function getServerSideProps(context){
   //console.log(context.req.cookies);
-  const res = await fetch(`${server}/api/user_dashboard`)
+  const res = await fetch(`${server}/api/user_dashboard`, {
+    headers: {
+      'Access-Control-Allow-Credentials': true,
+      Cookie: context.req.headers.cookie  
+    },
+  })
   const project = await res.json()
-  //console.log(project)
+  //console.log(res)
 
   return { props: {project}, }
 }
@@ -54,13 +59,13 @@ function Dashboard({project}) {
   const [users, setusers] = useState([])
 
   useEffect(async()=>{
-    axios.get(`${server}/api/admin/${cookies.Id}` , {withCredentials: true} )
+    axios.get(`${server}/api/admin/${cookies.Id}` )
       .then((res)=>{
         setusers(res.data)
         //console.log(res)
       })    
   },[])
-  console.log(users)
+  //console.log(users)
 
   // const [personproject, setpersonproject] = useState([])
   // useEffect(async()=>{
