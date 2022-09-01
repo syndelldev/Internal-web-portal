@@ -381,7 +381,7 @@ const [selected, setSelected] = useState([]);
 
 <GridItem>
 
-<div class="departmet_dropdown">
+<div class="department_dropdown">
   <button class="dropdown_button">Project Department</button>
       <div class="department-link">
         <a href={`${server}/admin/project_module`}>All</a>
@@ -396,8 +396,8 @@ const [selected, setSelected] = useState([]);
 </div>
 </GridItem>
 
-{/* <GridItem>
-<div class="departmet_dropdown">
+<GridItem>
+<div class="department_dropdown">
   <button class="dropdown_button">Project Language</button>
       <div class="department-link">
         <a href={`${server}/admin/project_module`}>All</a>
@@ -409,7 +409,7 @@ const [selected, setSelected] = useState([]);
         <a href={`${server}/admin/project_module/project_language/Bubble`}>Bubble</a>
       </div>
 </div>
-</GridItem> */}
+</GridItem>
 
 </GridContainer>
 

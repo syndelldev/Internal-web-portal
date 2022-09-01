@@ -24,7 +24,7 @@ a {
   border: 1px solid #ddd;
 }
 
-.departmet_dropdown {
+.department_dropdown {
   position: relative;
   display: inline-block;
 }
@@ -46,5 +46,5 @@ a {
 
 .department-link a:hover {background-color: #ddd;}
 
-.departmet_dropdown:hover .department-link {display: block;}
+.department_dropdown:hover .department-link {display: block;}
 

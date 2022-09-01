@@ -45,7 +45,7 @@ const dashboardRoutes = [
     path: "/project_module",
     name: "Projects",
     rtlName: "ملف تعريفي للمستخدم",
-    icon: Person,
+    icon: LibraryBooks,
     layout: "/admin",
   },
   {

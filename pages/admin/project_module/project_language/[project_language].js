@@ -84,10 +84,9 @@ const styles = {
 };
 
 export async function getServerSideProps(context){
-  const project_department = context.params.project_department;
-  console.log(project_department);
+  const project_language = context.params.project_language;
 
-  const res = await fetch(`${server}/api/project/project_department/${project_department}`);
+  const res = await fetch(`${server}/api/project/project_language/${project_language}`);
   const project_details = await res.json();
   // console.log(project_details);
   const response = await fetch(`${server}/api/admin`)
@@ -417,7 +416,6 @@ for(var i=0; i<selected.length; i++){
       </div>
 </div>
 </GridItem>
-
 
 </GridContainer>
     <GridContainer>
