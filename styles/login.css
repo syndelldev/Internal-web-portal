@@ -243,3 +243,7 @@ button.login-create-acc-btn:active{
 .projectPriority{
     font-size: 16px;
 }
+
+.rights_btn{
+    min-width: 40px!important;
+}

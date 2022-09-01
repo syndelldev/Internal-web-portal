@@ -44,7 +44,7 @@ export async function getServerSideProps(context){
     //const id = context.params.userdetailid;
     const res = await fetch(`${server}/api/rights/`)
     const data = await res.json()
-    //console.log(data)
+    console.log(data)
 
     return { props: {data}, }
 }
@@ -59,7 +59,6 @@ function UserRights({data}){
         //console.log(value)
     }
     useEffect(async()=>{
-        //console.log(value)
         axios.get(`${server}/api/rights/${value}`)
         .then((res)=>{
             setusers(res.data)
@@ -67,6 +66,7 @@ function UserRights({data}){
         })
     },[value])
     console.log(value)
+    console.log(users)
 
     const [checklist, setchecklist] = useState('1')
     const rightlist = async() =>{
@@ -136,7 +136,9 @@ function UserRights({data}){
                                     {
                                         data.map((users)=>{
                                             return(
-                                                <option key={users.id} value={users.id}>{users.username}</option>        
+                                                <>
+                                                    <option key={users.role_id} value={users.role_id}>{users.role}</option> 
+                                                </>      
                                             )
                                         })
                                     }
@@ -161,7 +163,7 @@ function UserRights({data}){
                                         users.map((rights)=>{
                                             return(
                                                 <TableRow key={rights.id}>
-                                                    <TableCell>{rights.page_name}-{rights.username}</TableCell>
+                                                    <TableCell>{rights.page_name}-{rights.role}</TableCell>
                                                     <TableCell>
                                                         <input type="checkbox"  value={rights.user_list} defaultChecked={rights.user_list === '1'} onChange={()=>rightlist()} />
                                                     </TableCell>
@@ -178,7 +180,7 @@ function UserRights({data}){
                                             )
                                         })
                                     }
-                                    </TableBody>
+                                </TableBody>
                                 </Table>
                             </div>
                         </CardBody>
