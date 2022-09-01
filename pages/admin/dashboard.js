@@ -388,51 +388,53 @@ const [selected, setSelected] = useState([]);
 </GridItem>
 
   <GridItem>
-    <div class="department_dropdown">
-      <button class="dropdown_button">Project Department</button>
-          <div class="department-link">
-            <a href={`${server}/admin/project_module`}>All</a>
-            <a href={`${server}/admin/project_module/project_department/HR`}>HR</a>
-            <a href={`${server}/admin/project_module/project_department/UI & UX`}>UI & UX</a>
-            <a href={`${server}/admin/project_module/project_department/Web development`}>Web development</a>
-            <a href={`${server}/admin/project_module/project_department/Content writer`}>Content writer</a>
-            <a href={`${server}/admin/project_module/project_department/Project manager`}>Project manager</a>
-            <a href={`${server}/admin/project_module/project_department/Mobile App developer`}>Mobile App developer</a>
-            <a href={`${server}/admin/project_module/project_department/SEO`}>SEO</a>
-          </div>
-    </div>
-  </GridItem>
+  <div className="department_dropdown">
+  <button className="dropdown_button">Project Department</button>
+      <div className="department-link">
+        <a href={`${server}/admin/project_module`}>All</a>
+        <a href={`${server}/admin/project_module/project_department/HR`}>HR</a>
+        <a href={`${server}/admin/project_module/project_department/UI & UX`}>UI & UX</a>
+        <a href={`${server}/admin/project_module/project_department/Web development`}>Web development</a>
+        <a href={`${server}/admin/project_module/project_department/Content writer`}>Content writer</a>
+        <a href={`${server}/admin/project_module/project_department/Project manager`}>Project manager</a>
+        <a href={`${server}/admin/project_module/project_department/Mobile App developer`}>Mobile App developer</a>
+        <a href={`${server}/admin/project_module/project_department/SEO`}>SEO</a>
+      </div>
+</div>
+</GridItem>
 
-  <GridItem>
-    <div class="department_dropdown">
-      <button class="dropdown_button">Project Language</button>
-          <div class="department-link">
-            <a href={`${server}/admin/project_module`}>All</a>
-            <a href={`${server}/admin/project_module/project_language/Wordpress`}>Wordpress</a>
-            <a href={`${server}/admin/project_module/project_language/Shopify`}>Shopify</a>
-            <a href={`${server}/admin/project_module/project_language/ReactJS`}>ReactJS</a>
-            <a href={`${server}/admin/project_module/project_language/Laravel`}>Laravel</a>
-            <a href={`${server}/admin/project_module/project_language/Android`}>Android</a>
-            <a href={`${server}/admin/project_module/project_language/Bubble`}>Bubble</a>
-          </div>
-    </div>
+<GridItem>
+<div className="department_dropdown">
+  <button className="dropdown_button">Project Language</button>
+      <div className="department-link">
+        <a href={`${server}/admin/project_module`}>All</a>
+        <a href={`${server}/admin/project_module/project_language/Wordpress`}>Wordpress</a>
+        <a href={`${server}/admin/project_module/project_language/Shopify`}>Shopify</a>
+        <a href={`${server}/admin/project_module/project_language/ReactJS`}>ReactJS</a>
+        <a href={`${server}/admin/project_module/project_language/Laravel`}>Laravel</a>
+        <a href={`${server}/admin/project_module/project_language/Android`}>Android</a>
+        <a href={`${server}/admin/project_module/project_language/Bubble`}>Bubble</a>
+      </div>
+</div>
   </GridItem>
 
 </GridContainer>
 
     <GridContainer>
 
+
     <GridItem xs={6} sm={6} md={4}>
+      <span className="heading">On Hold Projects</span>
 
     {project_details.map((project)=>{
 
-if(project.project_delete == "no"){
-  if(project.project_status == "on hold"){
+    if(project.project_delete == "no"){
+    if(project.project_status == "on hold"){
 
-  var person = project.project_person.split(",");
+      var person = project.project_person.split(",");
 
-return(
-<>
+    return(
+    <>
 
     <GridItem>
         <form>
@@ -494,11 +496,12 @@ return(
 
 
     <GridItem xs={6} sm={6} md={4}>
+      <span>Running Projects</span>
 
     {project_details.map((project)=>{
 
-if(project.project_delete == "no"){
- if(project.project_status == "running"){
+    if(project.project_delete == "no"){
+    if(project.project_status == "running"){
 
           var person = project.project_person.split(",");
     
@@ -567,24 +570,22 @@ if(project.project_delete == "no"){
     </GridItem>
 
     <GridItem xs={6} sm={6} md={4}>
+      <span>Completed Projects</span>
 
     {project_details.map((project)=>{
 
-if(project.project_delete == "no"){
-  if(project.project_status == "completed"){
+    if(project.project_delete == "no"){
+      if(project.project_status == "completed"){
 
-  var person = project.project_person.split(",");
+      var person = project.project_person.split(",");
 
-return(
-<>
-
+    return(
+    <>
     <GridItem>
         <form>
         <Card>
             <CardHeader color="primary">
-
               <img src={`${server}/reactlogo.png`} className={classes.img}/>
-
                 <h4 className="projectTitle">{project.project_title}</h4>
                 <p className={classes.cardCategoryWhite}></p>
             </CardHeader>

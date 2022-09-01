@@ -386,10 +386,9 @@ for(var i=0; i<selected.length; i++){
   </GridItem>
 
 <GridItem>
-
-<div class="department_dropdown">
-  <button class="dropdown_button">Project Department</button>
-      <div class="department-link">
+<div className="department_dropdown">
+  <button className="dropdown_button">Project Department</button>
+      <div className="department-link">
         <a href={`${server}/admin/project_module`}>All</a>
         <a href={`${server}/admin/project_module/project_department/HR`}>HR</a>
         <a href={`${server}/admin/project_module/project_department/UI & UX`}>UI & UX</a>
@@ -400,13 +399,12 @@ for(var i=0; i<selected.length; i++){
         <a href={`${server}/admin/project_module/project_department/SEO`}>SEO</a>
       </div>
 </div>
-
 </GridItem>
 
 <GridItem>
-<div class="department_dropdown">
-  <button class="dropdown_button">Project Language</button>
-      <div class="department-link">
+<div className="department_dropdown">
+  <button className="dropdown_button">Project Language</button>
+      <div className="department-link">
         <a href={`${server}/admin/project_module`}>All</a>
         <a href={`${server}/admin/project_module/project_language/Wordpress`}>Wordpress</a>
         <a href={`${server}/admin/project_module/project_language/Shopify`}>Shopify</a>
