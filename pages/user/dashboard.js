@@ -80,11 +80,17 @@ function Dashboard({project}) {
     axios.get(`${server}/api/rights/${cookies.Id}`)
     .then((res)=>{
       setuserRights(res.data)
-        console.log(res.data)
+      //console.log(res.data)
     })
   },[])
   console.log(userRights)
 
+  // useEffect(()=>{
+  //   axios.put(`${server}/api/rights${cookies.Id}`)
+  //   .then((res)=>{
+  //     console.log(res.data)
+  //   })
+  // },[])
 
   // const [personproject, setpersonproject] = useState([])
   // useEffect(async()=>{

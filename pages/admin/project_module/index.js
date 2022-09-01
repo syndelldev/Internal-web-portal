@@ -366,9 +366,9 @@ const [selected, setSelected] = useState([]);
 
 <GridItem>
 
-<div class="departmet_dropdown">
-  <button class="dropdown_button">Project Department</button>
-      <div class="department-link">
+<div className="departmet_dropdown">
+  <button className="dropdown_button">Project Department</button>
+      <div className="department-link">
         <a href={`${server}/admin/project_module`}>All</a>
         <a href={`${server}/admin/project_module/project_department/HR`}>HR</a>
         <a href={`${server}/admin/project_module/project_department/UI & UX`}>UI & UX</a>

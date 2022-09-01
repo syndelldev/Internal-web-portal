@@ -29,7 +29,7 @@ const UpdateUserRights = async (req,res) =>{
     console.log(req.body)
 
     try{
-        let UpdataUser = await executeQuery(` UPDATE tbl_rights SET user_list=0,add_user=0,edit_user=1,delete_user=1 WHERE id=${id} `, [req.body, id])
+        let UpdataUser = await executeQuery(` UPDATE tbl_rights SET user_list=?,add_user=?,edit_user=?,delete_user=? WHERE id=${id} `, [req.body, id])
         res.status(200).json(UpdataUser);
         console.log(UpdataUser)
     }
