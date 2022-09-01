@@ -1,5 +1,5 @@
 import nc from "next-connect";
-import { deleteProject, getProjectById } from "../../../controller/project";
+import { deleteProject } from "../../../controller/project";
 
 const handler=nc();
 

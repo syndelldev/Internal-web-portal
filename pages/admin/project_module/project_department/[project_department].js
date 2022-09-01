@@ -391,7 +391,7 @@ for(var i=0; i<selected.length; i++){
     <GridContainer>
     {project_details.map((project)=>{
 
-    if(project.project_status == "active"){
+    if(project.project_delete == "no"){
 
       var person = project.project_person.split(",");
 
