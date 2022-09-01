@@ -395,9 +395,25 @@ const [selected, setSelected] = useState([]);
         <a href={`${server}/admin/project_module/project_department/SEO`}>SEO</a>
       </div>
 </div>
-
 </GridItem>
+
+{/* <GridItem>
+<div class="departmet_dropdown">
+  <button class="dropdown_button">Project Language</button>
+      <div class="department-link">
+        <a href={`${server}/admin/project_module`}>All</a>
+        <a href={`${server}/admin/project_module/project_language/Wordpress`}>Wordpress</a>
+        <a href={`${server}/admin/project_module/project_language/Shopify`}>Shopify</a>
+        <a href={`${server}/admin/project_module/project_language/ReactJS`}>ReactJS</a>
+        <a href={`${server}/admin/project_module/project_language/Laravel`}>Laravel</a>
+        <a href={`${server}/admin/project_module/project_language/Android`}>Android</a>
+        <a href={`${server}/admin/project_module/project_language/Bubble`}>Bubble</a>
+      </div>
+</div>
+</GridItem> */}
+
 </GridContainer>
+
     <GridContainer>
     {project_details.map((project)=>{
 
