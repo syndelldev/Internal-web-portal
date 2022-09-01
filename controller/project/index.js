@@ -57,7 +57,7 @@ const deleteProject = async (req,res) => {
     console.log(req.query.project_id);
 
     try{
-        let delProject = await executeQuery("UPDATE `tbl_project` SET `project_status` = 'deactivate' WHERE `tbl_project`.`project_id` = ?", [req.query.project_id] )
+        let delProject = await executeQuery("UPDATE `tbl_project` SET `project_delete` = 'yes' WHERE `tbl_project`.`project_id` = ?", [req.query.project_id] )
         res.status(200).json(delProject);
     }
     catch(err){
