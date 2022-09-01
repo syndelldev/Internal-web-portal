@@ -78,13 +78,12 @@ function Dashboard({project}) {
 
   const [ userRights, setuserRights] = useState([])
   useEffect(()=>{
-    //console.log(value)
     axios.get(`${server}/api/rights/${cookies.Id}`)
     .then((res)=>{
       setuserRights(res.data)
       //console.log(res.data)
     })
-  },[])
+  },[1000])
   console.log(userRights)
 
   return (
@@ -111,20 +110,89 @@ function Dashboard({project}) {
                   <CardFooter>
                     <p className="projectLanguage">{project.project_language}</p>
                     <p className="projectPriority">
+
+                    {userRights.length == 1 ? (   
+                      <>
+                        {
+                        userRights.map((rights)=>{
+                          if(rights.user_list == 0){
+                            return(
+                              <Button disabled key={rights.id} className="rights_btn"><a href={`#`} className="projectPriority"><FaEye/></a></Button>
+                            )
+                          }
+                          else{
+                            return(
+                              <Button key={rights.id} className="rights_btn"><a href={`#`} className="projectPriority"><FaEye/></a></Button>
+                            )
+                          }
+                          })
+                        }
+
+                        {
+                        userRights.map((rights)=>{
+                          if(rights.add_user == 0){
+                            return(
+                              <Button disabled key={rights.id} className="rights_btn"><a href={`#`} className="projectPriority"><RiAddCircleFill/></a></Button>
+                            )
+                          }
+                          else{
+                            return(
+                              <Button key={rights.id} className="rights_btn"><a href={`#`} className="projectPriority"><RiAddCircleFill/></a></Button>
+                            )
+                          }
+                          })
+                        }
+
+                        {
+                        userRights.map((rights)=>{
+                          if(rights.edit_user == 0)
+                          {
+                            return(
+                              <Button disabled key={rights.id} className="rights_btn"><a href={`#`} className="projectPriority" ><FiEdit/></a></Button>
+                            )
+                          }
+                          else
+                          {
+                            return(
+                              <Button key={rights.id} className="rights_btn"><a href={`#`} className="projectPriority"><FiEdit/></a></Button>
+                            )
+                          } 
+                          })
+                        }
+
+                        {
+                        userRights.map((rights)=>{
+                          if(rights.delete_user == 0){
+                            return(
+                              <Button disabled key={rights.id} className="rights_btn"><a href={`#`} className="projectPriority" ><MdDelete/></a></Button>
+                            )
+                          }
+                          else{
+                            return(
+                              <Button key={rights.id} className="rights_btn"><a href={`#`} className="projectPriority"><MdDelete/></a></Button>
+                            )
+                          }
+                          })
+                        }
+
+                      </>
+                    ):(
+                      <>No data</>
+                    )
+                    }
                       
-                      {/*<a href={`#`} className="projectPriority"><FiEdit/></a>&nbsp;&nbsp;&nbsp;
-                      <a href={`#`} className="projectPriority"><FaEye/></a>*/}
+                    {/*}
 
                       {
                         userRights.map((rights)=>{
                           if(rights.user_list == 0){
                             return(
-                              <Button disabled key={rights.id}><a href={`#`} className="projectPriority"><FaEye/></a></Button>
+                              <Button disabled key={rights.id} className="rights_btn"><a href={`#`} className="projectPriority"><FaEye/></a></Button>
                             )
                           }
                           else{
                             return(
-                              <Button key={rights.id}><a href={`#`} className="projectPriority"><FaEye/></a></Button>
+                              <Button key={rights.id} className="rights_btn"><a href={`#`} className="projectPriority"><FaEye/></a></Button>
                             )
                           }
                         })
@@ -134,12 +202,12 @@ function Dashboard({project}) {
                         userRights.map((rights)=>{
                           if(rights.add_user == 0){
                             return(
-                              <Button disabled key={rights.id}><a href={`#`} className="projectPriority"><RiAddCircleFill/></a></Button>
+                              <Button disabled key={rights.id} className="rights_btn"><a href={`#`} className="projectPriority"><RiAddCircleFill/></a></Button>
                             )
                           }
                           else{
                             return(
-                              <Button key={rights.id}><a href={`#`} className="projectPriority"><RiAddCircleFill/></a></Button>
+                              <Button key={rights.id} className="rights_btn"><a href={`#`} className="projectPriority"><RiAddCircleFill/></a></Button>
                             )
                           }
                         })
@@ -150,13 +218,13 @@ function Dashboard({project}) {
                           if(rights.edit_user == 0)
                           {
                             return(
-                              <Button disabled key={rights.id}><a href={`#`} className="projectPriority"><FiEdit/></a></Button>
+                              <Button disabled key={rights.id} className="rights_btn"><a href={`#`} className="projectPriority" ><FiEdit/></a></Button>
                             )
                           }
                           else
                           {
                             return(
-                              <Button key={rights.id}><a href={`#`} className="projectPriority"><FiEdit/></a></Button>
+                              <Button key={rights.id} className="rights_btn"><a href={`#`} className="projectPriority"><FiEdit/></a></Button>
                             )
                           } 
                         })
@@ -168,16 +236,16 @@ function Dashboard({project}) {
                         userRights.map((rights)=>{
                           if(rights.delete_user == 0){
                             return(
-                              <Button disabled key={rights.id}><a href={`#`} className="projectPriority"><MdDelete/></a></Button>
+                              <Button disabled key={rights.id} className="rights_btn"><a href={`#`} className="projectPriority" ><MdDelete/></a></Button>
                             )
                           }
                           else{
                             return(
-                              <Button key={rights.id}><a href={`#`} className="projectPriority"><MdDelete/></a></Button>
+                              <Button key={rights.id} className="rights_btn"><a href={`#`} className="projectPriority"><MdDelete/></a></Button>
                             )
                           }
                         })
-                      }
+                      }*/}
 
                     </p>
                   </CardFooter>
