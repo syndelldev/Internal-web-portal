@@ -120,7 +120,7 @@ function AddProject({ project_details , User_name }) {
     const res = await fetch(`${server}/api/project/addproject`,{
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body:JSON.stringify({project_person:allSelectedUser, project_title:result.project_title, project_description:result.project_description, project_language:result.project_language, project_comment:result.project_comment, project_priority:result.project_priority, project_start: result.start , project_deadline: result.end }),
+      body:JSON.stringify({project_person:selected,project_department:result.project_department,project_status:result.project_status , project_title:result.project_title, project_description:result.project_description, project_language:result.project_language, project_comment:result.project_comment, project_priority:result.project_priority, project_start: result.start , project_deadline: result.end }),
     })
     const data=await res.json()
     console.log("data");
@@ -177,198 +177,214 @@ for(var i=0; i<selected.length; i++){
 <GridContainer>
       <GridItem>
 
-        <Popup trigger={<div className={classes.img}><button>Project</button></div>} modal>
+      <Popup trigger={<div className={classes.img}><button>Project</button></div>} modal>
 
-        {close => (
-    <div>
-    <GridContainer>
-      <GridItem xs={12} sm={12} md={12}>
-          <form onSubmit={handleSubmit(onSubmit)}>              
-          <Card>
-              <CardHeader color="primary">
+{close => (
+<div>
 <GridContainer>
-    <GridItem>
-      <h4 className={classes.cardTitleWhite}>Create Project</h4>
-      <p className={classes.cardCategoryWhite}>Enter your new project details</p>
-    </GridItem>
+<GridItem xs={12} sm={12} md={12}>
+  <form onSubmit={handleSubmit(onSubmit)}>              
+  <Card>
+      <CardHeader color="primary">
+<GridContainer>
+<GridItem>
+<h4 className={classes.cardTitleWhite}>Create Project</h4>
+<p className={classes.cardCategoryWhite}>Enter your new project details</p>
+</GridItem>
 
-    {/* <GridItem> */}
-      <div className={classes.close}>
-        <a onClick={close}>&times;</a>
-      </div>
-    {/* </GridItem> */}
+{/* <GridItem> */}
+<div className={classes.close}>
+<a onClick={close}>&times;</a>
+</div>
+{/* </GridItem> */}
 </GridContainer>
 
-              </CardHeader>
-                <CardBody><br/>
-                  <GridContainer>
+      </CardHeader>
+        <CardBody>
+          <GridContainer>
 
-                      <GridItem xs={12} sm={12} md={12}>                      
-                        <div className="form-group">
-                          <span>Project Title</span>
-                          <input type="text" className="form-control signup-input" placeholder="Project Title" {...register('project_title',  { required: "Please enter project title"})} />
-                          <div className="error-msg">{errors.project_title && <span>{errors.project_title.message}</span>}</div>
-                        </div> 
-                      </GridItem>
-                    </GridContainer><br/>
-                    
-                    <GridContainer>  
-                      <GridItem xs={12} sm={12} md={12}>
-                        <div className="form-group">
-                        <span>Project Description</span>
-                          <textarea className="form-control signup-input" placeholder="Project Description" {...register('project_description', { required: 'Description is required', } )}  />
-                          <div className="error-msg">{errors.project_description && <span>{errors.project_description.message}</span>}</div>
-                        </div> 
-                      </GridItem>
-                    </GridContainer><br/>
+              <GridItem xs={12} sm={12} md={12}>                      
+                <div className="form-group">
+                  <span>Project Title</span>
+                  <input type="text" className="form-control signup-input" placeholder="Project Title" {...register('project_title',  { required: "Please enter project title"})} />
+                  <div className="error-msg">{errors.project_title && <span>{errors.project_title.message}</span>}</div>
+                </div> 
+              </GridItem>
+            </GridContainer><br/>
+            
+            <GridContainer>  
+              <GridItem xs={12} sm={12} md={12}>
+                <div className="form-group">
+                <span>Project Description</span>
+                  <textarea className="form-control signup-input" placeholder="Project Description" {...register('project_description', { required: 'Description is required', } )}  />
+                  <div className="error-msg">{errors.project_description && <span>{errors.project_description.message}</span>}</div>
+                </div> 
+              </GridItem>
+            </GridContainer><br/>
 
-                    <GridContainer>  
-                      <GridItem xs={12} sm={12} md={12}>
-                        <div className="form-group">
-                        <span>Project Language</span>
-                          <select name="Project_created_by" id="Project_created_by" className="form-control signup-input" {...register('project_language', {required:true ,message:'Please select atleast one option', })}>
-                            <option value="">Select Language</option>
-                            <option value="Wordpress">Wordpress</option>
-                            <option value="Shopify">Shopify</option>
-                            <option value="ReactJS">ReactJS</option>
-                            <option value="Laravel">Laravel</option>
-                            <option value="Android">Android</option>
-                            <option value="Bubble">Bubble</option>
-                          </select>
-                          <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                          <div className="error-msg">{errors.project_language && <span>{errors.project_language.message}</span>}</div>
-                        </div> 
-                      </GridItem>
-                    </GridContainer><br/>
+            <GridContainer>
+              <GridItem xs={12} sm={12} md={6}>
+                  <div className="form-group">
+                    {/*<input type="text" className="form-control signup-input" placeholder="Department" {...register('department',  { required: "Please enter your Department", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
+                    <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>*/}
+                  <span>Project Department</span>
+                    <select name="Department" id="Department" className="form-control signup-input" {...register('project_department', {required:true ,message:'Please select atleast one option', })}>
+                      <option value=""  disabled selected>Select Your Department...</option>
+                      <option value="HR">HR</option>
+                      <option value="UI & UX">UI & UX</option>
+                      <option value="Web development">Web development</option>
+                      <option value="Content writer">Content writer</option>
+                      <option value="Project manager">Project manager</option>
+                      <option value="Mobile App developer">Mobile App developer</option>
+                      <option value="SEO">SEO</option>
+                    </select>
+                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                    <div className="error-msg">{errors.project_department && <span>{errors.project_department.message}</span>}</div>
+                  </div> 
+              </GridItem>
 
-                    <GridContainer>  
-                      <GridItem xs={12} sm={12} md={6}>
-                        <div className="form-group" {...register('project_start')}>
-                        <span>Project Start Date</span>
-                          <DatePicker
-                            placeholderText="Start_Date : dd/mm/yyyy"
-                            isClearable
-                            name="datetime1"
-                            className={"form-control"}
-                            selected={startDate}
-                            onChange={val => {
-                              setStartDate(val);
-                              setValue("start", val);
-                            }}
-                            dateFormat="dd-MM-yyyy"
-                            minDate={new Date()}
-                          />
-                        <div className="error-msg">{errors.project_start && <span>{errors.project_start.message}</span>}</div>
-                        </div> 
-                      </GridItem>
+              <GridItem xs={12} sm={12} md={6}>
+                <div className="form-group">
+                <span>Project Language</span>
+                  <select name="Project_created_by" id="Project_created_by" className="form-control signup-input" {...register('project_language', {required:true ,message:'Please select atleast one option', })}>
+                    <option value="" disabled selected>Select Language</option>
+                    <option value="Wordpress">Wordpress</option>
+                    <option value="Shopify">Shopify</option>
+                    <option value="ReactJS">ReactJS</option>
+                    <option value="Laravel">Laravel</option>
+                    <option value="Android">Android</option>
+                    <option value="Bubble">Bubble</option>
+                  </select>
+                  <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                  <div className="error-msg">{errors.project_language && <span>{errors.project_language.message}</span>}</div>
+                </div> 
+              </GridItem>
+            </GridContainer><br/>
 
-                      <GridItem xs={12} sm={12} md={6}>
-                        <div className="form-group" {...register('project_deadline')}>
-                        <span>Project End Date</span>
-                          <DatePicker
-                            placeholderText="End_Date : dd/mm/yyyy"
-                            isClearable
-                            name="datetime1"
-                            className={"form-control"}
-                            selected={endDate}
-                            onChange={val => {
-                              setEndDate(val);
-                              setValue("end", val);
-                            }}
-                            dateFormat="dd-MM-yyyy"
-                            minDate={startDate}
-                          />
-                        <div className="error-msg">{errors.project_deadline && <span>{errors.project_deadline.message}</span>}</div>
-                        </div> 
-                      </GridItem>
-                    </GridContainer><br/>
+            <GridContainer>  
+              <GridItem xs={12} sm={12} md={6}>
+                <div className="form-group" {...register('project_start')}>
+                <span>Project Start Date</span>
+                  <DatePicker
+                    placeholderText="Start_Date : dd/mm/yyyy"
+                    isClearable
+                    name="datetime1"
+                    className={"form-control"}
+                    selected={startDate}
+                    onChange={val => {
+                      setStartDate(val);
+                      setValue("start", val);
+                    }}
+                    dateFormat="dd-MM-yyyy"
+                    minDate={new Date()}
+                  />
+                <div className="error-msg">{errors.project_start && <span>{errors.project_start.message}</span>}</div>
+                </div> 
+              </GridItem>
 
-                      <GridContainer>
-                        <GridItem xs={12} sm={12} md={12}>
-                          <div className="form-group">
-                            {/*<input type="text" className="form-control signup-input" placeholder="Department" {...register('department',  { required: "Please enter your Department", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
-                            <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>*/}
-                          <span>Project Department</span>
-                            <select name="Department" id="Department" className="form-control signup-input" {...register('project_department', {required:true ,message:'Please select atleast one option', })}>
-                              <option value="">Select Your Department...</option>
-                              <option value="HR">HR</option>
-                              <option value="UI & UX">UI & UX</option>
-                              <option value="Web development">Web development</option>
-                              <option value="Content writer">Content writer</option>
-                              <option value="Project manager">Project manager</option>
-                              <option value="Mobile App developer">Mobile App developer</option>
-                              <option value="SEO">SEO</option>
-                            </select>
-                            <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                            <div className="error-msg">{errors.project_department && <span>{errors.project_department.message}</span>}</div>
-                          </div> 
-                        </GridItem>
-                      </GridContainer><br/>
+              <GridItem xs={12} sm={12} md={6}>
+                <div className="form-group" {...register('project_deadline')}>
+                <span>Project End Date</span>
+                  <DatePicker
+                    placeholderText="End_Date : dd/mm/yyyy"
+                    isClearable
+                    name="datetime1"
+                    className={"form-control"}
+                    selected={endDate}
+                    onChange={val => {
+                      setEndDate(val);
+                      setValue("end", val);
+                    }}
+                    dateFormat="dd-MM-yyyy"
+                    minDate={startDate}
+                  />
+                <div className="error-msg">{errors.project_deadline && <span>{errors.project_deadline.message}</span>}</div>
+                </div> 
+              </GridItem>
+            </GridContainer><br/>
 
-                    <GridContainer>
-                      <GridItem xs={12} sm={12} md={6}>
-                        <div className="form-group">
-                        <span>Project Priority</span>
-                          <select name="Status" id="Status" className="form-control signup-input" {...register('project_priority', {required:true ,message:'Please select atleast one option', })}>
-                            <option value="Select...">Select Project Priority</option>
-                            <option value="High">High</option>
-                            <option value="Medium">Medium</option>
-                            <option value="Low">Low</option>
-                          </select>
-                          <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                          <div className="error-msg">{errors.project_priority && <span>{errors.project_priority.message}</span>}</div>
-                        </div> 
-                      </GridItem>
-                    
-                      <GridItem xs={12} sm={12} md={6}>
-                        <div className="form-group" {...register('project_person')}>
-                       
-                        <span>Project Members</span>
-                        <Multiselect
-                        displayValue="value"
-                          options={uoptions}
-                          value={selected}
-                          onChange={setSelected}
-                          // onKeyPressFn={function noRefCheck(){}}
-                          onRemove={setSelected}
-                          // onSearch={function noRefCheck(){}}
-                          onSelect={setSelected}
-                          placeholder="Select Project Members"
-                          showArrow={true}
-                        />
-                        
-                          <div className="error-msg">{errors.project_person && <span>{errors.project_person.message}</span>}</div>
-                        </div> 
-                      </GridItem>
-                    </GridContainer><br/>
+            <GridContainer>
+              <GridItem xs={12} sm={12} md={6}>
+                <div className="form-group">
+                <span>Project Priority</span>
+                  <select name="priority" id="priority" className="form-control signup-input" {...register('project_priority', {required:true ,message:'Please select atleast one option', })}>
+                    <option value=""  disabled selected>Select Project Priority</option>
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                  </select>
+                  <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                  <div className="error-msg">{errors.project_priority && <span>{errors.project_priority.message}</span>}</div>
+                </div> 
+              </GridItem>
+            
+              <GridItem xs={12} sm={12} md={6}>
+                  <div className="form-group">
+                    {/*<input type="text" className="form-control signup-input" placeholder="Status" {...register('status',  { required: "Please enter your Status", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
+                    <div className="error-msg">{errors.status && <p>{errors.status.message}</p>}</div>*/}
+                    <span>Project Status</span>
+                    <select name="Status" id="Status" className="form-control signup-input" {...register('project_status', {required:true ,message:'Please select atleast one option', })}>
+                      <option value=""  disabled selected>Select Project Status</option>
+                      <option value="on hold">On hold</option>
+                      <option value="running">Running</option>
+                      <option value="completed">Completed</option>
+                    </select>
+                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                    {/* <div className="error-msg">{errors.status && <p>{errors.status.message}</p>}</div> */}
+                  </div> 
+              </GridItem>
+            </GridContainer><br/>
 
-                    <GridContainer>
-                      <GridItem xs={12} sm={12} md={12}>
-                        <div className="form-group">
-                        <span>Comments</span>
-                          <textarea className="form-control signup-input" placeholder="Comment" {...register('project_comment')} />
-                          <div className="error-msg">{errors.position && <span>{errors.position.message}</span>}</div>
-                        </div> 
-                      </GridItem>
-                    </GridContainer><br/>
-                    
-                  </CardBody>
+            <GridContainer>
+            <GridItem xs={12} sm={12} md={12}>
+                <div className="form-group" {...register('project_person')}>
+               
+                <span>Project Members</span>
+                <Multiselect
+                displayValue="value"
+                  options={uoptions}
+                  value={selected}
+                  onChange={setSelected}
+                  // onKeyPressFn={function noRefCheck(){}}
+                  onRemove={setSelected}
+                  // onSearch={function noRefCheck(){}}
+                  onSelect={setSelected}
+                  placeholder="Select Project Members"
+                  showArrow={true}
+                />
+                
+                  <div className="error-msg">{errors.project_person && <span>{errors.project_person.message}</span>}</div>
+                </div> 
+              </GridItem>
+            </GridContainer><br/>
 
-                  <CardFooter>
-                      <Button color="primary" type="submit">Add Project</Button>
-                      <Button className="button" onClick={() => { close(); }}> Cancel </Button>
-                  </CardFooter>
-              </Card>
-          </form>
-      </GridItem>
-    </GridContainer>
+            <GridContainer>
+              <GridItem xs={12} sm={12} md={12}>
+                <div className="form-group">
+                <span>Comments</span>
+                  <textarea className="form-control signup-input" placeholder="Comment" {...register('project_comment')} />
+                  <div className="error-msg">{errors.position && <span>{errors.position.message}</span>}</div>
+                </div> 
+              </GridItem>
+            </GridContainer>
+            
+          </CardBody>
+
+          <CardFooter>
+              <Button color="primary" type="submit">Add Project</Button>
+              <Button className="button" onClick={() => { close(); }}> Cancel </Button>
+          </CardFooter>
+      </Card>
+    </form>
+  </GridItem>
+</GridContainer>
 
   </div>
-  
-      )}
-        </Popup>
+
+  )}
+  </Popup>
 {/* create project form end */}
-</GridItem>
+  </GridItem>
 
 <GridItem>
 
