@@ -59,27 +59,63 @@ function UserRights({data}){
         //console.log(value)
     }
     useEffect(async()=>{
-        console.log(value)
+        //console.log(value)
         axios.get(`${server}/api/rights/${value}`)
         .then((res)=>{
             setusers(res.data)
-            console.log(res.data)
+            //console.log(res.data)
         })
     },[value])
-    console.log(users)
+    console.log(value)
 
-    // const [query, setQuery] = useState(1);
-    // const [admin,setadmin] =  useState([])
+    const [checklist, setchecklist] = useState('1')
+    const rightlist = async() =>{
+        if(checklist=='1'){
+            setchecklist('0')
+        }
+        else if(checklist=='0'){
+            setchecklist('1')
+        }
+        let checkbox = await axios.put(`${server}/api/rights/${value}`,{checkvalue:checklist}) 
+        console.log(checkbox)
+    }
 
-    // useEffect(()=>{
-    //     console.log(query);
-    //     axios.get(`${server}/api/rights/${query}`)
-    //     .then((res) =>{
-    //         setadmin(res.data);
-    //         //console.log(res.data);
-    //     })
-    // },[query])
-    //console.log(admin) 
+    const [checkaddlist, setcheckaddlist] = useState('1')
+    const addlist = async() => {
+        if(checkaddlist=='1'){
+            setcheckaddlist('0')
+        }
+        else if(checkaddlist=='0'){
+            setcheckaddlist('1')
+        }
+        let checkbox2 = await axios.put(`${server}/api/rights/${value}`,{addlist_checkvalue:checkaddlist}) 
+        console.log(checkbox2)
+    }
+
+    const [editchecklist, seteditchecklist] = useState('1')
+    const editlist = async() => {
+        if(editchecklist=='1'){
+            seteditchecklist('0')
+        }
+        else if(editchecklist=='0'){
+            seteditchecklist('1')
+        }
+        let checkbox3 = await axios.put(`${server}/api/rights/${value}`,{edit_checkvalue:editchecklist}) 
+        console.log(checkbox3)
+    }
+
+    const [delcheck, setdelcheck] = useState('1')
+    const deletelist = async() => {
+        if(delcheck=='1'){
+            setdelcheck('0')
+        }
+        else if(delcheck=='0'){
+            setdelcheck('1')
+        }
+        let checkbox4 = await axios.put(`${server}/api/rights/${value}`,{delete_checkvalue:delcheck}) 
+        console.log(checkbox4)
+    }
+   
     
     return(
         <>
@@ -127,16 +163,16 @@ function UserRights({data}){
                                                 <TableRow key={rights.id}>
                                                     <TableCell>{rights.page_name}-{rights.username}</TableCell>
                                                     <TableCell>
-                                                        <input type="checkbox"  value={rights.user_list} defaultChecked={rights.user_list === '1'} />
+                                                        <input type="checkbox"  value={rights.user_list} defaultChecked={rights.user_list === '1'} onChange={()=>rightlist()} />
                                                     </TableCell>
                                                     <TableCell>
-                                                        <input type="checkbox"  value={rights.add_user} defaultChecked={rights.add_user === '1'} />
+                                                        <input type="checkbox"  value={rights.add_user} defaultChecked={rights.add_user === '1'} onChange={()=>addlist()} />
                                                     </TableCell>
                                                     <TableCell>
-                                                        <input type="checkbox"  value={rights.edit_user} defaultChecked={rights.edit_user === '1'} />
+                                                        <input type="checkbox"  value={rights.edit_user} defaultChecked={rights.edit_user === '1'} onChange={()=>editlist()} />
                                                     </TableCell>
                                                     <TableCell>
-                                                        <input type="checkbox"  value={rights.delete_user} defaultChecked={rights.delete_user === '1'} />
+                                                        <input type="checkbox"  value={rights.delete_user} defaultChecked={rights.delete_user === '1'} onChange={()=>deletelist()} />
                                                     </TableCell>
                                                 </TableRow>    
                                             )

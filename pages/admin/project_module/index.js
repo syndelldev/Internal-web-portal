@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/router'
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -24,6 +24,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import LibraryBooks from "@material-ui/icons/LibraryBooks";
 import Popup from "reactjs-popup";
+import AddUser from "./create_project";
 import Multiselect from "multiselect-react-dropdown";
 import '../../../styles/globals.css';
 
@@ -381,7 +382,7 @@ const [selected, setSelected] = useState([]);
 
 <GridItem>
 
-<div className="department_dropdown">
+<div className="departmet_dropdown">
   <button className="dropdown_button">Project Department</button>
       <div className="department-link">
         <a href={`${server}/admin/project_module`}>All</a>
@@ -396,10 +397,10 @@ const [selected, setSelected] = useState([]);
 </div>
 </GridItem>
 
-<GridItem>
-<div className="department_dropdown">
-  <button className="dropdown_button">Project Language</button>
-      <div className="department-link">
+{/* <GridItem>
+<div class="departmet_dropdown">
+  <button class="dropdown_button">Project Language</button>
+      <div class="department-link">
         <a href={`${server}/admin/project_module`}>All</a>
         <a href={`${server}/admin/project_module/project_language/Wordpress`}>Wordpress</a>
         <a href={`${server}/admin/project_module/project_language/Shopify`}>Shopify</a>
@@ -409,7 +410,7 @@ const [selected, setSelected] = useState([]);
         <a href={`${server}/admin/project_module/project_language/Bubble`}>Bubble</a>
       </div>
 </div>
-</GridItem>
+</GridItem> */}
 
 </GridContainer>
 
