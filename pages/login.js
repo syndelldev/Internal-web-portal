@@ -74,6 +74,7 @@ export default function home()
                     setCookie('Position', data[0].position, { path:'/' , maxAge:3600, sameSite:true, });
                     setCookie('Id', data[0].id, { path:'/' , maxAge:3600, sameSite:true, });
                     setCookie('Avtar', data[0].avtar, { path:'/' , maxAge:3600, sameSite:true, });
+                    setCookie('Role_id', data[0].role_id, { path:'/' , maxAge:3600, sameSite:true, });
 
                     toast.success('Login Successfully! 🎉', {
                         position: "top-right",
@@ -93,7 +94,7 @@ export default function home()
                     setCookie('Role', data[0].role, { path:'/' , maxAge:3600, sameSite:true, });
                     setCookie('Id', data[0].id, { path:'/' , maxAge:3600, sameSite:true, });
                     setCookie('Avtar', data[0].avtar, { path:'/' , maxAge:3600, sameSite:true, });
-                    
+                    setCookie('Role_id', data[0].role_id, { path:'/' , maxAge:3600, sameSite:true, });
 
                     toast.success('Login Successfully! 🎉', {
                         position: "top-right",
