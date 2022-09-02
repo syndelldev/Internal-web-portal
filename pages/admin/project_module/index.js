@@ -26,7 +26,6 @@ import LibraryBooks from "@material-ui/icons/LibraryBooks";
 import Popup from "reactjs-popup";
 import AddUser from "./create_project";
 import Multiselect from "multiselect-react-dropdown";
-import '../../../styles/globals.css';
 
 const styles = {
   cardCategoryWhite: {
