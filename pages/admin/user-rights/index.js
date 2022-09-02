@@ -70,48 +70,48 @@ function UserRights({data}){
 
     const [checklist, setchecklist] = useState('1')
     const rightlist = async() =>{
-        if(checklist=='1'){
+        /*if(checklist=='1'){
             setchecklist('0')
         }
         else if(checklist=='0'){
             setchecklist('1')
-        }
+        }*/
         let checkbox = await axios.put(`${server}/api/rights/${value}`,{checkvalue:checklist}) 
         console.log(checkbox)
     }
 
     const [checkaddlist, setcheckaddlist] = useState('1')
     const addlist = async() => {
-        if(checkaddlist=='1'){
+        /*if(checkaddlist=='1'){
             setcheckaddlist('0')
         }
         else if(checkaddlist=='0'){
             setcheckaddlist('1')
-        }
+        }*/
         let checkbox2 = await axios.put(`${server}/api/rights/${value}`,{addlist_checkvalue:checkaddlist}) 
         console.log(checkbox2)
     }
 
     const [editchecklist, seteditchecklist] = useState('1')
     const editlist = async() => {
-        if(editchecklist=='1'){
+        /*if(editchecklist=='1'){
             seteditchecklist('0')
         }
         else if(editchecklist=='0'){
             seteditchecklist('1')
-        }
+        }*/
         let checkbox3 = await axios.put(`${server}/api/rights/${value}`,{edit_checkvalue:editchecklist}) 
         console.log(checkbox3)
     }
 
     const [delcheck, setdelcheck] = useState('1')
     const deletelist = async() => {
-        if(delcheck=='1'){
+        /*if(delcheck=='1'){
             setdelcheck('0')
         }
         else if(delcheck=='0'){
             setdelcheck('1')
-        }
+        }*/
         let checkbox4 = await axios.put(`${server}/api/rights/${value}`,{delete_checkvalue:delcheck}) 
         console.log(checkbox4)
     }
@@ -163,18 +163,19 @@ function UserRights({data}){
                                         users.map((rights)=>{
                                             return(
                                                 <TableRow key={rights.id}>
-                                                    <TableCell>{rights.page_name}-{rights.role}</TableCell>
+                                                    <TableCell>{rights.page_id}-{rights.role}</TableCell>
                                                     <TableCell>
-                                                        <input type="checkbox"  value={rights.user_list} defaultChecked={rights.user_list === '1'} onChange={()=>rightlist()} />
+                                                        <input type="checkbox"  onChange={()=>setchecklist(!checklist)} onClick={rightlist} />{rights.user_list}
+                                                        {/*<p> {checklist ? '1' : '0'} </p> */}
                                                     </TableCell>
                                                     <TableCell>
-                                                        <input type="checkbox"  value={rights.add_user} defaultChecked={rights.add_user === '1'} onChange={()=>addlist()} />
+                                                        <input type="checkbox" onChange={()=>setcheckaddlist(!checkaddlist)} onClick={()=>addlist()} />{rights.add_user}
                                                     </TableCell>
                                                     <TableCell>
-                                                        <input type="checkbox"  value={rights.edit_user} defaultChecked={rights.edit_user === '1'} onChange={()=>editlist()} />
+                                                        <input type="checkbox" onChange={()=>seteditchecklist(!editchecklist)} onClick={()=>editlist()} />{rights.edit_user}
                                                     </TableCell>
                                                     <TableCell>
-                                                        <input type="checkbox"  value={rights.delete_user} defaultChecked={rights.delete_user === '1'} onChange={()=>deletelist()} />
+                                                        <input type="checkbox" onChange={()=>setdelcheck(!delcheck)} onClick={()=>deletelist()} />{rights.delete_user}
                                                     </TableCell>
                                                 </TableRow>    
                                             )
