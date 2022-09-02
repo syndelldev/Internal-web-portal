@@ -21,7 +21,6 @@ import { useForm  } from 'react-hook-form';
 import { server } from 'config';
 import avatar from "assets/img/faces/marc.jpg";
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import Multiselect from "multiselect-react-dropdown";
 
 
