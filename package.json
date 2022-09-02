@@ -16,6 +16,7 @@
     "@react-icons/all-files": "^4.1.0",
     "@supabase/supabase-js": "^1.35.5",
     "@types/jsonwebtoken": "^8.5.8",
+    "@types/react-beautiful-dnd": "^13.1.2",
     "@zeit/next-css": "1.0.1",
     "@zeit/next-sass": "1.0.1",
     "axios": "^0.27.2",
