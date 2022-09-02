@@ -165,17 +165,17 @@ function UserRights({data}){
                                                 <TableRow key={rights.id}>
                                                     <TableCell>{rights.page_id}-{rights.role}</TableCell>
                                                     <TableCell>
-                                                        <input type="checkbox"  onChange={()=>setchecklist(!checklist)} onClick={rightlist} />{rights.user_list}
+                                                        <input type="checkbox"  onChange={()=>setchecklist(!checklist)} onClick={rightlist} />{/*{rights.user_list}*/}
                                                         {/*<p> {checklist ? '1' : '0'} </p> */}
                                                     </TableCell>
                                                     <TableCell>
-                                                        <input type="checkbox" onChange={()=>setcheckaddlist(!checkaddlist)} onClick={()=>addlist()} />{rights.add_user}
+                                                        <input type="checkbox" onChange={()=>setcheckaddlist(!checkaddlist)} onClick={()=>addlist()} />{/*{rights.add_user}*/}
                                                     </TableCell>
                                                     <TableCell>
-                                                        <input type="checkbox" onChange={()=>seteditchecklist(!editchecklist)} onClick={()=>editlist()} />{rights.edit_user}
+                                                        <input type="checkbox" onChange={()=>seteditchecklist(!editchecklist)} onClick={()=>editlist()} />{/*{rights.edit_user}*/}
                                                     </TableCell>
                                                     <TableCell>
-                                                        <input type="checkbox" onChange={()=>setdelcheck(!delcheck)} onClick={()=>deletelist()} />{rights.delete_user}
+                                                        <input type="checkbox" onChange={()=>setdelcheck(!delcheck)} onClick={()=>deletelist()} />{/*{rights.delete_user}*/}
                                                     </TableCell>
                                                 </TableRow>    
                                             )
