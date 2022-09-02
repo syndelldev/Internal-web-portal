@@ -109,80 +109,7 @@ function Dashboard({project}) {
                   </CardHeader>
                   <CardFooter>
                     <p className="projectLanguage">{project.project_language}</p>
-                    <p className="projectPriority">
-
-                    {userRights.length == 1 ? (   
-                      <>
-                        {
-                        userRights.map((rights)=>{
-                          if(rights.user_list == 0){
-                            return(
-                              <Button disabled key={rights.id} className="rights_btn"><a href={`#`} className="projectPriority"><FaEye/></a></Button>
-                            )
-                          }
-                          else{
-                            return(
-                              <Button key={rights.id} className="rights_btn"><a href={`#`} className="projectPriority"><FaEye/></a></Button>
-                            )
-                          }
-                          })
-                        }
-
-                        {
-                        userRights.map((rights)=>{
-                          if(rights.add_user == 0){
-                            return(
-                              <Button disabled key={rights.id} className="rights_btn"><a href={`#`} className="projectPriority"><RiAddCircleFill/></a></Button>
-                            )
-                          }
-                          else{
-                            return(
-                              <Button key={rights.id} className="rights_btn"><a href={`#`} className="projectPriority"><RiAddCircleFill/></a></Button>
-                            )
-                          }
-                          })
-                        }
-
-                        {
-                        userRights.map((rights)=>{
-                          if(rights.edit_user == 0)
-                          {
-                            return(
-                              <Button disabled key={rights.id} className="rights_btn"><a href={`#`} className="projectPriority" ><FiEdit/></a></Button>
-                            )
-                          }
-                          else
-                          {
-                            return(
-                              <Button key={rights.id} className="rights_btn"><a href={`#`} className="projectPriority"><FiEdit/></a></Button>
-                            )
-                          } 
-                          })
-                        }
-
-                        {
-                        userRights.map((rights)=>{
-                          if(rights.delete_user == 0){
-                            return(
-                              <Button disabled key={rights.id} className="rights_btn"><a href={`#`} className="projectPriority" ><MdDelete/></a></Button>
-                            )
-                          }
-                          else{
-                            return(
-                              <Button key={rights.id} className="rights_btn"><a href={`#`} className="projectPriority"><MdDelete/></a></Button>
-                            )
-                          }
-                          })
-                        }
-
-                      </>
-                    ):(
-                      <>No data</>
-                    )
-                    }
-                      
-                    {/*}
-
+                    {/*<p className="projectPriority">
                       {
                         userRights.map((rights)=>{
                           if(rights.user_list == 0){
@@ -245,10 +172,10 @@ function Dashboard({project}) {
                             )
                           }
                         })
-                      }*/}
+                      }
 
-                    </p>
-                  </CardFooter>
+                    </p>*/}
+                    </CardFooter>
                   <CardFooter>
                     <p>{project.project_person}</p>
                   </CardFooter>
@@ -262,7 +189,7 @@ function Dashboard({project}) {
           })
         }
           
-        </GridContainer>
+      </GridContainer>
       
     </>
   );
