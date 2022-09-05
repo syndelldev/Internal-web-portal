@@ -21,11 +21,9 @@ import App from "next/app";
 import Head from "next/head";
 import Router from "next/router";
 
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '../styles/login.css';
-import "react-datepicker/dist/react-datepicker.css";
-import '../styles/globals.css';
 import 'react-toastify/dist/ReactToastify.css';
+import 'bootstrap/dist/css/bootstrap.min.css'
+import '../styles/login.css'
 
 import PageChange from "components/PageChange/PageChange.js";
 
