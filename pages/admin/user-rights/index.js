@@ -44,7 +44,7 @@ export async function getServerSideProps(context){
     //const id = context.params.userdetailid;
     const res = await fetch(`${server}/api/rights/`)
     const data = await res.json()
-    console.log(data)
+    //console.log(data)
 
     return { props: {data}, }
 }
@@ -65,19 +65,15 @@ function UserRights({data}){
             //console.log(res.data)
         })
     },[value])
-    console.log(value)
-    console.log(users)
+    // console.log(value)
+    // console.log(users)
 
     const [checklist, setchecklist] = useState('1')
     const rightlist = async() =>{
-        /*if(checklist=='1'){
-            setchecklist('0')
-        }
-        else if(checklist=='0'){
-            setchecklist('1')
-        }*/
-        let checkbox = await axios.put(`${server}/api/rights/${value}`,{checkvalue:checklist}) 
+        
+        let checkbox = await axios.put(`${server}/api/rights/${value}`,{checkvalue: checklist }) 
         console.log(checkbox)
+        
     }
 
     const [checkaddlist, setcheckaddlist] = useState('1')
@@ -161,21 +157,21 @@ function UserRights({data}){
                                     <TableBody>
                                     {
                                         users.map((rights)=>{
+                                            console.log(users[0].user_list)
                                             return(
                                                 <TableRow key={rights.id}>
                                                     <TableCell>{rights.page_id}-{rights.role}</TableCell>
                                                     <TableCell>
-                                                        <input type="checkbox"  onChange={()=>setchecklist(!checklist)} onClick={rightlist} />{rights.user_list}
-                                                        {/*<p> {checklist ? '1' : '0'} </p> */}
+                                                        <input type="checkbox" value={rights.user_list} onChange={()=>setchecklist(!rights.user_list)} defaultChecked={ rights.user_list == 1 } onClick={rightlist} />{rights.user_list} {/*<p> {users[0].user_list ? '0' : '1'} </p> */}
                                                     </TableCell>
                                                     <TableCell>
-                                                        <input type="checkbox" onChange={()=>setcheckaddlist(!checkaddlist)} onClick={()=>addlist()} />{rights.add_user}
+                                                        <input type="checkbox" value={rights.add_user} onChange={()=>setcheckaddlist(!rights.add_user)} defaultChecked={ rights.add_user == 1 } onClick={()=>addlist()} />{rights.add_user}
                                                     </TableCell>
                                                     <TableCell>
-                                                        <input type="checkbox" onChange={()=>seteditchecklist(!editchecklist)} onClick={()=>editlist()} />{rights.edit_user}
+                                                        <input type="checkbox" value={rights.edit_user} onChange={()=>seteditchecklist(!rights.edit_user)} defaultChecked={ rights.edit_user == 1 } onClick={()=>editlist()} />{rights.edit_user}
                                                     </TableCell>
                                                     <TableCell>
-                                                        <input type="checkbox" onChange={()=>setdelcheck(!delcheck)} onClick={()=>deletelist()} />{rights.delete_user}
+                                                        <input type="checkbox" value={rights.delete_user} onChange={()=>setdelcheck(!rights.delete_user)} defaultChecked={ rights.delete_user == 1 } onClick={()=>deletelist()} />{rights.delete_user}
                                                     </TableCell>
                                                 </TableRow>    
                                             )

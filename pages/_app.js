@@ -21,6 +21,7 @@ import App from "next/app";
 import Head from "next/head";
 import Router from "next/router";
 
+import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '../styles/login.css'
 
