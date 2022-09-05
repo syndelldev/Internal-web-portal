@@ -66,50 +66,33 @@ function UserRights({data}){
         })
     },[value])
     // console.log(value)
-    // console.log(users)
+    console.log(users)
 
     const [checklist, setchecklist] = useState('1')
     const rightlist = async() =>{
 
-        console.log(users)
-
-        let checkbox = await axios.put(`${server}/api/rights/${value}`,{checkvalue: checklist }) 
+        let checkbox = await axios.put(`${server}/api/rights/${value}`,{checkvalue: checklist}) 
         console.log(checkbox)
         
     }
 
     const [checkaddlist, setcheckaddlist] = useState('1')
     const addlist = async() => {
-        /*if(checkaddlist=='1'){
-            setcheckaddlist('0')
-        }
-        else if(checkaddlist=='0'){
-            setcheckaddlist('1')
-        }*/
+       
         let checkbox2 = await axios.put(`${server}/api/rights/${value}`,{addlist_checkvalue:checkaddlist}) 
         console.log(checkbox2)
     }
 
     const [editchecklist, seteditchecklist] = useState('1')
     const editlist = async() => {
-        /*if(editchecklist=='1'){
-            seteditchecklist('0')
-        }
-        else if(editchecklist=='0'){
-            seteditchecklist('1')
-        }*/
+       
         let checkbox3 = await axios.put(`${server}/api/rights/${value}`,{edit_checkvalue:editchecklist}) 
         console.log(checkbox3)
     }
 
     const [delcheck, setdelcheck] = useState('1')
     const deletelist = async() => {
-        /*if(delcheck=='1'){
-            setdelcheck('0')
-        }
-        else if(delcheck=='0'){
-            setdelcheck('1')
-        }*/
+       
         let checkbox4 = await axios.put(`${server}/api/rights/${value}`,{delete_checkvalue:delcheck}) 
         console.log(checkbox4)
     }
@@ -176,7 +159,6 @@ function UserRights({data}){
                                                         <input type="checkbox" value={rights.delete_user} onChange={()=>setdelcheck(!rights.delete_user)} defaultChecked={ rights.delete_user == 1 } onClick={()=>deletelist()} />{rights.delete_user}
                                                     </TableCell>
                                                 </TableRow>    
-
                                             )
                                         })
                                     }

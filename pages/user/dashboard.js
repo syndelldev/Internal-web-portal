@@ -110,16 +110,10 @@ function Dashboard({project}) {
                   <CardFooter>
                     <p className="projectLanguage">{project.project_language}</p>
                     <p className="projectPriority">
-
-                   
                         {
                         userRights.map((rights)=>{
-                          // console.log(userRights[0].role)
-                          // console.log(cookies.Position)
-                          if(userRights[0].role==cookies.Position){
-                            console.log(userRights[0].user_list)
-
-                            if(userRights[0].user_list == 0){
+                          console.log(userRights)
+                            if(rights.user_list == 0){
                               return(
                                 <Button disabled key={rights.id} className="rights_btn"><a href={`#`} className="projectPriority"><FaEye/></a></Button>
                               )
@@ -128,13 +122,7 @@ function Dashboard({project}) {
                               return(
                                 <Button key={rights.id} className="rights_btn"><a href={`#`} className="projectPriority"><FaEye/></a></Button>
                               )
-                            }
-                            
-                          }
-                          else{
-                            console.log("Not matched")
-                          }
-                          
+                            }  
                           })
                         }
 
