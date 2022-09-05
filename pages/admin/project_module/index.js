@@ -169,7 +169,7 @@ const [selected, setSelected] = useState([]);
 <GridContainer>
       <GridItem>
 
-        <Popup trigger={<div className={classes.img}><button>Project</button></div>} modal>
+        <Popup trigger={<div><button>Add Project</button></div>} className="popupReact" modal>
 
         {close => (
     <div>

@@ -1,8 +1,8 @@
 import nc from "next-connect";
-import { SubTaskList } from '../../../controller/subtask/subtask'
+import { getAllTask } from "../../../controller/subtask";
 
 const handler=nc();
 
-handler.get(SubTaskList);
+handler.get(getAllTask);
 
 export default handler;

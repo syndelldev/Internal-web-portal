@@ -173,7 +173,7 @@ for(var i=0; i<selected.length; i++){
 <GridContainer>
       <GridItem>
 
-      <Popup trigger={<div className={classes.img}><button>Project</button></div>} modal>
+      <Popup trigger={<div><button>Add Project</button></div>} className="popupReact" modal>
 
 {close => (
 <div>
