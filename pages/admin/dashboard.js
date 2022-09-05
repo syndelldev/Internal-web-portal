@@ -40,9 +40,7 @@ import { server } from 'config';
 // import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 import Popup from "reactjs-popup";
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import Multiselect from "multiselect-react-dropdown";
-import '../../styles/globals.css';
 import {
   dailySalesChart,
   emailsSubscriptionChart,
