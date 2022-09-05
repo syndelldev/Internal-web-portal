@@ -93,62 +93,25 @@ export async function getServerSideProps(){
   return{ props: {project_details, User_name} }
 }
 
+const reorderPosition = (tasks, startIndex, endIndex) =>{
+  const newList =  Array.from(tasks);
+  const [removed] = newList.splice(startIndex , 1);
+
+  newList.splice(endIndex , 0 , removed);
+  return newList;
+}
+
 function AddProject({ project_details , User_name }) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   
-  const deleteProject = async(id) =>{
-    console.log('delete');
-    console.log(id);
-
-    const res = await fetch(`${server}/api/project/${id}`);
-  }
-  const { register,  watch, handleSubmit, formState: { errors }, setValue } = useForm(); 
-  const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState();
   const router = useRouter();
 
   const onSubmit = async (result) =>{
-    
     console.log("result");
-    console.log(selected);
-    
-    const res = await fetch(`${server}/api/project/addproject`,{
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body:JSON.stringify({project_person:selected,project_department:result.project_department,project_status:result.project_status , project_title:result.project_title, project_description:result.project_description, project_language:result.project_language, project_comment:result.project_comment, project_priority:result.project_priority, project_start: result.start , project_deadline: result.end }),
-    })
-    const data=await res.json()
-    
-    if(res.status==200)
-    {
-      // alert("success");
-      router.push(`${server}/admin/project_module/project_department/${result.project_department}`);
-    }
-    else
-    {
-      alert("Fail");
-    }
   }
 
-const [uoptions, setOptions] = useState([]);
-
-useEffect(() =>{
-  const u_data = async() =>{
-
-    const getUsername = [];
-
-    User_name.map((user)=>{
-      getUsername.push( {'label' :user.username, 'value' :user.username} );
-    });
-    setOptions(getUsername);
-  }
-  u_data();
-},[]);
-
-const [selected, setSelected] = useState([]);
-
-const [columns, setColumns] = useState([]);
+const [state, setState] = useState([]);
 
 const onDragStart = (result) => {
     const { source , destination } = result;
@@ -160,6 +123,20 @@ const onDragUpdate = (result) => {
 
 const onDragEnd = (result) => {
     const { source , destination } = result;
+
+    if(!destination) return;
+    if(destination.droppableId === source.droppableId && destination.index ===source.index){
+      return;
+    }
+
+    const { tasks } = state;
+    const newPosition = reorderPosition(tasks , source.index, destination.index );
+
+    const newState = {
+      ...state,
+      tasks: newPosition
+    };
+    setState(newState);
 }
 
 
@@ -180,7 +157,6 @@ const onDragEnd = (result) => {
                         >
                             <h2>{user.username}</h2>
                         </div>
-
                 }
             </Draggable>
             );
