@@ -70,7 +70,9 @@ function UserRights({data}){
 
     const [checklist, setchecklist] = useState('1')
     const rightlist = async() =>{
-        
+
+        console.log(users)
+
         let checkbox = await axios.put(`${server}/api/rights/${value}`,{checkvalue: checklist }) 
         console.log(checkbox)
         
@@ -156,10 +158,10 @@ function UserRights({data}){
                                     
                                     <TableBody>
                                     {
-                                        users.map((rights)=>{
-                                            console.log(users[0].user_list)
-                                            return(
-                                                <TableRow key={rights.id}>
+                                        users.map((rights,index)=>{
+                                        //console.log(users[0].user_list)
+                                        return(
+                                                <TableRow key={index}>
                                                     <TableCell>{rights.page_id}-{rights.role}</TableCell>
                                                     <TableCell>
                                                         <input type="checkbox" value={rights.user_list} onChange={()=>setchecklist(!rights.user_list)} defaultChecked={ rights.user_list == 1 } onClick={rightlist} />{rights.user_list} {/*<p> {users[0].user_list ? '0' : '1'} </p> */}
@@ -174,6 +176,7 @@ function UserRights({data}){
                                                         <input type="checkbox" value={rights.delete_user} onChange={()=>setdelcheck(!rights.delete_user)} defaultChecked={ rights.delete_user == 1 } onClick={()=>deletelist()} />{rights.delete_user}
                                                     </TableCell>
                                                 </TableRow>    
+
                                             )
                                         })
                                     }
