@@ -1,7 +1,7 @@
 import nc from "next-connect";
-import { rights } from '../../../controller/admin/rights'
+import { TaskModule } from '../../../controller/admin/taskmodule'
 
 const handler=nc();
-handler.get(rights);
+handler.get(TaskModule);
 
 export default handler;

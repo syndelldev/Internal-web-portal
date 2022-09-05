@@ -3,7 +3,7 @@ import { executeQuery } from "../../config/db";
 const rights = async (req,res) =>{
     try{
         //SELECT * FROM `role` LEFT JOIN `tbl_rights` ON role.role_id=tbl_rights.role_id;
-        let rightsData=await executeQuery(" SELECT tbl_user.id, tbl_user.username,tbl_rights.role_id,tbl_rights.user_list,tbl_rights.add_user,tbl_rights.edit_user,tbl_rights.delete_user,admin_pages.page_id,admin_pages.page_name FROM tbl_user INNER JOIN tbl_rights ON tbl_user.role_id=tbl_rights.role_id INNER JOIN admin_pages ON admin_pages.page_id=tbl_rights.page_id ", [] );
+        let rightsData=await executeQuery(" SELECT * FROM `role`  ", [] );
         res.send(rightsData);
     }
     catch(err){
@@ -13,8 +13,10 @@ const rights = async (req,res) =>{
 
 const rightsById = async (req,res) => {
     let id = req.query.id;
+    // console.log(req.body)
+    //SELECT * FROM role LEFT JOIN tbl_rights ON role.role_id=tbl_rights.role_id  WHERE tbl_rights.role_id
     try{
-        let rightsId=await executeQuery(` SELECT tbl_user.id, tbl_user.username,tbl_rights.role_id,tbl_rights.user_list,tbl_rights.add_user,tbl_rights.edit_user,tbl_rights.delete_user,admin_pages.page_id,admin_pages.page_name FROM tbl_user INNER JOIN tbl_rights ON tbl_user.role_id=tbl_rights.role_id INNER JOIN admin_pages ON admin_pages.page_id=tbl_rights.page_id WHERE tbl_user.id=${id} `, [] );
+        let rightsId=await executeQuery(` SELECT * FROM tbl_rights  WHERE page_id='Projects' AND tbl_rights.role_id=${id} `, [] );
         res.status(200).json(rightsId);
     }
     catch(err){
@@ -25,17 +27,53 @@ const rightsById = async (req,res) => {
 const UpdateUserRights = async (req,res) =>{
     let id = req.query.id;
     console.log(id)
-
     console.log(req.body)
 
-    try{
-        let UpdataUser = await executeQuery(" UPDATE tbl_rights SET ? WHERE id = ? ", [req.body, id])
-        res.status(200).json(UpdataUser);
-        console.log(UpdataUser)
-    }
-    catch(err){
-        console.log(err)
-    }
+    
+        if( req.body.checkvalue == 1 || req.body.checkvalue == 0 ){
+            try{
+                //UPDATE tbl_rights SET user_list=?  WHERE role_id=? AND page_id='Projects'
+                let UpdataUser = await executeQuery(` UPDATE tbl_rights SET user_list=?  WHERE role_id=? AND page_id='Projects' `, [req.body.checkvalue, id])
+                res.status(200).json(UpdataUser);
+                console.log(UpdataUser)
+            }
+            catch(err){
+                console.log(err)
+            }
+        }
+
+        else if( req.body.addlist_checkvalue == 1 || req.body.addlist_checkvalue == 0 ){
+            try{
+                let UpdateAddList = await executeQuery(` UPDATE tbl_rights SET add_user=?  WHERE role_id=? AND page_id='Projects' `, [req.body.addlist_checkvalue, id])
+                res.status(200).json(UpdateAddList);
+                console.log(UpdateAddList)
+            }
+            catch(err){
+                console.log(err)
+            }
+        }
+
+        else if(req.body.edit_checkvalue == 1 || req.body.edit_checkvalue == 0 ){
+            try{
+                let EditList = await executeQuery(` UPDATE tbl_rights SET edit_user=?  WHERE role_id=? AND page_id='Projects' `, [req.body.edit_checkvalue, id])
+                res.status(200).json(EditList);
+                console.log(EditList)
+            }
+            catch(err){
+                console.log(err)
+            }
+        }
+
+        else if(req.body.delete_checkvalue == 1 || req.body.delete_checkvalue == 0 ){
+            try{
+                let DeleteList = await executeQuery(` UPDATE tbl_rights SET delete_user=?  WHERE role_id=? AND page_id='Projects' `, [req.body.delete_checkvalue, id])
+                res.status(200).json(DeleteList);
+                console.log(DeleteList)
+            }
+            catch(err){
+                console.log(err)
+            }
+        }
 }
 
 export { rights,rightsById,UpdateUserRights }
