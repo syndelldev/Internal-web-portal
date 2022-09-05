@@ -2,7 +2,8 @@ import { executeQuery } from "../../config/db";
 
 const rights = async (req,res) =>{
     try{
-        let rightsData=await executeQuery(" SELECT * FROM `role` ", [] );
+        //SELECT * FROM `role` LEFT JOIN `tbl_rights` ON role.role_id=tbl_rights.role_id;
+        let rightsData=await executeQuery(" SELECT * FROM `role`  ", [] );
         res.send(rightsData);
     }
     catch(err){
@@ -12,11 +13,8 @@ const rights = async (req,res) =>{
 
 const rightsById = async (req,res) => {
     let id = req.query.id;
-    console.log(id)
     try{
-        //SELECT * FROM role LEFT JOIN tbl_rights ON role.role_id=tbl_rights.role_id INNER JOIN admin_pages WHERE tbl_rights.role_id
-        //SELECT * FROM tbl_rights  WHERE role_id=${id}
-        let rightsId=await executeQuery(` SELECT * FROM tbl_rights  WHERE role_id=${id} `, [] );
+        let rightsId=await executeQuery(` SELECT * FROM role LEFT JOIN tbl_rights ON role.role_id=tbl_rights.role_id  WHERE tbl_rights.role_id=${id} `, [] );
         res.status(200).json(rightsId);
     }
     catch(err){

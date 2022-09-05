@@ -61,6 +61,7 @@ export default function AdminNavbarLinks({useravtar}) {
     removeCookie('Role', { path:'/' } );
     removeCookie('Avtar', { path:'/' } );
     removeCookie('Id', { path:'/' } );
+    removeCookie('Role_id', { path:'/' } );
 
     router.push("/login");
   }
