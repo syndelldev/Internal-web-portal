@@ -16,7 +16,7 @@ const rightsById = async (req,res) => {
     // console.log(req.body)
     //SELECT * FROM role LEFT JOIN tbl_rights ON role.role_id=tbl_rights.role_id  WHERE tbl_rights.role_id
     try{
-        let rightsId=await executeQuery(` SELECT * FROM tbl_rights  WHERE tbl_rights.role_id=${id} `, [] );
+        let rightsId=await executeQuery(` SELECT * FROM tbl_rights  WHERE page_id='Projects' AND tbl_rights.role_id=${id} `, [] );
         res.status(200).json(rightsId);
     }
     catch(err){
@@ -32,6 +32,7 @@ const UpdateUserRights = async (req,res) =>{
     
         if( req.body.checkvalue == 1 || req.body.checkvalue == 0 ){
             try{
+                //UPDATE tbl_rights SET user_list=?  WHERE role_id=? AND page_id='Projects'
                 let UpdataUser = await executeQuery(` UPDATE tbl_rights SET user_list=?  WHERE role_id=? AND page_id='Projects' `, [req.body.checkvalue, id])
                 res.status(200).json(UpdataUser);
                 console.log(UpdataUser)
@@ -43,7 +44,7 @@ const UpdateUserRights = async (req,res) =>{
 
         else if( req.body.addlist_checkvalue == 1 || req.body.addlist_checkvalue == 0 ){
             try{
-                let UpdateAddList = await executeQuery(` UPDATE tbl_rights SET add_user=?  WHERE role_id=? AND page_id='Projects'  `, [req.body.addlist_checkvalue, id])
+                let UpdateAddList = await executeQuery(` UPDATE tbl_rights SET add_user=?  WHERE role_id=? AND page_id='Projects' `, [req.body.addlist_checkvalue, id])
                 res.status(200).json(UpdateAddList);
                 console.log(UpdateAddList)
             }

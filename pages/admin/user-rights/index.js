@@ -53,6 +53,7 @@ function UserRights({data}){
     const useStyles = makeStyles(styles);
     const classes = useStyles();
 
+    //Project Module
     const [value, setValue] = useState(1)
     const [users, setusers] = useState([])
     const logValue =() =>{
@@ -65,8 +66,19 @@ function UserRights({data}){
             //console.log(res.data)
         })
     },[value])
-    // console.log(value)
     console.log(users)
+
+
+    //Task Module
+    const [Task, setTask] = useState([])
+    useEffect(async()=>{
+        axios.get(`${server}/api/task_module/${value}`)
+        .then((res)=>{
+            setTask(res.data)
+            //console.log(res.data)
+        })
+    },[value])
+    console.log(Task)
 
     const [checklist, setchecklist] = useState('1')
     const rightlist = async() =>{
@@ -142,21 +154,42 @@ function UserRights({data}){
                                     <TableBody>
                                     {
                                         users.map((rights,index)=>{
-                                        //console.log(users[0].user_list)
                                         return(
                                                 <TableRow key={index}>
                                                     <TableCell>{rights.page_id}-{rights.role}</TableCell>
                                                     <TableCell>
-                                                        <input type="checkbox" value={rights.user_list} onChange={()=>setchecklist(!rights.user_list)} defaultChecked={ rights.user_list == 1 } onClick={rightlist} />{rights.user_list} {/*<p> {users[0].user_list ? '0' : '1'} </p> */}
+                                                        <input type="checkbox" name="checklist" value={rights.user_list} onChange={()=>setchecklist(!rights.user_list)} defaultChecked={ rights.user_list == 1 } onClick={rightlist} />{rights.user_list} {/*<p> {users[0].user_list ? '0' : '1'} </p> */}
                                                     </TableCell>
                                                     <TableCell>
-                                                        <input type="checkbox" value={rights.add_user} onChange={()=>setcheckaddlist(!rights.add_user)} defaultChecked={ rights.add_user == 1 } onClick={()=>addlist()} />{rights.add_user}
+                                                        <input type="checkbox" name="checkaddlist" value={rights.add_user} onChange={()=>setcheckaddlist(!rights.add_user)} defaultChecked={ rights.add_user == 1 } onClick={()=>addlist()} />{rights.add_user}
                                                     </TableCell>
                                                     <TableCell>
-                                                        <input type="checkbox" value={rights.edit_user} onChange={()=>seteditchecklist(!rights.edit_user)} defaultChecked={ rights.edit_user == 1 } onClick={()=>editlist()} />{rights.edit_user}
+                                                        <input type="checkbox" name="editchecklist" value={rights.edit_user} onChange={()=>seteditchecklist(!rights.edit_user)} defaultChecked={ rights.edit_user == 1 } onClick={()=>editlist()} />{rights.edit_user}
                                                     </TableCell>
                                                     <TableCell>
-                                                        <input type="checkbox" value={rights.delete_user} onChange={()=>setdelcheck(!rights.delete_user)} defaultChecked={ rights.delete_user == 1 } onClick={()=>deletelist()} />{rights.delete_user}
+                                                        <input type="checkbox" name="delcheck" value={rights.delete_user} onChange={()=>setdelcheck(!rights.delete_user)} defaultChecked={ rights.delete_user == 1 } onClick={()=>deletelist()} />{rights.delete_user}
+                                                    </TableCell>
+                                                </TableRow>    
+                                            )
+                                        })
+                                    }
+                                    
+                                    {
+                                        Task.map((rights,index)=>{
+                                        return(
+                                                <TableRow key={index}>
+                                                    <TableCell>{rights.page_id}-{rights.role}</TableCell>
+                                                    <TableCell>
+                                                        <input type="checkbox" name="checklist" value={rights.user_list} onChange={()=>setchecklist(!rights.user_list)} defaultChecked={ rights.user_list == 1 } onClick={rightlist} />{rights.user_list} {/*<p> {users[0].user_list ? '0' : '1'} </p> */}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <input type="checkbox" name="checkaddlist" value={rights.add_user} onChange={()=>setcheckaddlist(!rights.add_user)} defaultChecked={ rights.add_user == 1 } onClick={()=>addlist()} />{rights.add_user}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <input type="checkbox" name="editchecklist" value={rights.edit_user} onChange={()=>seteditchecklist(!rights.edit_user)} defaultChecked={ rights.edit_user == 1 } onClick={()=>editlist()} />{rights.edit_user}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <input type="checkbox" name="delcheck" value={rights.delete_user} onChange={()=>setdelcheck(!rights.delete_user)} defaultChecked={ rights.delete_user == 1 } onClick={()=>deletelist()} />{rights.delete_user}
                                                     </TableCell>
                                                 </TableRow>    
                                             )
