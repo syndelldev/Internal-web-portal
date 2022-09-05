@@ -6,26 +6,30 @@ async function addSubtask(req,res){
     if(req.method == 'POST')
     {
         try{
-            console.log(req.body.project_start);
             console.log(req.body);
-            console.log("data");
-            console.log("data");
-            console.log(req.body.project_person);
-            var members = req.body.project_person;
+
+            var project = req.body.project_name;
+            const projectName = [];
+            for(var i=0; i<project.length; i++){
+                projectName.push(project[i].value);
+            }
+            console.log(projectName);
+
+            var members = req.body.task_person;
             console.log(members);
 
             const allSelectedUser = [];
             for(var i=0; i<members.length; i++){
-            allSelectedUser.push(members[i].value);
+                allSelectedUser.push(members[i].value);
             }
             console.log(allSelectedUser);
 
-            // var addUserQuery = await executeQuery("create table IF NOT EXISTS `tbl_project` (`project_id` int AUTO_INCREMENT PRIMARY KEY, `project_title` varchar(255), `project_description` text, `project_language` varchar(255),`project_department` varchar(255), `project_priority` varchar(255), `project_person` text , `project_created_date` timestamp , `project_status` varchar(255) , `project_start` varchar(255) , `project_deadline` varchar(255) , `project_comment` text , `project_delete` varchar(255)  )");
-            // var addUserQuery = await executeQuery("INSERT INTO `tbl_project` ( `project_title`, `project_description`, `project_language` , `project_department`, `project_comment`, `project_priority`, `project_start`, `project_deadline` , `project_person`, `project_status` , `project_delete` ) VALUES (?,?,?,?,?,?,?,?,?,?,?)", 
-            // [req.body.project_title, req.body.project_description, req.body.project_language ,  req.body.project_department, req.body.project_comment , req.body.project_priority , req.body.project_start , req.body.project_deadline , `${allSelectedUser}` , req.body.project_status , "no" ] );
-        
-            // res.status(200).json(addUserQuery);
-            // console.log(addUserQuery);
+            var addUserQuery = await executeQuery("create table IF NOT EXISTS `tbl_subtask` ( `task_id` int AUTO_INCREMENT PRIMARY KEY , `project_name` varchar(255), `task_title` varchar(255), `task_description` text, `task_language` varchar(255), `task_priority` varchar(255), `task_person` text , `task_status` varchar(255) , `task_start` varchar(255) , `task_deadline` varchar(255) ,  `task_delete` varchar(255) ,  `task_comment` text , `task_created_date` timestamp  )");
+            var addUserQuery = await executeQuery("INSERT INTO `tbl_subtask` ( `project_name`, `task_title`, `task_description` , `task_language`, `task_priority`, `task_person`, `task_status`, `task_start` , `task_deadline`, `task_delete` , `task_comment` ) VALUES (?,?,?,?,?,?,?,?,?,?,?)", 
+            [ `${projectName}` , req.body.task_title, req.body.task_description ,  req.body.task_language, req.body.task_priority , `${allSelectedUser}` , req.body.task_status , req.body.task_start , req.body.task_deadline , "no" , req.body.task_comment ] );
+
+            res.status(200).json(addUserQuery);
+            console.log(addUserQuery.warningCount);
         }
         catch(err){
             console.log(err);

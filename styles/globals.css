@@ -15,7 +15,7 @@ a {
   box-sizing: border-box;
 }
 
-/* department dropdown */
+/* filter project language, department dropdown */
 
 .dropdown_button {
   color: black;
@@ -49,3 +49,9 @@ a {
 
 .department_dropdown:hover .department-link {display: block;}
 
+/* Project, task popup : overflow-y */
+
+.popupReact-overlay{
+	overflow-y: auto;
+	overflow-x: hidden;
+}

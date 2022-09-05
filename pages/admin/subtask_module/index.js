@@ -128,20 +128,21 @@ function Dashboard( { project_details , User_name } ) {
 
   const onSubmit = async (result) =>{
     
-    console.log("result");
+    console.log(result);
     console.log(selected);
+    console.log(p_selected);
     
     const res = await fetch(`${server}/api/subtask/add_subtask`,{
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body:JSON.stringify({project_person:selected,project_department:result.project_department,project_status:result.project_status , project_title:result.project_title, project_description:result.project_description, project_language:result.project_language, project_comment:result.project_comment, project_priority:result.project_priority, project_start: result.start , project_deadline: result.end }),
+      body:JSON.stringify({task_person:selected, project_name:p_selected, task_status:result.task_status , task_title:result.task_title, task_description:result.task_description, task_language:result.task_language, task_comment:result.task_comment, task_priority:result.task_priority, task_start: result.start , task_deadline: result.end }),
     })
     const data=await res.json()
     
     if(res.status==200)
     {
-      alert("success");
-      // router.push(`${server}/admin/project_module/project_department/${result.project_department}`);
+      // alert("success");
+      router.push(`${server}/admin/subtask_module`);
     }
     else
     {
@@ -194,7 +195,7 @@ const [p_selected, setProject] = useState([]);
     <GridContainer>
         <GridItem>
 
-          <Popup trigger={<div><button>Add Project</button></div>} modal>
+          <Popup trigger={<div><button>Add Task</button></div>}  className="popupReact"  modal>
 
           {close => (
       <div>
@@ -206,8 +207,8 @@ const [p_selected, setProject] = useState([]);
 
               <GridContainer>
                 <GridItem>
-                  <h4 className={classes.cardTitleWhite}>Create Project</h4>
-                  <p className={classes.cardCategoryWhite}>Enter your new project details</p>
+                  <h4 className={classes.cardTitleWhite}>Create Task</h4>
+                  <p className={classes.cardCategoryWhite}>Enter your new task details</p>
                 </GridItem>
 
                 {/* <GridItem> */}
@@ -219,29 +220,10 @@ const [p_selected, setProject] = useState([]);
 
               </CardHeader>
                 <CardBody>
-                  <GridContainer>
-                    <GridItem xs={12} sm={12} md={12}>                      
-                      <div className="form-group">
-                        <span>Project Title</span>
-                        <input type="text" className="form-control signup-input" placeholder="Project Title" {...register('project_title',  { required: "Please enter project title"})} />
-                        <div className="error-msg">{errors.project_title && <span>{errors.project_title.message}</span>}</div>
-                      </div> 
-                    </GridItem>
-                  </GridContainer><br/>
-                    
-                  <GridContainer>  
-                    <GridItem xs={12} sm={12} md={12}>
-                      <div className="form-group">
-                      <span>Project Description</span>
-                        <textarea className="form-control signup-input" placeholder="Project Description" {...register('project_description', { required: 'Description is required', } )}  />
-                        <div className="error-msg">{errors.project_description && <span>{errors.project_description.message}</span>}</div>
-                      </div> 
-                    </GridItem>
-                  </GridContainer><br/>
 
-                  <GridContainer>
+                <GridContainer>
                     <GridItem xs={12} sm={12} md={12}>
-                    <div className="form-group" {...register('project_person')}>
+                    <div className="form-group" {...register('project_name')}>
                       
                       <span>Select Project</span>
                       <Multiselect
@@ -257,7 +239,27 @@ const [p_selected, setProject] = useState([]);
                         showArrow={true}
                       />
                       
-                        <div className="error-msg">{errors.project_person && <span>{errors.project_person.message}</span>}</div>
+                        <div className="error-msg">{errors.project_name && <span>{errors.project_name.message}</span>}</div>
+                      </div> 
+                    </GridItem>
+                  </GridContainer><br/>
+
+                  <GridContainer>
+                    <GridItem xs={12} sm={12} md={12}>                      
+                      <div className="form-group">
+                        <span>Task Title</span>
+                        <input type="text" className="form-control signup-input" placeholder="Task Title" {...register('task_title',  { required: "Please enter task title"})} />
+                        <div className="error-msg">{errors.task_title && <span>{errors.task_title.message}</span>}</div>
+                      </div> 
+                    </GridItem>
+                  </GridContainer><br/>
+                    
+                  <GridContainer>  
+                    <GridItem xs={12} sm={12} md={12}>
+                      <div className="form-group">
+                      <span>Task Description</span>
+                        <textarea className="form-control signup-input" placeholder="Task Description" {...register('task_description', { required: 'Description is required', } )}  />
+                        <div className="error-msg">{errors.task_description && <span>{errors.task_description.message}</span>}</div>
                       </div> 
                     </GridItem>
                   </GridContainer><br/>
@@ -265,8 +267,8 @@ const [p_selected, setProject] = useState([]);
                   <GridContainer>
                     <GridItem xs={12} sm={12} md={12}>
                       <div className="form-group">
-                      <span>Project Language</span>
-                        <select name="Project_created_by" id="Project_created_by" className="form-control signup-input" {...register('project_language', {required:true ,message:'Please select atleast one option', })}>
+                      <span>Task Language</span>
+                        <select name="Task_created_by" id="Task_created_by" className="form-control signup-input" {...register('task_language', {required:true ,message:'Please select atleast one option', })}>
                           <option value="" disabled selected>Select Language</option>
                           <option value="Wordpress">Wordpress</option>
                           <option value="Shopify">Shopify</option>
@@ -276,15 +278,15 @@ const [p_selected, setProject] = useState([]);
                           <option value="Bubble">Bubble</option>
                         </select>
                         <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                        <div className="error-msg">{errors.project_language && <span>{errors.project_language.message}</span>}</div>
+                        <div className="error-msg">{errors.task_language && <span>{errors.task_language.message}</span>}</div>
                       </div> 
                     </GridItem>
                   </GridContainer><br/>
 
                   <GridContainer>  
                     <GridItem xs={12} sm={12} md={6}>
-                      <div className="form-group" {...register('project_start')}>
-                      <span>Project Start Date</span>
+                      <div className="form-group" {...register('task_start')}>
+                      <span>Task Start Date</span>
                         <DatePicker
                           placeholderText="Start_Date : dd/mm/yyyy"
                           isClearable
@@ -298,13 +300,13 @@ const [p_selected, setProject] = useState([]);
                           dateFormat="dd-MM-yyyy"
                           minDate={new Date()}
                         />
-                      <div className="error-msg">{errors.project_start && <span>{errors.project_start.message}</span>}</div>
+                      <div className="error-msg">{errors.task_start && <span>{errors.task_start.message}</span>}</div>
                       </div> 
                     </GridItem>
 
                     <GridItem xs={12} sm={12} md={6}>
-                      <div className="form-group" {...register('project_deadline')}>
-                      <span>Project End Date</span>
+                      <div className="form-group" {...register('task_deadline')}>
+                      <span>Task End Date</span>
                         <DatePicker
                           placeholderText="End_Date : dd/mm/yyyy"
                           isClearable
@@ -318,7 +320,7 @@ const [p_selected, setProject] = useState([]);
                           dateFormat="dd-MM-yyyy"
                           minDate={startDate}
                         />
-                      <div className="error-msg">{errors.project_deadline && <span>{errors.project_deadline.message}</span>}</div>
+                      <div className="error-msg">{errors.task_deadline && <span>{errors.task_deadline.message}</span>}</div>
                       </div> 
                     </GridItem>
                   </GridContainer><br/>
@@ -326,15 +328,15 @@ const [p_selected, setProject] = useState([]);
                   <GridContainer>
                     <GridItem xs={12} sm={12} md={6}>
                       <div className="form-group">
-                      <span>Project Priority</span>
-                        <select name="priority" id="priority" className="form-control signup-input" {...register('project_priority', {required:true ,message:'Please select atleast one option', })}>
-                          <option value=""  disabled selected>Select Project Priority</option>
+                      <span>Task Priority</span>
+                        <select name="priority" id="priority" className="form-control signup-input" {...register('task_priority', {required:true ,message:'Please select atleast one option', })}>
+                          <option value=""  disabled selected>Select Task Priority</option>
                           <option value="High">High</option>
                           <option value="Medium">Medium</option>
                           <option value="Low">Low</option>
                         </select>
                         <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                        <div className="error-msg">{errors.project_priority && <span>{errors.project_priority.message}</span>}</div>
+                        <div className="error-msg">{errors.task_priority && <span>{errors.task_priority.message}</span>}</div>
                       </div> 
                     </GridItem>
                   
@@ -342,9 +344,9 @@ const [p_selected, setProject] = useState([]);
                         <div className="form-group">
                           {/*<input type="text" className="form-control signup-input" placeholder="Status" {...register('status',  { required: "Please enter your Status", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
                           <div className="error-msg">{errors.status && <p>{errors.status.message}</p>}</div>*/}
-                          <span>Project Status</span>
-                          <select name="Status" id="Status" className="form-control signup-input" {...register('project_status', {required:true ,message:'Please select atleast one option', })}>
-                            <option value=""  disabled selected>Select Project Status</option>
+                          <span>Task Status</span>
+                          <select name="Status" id="Status" className="form-control signup-input" {...register('task_status', {required:true ,message:'Please select atleast one option', })}>
+                            <option value=""  disabled selected>Select Task Status</option>
                             <option value="on hold">On hold</option>
                             <option value="running">Running</option>
                             <option value="completed">Completed</option>
@@ -357,9 +359,9 @@ const [p_selected, setProject] = useState([]);
 
                   <GridContainer>
                   <GridItem xs={12} sm={12} md={12}>
-                      <div className="form-group" {...register('project_person')}>
+                      <div className="form-group" {...register('task_person')}>
                       
-                      <span>Project Members</span>
+                      <span>Task Members</span>
                       <Multiselect
                       displayValue="value"
                         options={uoptions}
@@ -369,11 +371,11 @@ const [p_selected, setProject] = useState([]);
                         onRemove={setSelected}
                         // onSearch={function noRefCheck(){}}
                         onSelect={setSelected}
-                        placeholder="Select Project Members"
+                        placeholder="Select Task Members"
                         showArrow={true}
                       />
                       
-                        <div className="error-msg">{errors.project_person && <span>{errors.project_person.message}</span>}</div>
+                        <div className="error-msg">{errors.task_person && <span>{errors.task_person.message}</span>}</div>
                       </div> 
                     </GridItem>
                   </GridContainer><br/>
@@ -382,7 +384,7 @@ const [p_selected, setProject] = useState([]);
                     <GridItem xs={12} sm={12} md={12}>
                       <div className="form-group">
                       <span>Comments</span>
-                        <textarea className="form-control signup-input" placeholder="Comment" {...register('project_comment')} />
+                        <textarea className="form-control signup-input" placeholder="Comment" {...register('task_comment')} />
                         <div className="error-msg">{errors.position && <span>{errors.position.message}</span>}</div>
                       </div> 
                     </GridItem>
@@ -391,7 +393,7 @@ const [p_selected, setProject] = useState([]);
                 </CardBody>
 
                 <CardFooter>
-                    <Button color="primary" type="submit">Add Project</Button>
+                    <Button color="primary" type="submit">Add Task</Button>
                     <Button className="button" onClick={() => { close(); }}> Cancel </Button>
                 </CardFooter>
                 
@@ -443,7 +445,7 @@ const [p_selected, setProject] = useState([]);
     <GridContainer>
 
     <GridItem xs={6} sm={6} md={4}>
-      <span className="heading">On Hold Projects</span>
+      <span className="heading">On Hold Tasks</span>
 
     {project_details.map((project)=>{
 
@@ -493,7 +495,7 @@ const [p_selected, setProject] = useState([]);
 
                 <GridContainer>
                   <GridItem>
-                    <p className="projectPriority">Project Priority : {project.project_priority}</p>
+                    <p className="projectPriority">Task Priority : {project.project_priority}</p>
                   </GridItem>
                 </GridContainer>
                 
@@ -512,7 +514,7 @@ const [p_selected, setProject] = useState([]);
     </GridItem>
 
     <GridItem xs={6} sm={6} md={4}>
-      <span>Running Projects</span>
+      <span>Running Tasks</span>
 
     {project_details.map((project)=>{
 
@@ -586,7 +588,7 @@ const [p_selected, setProject] = useState([]);
     </GridItem>
 
     <GridItem xs={6} sm={6} md={4}>
-      <span>Completed Projects</span>
+      <span>Completed Tasks</span>
 
     {project_details.map((project)=>{
 
