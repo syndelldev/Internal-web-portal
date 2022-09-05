@@ -20,18 +20,17 @@ import ReactDOM from "react-dom";
 import App from "next/app";
 import Head from "next/head";
 import Router from "next/router";
-import PageChange from "components/PageChange/PageChange.js";
-import { CookiesProvider } from 'react-cookie';
 
-import "assets/css/nextjs-material-dashboard.css?v=1.1.0";
-import 'bootstrap/dist/css/bootstrap.min.css'
-import '../styles/login.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../styles/login.css';
+import "react-datepicker/dist/react-datepicker.css";
 import '../styles/globals.css';
 
-import "react-datepicker/dist/react-datepicker.css";
-import 'react-toastify/dist/ReactToastify.css';
-import 'react-phone-number-input/style.css';
 
+import PageChange from "components/PageChange/PageChange.js";
+
+import "assets/css/nextjs-material-dashboard.css?v=1.1.0";
+import { CookiesProvider } from 'react-cookie';
 
 
 Router.events.on("routeChangeStart", (url) => {
