@@ -103,23 +103,28 @@ const styles = {
 };
 
 export async function getServerSideProps(){
+
   const res = await fetch(`${server}/api/project`);
   const project_details = await res.json();
-  // console.log(project_details);
+
   const response = await fetch(`${server}/api/admin`)
   const User_name = await response.json();
-  // console.log(User_name);
 
-  return{ props: {project_details, User_name} }
+  const task = await fetch(`${server}/api/subtask`)
+  const allTask = await task.json();
+
+  return{ props: {project_details, User_name, allTask} }
 }
 
-function Dashboard( { project_details , User_name } ) {
+function Dashboard( { project_details , User_name , allTask } ) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   
-  const deleteProject = async(id) =>{
+  const deleteTask = async(id) =>{
     console.log('delete');
     console.log(id);
+
+    const res = await fetch(`${server}/api/subtask/deleteTask/${id}`);
   }
   const { register,  watch, handleSubmit, formState: { errors }, setValue } = useForm(); 
   const [startDate, setStartDate] = useState();
@@ -221,7 +226,17 @@ const [p_selected, setProject] = useState([]);
               </CardHeader>
                 <CardBody>
 
-                <GridContainer>
+                  <GridContainer>
+                    <GridItem xs={12} sm={12} md={12}>                      
+                      <div className="form-group">
+                        <span>Task Title</span>
+                        <input type="text" className="form-control signup-input" placeholder="Task Title" {...register('task_title',  { required: "Please enter task title"})} />
+                        <div className="error-msg">{errors.task_title && <span>{errors.task_title.message}</span>}</div>
+                      </div> 
+                    </GridItem>
+                  </GridContainer><br/>
+                    
+                  <GridContainer>
                     <GridItem xs={12} sm={12} md={12}>
                     <div className="form-group" {...register('project_name')}>
                       
@@ -244,16 +259,6 @@ const [p_selected, setProject] = useState([]);
                     </GridItem>
                   </GridContainer><br/>
 
-                  <GridContainer>
-                    <GridItem xs={12} sm={12} md={12}>                      
-                      <div className="form-group">
-                        <span>Task Title</span>
-                        <input type="text" className="form-control signup-input" placeholder="Task Title" {...register('task_title',  { required: "Please enter task title"})} />
-                        <div className="error-msg">{errors.task_title && <span>{errors.task_title.message}</span>}</div>
-                      </div> 
-                    </GridItem>
-                  </GridContainer><br/>
-                    
                   <GridContainer>  
                     <GridItem xs={12} sm={12} md={12}>
                       <div className="form-group">
@@ -265,7 +270,21 @@ const [p_selected, setProject] = useState([]);
                   </GridContainer><br/>
 
                   <GridContainer>
-                    <GridItem xs={12} sm={12} md={12}>
+                    <GridItem xs={12} sm={12} md={6}>
+                      <div className="form-group">
+                      <span>Task Priority</span>
+                        <select name="priority" id="priority" className="form-control signup-input" {...register('task_priority', {required:true ,message:'Please select atleast one option', })}>
+                          <option value=""  disabled selected>Select Task Priority</option>
+                          <option value="High">High</option>
+                          <option value="Medium">Medium</option>
+                          <option value="Low">Low</option>
+                        </select>
+                        <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                        <div className="error-msg">{errors.task_priority && <span>{errors.task_priority.message}</span>}</div>
+                      </div> 
+                    </GridItem>
+
+                    <GridItem xs={12} sm={12} md={6}>
                       <div className="form-group">
                       <span>Task Language</span>
                         <select name="Task_created_by" id="Task_created_by" className="form-control signup-input" {...register('task_language', {required:true ,message:'Please select atleast one option', })}>
@@ -325,25 +344,9 @@ const [p_selected, setProject] = useState([]);
                     </GridItem>
                   </GridContainer><br/>
 
-                  <GridContainer>
-                    <GridItem xs={12} sm={12} md={6}>
-                      <div className="form-group">
-                      <span>Task Priority</span>
-                        <select name="priority" id="priority" className="form-control signup-input" {...register('task_priority', {required:true ,message:'Please select atleast one option', })}>
-                          <option value=""  disabled selected>Select Task Priority</option>
-                          <option value="High">High</option>
-                          <option value="Medium">Medium</option>
-                          <option value="Low">Low</option>
-                        </select>
-                        <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                        <div className="error-msg">{errors.task_priority && <span>{errors.task_priority.message}</span>}</div>
-                      </div> 
-                    </GridItem>
-                  
+                  {/* <GridContainer>
                     <GridItem xs={12} sm={12} md={6}>
                         <div className="form-group">
-                          {/*<input type="text" className="form-control signup-input" placeholder="Status" {...register('status',  { required: "Please enter your Status", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
-                          <div className="error-msg">{errors.status && <p>{errors.status.message}</p>}</div>*/}
                           <span>Task Status</span>
                           <select name="Status" id="Status" className="form-control signup-input" {...register('task_status', {required:true ,message:'Please select atleast one option', })}>
                             <option value=""  disabled selected>Select Task Status</option>
@@ -352,10 +355,9 @@ const [p_selected, setProject] = useState([]);
                             <option value="completed">Completed</option>
                           </select>
                           <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                          {/* <div className="error-msg">{errors.status && <p>{errors.status.message}</p>}</div> */}
                         </div> 
                     </GridItem>
-                  </GridContainer><br/>
+                  </GridContainer><br/> */}
 
                   <GridContainer>
                   <GridItem xs={12} sm={12} md={12}>
@@ -444,15 +446,15 @@ const [p_selected, setProject] = useState([]);
 
     <GridContainer>
 
-    <GridItem xs={6} sm={6} md={4}>
-      <span className="heading">On Hold Tasks</span>
+    <GridItem xs={6} sm={6} md={3}>
+      <span className="heading">Task to do</span>
 
-    {project_details.map((project)=>{
+    {allTask.map((task)=>{
 
-    if(project.project_delete == "no"){
-    if(project.project_status == "on hold"){
+    if(task.task_delete == "no"){
+    if(task.task_status == "task to do"){
 
-      var person = project.project_person.split(",");
+      var person = task.task_person.split(",");
 
     return(
     <>
@@ -464,19 +466,19 @@ const [p_selected, setProject] = useState([]);
 
               <img src={`${server}/reactlogo.png`} className={classes.img}/>
 
-                <h4 className="projectTitle">{project.project_title}</h4>
+                <h4 className="projectTitle">{task.task_title}</h4>
                 <p className={classes.cardCategoryWhite}></p>
             </CardHeader>
 
               <CardBody>
               <GridContainer>
                   <GridItem>
-                    <p className="projectLanguage">{project.project_language}</p>
+                    <p className="projectLanguage">{task.task_language}</p>
                   </GridItem>
 
                   <GridItem>
-                    <a href={`${server}/admin/project_module/${project.project_id}`}>Edit</a>
-                    <button onClick={()=>deleteProject(project.project_id)}>Delete</button>
+                    <a href={`${server}/admin/subtask_module/${task.task_id}`}>Edit</a>
+                    <button onClick={()=>deleteTask(task.task_id)}>Delete</button>
                   </GridItem>
                 </GridContainer>
 
@@ -495,7 +497,7 @@ const [p_selected, setProject] = useState([]);
 
                 <GridContainer>
                   <GridItem>
-                    <p className="projectPriority">Task Priority : {project.project_priority}</p>
+                    <p className="projectPriority">Task Priority : {task.task_priority}</p>
                   </GridItem>
                 </GridContainer>
                 
@@ -511,17 +513,20 @@ const [p_selected, setProject] = useState([]);
                   }
     })
  }
+
     </GridItem>
 
-    <GridItem xs={6} sm={6} md={4}>
-      <span>Running Tasks</span>
 
-    {project_details.map((project)=>{
 
-    if(project.project_delete == "no"){
-    if(project.project_status == "running"){
+    <GridItem xs={6} sm={6} md={3}>
+      <span>Task on hold</span>
 
-          var person = project.project_person.split(",");
+    {allTask.map((task)=>{
+
+    if(task.task_delete == "no"){
+    if(task.task_status == "task in progress"){
+
+          var person = task.task_person.split(",");
     
         return(
         <>
@@ -533,19 +538,19 @@ const [p_selected, setProject] = useState([]);
     
                       <img src={`${server}/reactlogo.png`} className={classes.img}/>
     
-                        <h4 className="projectTitle">{project.project_title}</h4>
+                        <h4 className="projectTitle">{task.task_title}</h4>
                         <p className={classes.cardCategoryWhite}></p>
                     </CardHeader>
     
                       <CardBody>
                       <GridContainer>
                           <GridItem>
-                            <p className="projectLanguage">{project.project_language}</p>
+                            <p className="projectLanguage">{task.task_language}</p>
                           </GridItem>
     
                           <GridItem>
-                            <a href={`${server}/admin/project_module/${project.project_id}`}>Edit</a>
-                            <button onClick={()=>deleteProject(project.project_id)}>Delete</button>
+                            <a href={`${server}/admin/project_module/${task.task_id}`}>Edit</a>
+                            <button onClick={()=>deleteTask(task.task_id)}>Delete</button>
                           </GridItem>
                         </GridContainer>
     
@@ -564,7 +569,7 @@ const [p_selected, setProject] = useState([]);
     
                         <GridContainer>
                           <GridItem>
-                            <p className="projectPriority">Project Priority : {project.project_priority}</p>
+                            <p className="projectPriority">task Priority : {task.task_priority}</p>
                           </GridItem>
                           
                           <GridItem>
@@ -587,15 +592,91 @@ const [p_selected, setProject] = useState([]);
 
     </GridItem>
 
-    <GridItem xs={6} sm={6} md={4}>
-      <span>Completed Tasks</span>
 
-    {project_details.map((project)=>{
 
-    if(project.project_delete == "no"){
-      if(project.project_status == "completed"){
+    <GridItem xs={6} sm={6} md={3}>
+      <span>Task In Progress</span>
 
-      var person = project.project_person.split(",");
+    {allTask.map((task)=>{
+
+    if(task.task_delete == "no"){
+    if(task.task_status == "task in progress"){
+
+          var person = task.task_person.split(",");
+    
+        return(
+        <>
+    
+            <GridItem>
+              <form>
+                <Card>
+                    <CardHeader color="primary">
+    
+                      <img src={`${server}/reactlogo.png`} className={classes.img}/>
+    
+                        <h4 className="projectTitle">{task.task_title}</h4>
+                        <p className={classes.cardCategoryWhite}></p>
+                    </CardHeader>
+    
+                      <CardBody>
+                      <GridContainer>
+                          <GridItem>
+                            <p className="projectLanguage">{task.task_language}</p>
+                          </GridItem>
+    
+                          <GridItem>
+                            <a href={`${server}/admin/project_module/${task.task_id}`}>Edit</a>
+                            <button onClick={()=>deleteTask(task.task_id)}>Delete</button>
+                          </GridItem>
+                        </GridContainer>
+    
+                        <GridContainer>
+                          <GridItem>
+                            {person.map((data)=>{
+                              return(
+                                <>
+                                  <p className="projectPerson">{data}</p>
+                                </>
+                              )
+                            })
+                            }
+                          </GridItem>
+                        </GridContainer>
+    
+                        <GridContainer>
+                          <GridItem>
+                            <p className="projectPriority">task Priority : {task.task_priority}</p>
+                          </GridItem>
+                          
+                          <GridItem>
+                          </GridItem>
+                        </GridContainer>
+                        
+                        </CardBody>
+    
+                        <CardFooter>
+                        </CardFooter>
+                    </Card>
+                </form>
+            </GridItem>
+          </>
+                )}
+    
+                  }
+    })
+ }
+
+    </GridItem>
+
+    <GridItem xs={6} sm={6} md={3}>
+      <span>Task completed</span>
+
+    {allTask.map((task)=>{
+
+    if(task.task_delete == "no"){
+      if(task.task_status == "completed"){
+
+      var person = task.task_person.split(",");
 
     return(
     <>
@@ -604,19 +685,19 @@ const [p_selected, setProject] = useState([]);
         <Card>
             <CardHeader color="primary">
               <img src={`${server}/reactlogo.png`} className={classes.img}/>
-                <h4 className="projectTitle">{project.project_title}</h4>
+                <h4 className="projectTitle">{task.task_title}</h4>
                 <p className={classes.cardCategoryWhite}></p>
             </CardHeader>
 
               <CardBody>
               <GridContainer>
                   <GridItem>
-                    <p className="projectLanguage">{project.project_language}</p>
+                    <p className="projectLanguage">{task.task_language}</p>
                   </GridItem>
 
                   <GridItem>
-                    <a href={`${server}/admin/project_module/${project.project_id}`}>Edit</a>
-                    <button onClick={()=>deleteProject(project.project_id)}>Delete</button>
+                    <a href={`${server}/admin/project_module/${task.task_id}`}>Edit</a>
+                    <button onClick={()=>deleteTask(task.task_id)}>Delete</button>
                   </GridItem>
                 </GridContainer>
 
@@ -635,7 +716,7 @@ const [p_selected, setProject] = useState([]);
 
                 <GridContainer>
                   <GridItem>
-                    <p className="projectPriority">Project Priority : {project.project_priority}</p>
+                    <p className="projectPriority">task Priority : {task.task_priority}</p>
                   </GridItem>
                 </GridContainer>
                 
