@@ -78,13 +78,13 @@ function Dashboard({project}) {
 
   const [ userRights, setuserRights] = useState([])
   useEffect(()=>{
-    axios.get(`${server}/api/rights/${cookies.Id}`)
+    axios.get(`${server}/api/rights/${cookies.Role_id}`)
     .then((res)=>{
       setuserRights(res.data)
       //console.log(res.data)
     })
   },[1000])
-  console.log(userRights)
+  //console.log(userRights)
 
   return (
     <>
@@ -114,16 +114,27 @@ function Dashboard({project}) {
                    
                         {
                         userRights.map((rights)=>{
-                          if(rights.user_list == 0){
-                            return(
-                              <Button disabled key={rights.id} className="rights_btn"><a href={`#`} className="projectPriority"><FaEye/></a></Button>
-                            )
+                          // console.log(userRights[0].role)
+                          // console.log(cookies.Position)
+                          if(userRights[0].role==cookies.Position){
+                            console.log(userRights[0].user_list)
+
+                            if(userRights[0].user_list == 0){
+                              return(
+                                <Button disabled key={rights.id} className="rights_btn"><a href={`#`} className="projectPriority"><FaEye/></a></Button>
+                              )
+                            }
+                            else{
+                              return(
+                                <Button key={rights.id} className="rights_btn"><a href={`#`} className="projectPriority"><FaEye/></a></Button>
+                              )
+                            }
+                            
                           }
                           else{
-                            return(
-                              <Button key={rights.id} className="rights_btn"><a href={`#`} className="projectPriority"><FaEye/></a></Button>
-                            )
+                            console.log("Not matched")
                           }
+                          
                           })
                         }
 
