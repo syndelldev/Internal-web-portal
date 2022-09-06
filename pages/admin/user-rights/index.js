@@ -49,8 +49,6 @@ export async function getServerSideProps(context){
 } 
 
 function UserRights({UserList,ModuleList}){
-    // console.log(UserList)
-    // console.log(ModuleList)
     const useStyles = makeStyles(styles);
     const classes = useStyles();
 
@@ -59,10 +57,6 @@ function UserRights({UserList,ModuleList}){
 
     const [module, setmodule] = useState(1)
     //console.log(module)
-
-    // const logValue =() =>{
-    //     //console.log(value)
-    // }
 
     // const [users, setusers] = useState([])
     // useEffect(async()=>{
@@ -74,11 +68,16 @@ function UserRights({UserList,ModuleList}){
     // },[])
     // console.log(users)
 
-    const getData = async() => {
-        const res = await fetch(`${server}/api/rights/${user}`,{userid:user,moduleid:module})
-        const data = await res.json() 
-        console.log(data)
+    const [users, setusers] = useState([])
+    const getData = () => {
+        axios.post(`${server}/api/rights/${user}`, {userid:user,moduleid:module})
+        .then((res)=>{
+            setusers(res.data)
+            //console.log(res.data)
+        })
     }
+    console.log(users)
+
     
     return(
         <>

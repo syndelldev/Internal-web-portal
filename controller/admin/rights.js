@@ -23,10 +23,12 @@ const modules = async (req,res) =>{
 
 const ModuleById = async (req,res) => {
     let id = req.query.id;
+    //console.log(id)
     console.log(req.body)
     try{
-        let rightsId=await executeQuery(` SELECT * FROM tbl_user INNER JOIN tbl_module WHERE tbl_user.id=2 AND tbl_module.module_id=1 `, [] );
+        let rightsId=await executeQuery(` SELECT * FROM tbl_user INNER JOIN tbl_module WHERE tbl_module.module_id=? AND tbl_user.id=${id} `, [req.body.moduleid] );
         res.status(200).json(rightsId);
+        //console.log(rightsId)
     }
     catch(err){
         res.status(500).json(err);
