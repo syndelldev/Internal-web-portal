@@ -135,7 +135,6 @@ function UserDetail({UserDetail}) {
                     <TableCell>Position</TableCell>
                     <TableCell>Status</TableCell>
                     <TableCell>Role</TableCell>
-                    <TableCell>DOB</TableCell>
                     <TableCell>Action</TableCell>
                   </TableRow>
                 </TableHead>
@@ -205,7 +204,6 @@ function UserDetail({UserDetail}) {
                       
                       </TableCell>
                       <TableCell>{user.role}</TableCell>
-                      <TableCell>{user.dob}</TableCell>
                       <TableCell>
                         <a href={`/admin/userdetail/${user.id}`}><FiEdit/></a>&nbsp;&nbsp;&nbsp;
                         {/*<a href={`/admin/userdetail/`} onClick={()=>deleteUser(user.id)}>Delete</a>&nbsp;&nbsp;&nbsp;*/}

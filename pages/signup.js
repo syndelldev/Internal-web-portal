@@ -47,7 +47,7 @@ function SignIn(){
         const res = await fetch(`${server}/api/admin/signin/`,{
             method: "POST",
             headers: { "Content-Type": "application/json",},
-            body:JSON.stringify({role_id:result.role_id, username:result.username, password:result.password, email:result.email, PhoneNum:result.PhoneNum, dob:startDate, department:result.department, position:result.position, role:"User", status:"Active"}),
+            body:JSON.stringify({role_id:result.role_id, username:result.username, password:result.password, email:result.email, PhoneNum:result.PhoneNum, /*dob:startDate,*/ department:result.department, position:result.position, role:"User", status:"Active"}),
         })
         const data=await res.json()
 
@@ -126,7 +126,7 @@ function SignIn(){
                                 />
                                 <div className="error-msg">{errors.PhoneNum && <p>{errors.PhoneNum.message}</p>}</div>
                             </div>
-                            <div className="form-group">
+                            {/*<div className="form-group">
                                 <label htmlFor="dob" className='form-label label' >Date of Birth</label>
                                 <DatePicker
                                     placeholderText="mm/dd/yyyy"
@@ -141,10 +141,10 @@ function SignIn(){
                                     dateFormat="MM-dd-yyyy"
                                 />
 
-                                {/*<div className="error-msg">{errors.dob && <p>{errors.dob.message}</p>}</div>
-                                {/*<input type="text" className="form-control signup-input" name="dob" {...register('dob',  { required: "Please enter your DOB", pattern: {value: /^[0-9]+$/ , message: 'Only Numbers allow',} })}  />
-                                <div className="error-msg">{errors.dob && <p>{errors.dob.message}</p>}</div>*/}
-                            </div>
+                                <div className="error-msg">{errors.dob && <p>{errors.dob.message}</p>}</div>
+                                <input type="text" className="form-control signup-input" name="dob" {...register('dob',  { required: "Please enter your DOB", pattern: {value: /^[0-9]+$/ , message: 'Only Numbers allow',} })}  />
+                                <div className="error-msg">{errors.dob && <p>{errors.dob.message}</p>}</div>
+                            </div>*/}
 
                             <div className="form-group">
                                 <label htmlFor="password" className='form-label label' >Password</label>
