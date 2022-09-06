@@ -97,11 +97,6 @@ function AdminProfile({AdminProfile}){
                             <h5>{cookies.Mobile_num}</h5>
                             {/*<h5>{admin.mobile_no}</h5>*/}
                         </div>
-                        <div className={classes.typo}>
-                            <div className={classes.note}>Date of Birth</div><br/>
-                            <h5>{cookies.DOB}</h5>
-                            {/*<h5>{admin.dob}</h5>*/}
-                        </div>
                         {/*<div className={classes.typo}>
                             <div className={classes.note}>Role</div>
                             <h5>{admin.role}</h5>

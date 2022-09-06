@@ -103,10 +103,6 @@ function ViewUser({UserDetail}){
                             <div className={classes.note}>Mobile No.</div>
                             <h5>{UserDetail[0].mobile_no}</h5>
                         </div>
-                        <div className={classes.typo}>
-                            <div className={classes.note}>Date of Birth</div>
-                            <h5>{UserDetail[0].dob}</h5>
-                        </div>
                     </CardBody>
                 </Card>
             </GridItem>

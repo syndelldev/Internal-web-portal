@@ -114,9 +114,27 @@ export default function Sidebar(props) {
           {brand}
           {/*<div className={classes.sidebarWrapper}>{links}</div>*/}
           <div className={classes.sidebarWrapper}>
-            <div className="makeStyles-sidebarWrapper-28">
-                <ul className="MuiList-root makeStyles-list-14 MuiList-padding">
-                    <a className=" makeStyles-item-15" href="/user/dashboard">
+            <div className="makeStyles-sidebarWrapper-36">
+                <ul className="MuiList-root makeStyles-list-22 MuiList-padding"><br/>
+                <a className=" makeStyles-item-15" href="/user/dashboard">
+                  <div className="MuiButtonBase-root MuiListItem-root makeStyles-itemLink-16undefined MuiListItem-gutters MuiListItem-button" tabIndex="0" role="button" aria-disabled="false">
+                    <svg className="MuiSvgIcon-root makeStyles-itemIcon-17" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"></path>
+                    </svg>
+                    <div className="MuiListItemText-root makeStyles-itemText-19">Dashboard</div>
+                    <span className="MuiTouchRipple-root"></span>
+                  </div>
+                </a>
+                <a className=" makeStyles-item-15" href="/user/userprofile">
+                  <div className="MuiButtonBase-root MuiListItem-root makeStyles-itemLink-16undefined MuiListItem-gutters MuiListItem-button" tabIndex="0" role="button" aria-disabled="false">
+                    <svg className="MuiSvgIcon-root makeStyles-itemIcon-17" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path>
+                    </svg>
+                    <div className="MuiListItemText-root makeStyles-itemText-19">User Profile</div>
+                    <span className="MuiTouchRipple-root"></span>
+                  </div>
+                </a>
+                    {/*<a className=" makeStyles-item-15" href="/user/dashboard">
                         <div className="MuiButtonBase-root MuiListItem-root makeStyles-itemLink-16undefined MuiListItem-gutters MuiListItem-button" tabIndex="0" role="button" aria-disabled="false">
                             <svg className="MuiSvgIcon-root makeStyles-itemIcon-17" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
                                 <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"></path>
@@ -133,42 +151,7 @@ export default function Sidebar(props) {
                         <div className="MuiListItemText-root makeStyles-itemText-19">User Profile</div>
                         <span className="MuiTouchRipple-root"></span>
                         </div>
-                    </a>
-                    {/*<a className=" makeStyles-item-15" href="/admin/table-list">
-                        <div className="MuiButtonBase-root MuiListItem-root makeStyles-itemLink-16undefined MuiListItem-gutters MuiListItem-button" tabIndex="0" role="button" aria-disabled="false">
-                            <span className="material-icons MuiIcon-root makeStyles-itemIcon-17" aria-hidden="true">content_paste</span>
-                                <div className="MuiListItemText-root makeStyles-itemText-19">Table List</div>
-                                <span className="MuiTouchRipple-root">
-                            </span>
-                        </div>
-                    </a>
-                    <a className=" makeStyles-item-15" href="/admin/typography">
-                        <div className="MuiButtonBase-root MuiListItem-root makeStyles-itemLink-16undefined MuiListItem-gutters MuiListItem-button" tabIndex="0" role="button" aria-disabled="false">
-                            <svg className="MuiSvgIcon-root makeStyles-itemIcon-17" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
-                                <path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"></path>
-                            </svg>
-                        <div className="MuiListItemText-root makeStyles-itemText-19">Typography</div>
-                        <span className="MuiTouchRipple-root"></span>
-                        </div>
-                    </a>
-                    <a className=" makeStyles-item-15" href="/admin/icons">
-                        <div className="MuiButtonBase-root MuiListItem-root makeStyles-itemLink-16undefined MuiListItem-gutters MuiListItem-button" tabIndex="0" role="button" aria-disabled="false">
-                            <svg className="MuiSvgIcon-root makeStyles-itemIcon-17" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
-                                <circle cx="7.2" cy="14.4" r="3.2"></circle><circle cx="14.8" cy="18" r="2"></circle><circle cx="15.2" cy="8.8" r="4.8"></circle>
-                            </svg>
-                            <div className="MuiListItemText-root makeStyles-itemText-19">Icons</div>
-                            <span className="MuiTouchRipple-root"></span>
-                        </div>
                     </a>*/}
-                    <a className=" makeStyles-item-15" href="/user/notifications">
-                        <div className="MuiButtonBase-root MuiListItem-root makeStyles-itemLink-16undefined MuiListItem-gutters MuiListItem-button" tabIndex="0" role="button" aria-disabled="false">
-                            <svg className="MuiSvgIcon-root makeStyles-itemIcon-17" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
-                                <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"></path>
-                            </svg>
-                            <div className="MuiListItemText-root makeStyles-itemText-19">Notifications</div>
-                            <span className="MuiTouchRipple-root"></span>
-                        </div>
-                    </a>
                 </ul>
             </div>
           </div>

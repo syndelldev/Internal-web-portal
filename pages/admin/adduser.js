@@ -58,7 +58,7 @@ function AddUser() {
     
     console.log(result);
     let addUser = axios.post(`${server}/api/admin/`, {
-      role_id:result.role_id, username:result.name, password:result.password, email:result.email, PhoneNum:result.PhoneNum, DOB:startDate, department:result.department, position:result.position, status:result.status, role:result.role 
+      role_id:result.role_id, username:result.name, password:result.password, email:result.email, PhoneNum:result.PhoneNum, /*DOB:startDate,*/ department:result.department, position:result.position, status:result.status, role:result.role 
     })
     toast.success('User Created Successfully! 🎉', {
       position: "top-right",
@@ -131,20 +131,20 @@ function AddUser() {
                       <GridContainer>  
                         <GridItem xs={12} sm={12} md={12}>
                           <div className="form-group">
-                            <input type="text" className="form-control signup-input" placeholder="Email" {...register('email', { required: 'Please enter your email', pattern: {value: /^[a-z0-9]+(?!.*(?:\+{2,}|\-{2,}|\.{2,}))(?:[\.+\-]{0,1}[a-z0-9])*@syndelltech\.in$/ , message: 'Please enter a valid email ex:email@syndelltech.in',},} )} />
+                            <input type="text" className="form-control signup-input" placeholder="Email" {...register('email', { required: 'Please enter your email', pattern: {value: /^[a-zA-Z0-9]+@+syndelltech+.+[A-z]$/ , message: 'Please enter a valid email ex:email@syndelltech.in',},} )} />
                             <div className="error-msg">{errors.email && <p>{errors.email.message}</p>}</div>
                           </div> 
                         </GridItem>
                       </GridContainer><br/>
 
                       <GridContainer>  
-                        <GridItem xs={12} sm={12} md={6}>
+                        <GridItem xs={12} sm={12} md={12}>
                           <div className="form-group">
                             <input type="password" className="form-control signup-input" placeholder="Password" {...register('password', { required: "You must specify a password",minLength: {value: 8, message: "Password must have at least 8 characters" }, pattern: {value: /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/, message: 'must include lower, upper, number, and special chars',} })}  />
                             <div className="error-msg">{errors.password && <p>{errors.password.message}</p>}</div>
                           </div> 
                         </GridItem>
-                        <GridItem xs={12} sm={12} md={6}>
+                        {/*<GridItem xs={12} sm={12} md={6}>
                           <div className="form-group">
                             <DatePicker
                               placeholderText="mm/dd/yyyy"
@@ -159,10 +159,8 @@ function AddUser() {
                               dateFormat="MM-dd-yyyy"
                             />
                           <div className="error-msg">{errors.dob && <p>{errors.dob.message}</p>}</div>
-                            {/*<input type="text" className="form-control signup-input" placeholder="Date Of Birth" {...register('dob',  { required: "Please enter your DOB", pattern: {value: /^[0-9]+$/ , message: 'Only Numbers allow',} })}   />
-                            <div className="error-msg">{errors.dob && <p>{errors.dob.message}</p>}</div>*/}
                           </div> 
-                        </GridItem>
+                        </GridItem>*/}
                       </GridContainer><br/>
 
                       <GridContainer>
