@@ -5,7 +5,6 @@ const rights = async (req,res) =>{
         //SELECT * FROM `role` LEFT JOIN `tbl_rights` ON role.role_id=tbl_rights.role_id;
         let rightsData=await executeQuery(" SELECT * FROM `tbl_user`  ", [] );
         res.send(rightsData);
-        console.log(rightsData)
     }
     catch(err){
         res.status(500).json(err);

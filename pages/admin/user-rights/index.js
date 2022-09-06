@@ -49,32 +49,36 @@ export async function getServerSideProps(context){
 } 
 
 function UserRights({UserList,ModuleList}){
-    console.log(UserList)
-    console.log(ModuleList)
+    // console.log(UserList)
+    // console.log(ModuleList)
     const useStyles = makeStyles(styles);
     const classes = useStyles();
 
     const [user, setuser] = useState(1)
-    console.log(user)
+    //console.log(user)
 
     const [module, setmodule] = useState(1)
-    console.log(module)
+    //console.log(module)
 
     // const logValue =() =>{
     //     //console.log(value)
     // }
-    // const [users, setusers] = useState([])
 
     // const [users, setusers] = useState([])
     // useEffect(async()=>{
-    //     axios.get(`${server}/api/rights`,{userid:user,moduleid:module})
+    //     axios.get(`${server}/api/rights/${user}`,{userid:user,moduleid:module})
     //     .then((res)=>{
-    //         setusers(res.data)
+    //         // setusers(res.data)
     //         console.log(res.data)
     //     })
     // },[])
-    //console.log(users)
-   
+    // console.log(users)
+
+    const getData = async() => {
+        const res = await fetch(`${server}/api/rights/${user}`,{userid:user,moduleid:module})
+        const data = await res.json() 
+        console.log(data)
+    }
     
     return(
         <>
@@ -86,7 +90,7 @@ function UserRights({UserList,ModuleList}){
                         </CardHeader><br/><br/>
                         <CardBody>
                         <GridContainer>
-                            <GridItem xs={12} sm={12} md={6}>
+                            <GridItem xs={12} sm={12} md={3}>
                                 <div className="form-group">
                                     <select value={user} onChange={(e) => {setuser(e.target.value)}} className="form-control signup-input" > {/*value={value} onChange={(e) => {setValue(e.target.value)}} onClick={logValue}*/}
                                         {
@@ -102,8 +106,7 @@ function UserRights({UserList,ModuleList}){
                                     <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                                 </div> 
                             </GridItem>
-
-                            <GridItem xs={12} sm={12} md={6}>
+                            <GridItem xs={12} sm={12} md={3}>
                                 <div className="form-group">
                                     <select value={module} onChange={(e) => {setmodule(e.target.value)}} className="form-control signup-input" >
                                         {
@@ -118,8 +121,9 @@ function UserRights({UserList,ModuleList}){
                                     </select>
                                 </div>
                                 <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                            </GridItem>
-                        </GridContainer><br/><br/>
+                            </GridItem> 
+                        </GridContainer><br/>
+                        <Button color="primary" onClick={getData} type="submit">Submit</Button><br/><br/>
 
                             <div className={classes.tableResponsive}>
                                 <Table className={classes.table}>
@@ -134,8 +138,10 @@ function UserRights({UserList,ModuleList}){
                                     </TableHead>
                                     
                                     <TableBody>
-                                    
-                                </TableBody>
+                                        {
+
+                                        }
+                                    </TableBody>
                                 </Table>
                             </div>
                         </CardBody>
