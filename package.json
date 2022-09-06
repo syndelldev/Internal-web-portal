@@ -11,19 +11,19 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^2.9.7",
-    "@material-ui/core": "4.11.3",
-    "@material-ui/icons": "4.11.2",
+    "@material-ui/core": "^4.11.3",
+    "@material-ui/icons": "^4.11.2",
     "@react-icons/all-files": "^4.1.0",
     "@supabase/supabase-js": "^1.35.5",
     "@types/jsonwebtoken": "^8.5.8",
     "@types/react-beautiful-dnd": "^13.1.2",
-    "@zeit/next-css": "1.0.1",
-    "@zeit/next-sass": "1.0.1",
     "axios": "^0.27.2",
     "bootstrap": "^5.2.0",
     "caniuse-lite": "^1.0.30001390",
     "chartist": "0.10.1",
+    "chokidar": "^3.5.3",
     "classnames": "2.2.6",
+    "har-validator": "^5.1.5",
     "history": "5.0.0",
     "jsonwebtoken": "^8.5.1",
     "multiselect-react-dropdown": "^2.0.25",
@@ -37,7 +37,8 @@
     "path": "0.12.7",
     "perfect-scrollbar": "1.5.0",
     "prop-types": "15.7.2",
-    "react": "17.0.1",
+    "querystring": "^0.2.1",
+    "react": "^17.0.1",
     "react-beautiful-dnd": "^13.1.0",
     "react-bootstrap": "^2.5.0",
     "react-calendar": "^3.7.0",
@@ -46,7 +47,7 @@
     "react-datepicker": "^4.8.0",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
-    "react-dom": "17.0.1",
+    "react-dom": "^17.0.1",
     "react-hook-form": "^7.34.0",
     "react-icons": "^4.4.0",
     "react-modern-calendar-datepicker": "^3.1.6",
@@ -57,6 +58,8 @@
     "react-toastify": "^9.0.3",
     "reactjs-popup": "^2.0.5",
     "serverless-mysql": "^1.5.4",
+    "tar": "^6.1.11",
+    "uuid": "^9.0.0",
     "yup": "^0.32.11"
   },
   "eslintConfig": {
@@ -75,7 +78,20 @@
     ]
   },
   "optionalDependencies": {
-    "node-sass": "4.14.1",
+    "node-sass": "^4.14.1",
     "typescript": "4.1.3"
-  }
+  },
+  "description": "![version](https://img.shields.io/badge/version-1.1.0-blue.svg) ![license](https://img.shields.io/badge/license-MIT-blue.svg) [![GitHub issues open](https://img.shields.io/github/issues/creativetimofficial/nextjs-material-dashboard.svg?maxAge=2592000)]() [![GitHub issues closed](https://img.shields.io/github/issues-closed-raw/creativetimofficial/nextjs-material-dashboard.svg?maxAge=2592000)]() [![Join the chat at https://gitter.im/NIT-dgp/General](https://badges.gitter.im/NIT-dgp/General.svg)](https://gitter.im/creative-tim/material-dashboard?utm_source=share-link&utm_medium=link&utm_campaign=share-link) [![Chat](https://img.shields.io/badge/chat-on%20discord-7289da.svg)](https://discord.gg/E4aHAQy)",
+  "main": "next.config.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/syndelldev/Internal-web-portal.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/syndelldev/Internal-web-portal/issues"
+  },
+  "homepage": "https://github.com/syndelldev/Internal-web-portal#readme"
 }

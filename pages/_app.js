@@ -21,9 +21,11 @@ import App from "next/app";
 import Head from "next/head";
 import Router from "next/router";
 
-import 'react-toastify/dist/ReactToastify.css';
-import 'bootstrap/dist/css/bootstrap.min.css'
-import '../styles/login.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../styles/login.css';
+import "react-datepicker/dist/react-datepicker.css";
+import '../styles/globals.css';
+
 
 import PageChange from "components/PageChange/PageChange.js";
 
@@ -69,11 +71,11 @@ export default class MyApp extends App {
 `);
     document.insertBefore(comment, document.documentElement);
   }
-  static async getInitialProps({ Component, router, ctx }) {
+  static async getServerSideProps({ Component, router, ctx }) {
     let pageProps = {};
 
-    if (Component.getInitialProps) {
-      pageProps = await Component.getInitialProps(ctx);
+    if (Component.getServerSideProps) {
+      pageProps = await Component.getServerSideProps(ctx);
     }
 
     return { pageProps };

@@ -156,7 +156,7 @@ function UserRights({data}){
                                         users.map((rights,index)=>{
                                         return(
                                                 <TableRow key={index}>
-                                                    <TableCell>{rights.page_id}-{rights.role}</TableCell>
+                                                    <TableCell>{rights.page_id}</TableCell>
                                                     <TableCell>
                                                         <input type="checkbox" name="checklist" value={rights.user_list} onChange={()=>setchecklist(!rights.user_list)} defaultChecked={ rights.user_list == 1 } onClick={rightlist} />{rights.user_list} {/*<p> {users[0].user_list ? '0' : '1'} </p> */}
                                                     </TableCell>
@@ -173,7 +173,7 @@ function UserRights({data}){
                                             )
                                         })
                                     }
-                                    
+
                                     {
                                         Task.map((rights,index)=>{
                                         return(
