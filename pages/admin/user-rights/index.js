@@ -49,33 +49,36 @@ export async function getServerSideProps(context){
 } 
 
 function UserRights({UserList,ModuleList}){
-    console.log(UserList)
-    console.log(ModuleList)
     const useStyles = makeStyles(styles);
     const classes = useStyles();
 
     const [user, setuser] = useState(1)
-    console.log(user)
+    //console.log(user)
 
     const [module, setmodule] = useState(1)
-    console.log(module)
-
-    // const logValue =() =>{
-    //     //console.log(value)
-    // }
-    // const [users, setusers] = useState([])
+    //console.log(module)
 
     // const [users, setusers] = useState([])
     // useEffect(async()=>{
-    //     axios.get(`${server}/api/rights`,{userid:user,moduleid:module})
+    //     axios.get(`${server}/api/rights/${user}`,{userid:user,moduleid:module})
     //     .then((res)=>{
-    //         setusers(res.data)
+    //         // setusers(res.data)
     //         console.log(res.data)
     //     })
     // },[])
-    //console.log(users)
-   
-    
+    // console.log(users)
+
+    const [users, setusers] = useState([])
+    const getData = () => {
+        axios.post(`${server}/api/rights/${user}`, {userid:user,moduleid:module})
+        .then((res)=>{
+            setusers(res.data)
+            //console.log(res.data)
+        })
+    }
+    console.log(users)
+
+
     return(
         <>
             <GridContainer>
@@ -86,7 +89,7 @@ function UserRights({UserList,ModuleList}){
                         </CardHeader><br/><br/>
                         <CardBody>
                         <GridContainer>
-                            <GridItem xs={12} sm={12} md={6}>
+                            <GridItem xs={12} sm={12} md={3}>
                                 <div className="form-group">
                                     <select value={user} onChange={(e) => {setuser(e.target.value)}} className="form-control signup-input" > {/*value={value} onChange={(e) => {setValue(e.target.value)}} onClick={logValue}*/}
                                         {
@@ -102,8 +105,7 @@ function UserRights({UserList,ModuleList}){
                                     <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                                 </div> 
                             </GridItem>
-
-                            <GridItem xs={12} sm={12} md={6}>
+                            <GridItem xs={12} sm={12} md={3}>
                                 <div className="form-group">
                                     <select value={module} onChange={(e) => {setmodule(e.target.value)}} className="form-control signup-input" >
                                         {
@@ -118,8 +120,9 @@ function UserRights({UserList,ModuleList}){
                                     </select>
                                 </div>
                                 <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                            </GridItem>
-                        </GridContainer><br/><br/>
+                            </GridItem> 
+                        </GridContainer><br/>
+                        <Button color="primary" onClick={getData} type="submit">Submit</Button><br/><br/>
 
                             <div className={classes.tableResponsive}>
                                 <Table className={classes.table}>
@@ -134,8 +137,51 @@ function UserRights({UserList,ModuleList}){
                                     </TableHead>
                                     
                                     <TableBody>
-                                    
-                                </TableBody>
+                                        {
+                                            users.map((data)=>{
+                                                if(users[0].module_id==1)
+                                                {
+                                                    return(
+                                                        <TableRow key={data.project_id}>
+                                                            <TableCell>{data.project_title}</TableCell>
+                                                            <TableCell>
+                                                                <input type="checkbox" name="view_rights" value={data.view_rights} defaultChecked={ data.view_rights == 1 } />
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                <input type="checkbox" name="add_rights" value={data.add_rights} defaultChecked={ data.add_rights == 1 } />
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                <input type="checkbox" name="edit_rights" value={data.edit_rights} defaultChecked={ data.edit_rights == 1 } />
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                <input type="checkbox" name="delete_rights" value={data.delete_rights} defaultChecked={ data.delete_rights == 1 } />
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    )
+                                                }
+                                                else if(users[0].module_id==2)
+                                                {
+                                                    return(
+                                                        <TableRow key={data.task_id}>
+                                                            <TableCell>{data.task_title}</TableCell>
+                                                            <TableCell>
+                                                                <input type="checkbox" value={data.view_rights} defaultChecked={ data.view_rights == 1 }  />
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                <input type="checkbox" value={data.add_rights} defaultChecked={ data.add_rights == 1 }  />
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                <input type="checkbox" value={data.edit_rights} defaultChecked={ data.edit_rights == 1 }  />
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                <input type="checkbox" value={data.delete_rights} defaultChecked={ data.delete_rights == 1 } />
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    )
+                                                }
+                                            })
+                                        }
+                                    </TableBody>
                                 </Table>
                             </div>
                         </CardBody>

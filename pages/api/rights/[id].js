@@ -3,7 +3,7 @@ import { ModuleById } from '../../../controller/admin/rights'
 
 const handler=nc();
 
-handler.get(ModuleById);
+handler.post(ModuleById);
 
 
 export default handler;

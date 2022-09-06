@@ -5,7 +5,6 @@ const rights = async (req,res) =>{
         //SELECT * FROM `role` LEFT JOIN `tbl_rights` ON role.role_id=tbl_rights.role_id;
         let rightsData=await executeQuery(" SELECT * FROM `tbl_user`  ", [] );
         res.send(rightsData);
-        console.log(rightsData)
     }
     catch(err){
         res.status(500).json(err);
@@ -24,13 +23,31 @@ const modules = async (req,res) =>{
 
 const ModuleById = async (req,res) => {
     let id = req.query.id;
+    //console.log(id)
     console.log(req.body)
-    try{
-        let rightsId=await executeQuery(` SELECT * FROM tbl_user INNER JOIN tbl_module WHERE tbl_user.id=2 AND tbl_module.module_id=1 `, [] );
-        res.status(200).json(rightsId);
+
+    if(req.body.moduleid==1)
+    {
+        try{
+            //let rightsId=await executeQuery(` SELECT * FROM tbl_user INNER JOIN tbl_project INNER JOIN tbl_module WHERE tbl_module.module_id=? AND tbl_user.id=${id} `, [req.body.moduleid] );
+            let rightsId=await executeQuery(` SELECT * FROM tbl_module INNER JOIN tbl_rights INNER JOIN tbl_project INNER JOIN tbl_user WHERE tbl_rights.module_id=? AND tbl_module.module_id=? AND tbl_user.id=${id} `, [req.body.moduleid, req.body.moduleid] );
+            res.status(200).json(rightsId);
+            console.log(rightsId)
+        }
+        catch(err){
+            res.status(500).json(err);
+        }
     }
-    catch(err){
-        res.status(500).json(err);
+    else if(req.body.moduleid==2)
+    {
+        try{
+            let rightsId=await executeQuery(` SELECT * FROM tbl_module INNER JOIN tbl_rights INNER JOIN tbl_subtask INNER JOIN tbl_user WHERE tbl_rights.module_id=? AND tbl_module.module_id=? AND tbl_user.id=${id} `, [req.body.moduleid, req.body.moduleid] );
+            res.status(200).json(rightsId);
+            //console.log(rightsId)
+        }
+        catch(err){
+            res.status(500).json(err);
+        }
     }
 }
 
