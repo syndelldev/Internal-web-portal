@@ -19,8 +19,6 @@ import TableCell from "@material-ui/core/TableCell";
 import axios from "axios";
 import { server } from 'config';
 
-import { DropdownButton, Dropdown } from "react-bootstrap";
-
 const styles = {
     cardCategoryWhite: {
       color: "rgba(255,255,255,.62)",
@@ -41,73 +39,41 @@ const styles = {
 };
 
 export async function getServerSideProps(context){
-    //const id = context.params.userdetailid;
-    const res = await fetch(`${server}/api/rights/`)
-    const data = await res.json()
-    //console.log(data)
+    const res = await fetch(`${server}/api/rights`)
+    const UserList = await res.json()
 
-    return { props: {data}, }
-}
-function UserRights({data}){
-    //console.log(data)
+    const responce = await fetch(`${server}/api/rights/module`)
+    const ModuleList = await responce.json()
+
+    return{ props: {UserList,ModuleList} }
+} 
+
+function UserRights({UserList,ModuleList}){
+    console.log(UserList)
+    console.log(ModuleList)
     const useStyles = makeStyles(styles);
     const classes = useStyles();
 
-    //Project Module
-    const [value, setValue] = useState(1)
-    const [users, setusers] = useState([])
-    const logValue =() =>{
-        //console.log(value)
-    }
-    useEffect(async()=>{
-        axios.get(`${server}/api/rights/${value}`)
-        .then((res)=>{
-            setusers(res.data)
-            //console.log(res.data)
-        })
-    },[value])
-    console.log(users)
+    const [user, setuser] = useState(1)
+    console.log(user)
 
+    const [module, setmodule] = useState(1)
+    console.log(module)
 
-    //Task Module
-    const [Task, setTask] = useState([])
-    useEffect(async()=>{
-        axios.get(`${server}/api/task_module/${value}`)
-        .then((res)=>{
-            setTask(res.data)
-            //console.log(res.data)
-        })
-    },[value])
-    console.log(Task)
+    // const logValue =() =>{
+    //     //console.log(value)
+    // }
+    // const [users, setusers] = useState([])
 
-    const [checklist, setchecklist] = useState('1')
-    const rightlist = async() =>{
-
-        let checkbox = await axios.put(`${server}/api/rights/${value}`,{checkvalue: checklist}) 
-        console.log(checkbox)
-        
-    }
-
-    const [checkaddlist, setcheckaddlist] = useState('1')
-    const addlist = async() => {
-       
-        let checkbox2 = await axios.put(`${server}/api/rights/${value}`,{addlist_checkvalue:checkaddlist}) 
-        console.log(checkbox2)
-    }
-
-    const [editchecklist, seteditchecklist] = useState('1')
-    const editlist = async() => {
-       
-        let checkbox3 = await axios.put(`${server}/api/rights/${value}`,{edit_checkvalue:editchecklist}) 
-        console.log(checkbox3)
-    }
-
-    const [delcheck, setdelcheck] = useState('1')
-    const deletelist = async() => {
-       
-        let checkbox4 = await axios.put(`${server}/api/rights/${value}`,{delete_checkvalue:delcheck}) 
-        console.log(checkbox4)
-    }
+    // const [users, setusers] = useState([])
+    // useEffect(async()=>{
+    //     axios.get(`${server}/api/rights`,{userid:user,moduleid:module})
+    //     .then((res)=>{
+    //         setusers(res.data)
+    //         console.log(res.data)
+    //     })
+    // },[])
+    //console.log(users)
    
     
     return(
@@ -119,26 +85,42 @@ function UserRights({data}){
                             <h4 className={classes.cardTitleWhite}>User Rights</h4>
                         </CardHeader><br/><br/>
                         <CardBody>
+                        <GridContainer>
                             <GridItem xs={12} sm={12} md={6}>
                                 <div className="form-group">
-                                {/*<DropdownButton id="dropdown-item-button" title="API Links" onSelect={setQuery} >
-                                    <Dropdown.Item as="button" eventKey="1" >Admin</Dropdown.Item>
-                                    <Dropdown.Item as="button" eventKey="2" >User</Dropdown.Item>
-                                </DropdownButton>*/}
-                                <select value={value} onChange={(e) => {setValue(e.target.value)}} onClick={logValue} className="form-control signup-input" >
-                                    {
-                                        data.map((users)=>{
-                                            return(
-                                                <>
-                                                    <option key={users.role_id} value={users.role_id}>{users.role}</option> 
-                                                </>      
-                                            )
-                                        })
-                                    }
-                                </select>
-                                <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                    <select value={user} onChange={(e) => {setuser(e.target.value)}} className="form-control signup-input" > {/*value={value} onChange={(e) => {setValue(e.target.value)}} onClick={logValue}*/}
+                                        {
+                                            UserList.map((users)=>{
+                                                return(
+                                                    <>
+                                                        <option key={users.id} value={users.id}>{users.username}</option> 
+                                                    </>      
+                                                )
+                                            })
+                                        }
+                                    </select>
+                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                                 </div> 
-                            </GridItem><br/><br/>
+                            </GridItem>
+
+                            <GridItem xs={12} sm={12} md={6}>
+                                <div className="form-group">
+                                    <select value={module} onChange={(e) => {setmodule(e.target.value)}} className="form-control signup-input" >
+                                        {
+                                            ModuleList.map((module)=>{
+                                                return(
+                                                    <>
+                                                        <option key={module.module_id} value={module.module_id}>{module.module_name}</option> 
+                                                    </>      
+                                                )
+                                            })
+                                        }
+                                    </select>
+                                </div>
+                                <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                            </GridItem>
+                        </GridContainer><br/><br/>
+
                             <div className={classes.tableResponsive}>
                                 <Table className={classes.table}>
                                     <TableHead className={classes.TableHeader}>
@@ -152,49 +134,7 @@ function UserRights({data}){
                                     </TableHead>
                                     
                                     <TableBody>
-                                    {
-                                        users.map((rights,index)=>{
-                                        return(
-                                                <TableRow key={index}>
-                                                    <TableCell>{rights.page_id}</TableCell>
-                                                    <TableCell>
-                                                        <input type="checkbox" name="checklist" value={rights.user_list} onChange={()=>setchecklist(!rights.user_list)} defaultChecked={ rights.user_list == 1 } onClick={rightlist} />{rights.user_list} {/*<p> {users[0].user_list ? '0' : '1'} </p> */}
-                                                    </TableCell>
-                                                    <TableCell>
-                                                        <input type="checkbox" name="checkaddlist" value={rights.add_user} onChange={()=>setcheckaddlist(!rights.add_user)} defaultChecked={ rights.add_user == 1 } onClick={()=>addlist()} />{rights.add_user}
-                                                    </TableCell>
-                                                    <TableCell>
-                                                        <input type="checkbox" name="editchecklist" value={rights.edit_user} onChange={()=>seteditchecklist(!rights.edit_user)} defaultChecked={ rights.edit_user == 1 } onClick={()=>editlist()} />{rights.edit_user}
-                                                    </TableCell>
-                                                    <TableCell>
-                                                        <input type="checkbox" name="delcheck" value={rights.delete_user} onChange={()=>setdelcheck(!rights.delete_user)} defaultChecked={ rights.delete_user == 1 } onClick={()=>deletelist()} />{rights.delete_user}
-                                                    </TableCell>
-                                                </TableRow>    
-                                            )
-                                        })
-                                    }
-
-                                    {
-                                        Task.map((rights,index)=>{
-                                        return(
-                                                <TableRow key={index}>
-                                                    <TableCell>{rights.page_id}-{rights.role}</TableCell>
-                                                    <TableCell>
-                                                        <input type="checkbox" name="checklist" value={rights.user_list} onChange={()=>setchecklist(!rights.user_list)} defaultChecked={ rights.user_list == 1 } onClick={rightlist} />{rights.user_list} {/*<p> {users[0].user_list ? '0' : '1'} </p> */}
-                                                    </TableCell>
-                                                    <TableCell>
-                                                        <input type="checkbox" name="checkaddlist" value={rights.add_user} onChange={()=>setcheckaddlist(!rights.add_user)} defaultChecked={ rights.add_user == 1 } onClick={()=>addlist()} />{rights.add_user}
-                                                    </TableCell>
-                                                    <TableCell>
-                                                        <input type="checkbox" name="editchecklist" value={rights.edit_user} onChange={()=>seteditchecklist(!rights.edit_user)} defaultChecked={ rights.edit_user == 1 } onClick={()=>editlist()} />{rights.edit_user}
-                                                    </TableCell>
-                                                    <TableCell>
-                                                        <input type="checkbox" name="delcheck" value={rights.delete_user} onChange={()=>setdelcheck(!rights.delete_user)} defaultChecked={ rights.delete_user == 1 } onClick={()=>deletelist()} />{rights.delete_user}
-                                                    </TableCell>
-                                                </TableRow>    
-                                            )
-                                        })
-                                    }
+                                    
                                 </TableBody>
                                 </Table>
                             </div>
