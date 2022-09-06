@@ -94,6 +94,7 @@
   },
   "homepage": "https://github.com/syndelldev/Internal-web-portal#readme",
   "devDependencies": {
+    "eslint": "^8.23.0",
     "webpack": "^5.74.0"
   }
 }
