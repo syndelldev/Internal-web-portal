@@ -27,8 +27,8 @@ const AddUser = async (req,res) =>{
     console.log(req.body)
     
     try{
-        var createUser = await executeQuery("INSERT INTO `tbl_user`( `role_id`, `username`, `password`, `email`, `mobile_no`, `dob`, `department`, `position`, `status`, `role`) VALUES (?,?,?,?,?,?,?,?,?,?)",
-        [req.body.role_id, req.body.username, req.body.password, req.body.email, req.body.PhoneNum, req.body.DOB, req.body.department, req.body.position, req.body.status,  req.body.role ])
+        var createUser = await executeQuery("INSERT INTO `tbl_user`( `role_id`, `username`, `password`, `email`, `mobile_no`, `department`, `position`, `status`, `role`) VALUES (?,?,?,?,?,?,?,?,?)",
+        [req.body.role_id, req.body.username, req.body.password, req.body.email, req.body.PhoneNum, req.body.department, req.body.position, req.body.status,  req.body.role ])
         
         res.status(201).json(createUser);
 

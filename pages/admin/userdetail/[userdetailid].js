@@ -65,7 +65,7 @@ function UserById(data){
       password: "",
       email: "",
       mobile_no: "",
-      dob: "",
+      //dob: "",
       department: "",
       position: "",
       status: "",
@@ -151,21 +151,13 @@ function UserById(data){
                       </GridContainer><br/>
 
                       <GridContainer>  
-                        <GridItem xs={12} sm={12} md={6}>
+                        <GridItem xs={12} sm={12} md={12}>
                           <div className="form-group">
                             <input type="password" className="form-control signup-input" name="password" placeholder="enter your password" value={userdata.password} onChange={handleChange} autoComplete="off"  />
                           </div> 
                         </GridItem>
-                        <GridItem xs={12} sm={12} md={6}>
+                        {/*<GridItem xs={12} sm={12} md={6}>
                           <div className="form-group">
-                            {/*<DatePicker
-                              className={"form-control"}
-                              name="dob"
-                              value={userdata.dob}
-                              onChange={handleChange}
-                              onChange={(val) => { setStartDate(val);}}  
-                            />*/}
-
                             <DatePicker
                               isClearable
                               name="dob"
@@ -181,7 +173,7 @@ function UserById(data){
                               dateFormat="MM-dd-yyyy"
                             />
                             </div>
-                        </GridItem>
+                          </GridItem>*/}
                       </GridContainer><br/>
 
                       <GridContainer>

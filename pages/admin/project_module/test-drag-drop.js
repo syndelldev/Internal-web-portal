@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
+import axios from 'axios';
 import { useRouter } from 'next/router';
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -27,60 +28,6 @@ import Multiselect from "multiselect-react-dropdown";
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 
-const styles = {
-  cardCategoryWhite: {
-    color: "rgba(0,0,0,.62)",
-    margin: "0",
-    fontSize: "14px",
-    marginTop: "0",
-    marginBottom: "0",
-  },
-  cardTitleWhite: {
-    color: "#000000",
-    marginTop: "0px",
-    minHeight: "auto",
-    fontWeight: "300",
-    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
-    marginBottom: "3px",
-    textDecoration: "none",
-  },
-  cardWhite: {
-    color: "#000000",
-    marginTop: "0px",
-    minHeight: "auto",
-    fontWeight: "300",
-    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
-    marginBottom: "3px",
-    textDecoration: "none",
-    background: "#ADD8E6",
-    float: "right",
-  },
-  img:{
-    marginLeft: "auto",
-    width: "40px",
-  },
-  popup:{
-    // position: "fixed",
-    width: "100%",
-    height: "100%",
-    top: "0",
-    left: "0",
-    right: "0",
-    bottom: "0",
-    backgroundColor: "rgba(0,0,0,0.5)",
-  },
-  link:{
-    border: "1px solid #000000",
-    color: "#000000",
-    padding: "5px 10px",
-  },
-  close:{
-    marginLeft: "auto",
-    fontSize: "40px",
-    paddingRight: "10px",
-    cursor: "pointer",
-  },
-};
 
 
 export async function getServerSideProps(){

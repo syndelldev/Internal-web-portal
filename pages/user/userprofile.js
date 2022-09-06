@@ -95,10 +95,6 @@ function UserProfile(){
                             <div className={classes.note}>Mobile No.</div><br/>
                             <h5>{cookies.Mobile_num}</h5>
                         </div>
-                        <div className={classes.typo}>
-                            <div className={classes.note}>Date of Birth</div><br/>
-                            <h5>{cookies.DOB}</h5>
-                        </div>
                     </CardBody>
                 </Card>
             </GridItem>
