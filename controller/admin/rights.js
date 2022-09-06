@@ -3,7 +3,18 @@ import { executeQuery } from "../../config/db";
 const rights = async (req,res) =>{
     try{
         //SELECT * FROM `role` LEFT JOIN `tbl_rights` ON role.role_id=tbl_rights.role_id;
-        let rightsData=await executeQuery(" SELECT * FROM `role`  ", [] );
+        let rightsData=await executeQuery(" SELECT * FROM `tbl_user`  ", [] );
+        res.send(rightsData);
+        console.log(rightsData)
+    }
+    catch(err){
+        res.status(500).json(err);
+    }
+}
+
+const modules = async (req,res) =>{
+    try{
+        let rightsData=await executeQuery(" SELECT * FROM `tbl_module`  ", [] );
         res.send(rightsData);
     }
     catch(err){
@@ -11,7 +22,20 @@ const rights = async (req,res) =>{
     }
 }
 
-const rightsById = async (req,res) => {
+const ModuleById = async (req,res) => {
+    let id = req.query.id;
+    console.log(req.body)
+    try{
+        let rightsId=await executeQuery(` SELECT * FROM tbl_user INNER JOIN tbl_module WHERE tbl_user.id=2 AND tbl_module.module_id=1 `, [] );
+        res.status(200).json(rightsId);
+    }
+    catch(err){
+        res.status(500).json(err);
+    }
+}
+
+
+/*const rightsById = async (req,res) => {
     let id = req.query.id;
     // console.log(req.body)
     //SELECT * FROM role LEFT JOIN tbl_rights ON role.role_id=tbl_rights.role_id  WHERE tbl_rights.role_id
@@ -74,6 +98,6 @@ const UpdateUserRights = async (req,res) =>{
                 console.log(err)
             }
         }
-}
+}*/
 
-export { rights,rightsById,UpdateUserRights }
+export { rights,modules,ModuleById }
