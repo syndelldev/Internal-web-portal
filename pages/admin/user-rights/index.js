@@ -139,23 +139,22 @@ function UserRights({UserList,ModuleList}){
                                     <TableBody>
                                         {
                                             users.map((data)=>{
-                                                //console.log(users[0].module_id)
                                                 if(users[0].module_id==1)
                                                 {
                                                     return(
                                                         <TableRow key={data.project_id}>
                                                             <TableCell>{data.project_title}</TableCell>
                                                             <TableCell>
-                                                                <input type="checkbox" />
+                                                                <input type="checkbox" name="view_rights" value={data.view_rights} defaultChecked={ data.view_rights == 1 } />
                                                             </TableCell>
                                                             <TableCell>
-                                                                <input type="checkbox" />
+                                                                <input type="checkbox" name="add_rights" value={data.add_rights} defaultChecked={ data.add_rights == 1 } />
                                                             </TableCell>
                                                             <TableCell>
-                                                                <input type="checkbox" />
+                                                                <input type="checkbox" name="edit_rights" value={data.edit_rights} defaultChecked={ data.edit_rights == 1 } />
                                                             </TableCell>
                                                             <TableCell>
-                                                                <input type="checkbox" />
+                                                                <input type="checkbox" name="delete_rights" value={data.delete_rights} defaultChecked={ data.delete_rights == 1 } />
                                                             </TableCell>
                                                         </TableRow>
                                                     )
@@ -166,16 +165,16 @@ function UserRights({UserList,ModuleList}){
                                                         <TableRow key={data.task_id}>
                                                             <TableCell>{data.task_title}</TableCell>
                                                             <TableCell>
-                                                                <input type="checkbox" />
+                                                                <input type="checkbox" value={data.view_rights} defaultChecked={ data.view_rights == 1 }  />
                                                             </TableCell>
                                                             <TableCell>
-                                                                <input type="checkbox" />
+                                                                <input type="checkbox" value={data.add_rights} defaultChecked={ data.add_rights == 1 }  />
                                                             </TableCell>
                                                             <TableCell>
-                                                                <input type="checkbox" />
+                                                                <input type="checkbox" value={data.edit_rights} defaultChecked={ data.edit_rights == 1 }  />
                                                             </TableCell>
                                                             <TableCell>
-                                                                <input type="checkbox" />
+                                                                <input type="checkbox" value={data.delete_rights} defaultChecked={ data.delete_rights == 1 } />
                                                             </TableCell>
                                                         </TableRow>
                                                     )
