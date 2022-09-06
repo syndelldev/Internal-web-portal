@@ -78,7 +78,7 @@ function UserRights({UserList,ModuleList}){
     }
     console.log(users)
 
-    
+
     return(
         <>
             <GridContainer>
@@ -138,7 +138,49 @@ function UserRights({UserList,ModuleList}){
                                     
                                     <TableBody>
                                         {
-
+                                            users.map((data)=>{
+                                                //console.log(users[0].module_id)
+                                                if(users[0].module_id==1)
+                                                {
+                                                    return(
+                                                        <TableRow key={data.project_id}>
+                                                            <TableCell>{data.project_title}</TableCell>
+                                                            <TableCell>
+                                                                <input type="checkbox" />
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                <input type="checkbox" />
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                <input type="checkbox" />
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                <input type="checkbox" />
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    )
+                                                }
+                                                else if(users[0].module_id==2)
+                                                {
+                                                    return(
+                                                        <TableRow key={data.task_id}>
+                                                            <TableCell>{data.task_title}</TableCell>
+                                                            <TableCell>
+                                                                <input type="checkbox" />
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                <input type="checkbox" />
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                <input type="checkbox" />
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                <input type="checkbox" />
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    )
+                                                }
+                                            })
                                         }
                                     </TableBody>
                                 </Table>
