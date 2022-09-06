@@ -21,12 +21,10 @@ import { useForm  } from 'react-hook-form';
 import { server } from 'config';
 import avatar from "assets/img/faces/marc.jpg";
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import LibraryBooks from "@material-ui/icons/LibraryBooks";
 import Popup from "reactjs-popup";
 import AddUser from "./create_project";
 import Multiselect from "multiselect-react-dropdown";
-import '../../../styles/globals.css';
 
 const styles = {
   cardCategoryWhite: {
@@ -171,7 +169,7 @@ const [selected, setSelected] = useState([]);
 <GridContainer>
       <GridItem>
 
-        <Popup trigger={<div className={classes.img}><button>Project</button></div>} modal>
+        <Popup trigger={<div><button>Add Project</button></div>} className="popupReact" modal>
 
         {close => (
     <div>

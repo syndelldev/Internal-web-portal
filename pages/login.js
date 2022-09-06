@@ -6,9 +6,7 @@ import { IoMdEye , IoMdEyeOff , IoMdMail } from "react-icons/io";
 import { server } from 'config';
 //import Cookies from 'js-cookie';
 import { useCookies } from 'react-cookie';
-
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 export default function home()
 {

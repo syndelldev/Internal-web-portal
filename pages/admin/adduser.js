@@ -21,15 +21,9 @@ import { useForm, Controller  } from 'react-hook-form';
 import { server } from 'config';
 import avatar from "assets/img/faces/marc.jpg";
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-
-import 'react-phone-number-input/style.css'
 import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input'
-
 import axios from "axios";
-
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 
 const styles = {
