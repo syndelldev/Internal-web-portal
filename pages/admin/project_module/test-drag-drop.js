@@ -25,7 +25,7 @@ import DatePicker from "react-datepicker";
 import LibraryBooks from "@material-ui/icons/LibraryBooks";
 import Popup from "reactjs-popup";
 import Multiselect from "multiselect-react-dropdown";
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+// import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 
 
