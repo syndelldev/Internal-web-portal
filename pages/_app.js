@@ -62,11 +62,13 @@ function MyApp({ Component, pageProps }) {
           <title>Automation Tool</title>
           <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
         </Head>
-        <Layout>
-          <CookiesProvider>
-            <Component {...pageProps} />
-          </CookiesProvider>
-        </Layout>
+        <body>
+          <Layout>
+            <CookiesProvider>
+              <Component {...pageProps} />
+            </CookiesProvider>
+          </Layout>
+        </body>
       </React.Fragment>
   )
 }
