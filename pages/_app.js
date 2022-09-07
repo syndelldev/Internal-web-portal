@@ -51,7 +51,24 @@ Router.events.on("routeChangeError", () => {
 });
 
 function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+  const Layout = Component.layout || (({ children }) => <>{children}</>);
+  return (
+    <React.Fragment>
+        <Head>
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+          />
+          <title>Automation Tool</title>
+          <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+        </Head>
+        <Layout>
+          <CookiesProvider>
+            <Component {...pageProps} />
+          </CookiesProvider>
+        </Layout>
+      </React.Fragment>
+  )
 }
 
 export default MyApp;
