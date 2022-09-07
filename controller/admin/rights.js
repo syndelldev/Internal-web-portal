@@ -30,7 +30,7 @@ const ModuleById = async (req,res) => {
     {
         try{
             //let rightsId=await executeQuery(` SELECT * FROM tbl_user INNER JOIN tbl_project INNER JOIN tbl_module WHERE tbl_module.module_id=? AND tbl_user.id=${id} `, [req.body.moduleid] );
-            let rightsId=await executeQuery(` SELECT * FROM tbl_module INNER JOIN tbl_project INNER JOIN tbl_user WHERE  tbl_module.module_id=? AND tbl_user.id=${id} `, [req.body.moduleid] );
+            let rightsId=await executeQuery(` SELECT * FROM tbl_module  INNER JOIN tbl_project INNER JOIN tbl_user WHERE tbl_module.module_id=? AND tbl_user.id=${id} `, [req.body.moduleid] );
             res.status(200).json(rightsId);
             //console.log(rightsId)
         }
@@ -59,7 +59,7 @@ const ProjectById = async (req,res) =>{
         console.log(project);
     }
     catch(err){
-        res.status(500).json(err);
+        console.log(err)
     }
 }
 
