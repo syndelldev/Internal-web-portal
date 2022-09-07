@@ -69,7 +69,7 @@ function UserRights({UserList,ModuleList}){
 
     const edit_rights = async (project_id) =>{
         // console.log(project_id)
-        let data = axios.post(`${server}/api/rights/project/${project_id}`, {userid:user,moduleid:module,projectid:project_id})
+        let data = axios.post(`${server}/api/rights/project/${project_id}`, {userid:user,moduleid:module,projectid:project_id,edit_rights:1})
         console.log(data)
     }
 
