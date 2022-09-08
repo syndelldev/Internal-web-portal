@@ -167,8 +167,8 @@ const [selected, setSelected] = useState([]);
 
 <GridContainer>
       <GridItem>
-
-        <Popup trigger={<div><button>Add Project</button></div>} className="popupReact" modal>
+        
+        <Popup trigger={<div><button className="buttonpopup5">Add Project</button></div>} className="popupReact" modal>
 
         {close => (
     <div>
@@ -251,7 +251,7 @@ const [selected, setSelected] = useState([]);
                         </div> 
                       </GridItem>
                     </GridContainer><br/>
-
+                  
                     <GridContainer>  
                       <GridItem xs={12} sm={12} md={6}>
                         <div className="form-group" {...register('project_start')}>
