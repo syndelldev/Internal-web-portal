@@ -450,6 +450,7 @@ return(
                   <GridItem>
                     <div className="edit">
                       <a href={`${server}/admin/project_module/${project.project_id}`}><FiEdit/></a>
+                      
                       <Popup trigger={<a><MdDelete/></a>} modal>
                         {close => (
                           <div>
@@ -460,7 +461,7 @@ return(
                                     <GridItem>
                                       <div>
                                         <CardBody>
-                                          <h4 className={classes.cardTitleWhite}>Are you sure ?</h4>
+                                          <h4 className={classes.cardTitleWhite}>Are you sure you want to delete {project.project_title}?</h4>
                                         </CardBody>
                                         <CardFooter>
                                             <Button onClick={()=>deleteProject(project.project_id)}>Yes</Button>
