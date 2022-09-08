@@ -81,7 +81,7 @@ const styles = {
   close:{
     marginLeft: "auto",
     fontSize: "40px",
-    paddingRight: "10px",
+    paddingRight: "15px",
     cursor: "pointer",
   },
 };
@@ -459,11 +459,13 @@ return(
                               <GridItem xs={12} sm={12} md={12}>
                                   <GridContainer>
                                     <GridItem>
-                                      <div>
+                                      <div className="delete_popup">
                                         <CardBody>
+                                          <MdDelete className="delete_popup_image"/>
+                                          <h2 className="delete_popup">Delete {project.project_title}</h2>
                                           <h4 className={classes.cardTitleWhite}>Are you sure you want to delete {project.project_title}?</h4>
                                         </CardBody>
-                                        <CardFooter>
+                                        <CardFooter className="delete_popup_button">
                                             <Button onClick={()=>deleteProject(project.project_id)}>Yes</Button>
                                             <Button className="button" onClick={() => { close(); }}> No </Button>
                                         </CardFooter>

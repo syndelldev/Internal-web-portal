@@ -46,6 +46,8 @@ import {
   emailsSubscriptionChart,
   completedTasksChart,
 } from "variables/charts.js";
+import { FiEdit } from "react-icons/fi";
+import { MdDelete } from 'react-icons/md';
 
 const styles = {
   cardCategoryWhite: {
@@ -478,8 +480,8 @@ const [p_selected, setProject] = useState([]);
                   </GridItem>
 
                   <GridItem>
-                    <a href={`${server}/admin/subtask_module/${task.task_id}`}>Edit</a>
-                    <button onClick={()=>deleteTask(task.task_id)}>Delete</button>
+                    <a href={`${server}/admin/subtask_module/${task.task_id}`}><FiEdit/></a>
+                    <button onClick={()=>deleteTask(task.task_id)} className="project_delete_icon"><MdDelete/></button>
                   </GridItem>
                 </GridContainer>
 
