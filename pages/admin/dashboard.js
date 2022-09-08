@@ -1,26 +1,8 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { useRouter } from 'next/router';
-// react plugin for creating charts
-import ChartistGraph from "react-chartist";
-// @material-ui/core
 import { makeStyles } from "@material-ui/core/styles";
-import Icon from "@material-ui/core/Icon";
-// @material-ui/icons
-import Store from "@material-ui/icons/Store";
-import Warning from "@material-ui/icons/Warning";
-import DateRange from "@material-ui/icons/DateRange";
-import LocalOffer from "@material-ui/icons/LocalOffer";
-import Update from "@material-ui/icons/Update";
-import ArrowUpward from "@material-ui/icons/ArrowUpward";
-import AccessTime from "@material-ui/icons/AccessTime";
-import Accessibility from "@material-ui/icons/Accessibility";
-import BugReport from "@material-ui/icons/BugReport";
-import Code from "@material-ui/icons/Code";
-import Cloud from "@material-ui/icons/Cloud";
-// layout for this page
 import Admin from "layouts/Admin.js";
-// core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import Table from "components/Table/Table.js";
@@ -46,6 +28,8 @@ import {
   emailsSubscriptionChart,
   completedTasksChart,
 } from "variables/charts.js";
+import { FiEdit } from "react-icons/fi";
+import { MdDelete } from 'react-icons/md';
 
 const styles = {
   cardCategoryWhite: {
@@ -109,17 +93,23 @@ export async function getServerSideProps(){
   const response = await fetch(`${server}/api/admin`)
   const User_name = await response.json();
   // console.log(User_name);
+  const status = await fetch(`${server}/api/project/project_status`)
+  const all_status = await status.json();
+  console.log(all_status);
 
-  return{ props: {project_details, User_name} }
+  return{ props: {project_details, User_name, all_status } }
 }
 
-function Dashboard( { project_details , User_name } ) {
+function Dashboard( { project_details , User_name, all_status } ) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   
   const deleteProject = async(id) =>{
     console.log('delete');
     console.log(id);
+
+    const res = await fetch(`${server}/api/project/${id}`);
+    router.push(`${server}/admin/dashboard`);
   }
   const { register,  watch, handleSubmit, formState: { errors }, setValue } = useForm(); 
   const [startDate, setStartDate] = useState();
@@ -420,16 +410,22 @@ const [selected, setSelected] = useState([]);
 
     <GridContainer>
 
+{all_status.map((status)=>{
 
+return(
+  <>
     <GridItem xs={6} sm={6} md={4}>
-      <span className="heading">On Hold Projects</span>
+    <span className="heading">{status.project_status} projects</span>
 
     {project_details.map((project)=>{
 
     if(project.project_delete == "no"){
-    if(project.project_status == "on hold"){
+
+    if(status.project_status == project.project_status){
 
       var person = project.project_person.split(",");
+      console.log(status.project_status);
+      console.log(project.project_title);
 
     return(
     <>
@@ -452,8 +448,41 @@ const [selected, setSelected] = useState([]);
                   </GridItem>
 
                   <GridItem>
-                    <a href={`${server}/admin/project_module/${project.project_id}`}>Edit</a>
-                    <button onClick={()=>deleteProject(project.project_id)}>Delete</button>
+                    <div className="edit">
+                      <a href={`${server}/admin/project_module/${project.project_id}`}><FiEdit/></a>
+                      
+                      <Popup trigger={<a><MdDelete/></a>} modal>
+                        {close => (
+                          <div>
+                          <Card>                            
+                            <GridContainer>
+                              <GridItem xs={12} sm={12} md={12}>
+                                  <GridContainer>
+                                    <GridItem>
+                                      <div>
+                                        <CardBody>
+                                          <h4 className={classes.cardTitleWhite}>Are you sure you want to delete {project.project_title}?</h4>
+                                        </CardBody>
+                                        <CardFooter>
+                                            <Button onClick={()=>deleteProject(project.project_id)}>Yes</Button>
+                                            <Button className="button" onClick={() => { close(); }}> No </Button>
+                                        </CardFooter>
+                                      </div>
+                                    </GridItem>
+
+                                      <div className={classes.close}>
+                                        <a onClick={close}>&times;</a>
+                                      </div>
+                                  </GridContainer>
+                              </GridItem>
+                            </GridContainer>
+                          </Card>
+  
+                          </div>
+                        )}
+                      </Popup>
+
+                    </div>
                   </GridItem>
                 </GridContainer>
 
@@ -488,11 +517,15 @@ const [selected, setSelected] = useState([]);
                   }
     })
  }
+  </GridItem>
+
+ </>);
+
+})
+}
 
 
-    </GridItem>
-
-
+{/* 
     <GridItem xs={6} sm={6} md={4}>
       <span>Running Projects</span>
 
@@ -524,8 +557,8 @@ const [selected, setSelected] = useState([]);
                           </GridItem>
     
                           <GridItem>
-                            <a href={`${server}/admin/project_module/${project.project_id}`}>Edit</a>
-                            <button onClick={()=>deleteProject(project.project_id)}>Delete</button>
+                            <a href={`${server}/admin/project_module/${project.project_id}`}><FiEdit/></a>
+                            <div onClick={()=>deleteProject(project.project_id)}><FaEye/></div>
                           </GridItem>
                         </GridContainer>
     
@@ -595,8 +628,8 @@ const [selected, setSelected] = useState([]);
                   </GridItem>
 
                   <GridItem>
-                    <a href={`${server}/admin/project_module/${project.project_id}`}>Edit</a>
-                    <button onClick={()=>deleteProject(project.project_id)}>Delete</button>
+                    <a href={`${server}/admin/project_module/${project.project_id}`}><FiEdit/></a>
+                    <div onClick={()=>deleteProject(project.project_id)}><FaEye/></div>
                   </GridItem>
                 </GridContainer>
 
@@ -633,7 +666,7 @@ const [selected, setSelected] = useState([]);
  }
 
 
-    </GridItem>
+    </GridItem> */}
 
 
 
