@@ -53,31 +53,25 @@ function UserRights({UserList,ModuleList}){
     const classes = useStyles();
 
     const [user, setuser] = useState(1)
-    //console.log(user)
+    // console.log(user)
 
     const [module, setmodule] = useState(1)
-    //console.log(module)
-
-    // const [users, setusers] = useState([])
-    // useEffect(async()=>{
-    //     axios.get(`${server}/api/rights/${user}`,{userid:user,moduleid:module})
-    //     .then((res)=>{
-    //         // setusers(res.data)
-    //         console.log(res.data)
-    //     })
-    // },[])
-    // console.log(users)
+    // console.log(module)
 
     const [users, setusers] = useState([])
     const getData = () => {
         axios.post(`${server}/api/rights/${user}`, {userid:user,moduleid:module})
         .then((res)=>{
             setusers(res.data)
-            //console.log(res.data)
         })
     }
     console.log(users)
 
+    const edit_rights = async (project_id) =>{
+        // console.log(project_id)
+        let data = axios.post(`${server}/api/rights/project/${project_id}`, {userid:user,moduleid:module,projectid:project_id,edit_rights:1})
+        console.log(data)
+    }
 
     return(
         <>
@@ -129,10 +123,8 @@ function UserRights({UserList,ModuleList}){
                                     <TableHead className={classes.TableHeader}>
                                         <TableRow className={classes.tableHeadRow}>
                                             <TableCell>Modules Names</TableCell>
-                                            <TableCell>Show List</TableCell>
-                                            <TableCell>Add Rights</TableCell>
-                                            <TableCell>Edit Rights</TableCell>
-                                            <TableCell>Delete Rights</TableCell>
+                                            <TableCell>Monitor</TableCell>
+                                            <TableCell>Contributor</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     
@@ -145,16 +137,10 @@ function UserRights({UserList,ModuleList}){
                                                         <TableRow key={data.project_id}>
                                                             <TableCell>{data.project_title}</TableCell>
                                                             <TableCell>
-                                                                <input type="checkbox" name="view_rights" value={data.view_rights} defaultChecked={ data.view_rights == 1 } />
+                                                                <input type="checkbox" name="view_rights" />
                                                             </TableCell>
                                                             <TableCell>
-                                                                <input type="checkbox" name="add_rights" value={data.add_rights} defaultChecked={ data.add_rights == 1 } />
-                                                            </TableCell>
-                                                            <TableCell>
-                                                                <input type="checkbox" name="edit_rights" value={data.edit_rights} defaultChecked={ data.edit_rights == 1 } />
-                                                            </TableCell>
-                                                            <TableCell>
-                                                                <input type="checkbox" name="delete_rights" value={data.delete_rights} defaultChecked={ data.delete_rights == 1 } />
+                                                                <input type="checkbox" name="add_rights" onClick={()=>edit_rights(data.project_id)}/>
                                                             </TableCell>
                                                         </TableRow>
                                                     )
@@ -165,16 +151,10 @@ function UserRights({UserList,ModuleList}){
                                                         <TableRow key={data.task_id}>
                                                             <TableCell>{data.task_title}</TableCell>
                                                             <TableCell>
-                                                                <input type="checkbox" value={data.view_rights} defaultChecked={ data.view_rights == 1 }  />
+                                                                <input type="checkbox"  />
                                                             </TableCell>
                                                             <TableCell>
-                                                                <input type="checkbox" value={data.add_rights} defaultChecked={ data.add_rights == 1 }  />
-                                                            </TableCell>
-                                                            <TableCell>
-                                                                <input type="checkbox" value={data.edit_rights} defaultChecked={ data.edit_rights == 1 }  />
-                                                            </TableCell>
-                                                            <TableCell>
-                                                                <input type="checkbox" value={data.delete_rights} defaultChecked={ data.delete_rights == 1 } />
+                                                                <input type="checkbox"  />
                                                             </TableCell>
                                                         </TableRow>
                                                     )
