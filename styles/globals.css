@@ -72,4 +72,8 @@ a {
   color: #fff;
   border: 1px solid #ADD8E6 ;
 }
-
+.buttonalign{
+  justify-content: center;
+  display: flex;
+  margin-bottom: 10px;
+}  
