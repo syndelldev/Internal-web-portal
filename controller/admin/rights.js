@@ -55,13 +55,14 @@ const ProjectById = async (req,res) =>{
     console.log(req.body)
 
     var check_condition = await executeQuery(" SELECT * FROM `tbl_rights` WHERE user_id=? AND project_id=? AND module_id=?  ", [req.body.userid,req.body.projectid, req.body.moduleid] );
-    
     //console.log(check_condition)
 
     if(check_condition != "" )
     {
         console.log("data exist")
         res.send(check_condition);
+        // const update_checkbox = await executeQuery(" UPDATE tbl_user SET ? WHERE id = ? ",[])
+        // console.log(update_checkbox)
     }
     else
     {

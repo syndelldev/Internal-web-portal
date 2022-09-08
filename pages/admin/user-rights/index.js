@@ -68,13 +68,13 @@ function UserRights({UserList,ModuleList}){
     //console.log(users)
 
     const [rightsList,setrightsList] = useState([])
-    if(rightsList !== "" )
+    if(rightsList == "" )
     {
-        console.log("exist")
+        console.log("Not exist")
     }
     else
     {
-        console.log("Not exist")
+        console.log("exist")
     }
     const edit_rights = async (project_id) =>{
         // console.log(user)
@@ -147,19 +147,18 @@ function UserRights({UserList,ModuleList}){
                                     <TableBody>
                                         {
                                             users.map((data)=>{
+                                                console.log(users)
                                                 if(users[0].module_id==1)
                                                 {
                                                     return(
                                                         <TableRow key={data.project_id} value={data.project_id}>
                                                             <TableCell>{data.project_title}-{data.project_id}</TableCell>
                                                             <TableCell>
-                                                                <input type="checkbox" name="view_rights"/>
+                                                                <input type="checkbox" name="view_rights" value={data.view} defaultChecked={data.view==1} />
                                                             </TableCell>
                                                             <TableCell>
-                                                                <input type="checkbox" name="add_rights" onClick={()=>edit_rights(data.project_id)}/>edit
+                                                                <input type="checkbox" name="add_rights" value={data.edit} defaultChecked={data.edit==1} onClick={()=>edit_rights(data.project_id)}/>
                                                             </TableCell>
-
-                                                            {/* {rightsList.length=0?("data found"):("data not found")} */}
                                                             
                                                         </TableRow>
                                                     )
