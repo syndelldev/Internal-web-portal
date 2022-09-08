@@ -231,7 +231,7 @@ button.login-create-acc-btn:active{
     margin-bottom: 15px!important;
 } */
 .MuiButton-label a{
-    color: #000!important;
+    color: #000;
 }
 
 /*userdetail css start*/

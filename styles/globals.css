@@ -55,3 +55,15 @@ a {
 	overflow-y: auto;
 	overflow-x: hidden;
 }
+
+/*User Detail -> Add New User*/
+a.add_new_user{
+  color:white;
+}
+a.add_new_user:hover{
+  color:white;
+}
+button.add_new_user{
+  display: grid;
+  margin: auto;
+} 
