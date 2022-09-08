@@ -30,7 +30,7 @@ const ModuleById = async (req,res) => {
     {
         try{
             //let rightsId=await executeQuery(` SELECT * FROM tbl_user INNER JOIN tbl_project INNER JOIN tbl_module WHERE tbl_module.module_id=? AND tbl_user.id=${id} `, [req.body.moduleid] );
-            let rightsId=await executeQuery(` SELECT * FROM tbl_module  INNER JOIN tbl_project INNER JOIN tbl_user WHERE tbl_module.module_id=? AND tbl_user.id=${id} `, [req.body.moduleid] );
+            let rightsId=await executeQuery(` SELECT * FROM tbl_module INNER JOIN tbl_project INNER JOIN tbl_user WHERE tbl_module.module_id=? AND tbl_user.id=${id} `, [req.body.moduleid] );
             res.status(200).json(rightsId);
             //console.log(rightsId)
         }
@@ -53,14 +53,6 @@ const ModuleById = async (req,res) => {
 
 const ProjectById = async (req,res) =>{
     console.log(req.body)
-
-    // if(req.body.projectid==req.body.projectid)
-    // {
-    //     console.log("Id is already available")
-    // }
-    // else{
-    //     console.log("Id is not available")
-    // }
 
     try{
         let project = await executeQuery("INSERT INTO `tbl_rights` ( `user_id`, `project_id`, `module_id`,`view_rights`, `edit_rights` ) VALUES (?,?,?,0,1)", [req.body.userid, req.body.projectid, req.body.moduleid])

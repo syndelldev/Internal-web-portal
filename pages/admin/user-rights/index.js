@@ -69,7 +69,7 @@ function UserRights({UserList,ModuleList}){
 
     const edit_rights = async (project_id) =>{
         // console.log(project_id)
-        let data = axios.post(`${server}/api/rights/project/${project_id}`, {userid:user,moduleid:module,projectid:project_id,edit_rights:1})
+        let data = axios.post(`${server}/api/rights/project/${project_id}`, {userid:user,moduleid:module,projectid:project_id})
         console.log(data)
     }
 
@@ -123,8 +123,8 @@ function UserRights({UserList,ModuleList}){
                                     <TableHead className={classes.TableHeader}>
                                         <TableRow className={classes.tableHeadRow}>
                                             <TableCell>Modules Names</TableCell>
-                                            <TableCell>Monitor</TableCell>
-                                            <TableCell>Contributor</TableCell>
+                                            <TableCell>Monitor(View)</TableCell>
+                                            <TableCell>Contributor(edit)</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     
@@ -137,10 +137,10 @@ function UserRights({UserList,ModuleList}){
                                                         <TableRow key={data.project_id}>
                                                             <TableCell>{data.project_title}</TableCell>
                                                             <TableCell>
-                                                                <input type="checkbox" name="view_rights" />
+                                                                <input type="checkbox" name="view_rights" value={data.view_rights} defaultChecked={data.view_rights == 1} />{data.view_rights}
                                                             </TableCell>
                                                             <TableCell>
-                                                                <input type="checkbox" name="add_rights" onClick={()=>edit_rights(data.project_id)}/>
+                                                                <input type="checkbox" name="add_rights" value={data.edit_rights} defaultChecked={data.edit_rights == 1} onClick={()=>edit_rights(data.project_id)}/>{data.edit_rights}
                                                             </TableCell>
                                                         </TableRow>
                                                     )
