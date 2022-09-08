@@ -65,12 +65,28 @@ function UserRights({UserList,ModuleList}){
             setusers(res.data)
         })
     }
-    console.log(users)
+    //console.log(users)
 
+    const [rightsList,setrightsList] = useState([])
+    if(rightsList !== "" )
+    {
+        console.log("exist")
+    }
+    else
+    {
+        console.log("Not exist")
+    }
     const edit_rights = async (project_id) =>{
+        // console.log(user)
+        // console.log(module)
         // console.log(project_id)
+
         let data = axios.post(`${server}/api/rights/project/${project_id}`, {userid:user,moduleid:module,projectid:project_id})
-        console.log(data)
+        .then((responce)=>{
+            setrightsList(responce.data)
+        })
+        console.log(rightsList)
+        
     }
 
     return(
@@ -85,7 +101,7 @@ function UserRights({UserList,ModuleList}){
                         <GridContainer>
                             <GridItem xs={12} sm={12} md={3}>
                                 <div className="form-group">
-                                    <select value={user} onChange={(e) => {setuser(e.target.value)}} className="form-control signup-input" > {/*value={value} onChange={(e) => {setValue(e.target.value)}} onClick={logValue}*/}
+                                    <select value={user} onChange={(e) => {setuser(e.target.value)}} className="form-control signup-input" > 
                                         {
                                             UserList.map((users)=>{
                                                 return(
@@ -134,14 +150,17 @@ function UserRights({UserList,ModuleList}){
                                                 if(users[0].module_id==1)
                                                 {
                                                     return(
-                                                        <TableRow key={data.project_id}>
-                                                            <TableCell>{data.project_title}</TableCell>
+                                                        <TableRow key={data.project_id} value={data.project_id}>
+                                                            <TableCell>{data.project_title}-{data.project_id}</TableCell>
                                                             <TableCell>
-                                                                <input type="checkbox" name="view_rights" value={data.view_rights} defaultChecked={data.view_rights == 1} />{data.view_rights}
+                                                                <input type="checkbox" name="view_rights"/>
                                                             </TableCell>
                                                             <TableCell>
-                                                                <input type="checkbox" name="add_rights" value={data.edit_rights} defaultChecked={data.edit_rights == 1} onClick={()=>edit_rights(data.project_id)}/>{data.edit_rights}
+                                                                <input type="checkbox" name="add_rights" onClick={()=>edit_rights(data.project_id)}/>edit
                                                             </TableCell>
+
+                                                            {/* {rightsList.length=0?("data found"):("data not found")} */}
+                                                            
                                                         </TableRow>
                                                     )
                                                 }
