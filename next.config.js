@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 
-const withPlugins = require("next-compose-plugins");
+// const withPlugins = require("next-compose-plugins");
 const withImages = require("next-images");
 const webpack = require("webpack");
 const path = require("path");
@@ -15,12 +15,12 @@ const path = require("path");
 //   },
 // }
 
-module.exports = withPlugins([ [withImages] , {
+module.exports = {
   webpack: (config, options) => {
     config.resolve.modules.push(path.resolve("./"));
     return config;
   },
-  images: {
-    disableStaticImages: true,
-  },
-}]);
+  // images: {
+  //   disableStaticImages: true,
+  // },
+};
