@@ -3,7 +3,7 @@ const { createPool } = require("mysql");
 const { resolve } = require("path");
 
 const pool = createPool({
-    host:"127.0.0.1",
+    host:"localhost",
     user:"root",
     password:"",
     port:"3306",
