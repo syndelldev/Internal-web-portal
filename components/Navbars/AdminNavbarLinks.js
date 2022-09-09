@@ -30,14 +30,7 @@ import { useCookies } from 'react-cookie';
 
 export default function AdminNavbarLinks({useravtar}) {
 
-  const [filters,setFilters] = useState({
-    s: ''
-  });
-  const search = (s) => {
-    props.setFilters({
-      s
-    });
-  }
+  
   // useEffect(async() => {
   //   const res = await fetch(`${server}/api/admin/${cookies.Id}`)
   //   const useravtar=await res.json()
@@ -101,7 +94,7 @@ export default function AdminNavbarLinks({useravtar}) {
     setOpenProfile(null);
   };
   return (
-    <div filters={filters} setFilters={setFilters}>
+    <div>
       <div className={classes.searchWrapper}>
         <CustomInput
           formControlProps={{
@@ -112,7 +105,6 @@ export default function AdminNavbarLinks({useravtar}) {
             inputProps: {
               "aria-label": "Search",
             },
-            onkeyup:"e => search(e.target.value)",
           }}
         />
         <Button color="white" aria-label="edit" justIcon round>
