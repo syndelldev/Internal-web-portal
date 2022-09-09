@@ -20,6 +20,7 @@ import { useCookies } from 'react-cookie';
 
 import avatar from "assets/img/faces/marc.jpg";
 import { server } from 'config';
+import { BlockRounded } from "@material-ui/icons";
 
 const styles = {
     typo: {
@@ -39,6 +40,7 @@ const styles = {
       marginLeft: "20px",
       position: "absolute",
       width: "260px",
+      fontWeight:"bold",
     },
     cardCategoryWhite: {
       color: "rgba(255,255,255,.62)",
@@ -92,7 +94,7 @@ function UserProfile(){
                             <h5>{cookies.Email}</h5>
                         </div>
                         <div className={classes.typo}>
-                            <div className={classes.note}>Mobile No.</div><br/>
+                            <div className={classes.note}>Phone Number</div><br/>
                             <h5>{cookies.Mobile_num}</h5>
                         </div>
                     </CardBody>
