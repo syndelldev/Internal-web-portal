@@ -65,17 +65,16 @@ function UserRights({UserList,ModuleList}){
             setusers(res.data)
         })
     }
-    //console.log(users)
+    // console.log(users)
 
     const [rightsList,setrightsList] = useState([])
-    if(rightsList == "" )
-    {
-        console.log("Not exist")
-    }
-    else
-    {
-        console.log("exist")
-    }
+    
+    
+    const handleCheckbox = (e) => {
+        console.log(e.target.value)
+    };
+
+    console.log(rightsList)
     const edit_rights = async (project_id) =>{
         // console.log(user)
         // console.log(module)
@@ -85,7 +84,7 @@ function UserRights({UserList,ModuleList}){
         .then((responce)=>{
             setrightsList(responce.data)
         })
-        console.log(rightsList)
+        // console.log(rightsList)
         
     }
 
@@ -106,7 +105,7 @@ function UserRights({UserList,ModuleList}){
                                             UserList.map((users)=>{
                                                 return(
                                                     <>
-                                                        <option key={users.id} value={users.id}>{users.username}</option> 
+                                                        <option key={users.id} value={users.id}>{users.username} - {users.id}</option> 
                                                     </>      
                                                 )
                                             })
@@ -147,17 +146,22 @@ function UserRights({UserList,ModuleList}){
                                     <TableBody>
                                         {
                                             users.map((data)=>{
-                                                console.log(users)
+                                                console.log(user) 
                                                 if(users[0].module_id==1)
-                                                {
+                                                {   
+                                                    const isInArray = data.user_id.includes(user);
+                                                    // console.log(user)
+                                                    // console.log(isInArray); 
+                                                    
                                                     return(
                                                         <TableRow key={data.project_id} value={data.project_id}>
                                                             <TableCell>{data.project_title}-{data.project_id}</TableCell>
                                                             <TableCell>
-                                                                <input type="checkbox" name="view_rights" value={data.view} defaultChecked={data.view==1} />
+                                                                <input type="checkbox" name="view_rights" value={data.view} onChange={handleCheckbox} defaultChecked={data.view == 1 } />
                                                             </TableCell>
+
                                                             <TableCell>
-                                                                <input type="checkbox" name="add_rights" value={data.edit} defaultChecked={data.edit==1} onClick={()=>edit_rights(data.project_id)}/>
+                                                                <input type="checkbox" name="add_rights" value={isInArray} onChange={handleCheckbox} defaultChecked={isInArray == true} onClick={()=>edit_rights(data.project_id)}/>{data.user_id}
                                                             </TableCell>
                                                             
                                                         </TableRow>

@@ -54,26 +54,36 @@ const ModuleById = async (req,res) => {
 const ProjectById = async (req,res) =>{
     console.log(req.body)
 
-    var check_condition = await executeQuery(" SELECT * FROM `tbl_rights` WHERE user_id=? AND project_id=? AND module_id=?  ", [req.body.userid,req.body.projectid, req.body.moduleid] );
-    //console.log(check_condition)
+    var check_condition = await executeQuery(" SELECT * FROM `tbl_rights` INNER JOIN tbl_project_rights WHERE tbl_project_rights.user_id=? AND tbl_rights.project_id=? AND tbl_rights.module_id=? AND tbl_rights.user_id=?  ", [req.body.userid, req.body.projectid, req.body.moduleid, req.body.userid] );
+    console.log(check_condition)
 
     if(check_condition != "" )
     {
-        console.log("data exist")
+        // console.log("data exist")
         res.send(check_condition);
         // const update_checkbox = await executeQuery(" UPDATE tbl_user SET ? WHERE id = ? ",[])
         // console.log(update_checkbox)
     }
     else
     {
-        //console.log("data does not exist")
-        try{
-            let project = await executeQuery("INSERT INTO `tbl_rights` ( `user_id`, `project_id`, `module_id`,`view_rights`, `edit_rights` ) VALUES (?,?,?,0,1)", [req.body.userid, req.body.projectid, req.body.moduleid])
-            res.status(200).json(project);
-            console.log(project);
+        // console.log("data does not exist")      
+        let data = await executeQuery(" SELECT * FROM `tbl_rights` WHERE user_id=? AND project_id=? ", [req.body.userid, req.body.projectid])
+        console.log(data)
+        if(data != "" )
+        {
+            console.log("project_id and user_id already availble ")
         }
-        catch(err){
-            console.log(err)
+        else
+        {
+            console.log("null")
+            try{
+                let project = await executeQuery("INSERT INTO `tbl_rights` ( `user_id`, `project_id`, `module_id`,`view_rights`, `edit_rights` ) VALUES (?,?,?,0,0)", [req.body.userid, req.body.projectid, req.body.moduleid])
+                res.status(200).json(project);
+                console.log(project);
+            }
+            catch(err){
+                console.log(err)
+            }
         }
     }
     
