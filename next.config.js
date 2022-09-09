@@ -5,22 +5,9 @@ const withImages = require("next-images");
 const webpack = require("webpack");
 const path = require("path");
 
-// const nextConfig = {
-//   eslint: {
-//     ignoreDuringBuilds: true,
-//   },
-//   images: {
-//     domains: ['assets.vercel.com'],
-//     formats: ['image/avif', 'image/webp'],
-//   },
-// }
-
 module.exports = {
   webpack: (config, options) => {
     config.resolve.modules.push(path.resolve("./"));
     return config;
   },
-  // images: {
-  //   disableStaticImages: true,
-  // },
 };
