@@ -166,12 +166,12 @@ const [selected, setSelected] = useState([]);
 {/* create project form start */}
 
 
-
+<div className="buttonalign">
 <GridContainer>
       <GridItem>
-        
+         
         <Popup trigger={<div><button className="buttonpopup5">Add Project</button></div>} className="popupReact" modal>
-
+  
         {close => (
     <div>
     <GridContainer>
@@ -250,10 +250,10 @@ const [selected, setSelected] = useState([]);
                           </select>
                           <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                           <div className="error-msg">{errors.project_language && <span>{errors.project_language.message}</span>}</div>
-                        </div> 
+                        </div>   
                       </GridItem>
                     </GridContainer><br/>
-                  
+
                     <GridContainer>  
                       <GridItem xs={12} sm={12} md={6}>
                         <div className="form-group" {...register('project_start')}>
@@ -380,7 +380,6 @@ const [selected, setSelected] = useState([]);
 </GridItem>
 
 <GridItem>
-
 <div className="department_dropdown">
   <button className="dropdown_button">Project Department</button>
       <div className="department-link">
@@ -410,8 +409,8 @@ const [selected, setSelected] = useState([]);
       </div>
 </div>
 </GridItem>
-
 </GridContainer>
+</div>
 
     <GridContainer>
     {project_details.map((project)=>{
@@ -423,7 +422,7 @@ const [selected, setSelected] = useState([]);
     return(
     <>
 
-        <GridItem xs={6} sm={6} md={4}>
+        <GridItem xs={12} sm={6} md={4}>
             <form>
             <Card>
                 <CardHeader color="primary">

@@ -72,41 +72,8 @@ a {
   color: #fff;
   border: 1px solid #ADD8E6 ;
 }
-
-.alignbutton{
-  display: flex;
+.buttonalign{
   justify-content: center;
-}
-
-/*Dashboard->delete popup css*/
-.delete_popup
-{
-  text-align: center;
-  padding: 20px;
-}
-
-.delete_popup_image
-{
-  font-size: 50px;
-}
-
-h2.delete_popup
-{
-  font-weight: bold;
-}
-
-.delete_popup_button
-{
-  justify-content: center !important;
-  display: flex !important;
-}
-.delete_popup_button button
-{
-  background-color: #ADD8E6;
-}
-
-.project_delete_icon
-{
-  border: none;
-  background-color: white;
-}
+  display: flex;
+  margin-bottom: 10px;
+}  
