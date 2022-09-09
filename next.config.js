@@ -10,5 +10,5 @@ module.exports = {
     config.resolve.modules.push(path.resolve("./"));
     return config;
   },
-  distDir: 'build',
+  // distDir: 'build',
 };
