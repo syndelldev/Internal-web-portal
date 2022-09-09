@@ -24,6 +24,8 @@ import DatePicker from "react-datepicker";
 import LibraryBooks from "@material-ui/icons/LibraryBooks";
 import Popup from "reactjs-popup";
 import Multiselect from "multiselect-react-dropdown";
+import { FiEdit } from "react-icons/fi";
+import { MdDelete } from 'react-icons/md';
 
 
 const styles = {
@@ -444,8 +446,8 @@ for(var i=0; i<selected.length; i++){
                       </GridItem>
 
                       <GridItem>
-                        <a href={`${server}/admin/project_module/${project.project_id}`}>Edit</a>
-                        <button onClick={()=>deleteProject(project.project_id)}>Delete</button>
+                        <a href={`${server}/admin/project_module/${project.project_id}`}><FiEdit/></a>
+                        <button onClick={()=>deleteProject(project.project_id)} className="project_delete_icon"><MdDelete/></button>
                       </GridItem>
                     </GridContainer>
 
