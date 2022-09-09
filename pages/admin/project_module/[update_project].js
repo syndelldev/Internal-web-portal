@@ -73,8 +73,6 @@ function AddUser({ User_name,project_details }) {
     for(var i=0; i<selected.length; i++){
           allMember.push(selected[i].value);
     }
-    alert(allMember);
-    alert(projectMember);
 
     if(allMember == ""){
       var members = projectMember;

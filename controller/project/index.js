@@ -64,6 +64,19 @@ const projectLanguage = async (req,res) => {
     }
 }
 
+const projectStatus = async (req,res) => {
+    let project_status = req.query.language;
+    console.log(req.query.language);
+
+    try{
+        let projectStatus = await executeQuery("Select `project_status` from `tbl_project` group by `project_status` ");
+        res.status(200).json(projectStatus);
+    }
+    catch(err){
+        res.status(500).json(err);
+    }
+}
+
 const deleteProject = async (req,res) => {
     let id = req.query.project_id;
     console.log(req.query.project_id);
@@ -76,4 +89,4 @@ const deleteProject = async (req,res) => {
         res.status(500).json(err);
     }
 }
-export { getAllProject, getProjectById, deleteProject, projectLanguage, projectDepartment }
+export { getAllProject, getProjectById, deleteProject, projectLanguage, projectDepartment , projectStatus }

@@ -100,7 +100,7 @@ function UserDetail({UserDetail}) {
   const classes = useStyles();
   return (
     <>
-        <Button color="primary"  className={classes.cardWhite}><a href='/admin/adduser'  className={classes.cardWhite}>Add New User</a></Button>
+        <Button color="primary"  className="add_new_user"><a href='/admin/adduser'  className="add_new_user"> + Add New User</a></Button>
     <div>
       
       <GridContainer>

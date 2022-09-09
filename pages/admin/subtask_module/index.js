@@ -242,13 +242,14 @@ const [p_selected, setProject] = useState([]);
                       
                       <span>Select Project</span>
                       <Multiselect
-                      displayValue="value"
+                        displayValue="value"
                         options={project_list}
                         value={p_selected}
+                        singleSelect={true}
                         onChange={setProject}
                         // onKeyPressFn={function noRefCheck(){}}
                         onRemove={setProject}
-                        // onSearch={function noRefCheck(){}}
+                        onSearch={function noRefCheck(){}}
                         onSelect={setProject}
                         placeholder="Project List"
                         showArrow={true}

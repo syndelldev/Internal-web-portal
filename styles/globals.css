@@ -21,7 +21,7 @@ a {
   color: black;
   padding: 3px 15px;
   font-size: 16px;
-  border: 1px solid #ddd;
+  border: 2px solid #000;
 }
 
 .department_dropdown {
@@ -45,9 +45,9 @@ a {
   display: block;
 }
 
-.department-link a:hover {background-color: #ddd;}
+  .department-link a:hover {background-color:  #ADD8E6;color:#000;}
 
-.department_dropdown:hover .department-link {display: block;}
+.department_dropdown:hover .department-link {display: block;background-color:#ddd;color: #ADD8E6;}
 
 /* Project, task popup : overflow-y */
 
@@ -55,3 +55,26 @@ a {
 	overflow-y: auto;
 	overflow-x: hidden;
 }
+
+.dropdown_button:hover{
+  background-color: #ADD8E6;
+  color: white;
+  border: 1px solid #ADD8E6 ;
+}
+
+.buttonpopup5{
+  background-color: #ddd;
+  color:black;
+}
+
+.buttonpopup5:hover{
+  background-color: #ADD8E6;
+  color: #fff;
+  border: 1px solid #ADD8E6 ;
+}
+
+.alignbutton{
+  display: flex;
+  justify-content: center;
+}
+
