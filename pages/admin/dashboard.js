@@ -547,7 +547,7 @@ return(
                         <GridItem xs={12} sm={12} md={12}>
                           <div className="form-group">
                           <span>Project Description</span>
-                            <textarea className="form-control signup-input" value={project.project_description} name="project_description" onSelect={handleChange} onChange={handleChange} placeholder="Project Description" {...register('project_description', { required: 'Description is required', } )}  />
+                            <textarea className="form-control signup-input" value={uoption.project_description} name="project_description" onSelect={handleChange} onChange={handleChange} placeholder="Project Description" {...register('project_description', { required: 'Description is required', } )}  />
                             <div className="error-msg">{errors.project_description && <span>{errors.project_description.message}</span>}</div>
                           </div> 
                         </GridItem>
@@ -559,7 +559,7 @@ return(
                               {/*<input type="text" className="form-control signup-input" placeholder="Department" {...register('department',  { required: "Please enter your Department", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
                               <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>*/}
                             <span>Project Department</span>
-                              <select id="Department" name="project_department" className="form-control signup-input" value={project.project_department} onSelect={handleChange} onChange={handleChange} {...register('project_department', {required:true ,message:'Please select atleast one option', })}>
+                              <select id="Department" name="project_department" className="form-control signup-input" value={uoption.project_department} onSelect={handleChange} onChange={handleChange} {...register('project_department', {required:true ,message:'Please select atleast one option', })}>
                                 <option value=""  disabled selected>Select Your Department...</option>
                                 <option value="HR">HR</option>
                                 <option value="UI & UX">UI & UX</option>
@@ -577,7 +577,7 @@ return(
                         <GridItem xs={12} sm={12} md={6}>
                           <div className="form-group">
                           <span>Project Language</span>
-                            <select name="project_language" id="Project_created_by" className="form-control signup-input"  value={project.project_language} onSelect={handleChange} onChange={handleChange} {...register('project_language', {required:true ,message:'Please select atleast one option', })}>
+                            <select name="project_language" id="Project_created_by" className="form-control signup-input"  value={uoption.project_language} onSelect={handleChange} onChange={handleChange} {...register('project_language', {required:true ,message:'Please select atleast one option', })}>
                               <option value="" disabled selected>Select Language</option>
                               <option value="Wordpress">Wordpress</option>
                               <option value="Shopify">Shopify</option>
@@ -642,7 +642,7 @@ return(
                         <GridItem xs={12} sm={12} md={6}>
                           <div className="form-group">
                           <span>Project Priority</span>
-                            <select name="project_priority" id="priority" className="form-control signup-input" value={project.project_priority} onSelect={handleChange} onChange={handleChange} {...register('project_priority', {required:true ,message:'Please select atleast one option', })}>
+                            <select name="project_priority" id="priority" className="form-control signup-input" value={uoption.project_priority} onSelect={handleChange} onChange={handleChange} {...register('project_priority', {required:true ,message:'Please select atleast one option', })}>
                               <option value=""  disabled selected>Select Project Priority</option>
                               <option value="High">High</option>
                               <option value="Medium">Medium</option>
@@ -658,7 +658,7 @@ return(
                               {/*<input type="text" className="form-control signup-input" placeholder="Status" {...register('status',  { required: "Please enter your Status", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
                               <div className="error-msg">{errors.status && <p>{errors.status.message}</p>}</div>*/}
                               <span>Project Status</span>
-                              <select name="project_status" id="Status" className="form-control signup-input" value={project.project_status} onSelect={handleChange} onChange={handleChange} {...register('project_status', {required:true ,message:'Please select atleast one option', })}>
+                              <select name="project_status" id="Status" className="form-control signup-input" value={uoption.project_status} onSelect={handleChange} onChange={handleChange} {...register('project_status', {required:true ,message:'Please select atleast one option', })}>
                                 <option value=""  disabled selected>Select Project Status</option>
                                 <option value="on hold">On hold</option>
                                 <option value="running">Running</option>
@@ -698,7 +698,7 @@ return(
                         <GridItem xs={12} sm={12} md={12}>
                           <div className="form-group">
                           <span>Comments</span>
-                            <textarea className="form-control signup-input" name="project_comment" value={project.project_comment} onSelect={handleChange} onChange={handleChange} placeholder="Comment" {...register('project_comment')} />
+                            <textarea className="form-control signup-input" name="project_comment" value={uoption.project_comment} onSelect={handleChange} onChange={handleChange} placeholder="Comment" {...register('project_comment')} />
                             <div className="error-msg">{errors.position && <span>{errors.position.message}</span>}</div>
                           </div> 
                         </GridItem>
