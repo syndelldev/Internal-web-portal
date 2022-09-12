@@ -133,13 +133,15 @@ h6 {
 }
 
 a {
-  color: #9c27b0;
+  color: white;
   text-decoration: none;
+  display: grid;
+  margin-bottom: 20px;
 }
 
 a:hover,
 a:focus {
-  color: #89229b;
+  color: white;
   text-decoration: none;
 }
 

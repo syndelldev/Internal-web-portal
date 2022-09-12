@@ -71,7 +71,7 @@ function SignIn(){
             <section className='login-section'>
                 <div className='container login-container'>
                     <div className='login-div'>
-                        <h2 className='login-title'>Automation Tool SignIn</h2>
+                        <h2 className='login-title'>Automation Tool SignUp</h2>
 
 
                         <form method="POST" onSubmit={handleSubmit(onSubmit)} >
@@ -96,12 +96,12 @@ function SignIn(){
 
                             <div className="form-group">
                                 <label htmlFor="username" className='form-label label' >Name</label>
-                                <input type="text" className="form-control signup-input" name="username" placeholder="enter your name" {...register('username',  { required: "Please enter your name", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
+                                <input type="text" className="form-control signup-input" name="username" placeholder="Enter your name" {...register('username',  { required: "Please enter your name", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
                                 <div className="error-msg">{errors.username && <p>{errors.username.message}</p>}</div>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="email" className='form-label label' >Email</label>
-                                <input type="text" className="form-control signup-input" name="email" placeholder="email@syndelltech.in" {...register('email', { required: 'Please enter your email', pattern: {value: /^[a-zA-Z0-9]+@+syndelltech+.+[A-z]$/ , message: 'Please enter a valid email ex:email@syndelltech.in',},} )} />
+                                <input type="text" className="form-control signup-input" name="email" placeholder="Email@syndelltech.in" {...register('email', { required: 'Please enter your email', pattern: {value: /^[a-zA-Z0-9]+@+syndelltech+.+[A-z]$/ , message: 'Please enter a valid email ex:email@syndelltech.in',},} )} />
                                 <div className="error-msg">{errors.email && <p>{errors.email.message}</p>}</div>
                             </div>
                             <div className="form-group">
@@ -118,7 +118,7 @@ function SignIn(){
                                             {...register('PhoneNum',  { required: "Please enter your phone number", message: 'Only Numbers allow', })} 
                                             defaultCountry={"IN"}
                                             maxLength={11}
-                                            placeholder="enter phone number"
+                                            placeholder="Enter phone number"
                                             value={phonenum}
                                             onChange={setphonenum}
                                         />
@@ -148,14 +148,14 @@ function SignIn(){
 
                             <div className="form-group">
                                 <label htmlFor="password" className='form-label label' >Password</label>
-                                <input type={isRevealPwd ? 'text' : 'password'} name="password" placeholder="enter your password" className="form-control signup-input" {...register('password', { required: "Please enter your password",minLength: {value: 8, message: "Password must have at least 8 characters" }, pattern: {value: /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/, message: 'must include lower, upper, number, and special chars',} })}  />
+                                <input type={isRevealPwd ? 'text' : 'password'} name="password" placeholder="Enter your password" className="form-control signup-input" {...register('password', { required: "Please enter your password",minLength: {value: 8, message: "Password must have at least 8 characters" }, pattern: {value: /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/, message: 'must include lower, upper, number, and special chars',} })}  />
                                 <span className='icon-eyes' onClick={() => setIsRevealPwd((prevState) => !prevState)} >{isRevealPwd ? <IoMdEyeOff /> : <IoMdEye/>}</span>
                                 <div className="error-msg">{errors.password && <p>{errors.password.message}</p>}</div>
                             </div>
 
                             <div className="form-group">
                                 <label htmlFor="confirm-pwd" className='form-label label'>Confirm Password</label>
-                                <input type={isRevealconPwd ? 'text' : 'password'} className="form-control signup-input" placeholder="confirm your password" {...register('confirmPwd', {  validate: value =>value === password.current || "The passwords do not match" })}  />
+                                <input type={isRevealconPwd ? 'text' : 'password'} className="form-control signup-input" placeholder="Confirm your password" {...register('confirmPwd', {  validate: value =>value === password.current || "The passwords do not match" })}  />
                                 <a><span className='icon-eyes' onClick={() => setIsRevealconPwd((prevState) => !prevState)}>{isRevealconPwd ? <IoMdEyeOff /> : <IoMdEye/>}</span></a>
                                 <div className="error-msg">{errors.confirmPwd && <p>{errors.confirmPwd.message}</p>}</div>
                             </div>
