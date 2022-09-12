@@ -202,7 +202,7 @@ const [p_selected, setProject] = useState([]);
     <GridContainer>
         <GridItem>
 
-          <Popup trigger={<div><button className="add_bttn">Add Task</button></div>}  className="popupReact"  modal>
+          <Popup trigger={<div><button className="bttn-design">Add Task</button></div>}  className="popupReact"  modal>
 
           {close => (
       <div>

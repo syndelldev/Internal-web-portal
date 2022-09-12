@@ -18,7 +18,7 @@ a {
 /* filter project language, department dropdown */
 
 .dropdown_button {
-  color: white;
+  
   padding: 3px 15px;
   font-size: 16px;
   border: none;
@@ -87,7 +87,6 @@ a {
 }
 .bttn-design{
   background-color: #ADD8E6;
-  color: white;
   border: none;
 }
 
@@ -106,11 +105,6 @@ a {
   margin-bottom: 0px;
 }
 
-.add_bttn{
-  background-color: #ADD8E6;
-  color: white;
-  border: none;
-}
 .icon{
   margin-left: auto;
 }
@@ -120,4 +114,7 @@ a {
 .project_delete_icon{
   background-color: white;
   border: none;
+}
+.text ,.projectTitle{
+  color: black;
 }
