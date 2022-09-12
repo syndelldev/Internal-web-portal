@@ -1,8 +1,9 @@
 import nc from "next-connect";
-import { ProjectById } from '../../../../controller/admin/rights'
+import { ProjectById,update_checkbox } from '../../../../controller/admin/rights'
 
 const handler=nc();
 
 handler.post(ProjectById);
+handler.post(update_checkbox);
 
 export default handler;
