@@ -17,14 +17,11 @@
     "@supabase/supabase-js": "^1.35.5",
     "@types/jsonwebtoken": "^8.5.8",
     "@types/react-beautiful-dnd": "^13.1.2",
-    "@zeit/next-css": "^1.0.1",
-    "@zeit/next-sass": "^1.0.1",
     "axios": "^0.27.2",
     "bootstrap": "^5.2.0",
-    "caniuse-lite": "^1.0.30001390",
+    "caniuse-lite": "^1.0.30001393",
     "chartist": "^1.1.2",
     "classnames": "^2.3.1",
-    "har-validator": "^5.1.5",
     "history": "^5.3.0",
     "jsonwebtoken": "^8.5.1",
     "latest-version": "^7.0.0",
@@ -39,13 +36,14 @@
     "path": "0.12.7",
     "perfect-scrollbar": "^1.5.5",
     "prop-types": "^15.8.1",
-    "react": "^18.2.0",
+    "react": "^17.0.0",
+    "react-beautiful-dnd": "^13.1.1",
     "react-bootstrap": "^2.5.0",
     "react-calendar": "^3.7.0",
     "react-chartist": "^0.14.4",
     "react-cookie": "^4.1.1",
     "react-datepicker": "^4.8.0",
-    "react-dom": "^18.2.0",
+    "react-dom": "^17.0.0",
     "react-hook-form": "^7.34.0",
     "react-icons": "^4.4.0",
     "react-modern-calendar-datepicker": "^3.1.6",
@@ -53,15 +51,12 @@
     "react-phone-number-input": "^3.2.11",
     "react-select": "^5.4.0",
     "react-swipeable-views": "^0.14.0",
-    "react-toastify": "^9.0.3",
+    "react-toastify": "^9.0.8",
     "reactjs-popup": "^2.0.5",
     "serverless-mysql": "^1.5.4",
     "tar": "^6.1.11",
     "uuid": "^9.0.0",
     "yup": "^0.32.11"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
   },
   "browserslist": {
     "production": [
@@ -80,6 +75,6 @@
     "typescript": "^4.8.2"
   },
   "devDependencies": {
-    "eslint": "^8.23.0"
+    "mdx-loader": "^3.0.2"
   }
 }
