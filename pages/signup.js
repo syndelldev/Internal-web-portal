@@ -55,10 +55,10 @@ function SignIn(){
         {
             toast.success('SignUp Successfully !', {
                 position: "top-right",
-                autoClose:5000,
+                autoClose:1000,
                 onClose: () => router.push("/login")
             });
-            //router.push("/login");
+            router.push("/login");
         }
         else
         {
@@ -216,7 +216,7 @@ function SignIn(){
                     </div>
                 </div>
             </section>
-            <ToastContainer />
+            <ToastContainer limit={1}/>
 
         </>
     )

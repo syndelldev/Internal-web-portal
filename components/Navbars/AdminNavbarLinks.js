@@ -203,6 +203,7 @@ export default function AdminNavbarLinks({useravtar}) {
             </Poppers>
         </div>*/}
       <div className={classes.manager}>
+      
         <Button
           color={size.width > 959 ? "transparent" : "white"}
           justIcon={size.width > 959}
@@ -261,7 +262,7 @@ export default function AdminNavbarLinks({useravtar}) {
             >
               <Paper>
                 <ClickAwayListener onClickAway={handleCloseProfile}>
-                  <MenuList role="menu">
+                  <MenuList role="menu" className="logout">
                     {/*<MenuItem onClick={handleCloseProfile} className={classes.dropdownItem}>
                       <a href="/user/userprofile">Profile({cookies.name})</a>
                     </MenuItem>
@@ -278,6 +279,7 @@ export default function AdminNavbarLinks({useravtar}) {
             </Grow>
           )}
         </Poppers>
+      
       </div>
     </div>
   );

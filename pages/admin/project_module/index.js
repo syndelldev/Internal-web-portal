@@ -25,6 +25,7 @@ import LibraryBooks from "@material-ui/icons/LibraryBooks";
 import Popup from "reactjs-popup";
 import Multiselect from "multiselect-react-dropdown";
 import { MdDelete } from "react-icons/md";
+import { FiEdit } from "react-icons/fi";
 
 const styles = {
   cardCategoryWhite: {
@@ -170,7 +171,7 @@ const [selected, setSelected] = useState([]);
 <GridContainer>
       <GridItem>
 
-        <Popup trigger={<div><button>Add Project</button></div>} className="popupReact" modal>
+        <Popup trigger={<div><button className="add_bttn">Add Project</button></div>} className="popupReact" modal>
 
         {close => (
     <div>
@@ -439,9 +440,10 @@ const [selected, setSelected] = useState([]);
                       <GridItem>
                         <p className="projectLanguage">{project.project_language}</p>
                       </GridItem>
-
+                      <div className="icon">
                       <GridItem>
-                        <a href={`${server}/admin/project_module/${project.project_id}`}>Edit</a>
+                        <div className="icon2">
+                        <a href={`${server}/admin/project_module/${project.project_id}`}><FiEdit/></a>
                         {/* <button onClick={()=>deleteProject(project.project_id)}>Delete</button> */}
                         <Popup trigger={<a><MdDelete/></a>} modal>
                         {close => (
@@ -473,7 +475,9 @@ const [selected, setSelected] = useState([]);
                           </div>
                         )}
                       </Popup>
+                      </div>
                       </GridItem>
+                      </div>
                     </GridContainer>
 
                     <GridContainer>
