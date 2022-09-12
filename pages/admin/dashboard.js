@@ -536,7 +536,7 @@ return(
                         <GridItem xs={12} sm={12} md={12}>                      
                           <div className="form-group">
                             <span>Project Title</span>
-                            <input type="text" className="form-control signup-input" name="project_title" placeholder="Project Title" value="{uoption.project_title}" onSelect={handleChange} onChange={handleChange} />
+                            <input type="text" className="form-control signup-input" name="project_title" placeholder="Project Title" value={uoption.project_title} onSelect={handleChange} onChange={handleChange} />
                             <div className="error-msg">{errors.project_title && <span>{errors.project_title.message}</span>}</div>
                           </div>
 
