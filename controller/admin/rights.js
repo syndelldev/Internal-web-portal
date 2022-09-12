@@ -59,7 +59,7 @@ const ProjectById = async (req,res) =>{
     if(check_condition != "" )
     {
         console.log("data exist")
-        res.send(check_condition);
+        // res.send(check_condition);
 
         let data = await executeQuery(" SELECT * FROM `tbl_rights` WHERE user_id=? AND project_id=? ", [req.body.userid, req.body.projectid])
         console.log(data)
@@ -68,28 +68,30 @@ const ProjectById = async (req,res) =>{
         {
             console.log("project_id and user_id already availble ")
             console.log(req.body)
-            var update_checkbox = await executeQuery(" UPDATE tbl_rights SET view_rights=1 WHERE project_id = ? AND user_id=? ",[ req.body.projectid, req.body.userid])
+            var update_checkbox = await executeQuery(" UPDATE tbl_rights SET view_rights=? WHERE project_id = ? AND user_id=? ",[ req.body.checkbox_value, req.body.projectid, req.body.userid])
             res.status(200).json(update_checkbox);
             
             console.log(update_checkbox)
         }
-        else
+    }
+    else
+    {
+        console.log("data does not exist") 
+        
+        let data = await executeQuery(" SELECT * FROM `tbl_rights` WHERE user_id=? AND project_id=? ", [req.body.userid, req.body.projectid])
+        console.log(data)
+        
+        if(data == "" )
         {
-            console.log("null")
             try{
                 let project = await executeQuery("INSERT INTO `tbl_rights` ( `user_id`, `project_id`, `module_id`,`view_rights`, `edit_rights` ) VALUES (?,?,?,0,0)", [req.body.userid, req.body.projectid, req.body.moduleid])
                 res.status(200).json(project);
-                // console.log(project);
+                console.log(project);
             }
             catch(err){
                 console.log(err)
             }
         }
-    }
-    else
-    {
-        console.log("data does not exist")      
-
         // if(data != "" )
         // {
         //     console.log("project_id and user_id already availble ")
