@@ -165,7 +165,7 @@ function Dashboard( { project_details , User_name, all_status } ) {
     const res = await fetch(`${server}/api/project/update_project`,{
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ project_id:uoption.project_id, project_person:members, project_title: uoption.project_title , project_description:uoption.project_description, project_language:uoption.project_language, project_comment:uoption.project_comment, project_priority:uoption.project_priority, project_start: uoption.start , project_deadline: uoption.end }),
+      body: JSON.stringify({ project_id:uoption.project_id, project_person:selected, project_title: uoption.project_title , project_description:uoption.project_description, project_language:uoption.project_language, project_comment:uoption.project_comment, project_priority:uoption.project_priority, project_start: uoption.start , project_deadline: uoption.end }),
     });
     router.push(`${server}/admin/dashboard`);
   }
@@ -507,7 +507,7 @@ return(
                       {/* <div onClick={()=>updateProject(project.project_id)}>project</div> */}
                       {/* <a href={`${server}/admin/project_module/${project.project_id}`}><FiEdit/></a> */}
                       {/* <Button onClick={()=>updateProject(project.project_id)}>Yes</Button> */}
-                      <Popup trigger={<a><div className={classes.img} onClick={()=>projectId(project.project_id)}><FiEdit/>{project.project_id}</div></a>} className="popupReact" modal>
+                      <Popup trigger={<a><div className={classes.img} onClick={()=>projectId(project.project_id)}><FiEdit/></div></a>} className="popupReact" modal>
 
               {close => (
               <div>
