@@ -156,7 +156,7 @@ function SignIn(){
                             <div className="form-group">
                                 <label htmlFor="confirm-pwd" className='form-label label'>Confirm Password</label>
                                 <input type={isRevealconPwd ? 'text' : 'password'} className="form-control signup-input" placeholder="Confirm your password" {...register('confirmPwd', {  validate: value =>value === password.current || "The passwords do not match" })}  />
-                                <a><span className='icon-eyes' onClick={() => setIsRevealconPwd((prevState) => !prevState)}>{isRevealconPwd ? <IoMdEyeOff /> : <IoMdEye/>}</span></a>
+                                <span className='icon-eyes' onClick={() => setIsRevealconPwd((prevState) => !prevState)}>{isRevealconPwd ? <IoMdEyeOff /> : <IoMdEye/>}</span>
                                 <div className="error-msg">{errors.confirmPwd && <p>{errors.confirmPwd.message}</p>}</div>
                             </div>
 
