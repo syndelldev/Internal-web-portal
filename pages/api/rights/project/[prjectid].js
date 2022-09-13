@@ -3,7 +3,7 @@ import { ProjectById,update_checkbox } from '../../../../controller/admin/rights
 
 const handler=nc();
 
-handler.post(ProjectById);
+handler.put(ProjectById);
 handler.post(update_checkbox);
 
 export default handler;
