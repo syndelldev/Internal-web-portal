@@ -70,9 +70,7 @@ function UserRights({UserList,ModuleList}){
     const [rightsList,setrightsList] = useState([])
     console.log(rightsList)
 
-    const [checkbox,setcheckbox] = useState({
-        checkbox_view:""
-    })
+    const [checkbox,setcheckbox] = useState(0)
     console.log(checkbox)
 
     
@@ -97,10 +95,11 @@ function UserRights({UserList,ModuleList}){
         if(rightsList != "" )
         {
             console.log("not null")
-            let check_uncheck = axios.put(`${server}/api/rights/project/${project_id}`, {userid:user,moduleid:module,projectid:project_id,view:checkbox_view})
+            let check_uncheck = axios.put(`${server}/api/rights/project/${project_id}`, {view:checkbox})
             .then((responce)=>{
                 setrightsList(responce.data)
-            })  
+            }) 
+            console.log(check_uncheck) 
         }
         else{
             console.log("null")
