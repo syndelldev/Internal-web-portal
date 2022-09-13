@@ -76,14 +76,15 @@ function Dashboard({project}) {
   // },[])
   //console.log(users)
 
+  const [rights, setrights] = useState([])
   useEffect(async()=>{
     axios.get(`${server}/api/project_rights/project_rights/` )
       .then((res)=>{
-        // setusers(res.data)
+        setrights(res.data)
         console.log(res.data)
       })    
   },[])
-  console.log(users)
+  console.log(rights)
 
   return (
     <>
@@ -109,8 +110,14 @@ function Dashboard({project}) {
                   <CardFooter>
                     <p className="projectLanguage">{project.project_language}</p>
                     <p className="projectPriority">
-                      {project.project_id}
-                      
+                      {/* {project.project_id} */}
+                      {/* {rights.map((r)=>{
+                        return(
+                          <>
+                            <p>{r.project_id}</p>
+                          </>
+                        )
+                      })} */}
                     </p>
                   </CardFooter>
                   <CardFooter>
