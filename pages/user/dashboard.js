@@ -111,7 +111,7 @@ function Dashboard({project}) {
                     <p className="projectLanguage">{project.project_language}</p>
                     <p className="projectPriority">
                       {/* {project.project_id} */}
-                      {rights.map((r)=>{
+                      {/* {rights.map((r)=>{
                         // console.log(r.project_id)
                         if(project.project_id === r.project_id)
                         {
@@ -122,7 +122,7 @@ function Dashboard({project}) {
                             </>
                           )
                         }
-                      })}
+                      })} */}
                     </p>
                   </CardFooter>
                   <CardFooter>
