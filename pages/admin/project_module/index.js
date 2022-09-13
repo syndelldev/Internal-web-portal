@@ -171,7 +171,7 @@ const [selected, setSelected] = useState([]);
 <GridContainer>
       <GridItem>
 
-        <Popup trigger={<div><button className="bttn-design">Add Project</button></div>} className="popupReact" modal>
+        <Popup trigger={<div><button>Add Project</button></div>} className="popupReact" modal>
 
         {close => (
     <div>
@@ -221,7 +221,7 @@ const [selected, setSelected] = useState([]);
                           <div className="form-group">
                             {/*<input type="text" className="form-control signup-input" placeholder="Department" {...register('department',  { required: "Please enter your Department", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
                             <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>*/}
-                          <span className="text">Project Department</span>
+                          <span>Project Department</span>
                             <select name="Department" id="Department" className="form-control signup-input" {...register('project_department', {required:true ,message:'Please select atleast one option', })}>
                               <option value=""  disabled selected>Select Your Department...</option>
                               <option value="HR">HR</option>
@@ -239,7 +239,7 @@ const [selected, setSelected] = useState([]);
 
                       <GridItem xs={12} sm={12} md={6}>
                         <div className="form-group">
-                        <span className="text">Project Language</span>
+                        <span>Project Language</span>
                           <select name="Project_created_by" id="Project_created_by" className="form-control signup-input" {...register('project_language', {required:true ,message:'Please select atleast one option', })}>
                             <option value="" disabled selected>Select Language</option>
                             <option value="Wordpress">Wordpress</option>
@@ -424,7 +424,7 @@ const [selected, setSelected] = useState([]);
     return(
     <>
 
-        <GridItem xs={6} sm={6} md={4}>
+        <GridItem xs={12} sm={6} md={4}>
             <form>
             <Card>
                 <CardHeader color="primary">
@@ -440,12 +440,11 @@ const [selected, setSelected] = useState([]);
                       <GridItem>
                         <p className="projectLanguage">{project.project_language}</p>
                       </GridItem>
-                      <div className="icon">
+
                       <GridItem>
-                        <div className="icon2">
                         <a href={`${server}/admin/project_module/${project.project_id}`}><FiEdit/></a>
                         {/* <button onClick={()=>deleteProject(project.project_id)}>Delete</button> */}
-                        <Popup trigger={<a><MdDelete/></a>} modal>
+                        <Popup trigger={<span><MdDelete/></span>} modal>
                         {close => (
                           <div>
                           <Card>                            
@@ -475,9 +474,7 @@ const [selected, setSelected] = useState([]);
                           </div>
                         )}
                       </Popup>
-                      </div>
                       </GridItem>
-                      </div>
                     </GridContainer>
 
                     <GridContainer>
