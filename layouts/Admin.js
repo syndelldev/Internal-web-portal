@@ -17,7 +17,7 @@ import styles from "assets/jss/nextjs-material-dashboard/layouts/adminStyle.js";
 
 import bgImage from "assets/img/background.jpg";
 import logo from "assets/img/reactlogo.png";
-
+import { server } from 'config';
 let ps;
 
 export default function Admin({ children, ...rest }) {
@@ -80,7 +80,7 @@ export default function Admin({ children, ...rest }) {
       <Sidebar
         routes={routes}
         logoText={"Automation Tool"}
-        logo={logo}
+        logo={`${server}/reactlogo.png`}
         image={image}
         handleDrawerToggle={handleDrawerToggle}
         open={mobileOpen}
