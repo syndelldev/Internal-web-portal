@@ -210,7 +210,8 @@ function SignIn(){
                                 <button type="submit" className="login-create-acc-btn" >Create Account</button>
                             </div>  
                             <div className='login-text'>
-                                <p>Already have an Account ? <a href='/login'><span className='signup-text-login'>Login</span></a></p>
+                                <div><p>Already have an Account? </p></div>
+                                <div><p><a href='/login'><span className='signup-text-login'>Login</span></a></p></div>
                             </div>
                         </form>
                     </div>

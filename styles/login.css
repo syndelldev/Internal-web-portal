@@ -23,6 +23,10 @@ span.icon-eyes svg { font-size: 24px;}
 .error-msg{
     color: red;
 }
+.login-text{
+    display: flex;
+    justify-content: center;
+}
 .login-text p {
     margin-top: 30px;
     font-weight: 500;
