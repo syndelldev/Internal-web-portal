@@ -78,7 +78,7 @@ export default function home()
                         toastId.current = toast.success('Login Successful! 🎉', {
                             position: "top-right",
                             autoClose:1000,
-                            onClose: () => router.push("/user/dashboard")
+                            onClose: () => router.push("/admin/dashboard")
                             });
                         }
                     }
