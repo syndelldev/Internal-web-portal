@@ -15,7 +15,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableBody from "@material-ui/core/TableBody";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
-
+import { useRouter } from 'next/router'
 import axios from "axios";
 import { server } from 'config';
 
@@ -51,7 +51,7 @@ export async function getServerSideProps(context){
 function UserRights({UserList,ModuleList}){
     const useStyles = makeStyles(styles);
     const classes = useStyles();
-
+    const router = useRouter();
     const [user, setuser] = useState(1)
     // console.log(user)
 
@@ -64,52 +64,56 @@ function UserRights({UserList,ModuleList}){
         .then((res)=>{
             setusers(res.data)
         })
+        // router.push("/admin/user-rights")
     }
     // console.log(users)
     
     const [rightsList,setrightsList] = useState([])
-    console.log(rightsList)
-
-    const [checkbox,setcheckbox] = useState(0)
-    console.log(checkbox)
-
     
 
-    const handleCheckbox = (e) =>{
-        console.log(e.target.value); 
+    const [viewcheckbox,setviewcheckbox] = useState(0)
+    // console.log(viewcheckbox)
+    const viewCheckbox = (e) =>{
+        
+        console.log(e.target.value);
+
         if(e.target.value==0)
         {
-            setcheckbox(1)
+            setviewcheckbox(1)
         }
         else if(e.target.value==1)
         {
-            setcheckbox(0)
+            setviewcheckbox(0)
         }
     }
-    console.log(checkbox)
+    console.log(viewcheckbox)
+
+    const [editcheckbox,seteditcheckbox] = useState(false)
+
+    const editCheckbox = (e) =>{
+        console.log(e.target.value);
+        if(e.target.value === true)
+        {
+            seteditcheckbox(false)
+            alert(false)
+        }
+        else if(e.target.value === false)
+        {
+            seteditcheckbox(true)
+            alert(true)
+        }
+    }
+    console.log(editcheckbox)
 
 
     const edit_rights = (project_id) =>{
         // console.log(project_id)
 
-        if(rightsList != "" )
-        {
-            console.log("not null")
-            let check_uncheck = axios.put(`${server}/api/rights/project/${project_id}`, {view:checkbox})
-            .then((responce)=>{
-                setrightsList(responce.data)
-            }) 
-            console.log(check_uncheck) 
-        }
-        else{
-            console.log("null")
-        }
-
-        let data = axios.post(`${server}/api/rights/project/${project_id}`, {userid:user,moduleid:module,projectid:project_id})
+        let data = axios.put(`${server}/api/rights/project/${project_id}`, {userid:user,moduleid:module,projectid:project_id,view:viewcheckbox,edit:editcheckbox})
         .then((responce)=>{
             setrightsList(responce.data)
         })  
-        
+        console.log(rightsList)
     }
     
     
@@ -179,11 +183,11 @@ function UserRights({UserList,ModuleList}){
                                                         <TableCell>{data.project_title}-{data.project_id}</TableCell>  
                                                                 
                                                         <TableCell>
-                                                            <input type="checkbox" name="view_rights" value={data.view} onChange={handleCheckbox} defaultChecked={data.view==1} onClick={()=>edit_rights(data.project_id)}/>{data.view}
+                                                            <input type="checkbox" name="view_rights" value={data.view} onChange={viewCheckbox} defaultChecked={data.view==1} onClick={()=>edit_rights(data.project_id)}/>{data.view}
                                                         </TableCell>
 
                                                         <TableCell>
-                                                            <input type="checkbox" name="edit_rights" value={data.edit} onChange={handleCheckbox} defaultChecked={isInArray==true} /> {data.edit} - {data.user_id}
+                                                            <input type="checkbox" name="edit_rights" value={isInArray} onChange={editCheckbox} defaultChecked={isInArray==true} onClick={()=>edit_rights(data.project_id)} /> {data.edit} - {data.user_id}
                                                         </TableCell>
                                                                             
                                                     </TableRow>   
@@ -192,6 +196,13 @@ function UserRights({UserList,ModuleList}){
                                             }                                       
                                             </TableBody>
                                             
+                                            {/* {check_uncheck.map((r)=>{
+                                                return(
+                                                    <>
+                                                        <p>{r.rights_id}</p>
+                                                    </>
+                                                )
+                                            })} */}
                                 </Table>
                             </div>
                         </CardBody>
