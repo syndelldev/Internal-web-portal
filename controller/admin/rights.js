@@ -2,7 +2,6 @@ import { executeQuery } from "../../config/db";
 
 const rights = async (req,res) =>{
     try{
-        //SELECT * FROM `role` LEFT JOIN `tbl_rights` ON role.role_id=tbl_rights.role_id;
         let rightsData=await executeQuery(" SELECT * FROM `tbl_user`  ", [] );
         res.send(rightsData);
     }
@@ -23,8 +22,8 @@ const modules = async (req,res) =>{
 
 const ModuleById = async (req,res) => {
     let id = req.query.id;
-    console.log(id)
-    console.log(req.body)
+    // console.log(id)
+    // console.log(req.body)
 
     if(req.body.moduleid==1)
     {
@@ -54,28 +53,43 @@ const ModuleById = async (req,res) => {
 const ProjectById = async (req,res) =>{
     console.log(req.body)
 
-    var check_condition = await executeQuery(" SELECT * FROM `tbl_rights` INNER JOIN tbl_project_rights WHERE tbl_project_rights.user_id=? AND tbl_rights.project_id=? AND tbl_rights.module_id=? AND tbl_rights.user_id=?  ", [req.body.userid, req.body.projectid, req.body.moduleid, req.body.userid] );
+    // var check_condition = await executeQuery(" SELECT * FROM `tbl_rights` INNER JOIN tbl_project_rights WHERE tbl_project_rights.user_id=? AND tbl_rights.project_id=? AND tbl_rights.module_id=? AND tbl_rights.user_id=?  ", [req.body.userid, req.body.projectid, req.body.moduleid, req.body.userid] );
+    // var check_condition = await executeQuery(" SELECT * FROM `tbl_rights` INNER JOIN tbl_project_rights WHERE tbl_project_rights.user_id LIKE ? AND tbl_rights.project_id=? AND tbl_rights.module_id=? AND tbl_rights.user_id=? ", [`%${req.body.userid}%`, req.body.projectid, req.body.moduleid, req.body.userid] );
+    var check_condition = await executeQuery(" SELECT * FROM `tbl_rights` WHERE user_id=? AND module_id=? AND project_id=? ", [req.body.userid, req.body.moduleid, req.body.projectid] );
+
     console.log(check_condition)
 
     if(check_condition != "" )
     {
-        // console.log("data exist")
+        console.log("data exist")
         res.send(check_condition);
-        // const update_checkbox = await executeQuery(" UPDATE tbl_user SET ? WHERE id = ? ",[])
-        // console.log(update_checkbox)
-    }
-    else
-    {
-        // console.log("data does not exist")      
+
+
         let data = await executeQuery(" SELECT * FROM `tbl_rights` WHERE user_id=? AND project_id=? ", [req.body.userid, req.body.projectid])
-        console.log(data)
+        // console.log(data)
+        res.send(data);
+
         if(data != "" )
         {
             console.log("project_id and user_id already availble ")
+            console.log(req.body)
+
+           
+            var update_checkbox = await executeQuery(" UPDATE tbl_rights SET view_rights=? WHERE project_id = ? AND user_id=?  ",[ req.body.checkbox_view, req.body.projectid, req.body.userid])
+            res.status(200).json(update_checkbox);
+            console.log(update_checkbox)
+           
         }
-        else
+    }
+    else
+    {
+        console.log("data does not exist") 
+        
+        let data = await executeQuery(" SELECT * FROM `tbl_rights` WHERE user_id=? AND project_id=? ", [req.body.userid, req.body.projectid])
+        // console.log(data)
+        
+        if(data == "" )
         {
-            console.log("null")
             try{
                 let project = await executeQuery("INSERT INTO `tbl_rights` ( `user_id`, `project_id`, `module_id`,`view_rights`, `edit_rights` ) VALUES (?,?,?,0,0)", [req.body.userid, req.body.projectid, req.body.moduleid])
                 res.status(200).json(project);
@@ -85,8 +99,34 @@ const ProjectById = async (req,res) =>{
                 console.log(err)
             }
         }
+        // if(data != "" )
+        // {
+        //     console.log("project_id and user_id already availble ")
+        //     var update_checkbox = await executeQuery(" SELECT * FROM `tbl_rights` WHERE user_id=? AND project_id=? ", [req.body.userid, req.body.projectid])
+        //     var update_checkbox = await executeQuery(" UPDATE tbl_rights SET view_rights=1 WHERE project_id = ? AND user_id=? ",[req.body.userid, req.body.projectid])
+        //     console.log(update_checkbox)
+        // }
+        // else
+        // {
+        //     console.log("null")
+        //     try{
+        //         let project = await executeQuery("INSERT INTO `tbl_rights` ( `user_id`, `project_id`, `module_id`,`view_rights`, `edit_rights` ) VALUES (?,?,?,0,0)", [req.body.userid, req.body.projectid, req.body.moduleid])
+        //         res.status(200).json(project);
+        //         // console.log(project);
+        //     }
+        //     catch(err){
+        //         console.log(err)
+        //     }
+        // }
     }
     
 }
 
-export { rights,modules,ModuleById,ProjectById }
+const update_checkbox = async (req,res) =>{
+    console.log(req.body)
+
+    // let data2 = await executeQuery(" SELECT * FROM `tbl_rights` WHERE user_id=? AND project_id=? ", [req.body.userid, req.body.projectid])
+    // console.log(data2)
+}
+
+export { rights,modules,ModuleById,ProjectById,update_checkbox }
