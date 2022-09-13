@@ -118,3 +118,10 @@ a {
 .text ,.projectTitle{
   color: black;
 }
+.popup-align
+{
+  position: relative;
+  top: 120px;
+  left: 50%;
+  transform: translate(-50px, -50px);
+}

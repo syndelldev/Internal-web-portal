@@ -508,7 +508,7 @@ return(
                       <Popup trigger={<a><div className='icon-width' onClick={()=>projectId(project.project_id)}><FiEdit/></div></a>} className="popupReact" modal>
 
               {close => (
-              <div>
+              <div className="popup-align">
               <GridContainer>
               <GridItem xs={12} sm={12} md={12}>
               <form onSubmit={handleSubmit(onSubmit)}>              
