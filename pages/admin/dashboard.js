@@ -218,11 +218,11 @@ const [selected, setSelected] = useState([]);
 
   return (
     <>
-
+  <div className="buttonalign">
     <GridContainer>
         <GridItem>
 
-          <Popup trigger={<div className={classes.img}><button>Project</button></div>} modal>
+          <Popup trigger={<div className={classes.img}><button className="bttn-design">Project</button></div>} modal>
 
           {close => (
       <div>
@@ -424,9 +424,7 @@ const [selected, setSelected] = useState([]);
           </form>
       </GridItem>
     </GridContainer>
-
   </div>
-  
       )}
         </Popup>
 {/* create project form end */}
@@ -464,7 +462,7 @@ const [selected, setSelected] = useState([]);
   </GridItem>
 
 </GridContainer>
-
+</div>
     <GridContainer>
 
 {all_status.map((status)=>{
@@ -503,11 +501,11 @@ return(
                   </GridItem>
 
                   <GridItem>
-                    <div className="edit">
+                    <div className="icon-display">
                       {/* <div onClick={()=>updateProject(project.project_id)}>project</div> */}
                       {/* <a href={`${server}/admin/project_module/${project.project_id}`}><FiEdit/></a> */}
                       {/* <Button onClick={()=>updateProject(project.project_id)}>Yes</Button> */}
-                      <Popup trigger={<a><div className={classes.img} onClick={()=>projectId(project.project_id)}><FiEdit/></div></a>} className="popupReact" modal>
+                      <Popup trigger={<a><div className='icon-width' onClick={()=>projectId(project.project_id)}><FiEdit/></div></a>} className="popupReact" modal>
 
               {close => (
               <div>

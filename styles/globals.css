@@ -18,10 +18,11 @@ a {
 /* filter project language, department dropdown */
 
 .dropdown_button {
-  color: black;
+  
   padding: 3px 15px;
   font-size: 16px;
-  border: 2px solid #000;
+  border: none;
+  background-color: #ADD8E6;
 }
 
 .department_dropdown {
@@ -76,4 +77,44 @@ a {
   justify-content: center;
   display: flex;
   margin-bottom: 10px;
-}  
+} 
+
+.logout{
+  background-color: #ADD8E6 !important;
+}
+.MuiGrid-root.makeStyles-grid-479.MuiGrid-container{
+  justify-content: center;
+}
+.bttn-design{
+  background-color: #ADD8E6;
+  border: none;
+}
+
+.icon-display{
+  display: flex;
+}
+.icon-width{
+  width: auto;
+}
+.icon-align{
+  vertical-align: top;
+} 
+
+.add_new_user{
+  color: white;
+  margin-bottom: 0px;
+}
+
+.icon{
+  margin-left: auto;
+}
+.icon2{
+  display: flex;
+}
+.project_delete_icon{
+  background-color: white;
+  border: none;
+}
+.text ,.projectTitle{
+  color: black;
+}
