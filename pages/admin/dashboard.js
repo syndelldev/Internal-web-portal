@@ -437,10 +437,10 @@ const [selected, setSelected] = useState([]);
         <a href={`${server}/admin/project_module`}>All</a>
         <a href={`${server}/admin/project_module/project_department/HR`}>HR</a>
         <a href={`${server}/admin/project_module/project_department/UI & UX`}>UI & UX</a>
-        <a href={`${server}/admin/project_module/project_department/Web development`}>Web development</a>
-        <a href={`${server}/admin/project_module/project_department/Content writer`}>Content writer</a>
-        <a href={`${server}/admin/project_module/project_department/Project manager`}>Project manager</a>
-        <a href={`${server}/admin/project_module/project_department/Mobile App developer`}>Mobile App developer</a>
+        <a href={`${server}/admin/project_module/project_department/Web development`}>Web Development</a>
+        <a href={`${server}/admin/project_module/project_department/Content writer`}>Content Writer</a>
+        <a href={`${server}/admin/project_module/project_department/Project manager`}>Project Manager</a>
+        <a href={`${server}/admin/project_module/project_department/Mobile App developer`}>Mobile App Developer</a>
         <a href={`${server}/admin/project_module/project_department/SEO`}>SEO</a>
       </div>
 </div>
