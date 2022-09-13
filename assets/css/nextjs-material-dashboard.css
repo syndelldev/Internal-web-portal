@@ -133,15 +133,15 @@ h6 {
 }
 
 a {
-  color: white;
+  color: #000;
   text-decoration: none;
   display: grid;
-  margin-bottom: 20px;
+  /*margin-bottom: 20px;*/
 }
 
 a:hover,
 a:focus {
-  color: white;
+  color: #000;
   text-decoration: none;
 }
 
