@@ -53,13 +53,17 @@ const ModuleById = async (req,res) => {
 const ProjectById = async (req,res) =>{
     console.log(req.body)
 
-    var check_condition = await executeQuery(" SELECT * FROM `tbl_rights` INNER JOIN tbl_project_rights WHERE tbl_project_rights.user_id=? AND tbl_rights.project_id=? AND tbl_rights.module_id=? AND tbl_rights.user_id=?  ", [req.body.userid, req.body.projectid, req.body.moduleid, req.body.userid] );
+    // var check_condition = await executeQuery(" SELECT * FROM `tbl_rights` INNER JOIN tbl_project_rights WHERE tbl_project_rights.user_id=? AND tbl_rights.project_id=? AND tbl_rights.module_id=? AND tbl_rights.user_id=?  ", [req.body.userid, req.body.projectid, req.body.moduleid, req.body.userid] );
+    // var check_condition = await executeQuery(" SELECT * FROM `tbl_rights` INNER JOIN tbl_project_rights WHERE tbl_project_rights.user_id LIKE ? AND tbl_rights.project_id=? AND tbl_rights.module_id=? AND tbl_rights.user_id=? ", [`%${req.body.userid}%`, req.body.projectid, req.body.moduleid, req.body.userid] );
+    var check_condition = await executeQuery(" SELECT * FROM `tbl_rights` WHERE user_id=? AND module_id=? AND project_id=? ", [req.body.userid, req.body.moduleid, req.body.projectid] );
+
     console.log(check_condition)
 
     if(check_condition != "" )
     {
         console.log("data exist")
         res.send(check_condition);
+
 
         let data = await executeQuery(" SELECT * FROM `tbl_rights` WHERE user_id=? AND project_id=? ", [req.body.userid, req.body.projectid])
         // console.log(data)
@@ -71,7 +75,7 @@ const ProjectById = async (req,res) =>{
             console.log(req.body)
 
            
-            var update_checkbox = await executeQuery(" UPDATE tbl_rights SET view_rights=? WHERE project_id = ? AND user_id=? ",[ req.body.checkbox_view, req.body.projectid, req.body.userid])
+            var update_checkbox = await executeQuery(" UPDATE tbl_rights SET view_rights=? WHERE project_id = ? AND user_id=?  ",[ req.body.checkbox_view, req.body.projectid, req.body.userid])
             res.status(200).json(update_checkbox);
             console.log(update_checkbox)
            
