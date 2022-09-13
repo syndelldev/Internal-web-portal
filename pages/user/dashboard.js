@@ -111,13 +111,18 @@ function Dashboard({project}) {
                     <p className="projectLanguage">{project.project_language}</p>
                     <p className="projectPriority">
                       {/* {project.project_id} */}
-                      {/* {rights.map((r)=>{
-                        return(
-                          <>
-                            <p>{r.project_id}</p>
-                          </>
-                        )
-                      })} */}
+                      {rights.map((r)=>{
+                        // console.log(r.project_id)
+                        if(project.project_id === r.project_id)
+                        {
+                          return(
+                            <>
+                              <p>{r.view_rights}-view</p>
+                              <p>{r.edit_rights}-edit</p>
+                            </>
+                          )
+                        }
+                      })}
                     </p>
                   </CardFooter>
                   <CardFooter>
