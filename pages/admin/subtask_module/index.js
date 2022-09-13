@@ -127,6 +127,7 @@ function Dashboard( { project_details , User_name , allTask } ) {
     console.log(id);
 
     const res = await fetch(`${server}/api/subtask/deleteTask/${id}`);
+    router.push(`${server}/admin/subtask_module`);
   }
   const { register,  watch, handleSubmit, formState: { errors }, setValue } = useForm(); 
   const [startDate, setStartDate] = useState();
@@ -481,7 +482,41 @@ const [p_selected, setProject] = useState([]);
 
                   <GridItem>
                     <a href={`${server}/admin/subtask_module/${task.task_id}`}><FiEdit/></a>
-                    <button onClick={()=>deleteTask(task.task_id)} className="project_delete_icon"><MdDelete/></button>
+                    {/* <button onClick={()=>deleteTask(task.task_id)} className="project_delete_icon"><MdDelete/></button> */}
+
+
+                    <Popup trigger={<span><MdDelete/></span>} modal>
+                        {close => (
+                          <div>
+                          <Card>                            
+                            <GridContainer>
+                              <GridItem xs={12} sm={12} md={12}>
+                                  <GridContainer>
+                                    <GridItem>
+                                      <div>
+                                        <CardBody>
+                                          <h4 className={classes.cardTitleWhite}>Are you sure you want to delete {task.task_title} task?</h4>
+                                        </CardBody>
+                                        <CardFooter>
+                                            <Button onClick={()=>deleteTask(task.task_id)}>Yes</Button>
+                                            <Button className="button" onClick={() => { close(); }}> No </Button>
+                                        </CardFooter>
+                                      </div>
+                                    </GridItem>
+
+                                      <div className={classes.close}>
+                                        <a onClick={close}>&times;</a>
+                                      </div>
+                                  </GridContainer>
+                              </GridItem>
+                            </GridContainer>
+                          </Card>
+  
+                          </div>
+                        )}
+                      </Popup>
+
+
                   </GridItem>
                 </GridContainer>
 
