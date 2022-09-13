@@ -38,7 +38,7 @@ export default function home()
             document.getElementById("errpassword").innerHTML = text;
         }
 
-        const res = await fetch(`${server}/api/admin/login/`,{
+        const res = await fetch(`${server}/api/admin/login`,{
             method: "POST",
             headers: { "Content-Type": "application/json",},
             body:JSON.stringify({email,password}),
@@ -78,7 +78,7 @@ export default function home()
                         toastId.current = toast.success('Login Successful! 🎉', {
                             position: "top-right",
                             autoClose:1000,
-                            onClose: () => router.push("/user/dashboard")
+                            onClose: () => router.push("/admin/dashboard")
                             });
                         }
                     }

@@ -174,7 +174,7 @@ console.log(date);
 console.log(new Date(date));
 
 const [startDate, setStartDate] = useState();
-const [endDate, setEndDate] = useState(new Date({date}));
+const [endDate, setEndDate] = useState();
 console.log("date");
 console.log(uoption.project_deadline);
 
