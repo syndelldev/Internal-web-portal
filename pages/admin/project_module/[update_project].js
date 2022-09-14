@@ -22,6 +22,7 @@ import { server } from 'config';
 import avatar from "assets/img/faces/marc.jpg";
 import DatePicker from "react-datepicker";
 import Multiselect from "multiselect-react-dropdown";
+import { ToastContainer, toast } from 'react-toastify';
 
 
 const styles = {
@@ -66,6 +67,7 @@ function AddUser({ User_name,project_details }) {
   const { register,  watch, handleSubmit, formState: { errors }, setValue } = useForm();
   const router = useRouter();
 
+  const toastId = React.useRef(null);
   const onSubmit = async (result) =>{
     
     const allMember = [];
@@ -91,8 +93,14 @@ function AddUser({ User_name,project_details }) {
 
     if(res.status==200)
     {
-      // alert("success");
-      router.push(`${server}/admin/project_module`);
+      if(!toast.isActive(toastId.current)) {
+        toastId.current = toast.success('Update Successful! 🎉', {
+            position: "top-right",
+            autoClose:1000,
+            onClose: () => router.push(`${server}/admin/project_module`)
+            });
+        }
+      // router.push(`${server}/admin/project_module`);
     }
     else
     {
@@ -160,9 +168,17 @@ for(var i=0; i<projectMember.length; i++){
 }
 // var date = (uoption.project_start).substring(0,10);
 // console.log(date);
-var date = (uoption.project_deadline).slice(0 , 10) ;
-console.log(date);
+// var date = (uoption.project_deadline).slice(0 , 10) ;
+// console.log(date);
+// console.log(Date.parse(date));
 
+// var date1 = Date.parse(date);
+// console.log(date1);
+// console.log(new Date(date1));
+
+// var end_Date = new Date(date1);
+// const deadline_date = end_Date ;
+// console.log(deadline_date);
 
 // var date = date[0]+"/"+date[1]+"/"+date[2] ;
 // console.log(date);
@@ -171,12 +187,12 @@ console.log(date);
 // console.log(dateValue);
 // console.log(new Date(`${date[0]+'/'+date[1]+'/'+date[2]}`));
 // console.log(new Date(date).toISOString());
-console.log(new Date(date));
+// console.log(new Date(date).toISOString());
 
 const [startDate, setStartDate] = useState();
 const [endDate, setEndDate] = useState();
-console.log("date");
-console.log(uoption.project_deadline);
+// console.log("date");
+// console.log(uoption.project_deadline);
 
   return (
     <div>
@@ -365,6 +381,7 @@ console.log(uoption.project_deadline);
             </form>
         </GridItem>
       </GridContainer>
+      <ToastContainer limit={1}/>
     </div>
   );
 }
