@@ -144,12 +144,23 @@ const [uoption, setOption] = useState({
 useEffect(() =>{
   const u_data = async() =>{
 
-    project_details.map((project)=>{
-      setOption(project);
-    });
+    if(project_details % 2 === 0){
+      project_details.map((projects)=>{
+        setUpdate(projects);
+      });
+    
+    }
+    return null;
+
+
+    // project_details.map((project)=>{
+    //   setOption(project);
+    // });
   }
   u_data();
 },[]);
+console.log(" id data3 ");
+console.log(uoption);
 
 const handleChange = ({ target: { name, value } }) =>{
   console.log("name");
@@ -167,6 +178,7 @@ for(var i=0; i<projectMember.length; i++){
   allSelectedUser.push({'label' :projectMember[i] , 'value' : projectMember[i]});
 }
 const udate = ((uoption.project_deadline).slice(0 , 10)) ;
+console.log(uoption);
 console.log("date slice");
 console.log(udate);
 console.log(uoption.project_deadline);
