@@ -4,6 +4,9 @@ import { useRouter } from 'next/router';
 import { makeStyles } from "@material-ui/core/styles";
 import Admin from "layouts/Admin.js";
 import { server } from 'config';
+import GridItem from "components/Grid/GridItem.js";
+import GridContainer from "components/Grid/GridContainer.js";
+
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 export async function getServerSideProps(){
@@ -25,8 +28,8 @@ const reorderPosition = (tasks, startIndex, endIndex) =>{
 }
 
 function AddProject({ User_name }) {
-  const useStyles = makeStyles(styles);
-  const classes = useStyles();
+  // const useStyles = makeStyles(styles);
+  // const classes = useStyles();
   
   const router = useRouter();
 
@@ -63,7 +66,10 @@ const onDragEnd = (result) => {
 }
 
 
-  return (
+  return (<>
+  <GridContainer>
+    <GridItem>
+
     <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart} onDragUpdate={onDragUpdate}>
         <Droppable droppableId="col">
 
@@ -78,8 +84,14 @@ const onDragEnd = (result) => {
                         {...draggableProvided.draggableProps}
                         ref= {draggableProvided.innerRef}
                         >
-                            <h2>{user.username}</h2>
-                        </div>
+                <GridContainer>
+                  <GridItem>
+                    <h2>{user.username}</h2>
+                  </GridItem>
+                </GridContainer>
+
+                {/* <h2>{user.username}</h2> */}
+                      </div>
                 }
             </Draggable>
             );
@@ -89,6 +101,44 @@ const onDragEnd = (result) => {
 
         </Droppable>
     </DragDropContext>
+    </GridItem>
+
+<GridItem>
+    <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart} onDragUpdate={onDragUpdate}>
+        <Droppable droppableId="col">
+
+    {(droppableProvided) => <div {...droppableProvided.droppableProps} ref={droppableProvided.innerRef}>
+
+        {User_name.map((user , index)=>{
+            return(
+            <Draggable key={user.id}  draggableId={user.id.toString()} index={index}>
+                {(draggableProvided , draggableSnapshot) =>
+                        <div 
+                        {...draggableProvided.dragHandleProps} 
+                        {...draggableProvided.draggableProps}
+                        ref= {draggableProvided.innerRef}
+                        >
+                <GridContainer>
+                  <GridItem>
+                    <h2>{user.username}</h2>
+                  </GridItem>
+                </GridContainer>
+
+                {/* <h2>{user.username}</h2> */}
+                      </div>
+                }
+            </Draggable>
+            );
+            })}
+
+        </div>}
+
+        </Droppable>
+    </DragDropContext>
+    </GridItem>
+    </GridContainer>
+
+    </>
   )
 }
 

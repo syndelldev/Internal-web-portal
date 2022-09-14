@@ -146,7 +146,7 @@ function Dashboard( { project_details , User_name , allTask } ) {
       body:JSON.stringify({task_person:selected, project_name:p_selected, task_status:result.task_status , task_title:result.task_title, task_description:result.task_description, task_language:result.task_language, task_comment:result.task_comment, task_priority:result.task_priority, task_start: result.start , task_deadline: result.end }),
     })
     const data=await res.json()
-    
+
     if(res.status==200)
     {
       // alert("success");
@@ -157,6 +157,11 @@ function Dashboard( { project_details , User_name , allTask } ) {
       alert("Fail");
     }
   }
+  const [passwords , setpasswrong] = useState("");
+
+  useEffect(() =>{
+  setpasswrong("Username and Password Not matched!");
+  });
 
 const [uoptions, setOptions] = useState([]);
 
@@ -195,6 +200,8 @@ useEffect(() =>{
   u_data();
 },[]);
 const [p_selected, setProject] = useState([]);
+
+
 
 
   return (
@@ -450,8 +457,9 @@ const [p_selected, setProject] = useState([]);
 
     <GridContainer>
 
-    <GridItem xs={6} sm={6} md={3}>
-      <span className="heading">Task to do</span>
+    {/* <GridItem xs={6} sm={6} md={8}> */}
+    {/* <span className="heading">Task to do</span> */}
+    <div>Task{passwords}</div>
 
     {allTask.map((task)=>{
 
@@ -463,7 +471,7 @@ const [p_selected, setProject] = useState([]);
     return(
     <>
 
-    <GridItem>
+    <GridItem xs={6} sm={6} md={4}>
         <form>
         <Card>
             <CardHeader color="primary">
@@ -476,6 +484,7 @@ const [p_selected, setProject] = useState([]);
 
               <CardBody>
               <GridContainer>
+                
                   <GridItem>
                     <p className="projectLanguage">{task.task_language}</p>
                   </GridItem>
@@ -552,229 +561,7 @@ const [p_selected, setProject] = useState([]);
     })
  }
 
-    </GridItem>
-
-
-
-    <GridItem xs={6} sm={6} md={3}>
-      <span>Task on hold</span>
-
-    {allTask.map((task)=>{
-
-    if(task.task_delete == "no"){
-    if(task.task_status == "task in progress"){
-
-          var person = task.task_person.split(",");
-    
-        return(
-        <>
-    
-            <GridItem>
-              <form>
-                <Card>
-                    <CardHeader color="primary">
-    
-                      <img src={`${server}/reactlogo.png`} className={classes.img}/>
-    
-                        <h4 className="projectTitle">{task.task_title}</h4>
-                        <p className={classes.cardCategoryWhite}></p>
-                    </CardHeader>
-    
-                      <CardBody>
-                      <GridContainer>
-                          <GridItem>
-                            <p className="projectLanguage">{task.task_language}</p>
-                          </GridItem>
-    
-                          <GridItem>
-                            <a href={`${server}/admin/project_module/${task.task_id}`}>Edit</a>
-                            <button onClick={()=>deleteTask(task.task_id)}>Delete</button>
-                          </GridItem>
-                        </GridContainer>
-    
-                        <GridContainer>
-                          <GridItem>
-                            {person.map((data)=>{
-                              return(
-                                <>
-                                  <p className="projectPerson">{data}</p>
-                                </>
-                              )
-                            })
-                            }
-                          </GridItem>
-                        </GridContainer>
-    
-                        <GridContainer>
-                          <GridItem>
-                            <p className="projectPriority">task Priority : {task.task_priority}</p>
-                          </GridItem>
-                          
-                          <GridItem>
-                          </GridItem>
-                        </GridContainer>
-                        
-                        </CardBody>
-    
-                        <CardFooter>
-                        </CardFooter>
-                    </Card>
-                </form>
-            </GridItem>
-          </>
-                )}
-    
-                  }
-    })
- }
-
-    </GridItem>
-
-
-
-    <GridItem xs={6} sm={6} md={3}>
-      <span>Task In Progress</span>
-
-    {allTask.map((task)=>{
-
-    if(task.task_delete == "no"){
-    if(task.task_status == "task in progress"){
-
-          var person = task.task_person.split(",");
-    
-        return(
-        <>
-    
-            <GridItem>
-              <form>
-                <Card>
-                    <CardHeader color="primary">
-    
-                      <img src={`${server}/reactlogo.png`} className={classes.img}/>
-    
-                        <h4 className="projectTitle">{task.task_title}</h4>
-                        <p className={classes.cardCategoryWhite}></p>
-                    </CardHeader>
-    
-                      <CardBody>
-                      <GridContainer>
-                          <GridItem>
-                            <p className="projectLanguage">{task.task_language}</p>
-                          </GridItem>
-    
-                          <GridItem>
-                            <a href={`${server}/admin/project_module/${task.task_id}`}>Edit</a>
-                            <button onClick={()=>deleteTask(task.task_id)}>Delete</button>
-                          </GridItem>
-                        </GridContainer>
-    
-                        <GridContainer>
-                          <GridItem>
-                            {person.map((data)=>{
-                              return(
-                                <>
-                                  <p className="projectPerson">{data}</p>
-                                </>
-                              )
-                            })
-                            }
-                          </GridItem>
-                        </GridContainer>
-    
-                        <GridContainer>
-                          <GridItem>
-                            <p className="projectPriority">task Priority : {task.task_priority}</p>
-                          </GridItem>
-                          
-                          <GridItem>
-                          </GridItem>
-                        </GridContainer>
-                        
-                        </CardBody>
-    
-                        <CardFooter>
-                        </CardFooter>
-                    </Card>
-                </form>
-            </GridItem>
-          </>
-                )}
-    
-                  }
-    })
- }
-
-    </GridItem>
-
-    <GridItem xs={6} sm={6} md={3}>
-      <span>Task completed</span>
-
-    {allTask.map((task)=>{
-
-    if(task.task_delete == "no"){
-      if(task.task_status == "completed"){
-
-      var person = task.task_person.split(",");
-
-    return(
-    <>
-    <GridItem>
-        <form>
-        <Card>
-            <CardHeader color="primary">
-              <img src={`${server}/reactlogo.png`} className={classes.img}/>
-                <h4 className="projectTitle">{task.task_title}</h4>
-                <p className={classes.cardCategoryWhite}></p>
-            </CardHeader>
-
-              <CardBody>
-              <GridContainer>
-                  <GridItem>
-                    <p className="projectLanguage">{task.task_language}</p>
-                  </GridItem>
-
-                  <GridItem>
-                    <a href={`${server}/admin/project_module/${task.task_id}`}>Edit</a>
-                    <button onClick={()=>deleteTask(task.task_id)}>Delete</button>
-                  </GridItem>
-                </GridContainer>
-
-                <GridContainer>
-                  <GridItem>
-                    {person.map((data)=>{
-                      return(
-                        <>
-                          <p className="projectPerson">{data}</p>
-                        </>
-                      )
-                    })
-                    }
-                  </GridItem>
-                </GridContainer>
-
-                <GridContainer>
-                  <GridItem>
-                    <p className="projectPriority">task Priority : {task.task_priority}</p>
-                  </GridItem>
-                </GridContainer>
-                
-                </CardBody>
-
-                <CardFooter>
-                </CardFooter>
-            </Card>
-        </form>
-    </GridItem>
-  </>
-        )}    
-                  }
-    })
- }
-
-
-    </GridItem>
-
-
+    {/* </GridItem> */}
 
     </GridContainer>
     </>
