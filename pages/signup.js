@@ -71,7 +71,7 @@ function SignIn(){
             <section className='login-section'>
                 <div className='container login-container'>
                     <div className='login-div'>
-                        <h2 className='login-title'>Automation Tool SignUp</h2>
+                        <h2 className='login-title'>Automation Tool Sign Up</h2>
 
 
                         <form method="POST" onSubmit={handleSubmit(onSubmit)} >
