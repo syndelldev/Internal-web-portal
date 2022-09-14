@@ -65,10 +65,11 @@ const ProjectById = async (req,res) =>{
         // res.send(check_condition);
 
         console.log(req.body)
-        // let data = await executeQuery(" SELECT * FROM `tbl_rights` WHERE user_id=? AND project_id=? ", [req.body.userid, req.body.projectid])
-        let data = await executeQuery(" UPDATE `tbl_rights` SET  view_rights=? , edit_rights=? WHERE `user_id`=? AND `project_id`=? ", [req.body.view, req.body.edit, req.body.userid, req.body.projectid])
-        console.log(data)
-        // res.send(data);
+
+            // let data = await executeQuery(" SELECT * FROM `tbl_rights` WHERE user_id=? AND project_id=? ", [req.body.userid, req.body.projectid])
+            let data = await executeQuery(" UPDATE `tbl_rights` SET  view_rights=?,edit_rights=?  WHERE `user_id`=? AND `project_id`=? ", [req.body.view, req.body.edit, req.body.userid, req.body.projectid])
+            console.log(data)
+            // // res.send(data); 
 
     }
     else
@@ -76,7 +77,6 @@ const ProjectById = async (req,res) =>{
         console.log("data does not exist") 
         
         let data = await executeQuery(" SELECT * FROM `tbl_rights` WHERE user_id=? AND project_id=? ", [req.body.userid, req.body.projectid])
-        //let data = await executeQuery(" UPDATE `tbl_rights` SET `user_id`=? AND `project_id`=? AND view_rights=1 WHERE project_id=? ", [req.body.userid, req.body.projectid, req.body.projectid])
         // console.log(data)
         
         if(data == "" )
@@ -113,6 +113,19 @@ const ProjectById = async (req,res) =>{
     
 }
 
+const rights_list = async (req,res) =>{
+    console.log(req.body)
+    try{
+        let rightsData=await executeQuery(` SELECT * FROM tbl_rights WHERE user_id=${userid} `, [] );
+        res.send(rightsData);
+        console.log(rightsData)
+    }
+    catch(err){
+        res.status(500).json(err);
+    }
+}
+
+
 const update_checkbox = async (req,res) =>{
     console.log(req.body)
 
@@ -120,4 +133,4 @@ const update_checkbox = async (req,res) =>{
     // console.log(data2)
 }
 
-export { rights,modules,ModuleById,ProjectById,update_checkbox }
+export { rights,modules,rights_list,ModuleById,ProjectById,update_checkbox }
