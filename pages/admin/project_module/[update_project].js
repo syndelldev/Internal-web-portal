@@ -160,8 +160,8 @@ for(var i=0; i<projectMember.length; i++){
 }
 // var date = (uoption.project_start).substring(0,10);
 // console.log(date);
-var date = (uoption.project_deadline).slice(0 , 10) ;
-console.log(date);
+// var date = (uoption.project_deadline).slice(0 , 10) ;
+// console.log(date);
 
 
 // var date = date[0]+"/"+date[1]+"/"+date[2] ;
@@ -171,7 +171,7 @@ console.log(date);
 // console.log(dateValue);
 // console.log(new Date(`${date[0]+'/'+date[1]+'/'+date[2]}`));
 // console.log(new Date(date).toISOString());
-console.log(new Date(date));
+// console.log(new Date(date));
 
 const [startDate, setStartDate] = useState();
 const [endDate, setEndDate] = useState();
