@@ -181,17 +181,17 @@ function Dashboard( { project_details , User_name, all_status } ) {
     console.log("result");
     console.log(selected);
     
-    // const res = await fetch(`${server}/api/project/addproject`,{
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body:JSON.stringify({project_person:selected,project_department:result.project_department,project_status:result.project_status , project_title:result.project_title, project_description:result.project_description, project_language:result.project_language, project_comment:result.project_comment, project_priority:result.project_priority, project_start: result.start , project_deadline: result.end }),
-    // })
-    // const data=await res.json()
+    const res = await fetch(`${server}/api/project/addproject`,{
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body:JSON.stringify({project_person:selected,project_department:result.project_department,project_status:result.project_status , project_title:result.project_title, project_description:result.project_description, project_language:result.project_language, project_comment:result.project_comment, project_priority:result.project_priority, project_start: result.start , project_deadline: result.end }),
+    })
+    const data=await res.json()
     
     if(res.status==200)
     {
-      alert("success");
-      // router.push(`${server}/admin/project_module/project_department/${result.project_department}`);
+      // alert("success");
+      router.push(`${server}/admin/project_module/project_department/${result.project_department}`);
     }
     else
     {
@@ -222,7 +222,7 @@ const [selected, setSelected] = useState([]);
     <GridContainer>
         <GridItem>
 
-          <Popup trigger={<div className={classes.img}><button className="bttn-design">Project</button></div>} modal>
+          <Popup trigger={<div className={classes.img}><button className="bttn-design">Project</button></div>} className="popupReact" modal>
 
           {close => (
       <div>
@@ -470,7 +470,6 @@ const [selected, setSelected] = useState([]);
 return(
   <>
     <GridItem xs={6} sm={6} md={4}>
-    <span className="heading">{status.project_status} projects</span>
 
     {project_details.map((project)=>{
 

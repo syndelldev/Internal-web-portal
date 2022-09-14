@@ -160,7 +160,7 @@ function Dashboard( { project_details , User_name , allTask } ) {
   const [passwords , setpasswrong] = useState("");
 
   useEffect(() =>{
-  setpasswrong("Username and Password Not matched!");
+  // setpasswrong("Username and Password Not matched!");
   });
 
 const [uoptions, setOptions] = useState([]);
@@ -459,7 +459,6 @@ const [p_selected, setProject] = useState([]);
 
     {/* <GridItem xs={6} sm={6} md={8}> */}
     {/* <span className="heading">Task to do</span> */}
-    <div>Task{passwords}</div>
 
     {allTask.map((task)=>{
 
