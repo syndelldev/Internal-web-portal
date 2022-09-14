@@ -166,31 +166,20 @@ for(var i=0; i<projectMember.length; i++){
   allSelectedMember.push({'label' :projectMember[i] , 'value' : projectMember[i]});
   allSelectedUser.push({'label' :projectMember[i] , 'value' : projectMember[i]});
 }
-// var date = (uoption.project_start).substring(0,10);
-// console.log(date);
-// var date = (uoption.project_deadline).slice(0 , 10) ;
-// console.log(date);
-// console.log(Date.parse(date));
+var date = (uoption.project_deadline).slice(0 , 10) ;
+console.log(date);
 
-// var date1 = Date.parse(date);
-// console.log(date1);
-// console.log(new Date(date1));
-
-// var end_Date = new Date(date1);
-// const deadline_date = end_Date ;
-// console.log(deadline_date);
-
-// var date = date[0]+"/"+date[1]+"/"+date[2] ;
+var date = date[0]+"/"+date[1]+"/"+date[2] ;
 // console.log(date);
 // console.log(new Date(date));
 // const dateValue = new Date(`${date}`);
 // console.log(dateValue);
 // console.log(new Date(`${date[0]+'/'+date[1]+'/'+date[2]}`));
 // console.log(new Date(date).toISOString());
-// console.log(new Date(date).toISOString());
+console.log(new Date(date));
 
 const [startDate, setStartDate] = useState();
-const [endDate, setEndDate] = useState();
+const [endDate, setEndDate] = useState([new Date(date)]);
 // console.log("date");
 // console.log(uoption.project_deadline);
 
