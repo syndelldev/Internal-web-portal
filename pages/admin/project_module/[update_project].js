@@ -55,7 +55,7 @@ const styles = {
 
   const response = await fetch(`${server}/api/project/update/${id}`)
   const project_details = await response.json();
-  // console.log(project_details);
+  console.log(project_details);
 
   return{ props: { User_name , project_details } }
 }
@@ -174,7 +174,7 @@ console.log(date);
 console.log(new Date(date));
 
 const [startDate, setStartDate] = useState();
-const [endDate, setEndDate] = useState(new Date({date}));
+const [endDate, setEndDate] = useState();
 console.log("date");
 console.log(uoption.project_deadline);
 
