@@ -22,6 +22,7 @@ import { server } from 'config';
 import avatar from "assets/img/faces/marc.jpg";
 import DatePicker from "react-datepicker";
 import Multiselect from "multiselect-react-dropdown";
+import { ToastContainer, toast } from 'react-toastify';
 
 
 const styles = {
@@ -55,7 +56,7 @@ const styles = {
 
   const response = await fetch(`${server}/api/project/update/${id}`)
   const project_details = await response.json();
-  console.log(project_details);
+  // console.log(project_details);
 
   return{ props: { User_name , project_details } }
 }
@@ -66,6 +67,7 @@ function AddUser({ User_name,project_details }) {
   const { register,  watch, handleSubmit, formState: { errors }, setValue } = useForm();
   const router = useRouter();
 
+  const toastId = React.useRef(null);
   const onSubmit = async (result) =>{
     
     const allMember = [];
@@ -91,8 +93,14 @@ function AddUser({ User_name,project_details }) {
 
     if(res.status==200)
     {
-      // alert("success");
-      router.push(`${server}/admin/project_module`);
+      if(!toast.isActive(toastId.current)) {
+        toastId.current = toast.success('Update Successful! 🎉', {
+            position: "top-right",
+            autoClose:1000,
+            onClose: () => router.push(`${server}/admin/project_module`)
+            });
+        }
+      // router.push(`${server}/admin/project_module`);
     }
     else
     {
@@ -136,12 +144,23 @@ const [uoption, setOption] = useState({
 useEffect(() =>{
   const u_data = async() =>{
 
-    project_details.map((project)=>{
-      setOption(project);
-    });
+    if(project_details % 2 === 0){
+      project_details.map((projects)=>{
+        setUpdate(projects);
+      });
+    
+    }
+    return null;
+
+
+    // project_details.map((project)=>{
+    //   setOption(project);
+    // });
   }
   u_data();
 },[]);
+console.log(" id data3 ");
+console.log(uoption);
 
 const handleChange = ({ target: { name, value } }) =>{
   console.log("name");
@@ -158,13 +177,31 @@ for(var i=0; i<projectMember.length; i++){
   allSelectedMember.push({'label' :projectMember[i] , 'value' : projectMember[i]});
   allSelectedUser.push({'label' :projectMember[i] , 'value' : projectMember[i]});
 }
-// var date = (uoption.project_start).substring(0,10);
-// console.log(date);
-// var date = (uoption.project_deadline).slice(0 , 10) ;
-// console.log(date);
+const udate = ((uoption.project_deadline).slice(0 , 10)) ;
+console.log(uoption);
+console.log("date slice");
+console.log(udate);
+console.log(uoption.project_deadline);
+console.log(uoption.project_id);
 
+const date_d = (udate).split("-");
+console.log(date_d);
 
-// var date = date[0]+"/"+date[1]+"/"+date[2] ;
+// var year = date_d[0];
+// console.log("year");
+ // console.log(year);
+
+// var month = date_d[1];
+// console.log("month");
+// console.log(month);
+
+// var day = "01";
+// console.log("day");
+// console.log(day);
+
+// var deadline = year + "/" + month + "/" + day ;
+// console.log(deadline);
+
 // console.log(date);
 // console.log(new Date(date));
 // const dateValue = new Date(`${date}`);
@@ -174,9 +211,20 @@ for(var i=0; i<projectMember.length; i++){
 // console.log(new Date(date));
 
 const [startDate, setStartDate] = useState();
-const [endDate, setEndDate] = useState();
+const [endDate, setEndDate] = useState(new Date());
+console.log(endDate);
+
+// var dateY = "2022";
+// var dateM = "02";
+// var dateD = "22";
+
+// var date = dateY+"/" + dateM +"/"+dateD;
+const [edit_check_date, set_edit_check_date] = useState(new Date("2022-08-12"));
 console.log("date");
-console.log(uoption.project_deadline);
+console.log(edit_check_date);
+
+// console.log("date");
+// console.log(uoption.project_deadline);
 
   return (
     <div>
@@ -365,6 +413,7 @@ console.log(uoption.project_deadline);
             </form>
         </GridItem>
       </GridContainer>
+      <ToastContainer limit={1}/>
     </div>
   );
 }
