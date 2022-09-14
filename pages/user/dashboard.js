@@ -78,7 +78,7 @@ function Dashboard({project}) {
 
   const [rights, setrights] = useState([])
   useEffect(async()=>{
-    axios.get(`${server}/api/project_rights/project_rights/` )
+    axios.get(`${server}/api/rights/` )
       .then((res)=>{
         setrights(res.data)
         console.log(res.data)
@@ -121,7 +121,7 @@ function Dashboard({project}) {
                           console.log("Not Matched")
                         }
                       })}
-                      
+
                     </p>
                   </CardFooter>
                   <CardFooter>
