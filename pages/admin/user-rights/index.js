@@ -129,17 +129,6 @@ function UserRights({UserList,ModuleList}){
         console.log(rightsList)
     }
 
-    // const edit_rights = (project_id) =>{
-    //     // console.log(project_id)
-
-    //     let data = axios.put(`${server}/api/rights/project/${project_id}`, {userid:user,moduleid:module,projectid:project_id,edit:editcheckbox})
-    //     .then((responce)=>{
-    //         console.log(responce.data)
-    //     })  
-    //     // console.log(rightsList)
-    // }
-    
-
     return(
         <>
             <GridContainer>
@@ -205,12 +194,6 @@ function UserRights({UserList,ModuleList}){
                                                         <TableCell>{data.project_title}-{data.project_id}</TableCell>  
                                                           
                                                         <TableCell>
-                                                            {/* {
-                                                                rightslist.map((r)=>{
-                                                                    // return <input type="checkbox" name="view_rights" value={data.view} onChange={viewCheckbox} defaultChecked={data.view==1} onClick={()=>view_rights(data.project_id)}/>
-                                                                    return <input type="checkbox" name="view_rights" value={r.project_id} defaultChecked={r.project_id==1} /> 
-                                                                })
-                                                            } */}
                                                             <input type="checkbox" name="view_rights" value={data.view} onChange={viewCheckbox} defaultChecked={data.view==1} onClick={()=>view_rights(data.project_id)}/>
                                                         </TableCell>
 
@@ -224,7 +207,7 @@ function UserRights({UserList,ModuleList}){
                                             }                                       
                                             </TableBody>
                                             
-                                            {
+                                            {/* {
                                                             rightslist.map((r)=>{
                                                                 return(
                                                                     <>
@@ -232,7 +215,7 @@ function UserRights({UserList,ModuleList}){
                                                                     </>
                                                                 )
                                                             })
-                                                        }  
+                                                        }   */}
                                 </Table>
                             </div>
                         </CardBody>

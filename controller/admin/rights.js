@@ -82,7 +82,7 @@ const ProjectById = async (req,res) =>{
         if(data == "" )
         {
             try{
-                let project = await executeQuery("INSERT INTO `tbl_rights` ( `user_id`, `project_id`, `module_id`,`view_rights`, `edit_rights` ) VALUES (?,?,?,0,0)", [req.body.userid, req.body.projectid, req.body.moduleid])
+                let project = await executeQuery("INSERT INTO `tbl_rights` ( `user_id`, `project_id`, `module_id`,`view_rights`, `edit_rights` ) VALUES (?,?,?,0,1)", [req.body.userid, req.body.projectid, req.body.moduleid])
                 res.status(200).json(project);
                 console.log(project);
             }
