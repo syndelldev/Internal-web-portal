@@ -181,17 +181,17 @@ function Dashboard( { project_details , User_name, all_status } ) {
     console.log("result");
     console.log(selected);
     
-    // const res = await fetch(`${server}/api/project/addproject`,{
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body:JSON.stringify({project_person:selected,project_department:result.project_department,project_status:result.project_status , project_title:result.project_title, project_description:result.project_description, project_language:result.project_language, project_comment:result.project_comment, project_priority:result.project_priority, project_start: result.start , project_deadline: result.end }),
-    // })
-    // const data=await res.json()
+    const res = await fetch(`${server}/api/project/addproject`,{
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body:JSON.stringify({project_person:selected,project_department:result.project_department,project_status:result.project_status , project_title:result.project_title, project_description:result.project_description, project_language:result.project_language, project_comment:result.project_comment, project_priority:result.project_priority, project_start: result.start , project_deadline: result.end }),
+    })
+    const data=await res.json()
     
     if(res.status==200)
     {
-      alert("success");
-      // router.push(`${server}/admin/project_module/project_department/${result.project_department}`);
+      // alert("success");
+      router.push(`${server}/admin/project_module/project_department/${result.project_department}`);
     }
     else
     {
@@ -222,7 +222,7 @@ const [selected, setSelected] = useState([]);
     <GridContainer>
         <GridItem>
 
-          <Popup trigger={<div className={classes.img}><button className="bttn-design"> Add Project</button></div>} modal>
+          <Popup trigger={<div><button className="bttn-design">+ Project</button></div>} className="popupReact" modal>
 
           {close => (
       <div>
@@ -277,9 +277,9 @@ const [selected, setSelected] = useState([]);
                             <option value=""  disabled selected>Select Your Department...</option>
                             <option value="HR">HR</option>
                             <option value="UI & UX">UI & UX</option>
-                            <option value="Web development">Web Development</option>
+                            <option value="Web development">Web development</option>
                             <option value="Content writer">Content writer</option>
-                            <option value="Project manager">Project Manager</option>
+                            <option value="Project manager">Project manager</option>
                             <option value="Mobile App developer">Mobile App developer</option>
                             <option value="SEO">SEO</option>
                           </select>
@@ -438,7 +438,7 @@ const [selected, setSelected] = useState([]);
         <a href={`${server}/admin/project_module/project_department/HR`}>HR</a>
         <a href={`${server}/admin/project_module/project_department/UI & UX`}>UI & UX</a>
         <a href={`${server}/admin/project_module/project_department/Web development`}>Web Development</a>
-        <a href={`${server}/admin/project_module/project_department/Content writer`}>Content writer</a>
+        <a href={`${server}/admin/project_module/project_department/Content writer`}>Content Writer</a>
         <a href={`${server}/admin/project_module/project_department/Project manager`}>Project Manager</a>
         <a href={`${server}/admin/project_module/project_department/Mobile App developer`}>Mobile App Developer</a>
         <a href={`${server}/admin/project_module/project_department/SEO`}>SEO</a>
@@ -470,7 +470,6 @@ const [selected, setSelected] = useState([]);
 return(
   <>
     <GridItem xs={6} sm={6} md={4}>
-    <span className="heading">{status.project_status} projects</span>
 
     {project_details.map((project)=>{
 
@@ -561,10 +560,10 @@ return(
                                 <option value=""  disabled selected>Select Your Department...</option>
                                 <option value="HR">HR</option>
                                 <option value="UI & UX">UI & UX</option>
-                                <option value="Web development">Web Development</option>
-                                <option value="Content writer">Content Writer</option>
-                                <option value="Project manager">Project Manager</option>
-                                <option value="Mobile App developer">Mobile App Developer</option>
+                                <option value="Web development">Web development</option>
+                                <option value="Content writer">Content writer</option>
+                                <option value="Project manager">Project manager</option>
+                                <option value="Mobile App developer">Mobile App developer</option>
                                 <option value="SEO">SEO</option>
                               </select>
                               <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>

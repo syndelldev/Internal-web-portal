@@ -167,11 +167,11 @@ const [selected, setSelected] = useState([]);
 {/* create project form start */}
 
 
-
+<div className="buttonalign">
 <GridContainer>
       <GridItem>
 
-        <Popup trigger={<div><button>Add Project</button></div>} className="popupReact" modal>
+        <Popup trigger={<div><button className="bttn-design">Add Project</button></div>} className="popupReact" modal>
 
         {close => (
     <div>
@@ -226,10 +226,10 @@ const [selected, setSelected] = useState([]);
                               <option value=""  disabled selected>Select Your Department...</option>
                               <option value="HR">HR</option>
                               <option value="UI & UX">UI & UX</option>
-                              <option value="Web development">Web development</option>
-                              <option value="Content writer">Content writer</option>
-                              <option value="Project manager">Project manager</option>
-                              <option value="Mobile App developer">Mobile App developer</option>
+                              <option value="Web development">Web Development</option>
+                              <option value="Content writer">Content Writer</option>
+                              <option value="Project manager">Project Manager</option>
+                              <option value="Mobile App developer">Mobile App Developer</option>
                               <option value="SEO">SEO</option>
                             </select>
                             <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
@@ -388,10 +388,10 @@ const [selected, setSelected] = useState([]);
         <a href={`${server}/admin/project_module`}>All</a>
         <a href={`${server}/admin/project_module/project_department/HR`}>HR</a>
         <a href={`${server}/admin/project_module/project_department/UI & UX`}>UI & UX</a>
-        <a href={`${server}/admin/project_module/project_department/Web development`}>Web development</a>
-        <a href={`${server}/admin/project_module/project_department/Content writer`}>Content writer</a>
-        <a href={`${server}/admin/project_module/project_department/Project manager`}>Project manager</a>
-        <a href={`${server}/admin/project_module/project_department/Mobile App developer`}>Mobile App developer</a>
+        <a href={`${server}/admin/project_module/project_department/Web development`}>Web Development</a>
+        <a href={`${server}/admin/project_module/project_department/Content writer`}>Content Writer</a>
+        <a href={`${server}/admin/project_module/project_department/Project manager`}>Project Manager</a>
+        <a href={`${server}/admin/project_module/project_department/Mobile App developer`}>Mobile App Developer</a>
         <a href={`${server}/admin/project_module/project_department/SEO`}>SEO</a>
       </div>
 </div>
@@ -413,6 +413,7 @@ const [selected, setSelected] = useState([]);
 </GridItem>
 
 </GridContainer>
+</div>
 
     <GridContainer>
     {project_details.map((project)=>{
@@ -442,6 +443,7 @@ const [selected, setSelected] = useState([]);
                       </GridItem>
 
                       <GridItem>
+                        <div className="icon-edit-delete">
                         <a href={`${server}/admin/project_module/${project.project_id}`}><FiEdit/></a>
                         {/* <button onClick={()=>deleteProject(project.project_id)}>Delete</button> */}
                         <Popup trigger={<span><MdDelete/></span>} modal>
@@ -474,6 +476,7 @@ const [selected, setSelected] = useState([]);
                           </div>
                         )}
                       </Popup>
+                      </div>
                       </GridItem>
                     </GridContainer>
 

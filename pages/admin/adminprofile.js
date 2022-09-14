@@ -68,7 +68,7 @@ function AdminProfile({AdminProfile}){
             <GridItem xs={12} sm={12} md={8}>      
                 <Card>
                     <CardHeader color="primary">
-                        <h4 className={classes.cardTitleWhite}>Admin Profile</h4>
+                        <h4 className="text">Admin Profile</h4>
                         {/*<p className={classes.cardCategoryWhite}>Created using Roboto Font Family</p>*/}
                     </CardHeader>
                     <CardBody><br/>
