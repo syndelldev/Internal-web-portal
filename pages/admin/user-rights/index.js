@@ -70,7 +70,7 @@ function UserRights({UserList,ModuleList}){
             console.log(res.data)
         })
     }
-    console.log(rightslist)
+    // console.log(rightslist)
 
     const [users, setusers] = useState([])
     const getData = () => {
@@ -99,7 +99,7 @@ function UserRights({UserList,ModuleList}){
             setviewcheckbox(0)
         }
     }
-    console.log(viewcheckbox)
+    // console.log(viewcheckbox)
 
     const [editcheckbox,seteditcheckbox] = useState(0)
 
@@ -116,7 +116,7 @@ function UserRights({UserList,ModuleList}){
             seteditcheckbox(0)
         }
     }
-    console.log(editcheckbox)
+    // console.log(editcheckbox)
 
 
     const view_rights = (project_id) =>{
@@ -126,7 +126,7 @@ function UserRights({UserList,ModuleList}){
         .then((responce)=>{
             setrightsList(responce.data)
         })  
-        console.log(rightsList)
+        // console.log(rightsList)
     }
 
     return(
@@ -187,18 +187,18 @@ function UserRights({UserList,ModuleList}){
                                         {
                                             users.map((data)=>{
                                                 const isInArray = data.user_id.includes(user);
-                                                // console.log(user)
+                                                console.log(users)
                                                 // console.log(isInArray);   
                                                 return(       
                                                     <TableRow key={data.project_id} value={data.project_id}>
                                                         <TableCell>{data.project_title}-{data.project_id}</TableCell>  
                                                           
                                                         <TableCell>
-                                                            <input type="checkbox" name="view_rights" value={data.view} onChange={viewCheckbox} defaultChecked={data.view==1} onClick={()=>view_rights(data.project_id)}/>
+                                                            <input type="checkbox" name="view_rights" value={data.view_rights} onChange={viewCheckbox} defaultChecked={data.view_rights==1} onClick={()=>view_rights(data.project_id)}/>
                                                         </TableCell>
 
                                                         <TableCell>
-                                                            <input type="checkbox" name="edit_rights" value={isInArray} onChange={editCheckbox} defaultChecked={isInArray==true} onClick={()=>view_rights(data.project_id)} /> {data.edit} - {data.user_id}
+                                                            <input type="checkbox" name="edit_rights" value={data.edit_rights} onChange={editCheckbox} defaultChecked={isInArray==true} onClick={()=>view_rights(data.project_id)} /> {data.edit_rights} - {data.user_id}
                                                         </TableCell>
                                                                             
                                                     </TableRow>   

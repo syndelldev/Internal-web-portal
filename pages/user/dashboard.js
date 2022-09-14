@@ -110,19 +110,18 @@ function Dashboard({project}) {
                   <CardFooter>
                     <p className="projectLanguage">{project.project_language}</p>
                     <p className="projectPriority">
-                      {/* {project.project_id} */}
-                      {/* {rights.map((r)=>{
-                        // console.log(r.project_id)
-                        if(project.project_id === r.project_id)
-                        {
-                          return(
-                            <>
-                              <p>{r.view_rights}-view</p>
-                              <p>{r.edit_rights}-edit</p>
-                            </>
-                          )
+                      {project.project_id}
+
+                      {rights.map((r)=>{
+                        console.log(r.project_id)
+                        if(r.project_id==project.project_id){
+                          console.log("Matched")
                         }
-                      })} */}
+                        else{
+                          console.log("Not Matched")
+                        }
+                      })}
+                      
                     </p>
                   </CardFooter>
                   <CardFooter>
