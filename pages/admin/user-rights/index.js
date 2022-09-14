@@ -64,9 +64,10 @@ function UserRights({UserList,ModuleList}){
 
     const [rightslist, setrightslist] = useState([])
     const rights_list = ()=>{
-        axios.post(`${server}/api/rights/rights_list/${user}`,  {userid:user})
+        axios.post(`${server}/api/rights/rights_list/`,{user:user})
         .then((res)=>{
             setrightslist(res.data)
+            console.log(res.data)
         })
     }
     console.log(rightslist)
@@ -202,9 +203,15 @@ function UserRights({UserList,ModuleList}){
                                                 return(       
                                                     <TableRow key={data.project_id} value={data.project_id}>
                                                         <TableCell>{data.project_title}-{data.project_id}</TableCell>  
-                                                                
+                                                          
                                                         <TableCell>
-                                                            <input type="checkbox" name="view_rights" value={data.view} onChange={viewCheckbox} defaultChecked={data.view==1} onClick={()=>view_rights(data.project_id)}/>{data.view}
+                                                            {/* {
+                                                                rightslist.map((r)=>{
+                                                                    // return <input type="checkbox" name="view_rights" value={data.view} onChange={viewCheckbox} defaultChecked={data.view==1} onClick={()=>view_rights(data.project_id)}/>
+                                                                    return <input type="checkbox" name="view_rights" value={r.project_id} defaultChecked={r.project_id==1} /> 
+                                                                })
+                                                            } */}
+                                                            <input type="checkbox" name="view_rights" value={data.view} onChange={viewCheckbox} defaultChecked={data.view==1} onClick={()=>view_rights(data.project_id)}/>
                                                         </TableCell>
 
                                                         <TableCell>
@@ -217,13 +224,15 @@ function UserRights({UserList,ModuleList}){
                                             }                                       
                                             </TableBody>
                                             
-                                            {/* {check_uncheck.map((r)=>{
-                                                return(
-                                                    <>
-                                                        <p>{r.rights_id}</p>
-                                                    </>
-                                                )
-                                            })} */}
+                                            {
+                                                            rightslist.map((r)=>{
+                                                                return(
+                                                                    <>
+                                                                        <p>{r.user_id}-{r.project_id}</p>
+                                                                    </>
+                                                                )
+                                                            })
+                                                        }  
                                 </Table>
                             </div>
                         </CardBody>
