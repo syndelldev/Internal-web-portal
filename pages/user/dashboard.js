@@ -78,7 +78,7 @@ function Dashboard({project}) {
 
   const [rights, setrights] = useState([])
   useEffect(async()=>{
-    axios.get(`${server}/api/project_rights/project_rights/` )
+    axios.get(`${server}/api/rights/` )
       .then((res)=>{
         setrights(res.data)
         console.log(res.data)
@@ -110,14 +110,18 @@ function Dashboard({project}) {
                   <CardFooter>
                     <p className="projectLanguage">{project.project_language}</p>
                     <p className="projectPriority">
-                      {/* {project.project_id} */}
-                      {/* {rights.map((r)=>{
-                        return(
-                          <>
-                            <p>{r.project_id}</p>
-                          </>
-                        )
-                      })} */}
+                      {project.project_id}
+
+                      {rights.map((r)=>{
+                        console.log(r.project_id)
+                        if(r.project_id==project.project_id){
+                          console.log("Matched")
+                        }
+                        else{
+                          console.log("Not Matched")
+                        }
+                      })}
+
                     </p>
                   </CardFooter>
                   <CardFooter>
