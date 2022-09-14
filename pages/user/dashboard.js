@@ -76,15 +76,15 @@ function Dashboard({project}) {
   // },[])
   //console.log(users)
 
-  const [ userRights, setuserRights] = useState([])
-  useEffect(()=>{
-    axios.get(`${server}/api/rights/${cookies.Role_id}`)
-    .then((res)=>{
-      setuserRights(res.data)
-      //console.log(res.data)
-    })
-  },[1000])
-  //console.log(userRights)
+  const [rights, setrights] = useState([])
+  useEffect(async()=>{
+    axios.get(`${server}/api/project_rights/project_rights/` )
+      .then((res)=>{
+        setrights(res.data)
+        console.log(res.data)
+      })    
+  },[])
+  console.log(rights)
 
   return (
     <>
@@ -100,7 +100,7 @@ function Dashboard({project}) {
       <GridContainer>
        {
           project.map((project)=>{
-            const bDate = ((project.project_deadline).substr(0,10).split("-",3));
+            // const bDate = ((project.project_deadline).substr(0,10).split("-",3));
             return(
               <GridItem xs={6} sm={6} md={4} key={project.project_id}>
                 <Card >
@@ -110,68 +110,14 @@ function Dashboard({project}) {
                   <CardFooter>
                     <p className="projectLanguage">{project.project_language}</p>
                     <p className="projectPriority">
-                        {
-                        userRights.map((rights)=>{
-                          console.log(userRights)
-                            if(rights.user_list == 0){
-                              return(
-                                <Button disabled key={rights.id} className="rights_btn"><a href={`#`} className="projectPriority"><FaEye/></a></Button>
-                              )
-                            }
-                            else{
-                              return(
-                                <Button key={rights.id} className="rights_btn"><a href={`#`} className="projectPriority"><FaEye/></a></Button>
-                              )
-                            }  
-                          })
-                        }
-
-                        {
-                        userRights.map((rights)=>{
-                          if(rights.add_user == 0){
-                            return(
-                              <Button disabled key={rights.id} className="rights_btn"><a href={`#`} className="projectPriority"><RiAddCircleFill/></a></Button>
-                            )
-                          }
-                          else{
-                            return(
-                              <Button key={rights.id} className="rights_btn"><a href={`#`} className="projectPriority"><RiAddCircleFill/></a></Button>
-                            )
-                          }
-                          })
-                        }
-
-                        {
-                        userRights.map((rights)=>{
-                          if(rights.edit_user == 0)
-                          {
-                            return(
-                              <Button disabled key={rights.id} className="rights_btn"><a href={`#`} className="projectPriority" ><FiEdit/></a></Button>
-                            )
-                          }
-                          else
-                          {
-                            return(
-                              <Button key={rights.id} className="rights_btn"><a href={`#`} className="projectPriority"><FiEdit/></a></Button>
-                            )
-                          } 
-                          })
-                        }
-
-                        {
-                        userRights.map((rights)=>{
-                          if(rights.delete_user == 0){
-                            return(
-                              <Button disabled key={rights.id} className="rights_btn"><a href={`#`} className="projectPriority" ><MdDelete/></a></Button>
-                            )
-                          }
-                          else{
-                            return(
-                              <Button key={rights.id} className="rights_btn"><a href={`#`} className="projectPriority"><MdDelete/></a></Button>
-                            )
-                          }
-                          })
-                        }
+                      {/* {project.project_id} */}
+                      {/* {rights.map((r)=>{
+                        return(
+                          <>
+                            <p>{r.project_id}</p>
+                          </>
+                        )
+                      })} */}
                     </p>
                   </CardFooter>
                   <CardFooter>
@@ -179,7 +125,7 @@ function Dashboard({project}) {
                   </CardFooter>
                   <CardFooter>
                     <p className="projectPriority">{project.project_priority} Priority</p>
-                    <p className="projectPriority"><GiSandsOfTime /> : {bDate[2]}/{bDate[1]}/{bDate[0]}</p>
+                    {/* <p className="projectPriority"><GiSandsOfTime /> : {bDate[2]}/{bDate[1]}/{bDate[0]}</p> */}
                   </CardFooter>
                 </Card>
               </GridItem>
