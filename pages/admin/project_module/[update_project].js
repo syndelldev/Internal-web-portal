@@ -55,7 +55,7 @@ const styles = {
 
   const response = await fetch(`${server}/api/project/update/${id}`)
   const project_details = await response.json();
-  // console.log(project_details);
+  console.log(project_details);
 
   return{ props: { User_name , project_details } }
 }
@@ -64,7 +64,6 @@ function AddUser({ User_name,project_details }) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   const { register,  watch, handleSubmit, formState: { errors }, setValue } = useForm();
-  const [endDate, setEndDate] = useState();
   const router = useRouter();
 
   const onSubmit = async (result) =>{
@@ -161,8 +160,23 @@ for(var i=0; i<projectMember.length; i++){
 }
 // var date = (uoption.project_start).substring(0,10);
 // console.log(date);
+// var date = (uoption.project_deadline).slice(0 , 10) ;
+// console.log(date);
+
+
+// var date = date[0]+"/"+date[1]+"/"+date[2] ;
+// console.log(date);
+// console.log(new Date(date));
+// const dateValue = new Date(`${date}`);
+// console.log(dateValue);
+// console.log(new Date(`${date[0]+'/'+date[1]+'/'+date[2]}`));
+// console.log(new Date(date).toISOString());
+// console.log(new Date(date));
 
 const [startDate, setStartDate] = useState();
+const [endDate, setEndDate] = useState();
+console.log("date");
+console.log(uoption.project_deadline);
 
   return (
     <div>
@@ -252,9 +266,9 @@ const [startDate, setStartDate] = useState();
                                 setStartDate(val);
                                 setValue("start", val);
                               }}
-                              dateFormat="dd-MM-yyyy"
+                              // dateFormat="dd-MM-yyyy"
                               // minDate={new Date()}
-                              value={uoption.project_start}
+                              // value={uoption.project_start}
                             />
                           <div className="error-msg">{errors.dob && <p>{errors.dob.message}</p>}</div>
                           </div> 
@@ -272,9 +286,9 @@ const [startDate, setStartDate] = useState();
                                 setEndDate(val);
                                 setValue("end", val);
                               }}
-                              dateFormat="dd-MM-yyyy"
-                              minDate={startDate}
-                              value={uoption.project_deadline}
+                              // dateFormat="dd-MM-yyyy"
+                              // minDate={startDate}
+                              // value={uoption.project_deadline}
                             />
                           <div className="error-msg">{errors.dob && <p>{errors.dob.message}</p>}</div>
                           </div> 

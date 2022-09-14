@@ -55,10 +55,10 @@ function SignIn(){
         {
             toast.success('SignUp Successfully !', {
                 position: "top-right",
-                autoClose:5000,
+                autoClose:1000,
                 onClose: () => router.push("/login")
             });
-            //router.push("/login");
+            router.push("/login");
         }
         else
         {
@@ -156,7 +156,7 @@ function SignIn(){
                             <div className="form-group">
                                 <label htmlFor="confirm-pwd" className='form-label label'>Confirm Password</label>
                                 <input type={isRevealconPwd ? 'text' : 'password'} className="form-control signup-input" placeholder="Confirm your password" {...register('confirmPwd', {  validate: value =>value === password.current || "The passwords do not match" })}  />
-                                <a><span className='icon-eyes' onClick={() => setIsRevealconPwd((prevState) => !prevState)}>{isRevealconPwd ? <IoMdEyeOff /> : <IoMdEye/>}</span></a>
+                                <span className='icon-eyes' onClick={() => setIsRevealconPwd((prevState) => !prevState)}>{isRevealconPwd ? <IoMdEyeOff /> : <IoMdEye/>}</span>
                                 <div className="error-msg">{errors.confirmPwd && <p>{errors.confirmPwd.message}</p>}</div>
                             </div>
 
@@ -210,13 +210,14 @@ function SignIn(){
                                 <button type="submit" className="login-create-acc-btn" >Create Account</button>
                             </div>  
                             <div className='login-text'>
-                                <p>Already have an Account ? <a href='/login'><span className='signup-text-login'>Login</span></a></p>
+                                <div><p>Already have an Account? </p></div>
+                                <div><p><a href='/login'><span className='signup-text-login'>Login</span></a></p></div>
                             </div>
                         </form>
                     </div>
                 </div>
             </section>
-            <ToastContainer />
+            <ToastContainer limit={1}/>
 
         </>
     )

@@ -15,7 +15,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableBody from "@material-ui/core/TableBody";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
-
+import { useRouter } from 'next/router'
 import axios from "axios";
 import { server } from 'config';
 
@@ -44,14 +44,14 @@ export async function getServerSideProps(context){
 
     const responce = await fetch(`${server}/api/rights/module`)
     const ModuleList = await responce.json()
-
+    
     return{ props: {UserList,ModuleList} }
 } 
 
 function UserRights({UserList,ModuleList}){
     const useStyles = makeStyles(styles);
     const classes = useStyles();
-
+    const router = useRouter();
     const [user, setuser] = useState(1)
     // console.log(user)
 
@@ -64,14 +64,59 @@ function UserRights({UserList,ModuleList}){
         .then((res)=>{
             setusers(res.data)
         })
+        // router.push("/admin/user-rights")
     }
-    console.log(users)
+    // console.log(users)
+    
+    const [rightsList,setrightsList] = useState([])
+    
 
-    const edit_rights = async (project_id) =>{
-        // console.log(project_id)
-        let data = axios.post(`${server}/api/rights/project/${project_id}`, {userid:user,moduleid:module,projectid:project_id,edit_rights:1})
-        console.log(data)
+    const [viewcheckbox,setviewcheckbox] = useState(0)
+    // console.log(viewcheckbox)
+    const viewCheckbox = (e) =>{
+        
+        console.log(e.target.value);
+
+        if(e.target.value==0)
+        {
+            setviewcheckbox(1)
+        }
+        else if(e.target.value==1)
+        {
+            setviewcheckbox(0)
+        }
     }
+    console.log(viewcheckbox)
+
+    const [editcheckbox,seteditcheckbox] = useState(false)
+
+    const editCheckbox = (e) =>{
+        console.log(e.target.value);
+        if(e.target.value === true)
+        {
+            seteditcheckbox(false)
+            alert(false)
+        }
+        else if(e.target.value === false)
+        {
+            seteditcheckbox(true)
+            alert(true)
+        }
+    }
+    console.log(editcheckbox)
+
+
+    const edit_rights = (project_id) =>{
+        // console.log(project_id)
+
+        let data = axios.put(`${server}/api/rights/project/${project_id}`, {userid:user,moduleid:module,projectid:project_id,view:viewcheckbox,edit:editcheckbox})
+        .then((responce)=>{
+            setrightsList(responce.data)
+        })  
+        console.log(rightsList)
+    }
+    
+    
 
     return(
         <>
@@ -85,12 +130,12 @@ function UserRights({UserList,ModuleList}){
                         <GridContainer>
                             <GridItem xs={12} sm={12} md={3}>
                                 <div className="form-group">
-                                    <select value={user} onChange={(e) => {setuser(e.target.value)}} className="form-control signup-input" > {/*value={value} onChange={(e) => {setValue(e.target.value)}} onClick={logValue}*/}
+                                    <select value={user} onChange={(e) => {setuser(e.target.value)}} className="form-control signup-input" > 
                                         {
                                             UserList.map((users)=>{
                                                 return(
                                                     <>
-                                                        <option key={users.id} value={users.id}>{users.username}</option> 
+                                                        <option key={users.id} value={users.id}>{users.username} - {users.id}</option> 
                                                     </>      
                                                 )
                                             })
@@ -123,45 +168,41 @@ function UserRights({UserList,ModuleList}){
                                     <TableHead className={classes.TableHeader}>
                                         <TableRow className={classes.tableHeadRow}>
                                             <TableCell>Modules Names</TableCell>
-                                            <TableCell>Monitor</TableCell>
-                                            <TableCell>Contributor</TableCell>
+                                            <TableCell>Monitor(View)</TableCell>
+                                            <TableCell>Contributor(edit)</TableCell>
                                         </TableRow>
                                     </TableHead>
-                                    
-                                    <TableBody>
+                                        <TableBody>
                                         {
                                             users.map((data)=>{
-                                                if(users[0].module_id==1)
-                                                {
-                                                    return(
-                                                        <TableRow key={data.project_id}>
-                                                            <TableCell>{data.project_title}</TableCell>
-                                                            <TableCell>
-                                                                <input type="checkbox" name="view_rights" />
-                                                            </TableCell>
-                                                            <TableCell>
-                                                                <input type="checkbox" name="add_rights" onClick={()=>edit_rights(data.project_id)}/>
-                                                            </TableCell>
-                                                        </TableRow>
+                                                const isInArray = data.user_id.includes(user);
+                                                // console.log(user)
+                                                // console.log(isInArray);   
+                                                return(       
+                                                    <TableRow key={data.project_id} value={data.project_id}>
+                                                        <TableCell>{data.project_title}-{data.project_id}</TableCell>  
+                                                                
+                                                        <TableCell>
+                                                            <input type="checkbox" name="view_rights" value={data.view} onChange={viewCheckbox} defaultChecked={data.view==1} onClick={()=>edit_rights(data.project_id)}/>{data.view}
+                                                        </TableCell>
+
+                                                        <TableCell>
+                                                            <input type="checkbox" name="edit_rights" value={isInArray} onChange={editCheckbox} defaultChecked={isInArray==true} onClick={()=>edit_rights(data.project_id)} /> {data.edit} - {data.user_id}
+                                                        </TableCell>
+                                                                            
+                                                    </TableRow>   
                                                     )
-                                                }
-                                                else if(users[0].module_id==2)
-                                                {
-                                                    return(
-                                                        <TableRow key={data.task_id}>
-                                                            <TableCell>{data.task_title}</TableCell>
-                                                            <TableCell>
-                                                                <input type="checkbox"  />
-                                                            </TableCell>
-                                                            <TableCell>
-                                                                <input type="checkbox"  />
-                                                            </TableCell>
-                                                        </TableRow>
-                                                    )
-                                                }
-                                            })
-                                        }
-                                    </TableBody>
+                                                })
+                                            }                                       
+                                            </TableBody>
+                                            
+                                            {/* {check_uncheck.map((r)=>{
+                                                return(
+                                                    <>
+                                                        <p>{r.rights_id}</p>
+                                                    </>
+                                                )
+                                            })} */}
                                 </Table>
                             </div>
                         </CardBody>

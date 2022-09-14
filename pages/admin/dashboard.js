@@ -81,7 +81,7 @@ const styles = {
   close:{
     marginLeft: "auto",
     fontSize: "40px",
-    paddingRight: "10px",
+    paddingRight: "15px",
     cursor: "pointer",
   },
 };
@@ -111,6 +111,66 @@ function Dashboard( { project_details , User_name, all_status } ) {
     const res = await fetch(`${server}/api/project/${id}`);
     router.push(`${server}/admin/dashboard`);
   }
+
+  const [uoption, setOption] = useState({ 
+    project_title: "",
+    project_description: "",
+    project_department: "",
+    project_language: "",
+    project_start: "",
+    project_deadline: "",
+    project_priority: "",
+    project_status: "",
+    project_person: "",
+    project_comment: ""
+  });
+  
+  useEffect(() =>{
+    const u_data = async() =>{
+  
+      project_details.map((project)=>{
+        setOption(project);
+      });
+    }
+    u_data();
+  },[]);
+  
+  const handleChange = ({ target: { name, value } }) =>{
+    console.log("name");
+    console.log([name]);
+  
+    setOption({ ...uoption, [name]: value });
+  }
+
+  const projectId = async(id) =>{
+    console.log('update');
+    console.log(id);
+
+    const response = await fetch(`${server}/api/project/update/${id}`)
+    const update_data = await response.json();
+    console.log(update_data[0]);
+
+    // const res = await fetch(`${server}/api/project/update_project`,{
+    //   method: "PUT",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify({ project_id:uoption.project_id, project_person:members, project_title: uoption.project_title , project_description:uoption.project_description, project_language:uoption.project_language, project_comment:uoption.project_comment, project_priority:uoption.project_priority, project_start: uoption.start , project_deadline: uoption.end }),
+    // });
+    // router.push(`${server}/admin/dashboard`);
+  }
+
+  const updateProject = async(id) =>{
+    console.log('update');
+    console.log(id);
+
+    const res = await fetch(`${server}/api/project/update_project`,{
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ project_id:uoption.project_id, project_person:selected, project_title: uoption.project_title , project_description:uoption.project_description, project_language:uoption.project_language, project_comment:uoption.project_comment, project_priority:uoption.project_priority, project_start: uoption.start , project_deadline: uoption.end }),
+    });
+    router.push(`${server}/admin/dashboard`);
+  }
+
+
   const { register,  watch, handleSubmit, formState: { errors }, setValue } = useForm(); 
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
@@ -130,8 +190,8 @@ function Dashboard( { project_details , User_name, all_status } ) {
     
     if(res.status==200)
     {
-      alert("success");
-      // router.push(`${server}/admin/project_module/project_department/${result.project_department}`);
+      // alert("success");
+      router.push(`${server}/admin/project_module/project_department/${result.project_department}`);
     }
     else
     {
@@ -146,9 +206,6 @@ useEffect(() =>{
 
     const getUsername = [];
 
-    console.log("123");
-    console.log(User_name);
-
     User_name.map((user)=>{
       getUsername.push( {'label' :user.username, 'value' :user.username} );
     });
@@ -161,11 +218,11 @@ const [selected, setSelected] = useState([]);
 
   return (
     <>
-
+  <div className="buttonalign">
     <GridContainer>
         <GridItem>
 
-          <Popup trigger={<div className={classes.img}><button>Project</button></div>} modal>
+          <Popup trigger={<div className={classes.img}><button className="bttn-design">Project</button></div>} className="popupReact" modal>
 
           {close => (
       <div>
@@ -367,9 +424,7 @@ const [selected, setSelected] = useState([]);
           </form>
       </GridItem>
     </GridContainer>
-
   </div>
-  
       )}
         </Popup>
 {/* create project form end */}
@@ -407,7 +462,7 @@ const [selected, setSelected] = useState([]);
   </GridItem>
 
 </GridContainer>
-
+</div>
     <GridContainer>
 
 {all_status.map((status)=>{
@@ -415,7 +470,6 @@ const [selected, setSelected] = useState([]);
 return(
   <>
     <GridItem xs={6} sm={6} md={4}>
-    <span className="heading">{status.project_status} projects</span>
 
     {project_details.map((project)=>{
 
@@ -424,8 +478,6 @@ return(
     if(status.project_status == project.project_status){
 
       var person = project.project_person.split(",");
-      console.log(status.project_status);
-      console.log(project.project_title);
 
     return(
     <>
@@ -448,9 +500,225 @@ return(
                   </GridItem>
 
                   <GridItem>
-                    <div className="edit">
-                      <a href={`${server}/admin/project_module/${project.project_id}`}><FiEdit/></a>
+                    <div className="icon-display">
+                      {/* <div onClick={()=>updateProject(project.project_id)}>project</div> */}
+                      {/* <a href={`${server}/admin/project_module/${project.project_id}`}><FiEdit/></a> */}
+                      {/* <Button onClick={()=>updateProject(project.project_id)}>Yes</Button> */}
+                      <Popup trigger={<a><div className='icon-width' onClick={()=>projectId(project.project_id)}><FiEdit/></div></a>} className="popupReact" modal>
+
+              {close => (
+              <div className="popup-align">
+              <GridContainer>
+              <GridItem xs={12} sm={12} md={12}>
+              <form onSubmit={handleSubmit(onSubmit)}>              
+                <Card>
+                  <CardHeader color="primary">
+
+                  <GridContainer>
+                    <GridItem>
+                      <h4 className={classes.cardTitleWhite}>Edit Project</h4>
+                      <p className={classes.cardCategoryWhite}>Update your project details</p>
+                    </GridItem>
+
+                    {/* <GridItem> */}
+                      <div className={classes.close}>
+                        <a onClick={close}>&times;</a>
+                      </div>
+                    {/* </GridItem> */}
+                  </GridContainer>
+
+                  </CardHeader>
+                    <CardBody>
+                      <GridContainer>
+                        <GridItem xs={12} sm={12} md={12}>                      
+                          <div className="form-group">
+                            <span>Project Title</span>
+                            <input type="text" className="form-control signup-input" name="project_title" placeholder="Project Title" value={uoption.project_title} onSelect={handleChange} onChange={handleChange} />
+                            <div className="error-msg">{errors.project_title && <span>{errors.project_title.message}</span>}</div>
+                          </div>
+
+                        </GridItem>
+                      </GridContainer><br/>
+                        
+                      <GridContainer>  
+                        <GridItem xs={12} sm={12} md={12}>
+                          <div className="form-group">
+                          <span>Project Description</span>
+                            <textarea className="form-control signup-input" value={uoption.project_description} name="project_description" onSelect={handleChange} onChange={handleChange} placeholder="Project Description" {...register('project_description', { required: 'Description is required', } )}  />
+                            <div className="error-msg">{errors.project_description && <span>{errors.project_description.message}</span>}</div>
+                          </div> 
+                        </GridItem>
+                      </GridContainer><br/>
+
+                      <GridContainer>
+                        <GridItem xs={12} sm={12} md={6}>
+                            <div className="form-group">
+                              {/*<input type="text" className="form-control signup-input" placeholder="Department" {...register('department',  { required: "Please enter your Department", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
+                              <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>*/}
+                            <span>Project Department</span>
+                              <select id="Department" name="project_department" className="form-control signup-input" value={uoption.project_department} onSelect={handleChange} onChange={handleChange} {...register('project_department', {required:true ,message:'Please select atleast one option', })}>
+                                <option value=""  disabled selected>Select Your Department...</option>
+                                <option value="HR">HR</option>
+                                <option value="UI & UX">UI & UX</option>
+                                <option value="Web development">Web development</option>
+                                <option value="Content writer">Content writer</option>
+                                <option value="Project manager">Project manager</option>
+                                <option value="Mobile App developer">Mobile App developer</option>
+                                <option value="SEO">SEO</option>
+                              </select>
+                              <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                              <div className="error-msg">{errors.project_department && <span>{errors.project_department.message}</span>}</div>
+                            </div> 
+                        </GridItem>
+
+                        <GridItem xs={12} sm={12} md={6}>
+                          <div className="form-group">
+                          <span>Project Language</span>
+                            <select name="project_language" id="Project_created_by" className="form-control signup-input"  value={uoption.project_language} onSelect={handleChange} onChange={handleChange} {...register('project_language', {required:true ,message:'Please select atleast one option', })}>
+                              <option value="" disabled selected>Select Language</option>
+                              <option value="Wordpress">Wordpress</option>
+                              <option value="Shopify">Shopify</option>
+                              <option value="ReactJS">ReactJS</option>
+                              <option value="Laravel">Laravel</option>
+                              <option value="Android">Android</option>
+                              <option value="Bubble">Bubble</option>
+                            </select>
+                            <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                            <div className="error-msg">{errors.project_language && <span>{errors.project_language.message}</span>}</div>
+                          </div> 
+                        </GridItem>
+                      </GridContainer><br/>
+
+                      <GridContainer>  
+
+                        <GridItem xs={12} sm={12} md={6}>
+                          <div className="form-group" onSelect={handleChange} onChange={handleChange} {...register('project_start')}>
+                          <span>Project Start Date</span>
+                            <DatePicker
+                              placeholderText="Start_Date : dd/mm/yyyy"
+                              isClearable
+                              name="datetime"
+                              className={"form-control"}
+                              value={project.project_start}
+                              selected={startDate}
+                              onChange={val => {
+                                setStartDate(val);
+                                setValue("start", val);
+                              }}
+                              dateFormat="dd-MM-yyyy"
+                              minDate={new Date()}
+                            />
+                          <div className="error-msg">{errors.project_start && <span>{errors.project_start.message}</span>}</div>
+                          </div> 
+                        </GridItem>
+
+                        <GridItem xs={12} sm={12} md={6}>
+                          <div className="form-group" onChange={handleChange} {...register('project_deadline')}>
+                          <span>Project End Date</span>
+                            <DatePicker
+                              placeholderText="End_Date : dd/mm/yyyy"
+                              isClearable
+                              name="datetime1"
+                              onSelect={handleChange}
+                              value={project.project_deadline}
+                              className={"form-control"}
+                              selected={endDate}
+                              onChange={val => {
+                                setEndDate(val);
+                                setValue("end", val);
+                              }}
+                              dateFormat="dd-MM-yyyy"
+                              minDate={startDate}
+                            />
+                          <div className="error-msg">{errors.project_deadline && <span>{errors.project_deadline.message}</span>}</div>
+                          </div> 
+                        </GridItem>
+                      </GridContainer><br/>
+
+                      <GridContainer>
+                        <GridItem xs={12} sm={12} md={6}>
+                          <div className="form-group">
+                          <span>Project Priority</span>
+                            <select name="project_priority" id="priority" className="form-control signup-input" value={uoption.project_priority} onSelect={handleChange} onChange={handleChange} {...register('project_priority', {required:true ,message:'Please select atleast one option', })}>
+                              <option value=""  disabled selected>Select Project Priority</option>
+                              <option value="High">High</option>
+                              <option value="Medium">Medium</option>
+                              <option value="Low">Low</option>
+                            </select>
+                            <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                            <div className="error-msg">{errors.project_priority && <span>{errors.project_priority.message}</span>}</div>
+                          </div> 
+                        </GridItem>
                       
+                        <GridItem xs={12} sm={12} md={6}>
+                            <div className="form-group">
+                              {/*<input type="text" className="form-control signup-input" placeholder="Status" {...register('status',  { required: "Please enter your Status", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
+                              <div className="error-msg">{errors.status && <p>{errors.status.message}</p>}</div>*/}
+                              <span>Project Status</span>
+                              <select name="project_status" id="Status" className="form-control signup-input" value={uoption.project_status} onSelect={handleChange} onChange={handleChange} {...register('project_status', {required:true ,message:'Please select atleast one option', })}>
+                                <option value=""  disabled selected>Select Project Status</option>
+                                <option value="on hold">On hold</option>
+                                <option value="running">Running</option>
+                                <option value="completed">Completed</option>
+                              </select>
+                              <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                              {/* <div className="error-msg">{errors.status && <p>{errors.status.message}</p>}</div> */}
+                            </div> 
+                        </GridItem>
+                      </GridContainer><br/>
+
+                      <GridContainer>
+                      <GridItem xs={12} sm={12} md={12}>
+                          <div className="form-group">
+                          
+                          <span>Project Members</span>
+                          <Multiselect
+                          displayValue="value"
+                            options={uoptions}
+                            value={selected}
+                            // selectedValues={allSelectedMember}
+                            onChange={setSelected}
+                            // onKeyPressFn={function noRefCheck(){}}
+                            onRemove={setSelected}
+                            // onSearch={function noRefCheck(){}}
+                            onSelect={setSelected}
+                            placeholder="Select Project Members"
+                            showArrow={true}
+                          />
+                          
+                            <div className="error-msg">{errors.project_person && <span>{errors.project_person.message}</span>}</div>
+                          </div> 
+                        </GridItem>
+                      </GridContainer><br/>
+
+                      <GridContainer>
+                        <GridItem xs={12} sm={12} md={12}>
+                          <div className="form-group">
+                          <span>Comments</span>
+                            <textarea className="form-control signup-input" name="project_comment" value={uoption.project_comment} onSelect={handleChange} onChange={handleChange} placeholder="Comment" {...register('project_comment')} />
+                            <div className="error-msg">{errors.position && <span>{errors.position.message}</span>}</div>
+                          </div> 
+                        </GridItem>
+                      </GridContainer>
+                      
+                    </CardBody>
+
+                    <CardFooter>
+                        <Button color="primary"  onClick={()=>updateProject(project.project_id)}>Save</Button>
+                        <Button className="button" onClick={() => { close(); }}> Cancel </Button>
+                    </CardFooter>
+                    
+                  </Card>
+              </form>
+              </GridItem>
+              </GridContainer>
+
+              </div>
+
+              )}
+              </Popup>
+
+
                       <Popup trigger={<a><MdDelete/></a>} modal>
                         {close => (
                           <div>
@@ -459,11 +727,13 @@ return(
                               <GridItem xs={12} sm={12} md={12}>
                                   <GridContainer>
                                     <GridItem>
-                                      <div>
+                                      <div className="delete_popup">
                                         <CardBody>
+                                          <MdDelete className="delete_popup_image"/>
+                                          <h2 className="delete_popup">Delete {project.project_title}</h2>
                                           <h4 className={classes.cardTitleWhite}>Are you sure you want to delete {project.project_title}?</h4>
                                         </CardBody>
-                                        <CardFooter>
+                                        <CardFooter className="delete_popup_button">
                                             <Button onClick={()=>deleteProject(project.project_id)}>Yes</Button>
                                             <Button className="button" onClick={() => { close(); }}> No </Button>
                                         </CardFooter>
