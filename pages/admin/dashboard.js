@@ -112,7 +112,34 @@ function Dashboard( { project_details , User_name, all_status } ) {
     router.push(`${server}/admin/dashboard`);
   }
 
-  const [uoption, setOption] = useState({ 
+
+  const [likes, setLikes] = React.useState();
+
+  const data = [];
+  const projectId = async(id) =>{
+    console.log('update');
+    console.log(id);
+
+    const response = await fetch(`${server}/api/project/update/${id}`)
+    const update_data = await response.json();
+    // console.log(update_data[0]);
+
+    data.push(update_data[0]);
+    // console.log(data[0]);
+
+    const udata = data[0];
+    console.log(udata);
+
+    setLikes(udata);
+
+    }
+    console.log(" id data ");
+    console.log(likes);
+
+    // console.log(likes);
+
+
+  const [uoption, setUpdate] = useState({ 
     project_title: "",
     project_description: "",
     project_department: "",
@@ -128,9 +155,13 @@ function Dashboard( { project_details , User_name, all_status } ) {
   useEffect(() =>{
     const u_data = async() =>{
   
-      project_details.map((project)=>{
-        setOption(project);
-      });
+      if(likes % 2 === 0){
+        likes.map((projects)=>{
+          setUpdate(projects);
+        });
+
+      }
+      return null;
     }
     u_data();
   },[]);
@@ -139,28 +170,15 @@ function Dashboard( { project_details , User_name, all_status } ) {
     console.log("name");
     console.log([name]);
   
-    setOption({ ...uoption, [name]: value });
+    setUpdate({ ...uoption, [name]: value });
   }
+  console.log(" id data2 ");
+  console.log(uoption);
 
-  const projectId = async(id) =>{
-    console.log('update');
-    console.log(id);
-
-    const response = await fetch(`${server}/api/project/update/${id}`)
-    const update_data = await response.json();
-    console.log(update_data[0]);
-
-    // const res = await fetch(`${server}/api/project/update_project`,{
-    //   method: "PUT",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({ project_id:uoption.project_id, project_person:members, project_title: uoption.project_title , project_description:uoption.project_description, project_language:uoption.project_language, project_comment:uoption.project_comment, project_priority:uoption.project_priority, project_start: uoption.start , project_deadline: uoption.end }),
-    // });
-    // router.push(`${server}/admin/dashboard`);
-  }
 
   const updateProject = async(id) =>{
-    console.log('update');
-    console.log(id);
+    // console.log('update');
+    // console.log(id);
 
     const res = await fetch(`${server}/api/project/update_project`,{
       method: "PUT",
@@ -534,7 +552,7 @@ return(
                         <GridItem xs={12} sm={12} md={12}>                      
                           <div className="form-group">
                             <span>Project Title</span>
-                            <input type="text" className="form-control signup-input" name="project_title" placeholder="Project Title" value={uoption.project_title} onSelect={handleChange} onChange={handleChange} />
+                            <input type="text" className="form-control signup-input" name="project_title" placeholder="Project Title" value={console.log(uoption.project_title)} onChange={handleChange} />
                             <div className="error-msg">{errors.project_title && <span>{errors.project_title.message}</span>}</div>
                           </div>
 
@@ -718,7 +736,6 @@ return(
 
               )}
               </Popup>
-
 
                       <Popup trigger={<a><MdDelete/></a>} modal>
                         {close => (
