@@ -222,7 +222,7 @@ const [selected, setSelected] = useState([]);
     <GridContainer>
         <GridItem>
 
-          <Popup trigger={<div className={classes.img}><button className="bttn-design">Project</button></div>} modal>
+          <Popup trigger={<div className={classes.img}><button className="bttn-design"> Add Project</button></div>} modal>
 
           {close => (
       <div>
@@ -277,9 +277,9 @@ const [selected, setSelected] = useState([]);
                             <option value=""  disabled selected>Select Your Department...</option>
                             <option value="HR">HR</option>
                             <option value="UI & UX">UI & UX</option>
-                            <option value="Web development">Web development</option>
+                            <option value="Web development">Web Development</option>
                             <option value="Content writer">Content writer</option>
-                            <option value="Project manager">Project manager</option>
+                            <option value="Project manager">Project Manager</option>
                             <option value="Mobile App developer">Mobile App developer</option>
                             <option value="SEO">SEO</option>
                           </select>
@@ -437,10 +437,10 @@ const [selected, setSelected] = useState([]);
         <a href={`${server}/admin/project_module`}>All</a>
         <a href={`${server}/admin/project_module/project_department/HR`}>HR</a>
         <a href={`${server}/admin/project_module/project_department/UI & UX`}>UI & UX</a>
-        <a href={`${server}/admin/project_module/project_department/Web development`}>Web development</a>
+        <a href={`${server}/admin/project_module/project_department/Web development`}>Web Development</a>
         <a href={`${server}/admin/project_module/project_department/Content writer`}>Content writer</a>
-        <a href={`${server}/admin/project_module/project_department/Project manager`}>Project manager</a>
-        <a href={`${server}/admin/project_module/project_department/Mobile App developer`}>Mobile App developer</a>
+        <a href={`${server}/admin/project_module/project_department/Project manager`}>Project Manager</a>
+        <a href={`${server}/admin/project_module/project_department/Mobile App developer`}>Mobile App Developer</a>
         <a href={`${server}/admin/project_module/project_department/SEO`}>SEO</a>
       </div>
 </div>
@@ -561,10 +561,10 @@ return(
                                 <option value=""  disabled selected>Select Your Department...</option>
                                 <option value="HR">HR</option>
                                 <option value="UI & UX">UI & UX</option>
-                                <option value="Web development">Web development</option>
-                                <option value="Content writer">Content writer</option>
-                                <option value="Project manager">Project manager</option>
-                                <option value="Mobile App developer">Mobile App developer</option>
+                                <option value="Web development">Web Development</option>
+                                <option value="Content writer">Content Writer</option>
+                                <option value="Project manager">Project Manager</option>
+                                <option value="Mobile App developer">Mobile App Developer</option>
                                 <option value="SEO">SEO</option>
                               </select>
                               <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
