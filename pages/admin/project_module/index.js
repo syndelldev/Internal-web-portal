@@ -167,11 +167,11 @@ const [selected, setSelected] = useState([]);
 {/* create project form start */}
 
 
-
+<div className="buttonalign">
 <GridContainer>
       <GridItem>
 
-        <Popup trigger={<div><button>Add Project</button></div>} className="popupReact" modal>
+        <Popup trigger={<div><button className="bttn-design">Add Project</button></div>} className="popupReact" modal>
 
         {close => (
     <div>
@@ -413,6 +413,7 @@ const [selected, setSelected] = useState([]);
 </GridItem>
 
 </GridContainer>
+</div>
 
     <GridContainer>
     {project_details.map((project)=>{
@@ -442,6 +443,7 @@ const [selected, setSelected] = useState([]);
                       </GridItem>
 
                       <GridItem>
+                        <div className="icon-edit-delete">
                         <a href={`${server}/admin/project_module/${project.project_id}`}><FiEdit/></a>
                         {/* <button onClick={()=>deleteProject(project.project_id)}>Delete</button> */}
                         <Popup trigger={<span><MdDelete/></span>} modal>
@@ -474,6 +476,7 @@ const [selected, setSelected] = useState([]);
                           </div>
                         )}
                       </Popup>
+                      </div>
                       </GridItem>
                     </GridContainer>
 

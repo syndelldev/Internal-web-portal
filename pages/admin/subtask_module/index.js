@@ -206,7 +206,7 @@ const [p_selected, setProject] = useState([]);
 
   return (
     <>
-
+    <div className="buttonalign">
     <GridContainer>
         <GridItem>
 
@@ -454,7 +454,7 @@ const [p_selected, setProject] = useState([]);
   </GridItem>
 
 </GridContainer>
-
+</div>
     <GridContainer>
 
     {/* <GridItem xs={6} sm={6} md={8}> */}
@@ -487,8 +487,9 @@ const [p_selected, setProject] = useState([]);
                   <GridItem>
                     <p className="projectLanguage">{task.task_language}</p>
                   </GridItem>
-
+                  
                   <GridItem>
+                  <div className="icon-edit-delete">
                     <a href={`${server}/admin/subtask_module/${task.task_id}`}><FiEdit/></a>
                     {/* <button onClick={()=>deleteTask(task.task_id)} className="project_delete_icon"><MdDelete/></button> */}
 
@@ -524,8 +525,9 @@ const [p_selected, setProject] = useState([]);
                         )}
                       </Popup>
 
-
+                    </div>
                   </GridItem>
+                  
                 </GridContainer>
 
                 <GridContainer>

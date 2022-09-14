@@ -119,7 +119,7 @@ function UserDetail({UserDetail}) {
        
           <Card>
             <CardHeader color="primary">
-              <h4 className={classes.cardTitleWhite}>User Details</h4>
+              <h4 className="text">User Details</h4>
             </CardHeader>
             <CardBody>
             <div className={classes.tableResponsive}>
