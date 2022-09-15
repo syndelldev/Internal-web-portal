@@ -260,7 +260,7 @@ const [selected, setSelected] = useState([]);
                         <div className="form-group" {...register('project_start')}>
                         <span>Project Start Date</span>
                           <DatePicker
-                            placeholderText="Start_Date : dd/mm/yyyy"
+                            placeholderText="Start Date : dd/mm/yyyy"
                             isClearable
                             name="datetime1"
                             className={"form-control"}
@@ -280,7 +280,7 @@ const [selected, setSelected] = useState([]);
                         <div className="form-group" {...register('project_deadline')}>
                         <span>Project End Date</span>
                           <DatePicker
-                            placeholderText="End_Date : dd/mm/yyyy"
+                            placeholderText="End Date : dd/mm/yyyy"
                             isClearable
                             name="datetime1"
                             className={"form-control"}
@@ -495,7 +495,7 @@ const [selected, setSelected] = useState([]);
 
                     <GridContainer>
                       <GridItem>
-                        <p className="projectPriority">Project Priority : {project.project_priority}</p>
+                        <p className="projectPriority">Priority : {project.project_priority}</p>
                       </GridItem>
                       
                       <GridItem>

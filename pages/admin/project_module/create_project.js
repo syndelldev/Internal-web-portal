@@ -185,7 +185,7 @@ for(var i=0; i<selected.length; i++){
                         <GridItem xs={12} sm={12} md={6}>
                           <div className="form-group" {...register('project_start')}>
                             <DatePicker
-                              placeholderText="Start_Date : dd/mm/yyyy"
+                              placeholderText="Start Date : dd/mm/yyyy"
                               isClearable
                               name="datetime1"
                               className={"form-control"}
@@ -204,7 +204,7 @@ for(var i=0; i<selected.length; i++){
                         <GridItem xs={12} sm={12} md={6}>
                           <div className="form-group" {...register('project_deadline')}>
                             <DatePicker
-                              placeholderText="End_Date : dd/mm/yyyy"
+                              placeholderText="End Date : dd/mm/yyyy"
                               isClearable
                               name="datetime1"
                               className={"form-control"}
