@@ -198,7 +198,7 @@ function UserRights({UserList,ModuleList}){
                                                         </TableCell>
 
                                                         <TableCell>
-                                                            <input type="checkbox" name="edit_rights" value={data.edit_rights} onChange={editCheckbox} defaultChecked={isInArray==true} onClick={()=>view_rights(data.project_id)} /> {data.edit_rights} - {data.user_id}
+                                                            <input type="checkbox" name="edit_rights" value={isInArray} onChange={editCheckbox} defaultChecked={isInArray==true} onClick={()=>view_rights(data.project_id)} /> {data.edit_rights} - {data.user_id}
                                                         </TableCell>
                                                                             
                                                     </TableRow>   
