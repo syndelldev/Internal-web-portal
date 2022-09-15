@@ -29,7 +29,7 @@ const ModuleById = async (req,res) => {
     {
         try{
             //let rightsId=await executeQuery(` SELECT * FROM tbl_user INNER JOIN tbl_project INNER JOIN tbl_module WHERE tbl_module.module_id=? AND tbl_user.id=${id} `, [req.body.moduleid] );
-            let rightsId=await executeQuery(` SELECT * FROM tbl_project_rights RIGHT JOIN tbl_rights ON tbl_rights.project_id=tbl_project_rights.project_id LEFT JOIN tbl_project ON tbl_project.project_id=tbl_rights.project_id WHERE tbl_rights.user_id=${id} `, [req.body.userid] );
+            let rightsId=await executeQuery(` SELECT * FROM tbl_project_rights LEFT JOIN tbl_rights ON tbl_rights.project_id=tbl_project_rights.project_id LEFT JOIN tbl_project ON tbl_project.project_id=tbl_rights.project_id WHERE tbl_rights.user_id=${id} `, [req.body.userid] );
             res.status(200).json(rightsId);
             //console.log(rightsId)
         }
@@ -82,7 +82,7 @@ const ProjectById = async (req,res) =>{
         if(data == "" )
         {
             try{
-                let project = await executeQuery("INSERT INTO `tbl_rights` ( `user_id`, `project_id`, `module_id`,`view_rights`, `edit_rights` ) VALUES (?,?,?,1,1)", [req.body.userid, req.body.projectid, req.body.moduleid])
+                let project = await executeQuery("INSERT INTO `tbl_rights` ( `user_id`, `project_id`, `module_id`,`view_rights`, `edit_rights` ) VALUES (?,?,?,0,0)", [req.body.userid, req.body.projectid, req.body.moduleid])
                 res.status(200).json(project);
                 console.log(project);
             }
