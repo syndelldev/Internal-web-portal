@@ -113,33 +113,7 @@ function Dashboard( { project_details , User_name, all_status } ) {
   }
 
 
-  const [likes, setLikes] = React.useState();
-
-  const data = [];
-  const projectId = async(id) =>{
-    console.log('update');
-    console.log(id);
-
-    const response = await fetch(`${server}/api/project/update/${id}`)
-    const update_data = await response.json();
-    // console.log(update_data[0]);
-
-    data.push(update_data[0]);
-    // console.log(data[0]);
-
-    const udata = data[0];
-    console.log(udata);
-
-    setLikes(udata);
-
-    }
-    console.log(" id data ");
-    console.log(likes);
-
-    // console.log(likes);
-
-
-  const [uoption, setUpdate] = useState({ 
+  const [uoption, setUpdate] = React.useState({ 
     project_title: "",
     project_description: "",
     project_department: "",
@@ -151,49 +125,62 @@ function Dashboard( { project_details , User_name, all_status } ) {
     project_person: "",
     project_comment: ""
   });
+
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
+
+  const projectId = async(id) =>{
+    console.log('update project id');
+    console.log(id);
+
+    const response = await fetch(`${server}/api/project/update/${id}`)
+    const update_data = await response.json();
+    // console.log(update_data[0]);
+
+    const udata = update_data[0];
+    console.log(udata.project_start);
+    const dateStart = (udata.project_start).slice(0,10);
+    const dateEnd = (udata.project_deadline).slice(0,10);
+
+    setUpdate(udata);
+    setStartDate(new Date(dateStart));
+    setEndDate(new Date(dateEnd));
   
-  useEffect(() =>{
-    const u_data = async() =>{
-  
-      if(likes % 2 === 0){
-        likes.map((projects)=>{
-          setUpdate(projects);
-        });
-        console.log(" id data3 ");
-        console.log(uoption);
-      
-      }
-      return null;
     }
-    u_data();
-  },[]);
-  
+
   const handleChange = ({ target: { name, value } }) =>{
     console.log("name");
     console.log([name]);
   
     setUpdate({ ...uoption, [name]: value });
   }
-  console.log(" id data2 ");
+  console.log("update start date");
+  console.log(uoption.project_start);
   console.log(uoption);
+  // const dateStart = (uoption.project_start).slice(0,10);
+  // console.log(new Date(dateStart));
+
+var dateY = "2022";
+var dateM = "02";
+var dateD = "22";
+
+var date = dateY+"/" + dateM +"/"+dateD;
 
 
   const updateProject = async(id) =>{
-    // console.log('update');
-    // console.log(id);
 
+    console.log("uoption date");
+    console.log(uoption.project_start);
+    console.log(startDate);
     const res = await fetch(`${server}/api/project/update_project`,{
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ project_id:uoption.project_id, project_person:selected, project_title: uoption.project_title , project_description:uoption.project_description, project_language:uoption.project_language, project_comment:uoption.project_comment, project_priority:uoption.project_priority, project_start: uoption.start , project_deadline: uoption.end }),
+      body: JSON.stringify({ project_id:uoption.project_id, project_person:selected, project_title: uoption.project_title , project_description:uoption.project_description, project_language:uoption.project_language, project_comment:uoption.project_comment, project_priority:uoption.project_priority, project_start: startDate , project_deadline: endDate }),
     });
     router.push(`${server}/admin/dashboard`);
   }
 
-
   const { register,  watch, handleSubmit, formState: { errors }, setValue } = useForm(); 
-  const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState();
   const router = useRouter();
 
   const onSubmit = async (result) =>{
@@ -553,7 +540,7 @@ return(
                         <GridItem xs={12} sm={12} md={12}>                      
                           <div className="form-group">
                             <span>Project Title</span>
-                            <input type="text" className="form-control signup-input" name="project_title" placeholder="Project Title" value={console.log(uoption.project_title)} onChange={handleChange} />
+                            <input type="text" className="form-control signup-input" name="project_title" placeholder="Project Title" value={uoption.project_title} onChange={handleChange} />
                             <div className="error-msg">{errors.project_title && <span>{errors.project_title.message}</span>}</div>
                           </div>
 
@@ -564,7 +551,7 @@ return(
                         <GridItem xs={12} sm={12} md={12}>
                           <div className="form-group">
                           <span>Project Description</span>
-                            <textarea className="form-control signup-input" value={uoption.project_description} name="project_description" onSelect={handleChange} onChange={handleChange} placeholder="Project Description" {...register('project_description', { required: 'Description is required', } )}  />
+                            <textarea className="form-control signup-input" value={uoption.project_description} name="project_description"onChange={handleChange} placeholder="Project Description" />
                             <div className="error-msg">{errors.project_description && <span>{errors.project_description.message}</span>}</div>
                           </div> 
                         </GridItem>
@@ -576,7 +563,7 @@ return(
                               {/*<input type="text" className="form-control signup-input" placeholder="Department" {...register('department',  { required: "Please enter your Department", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
                               <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>*/}
                             <span>Project Department</span>
-                              <select id="Department" name="project_department" className="form-control signup-input" value={uoption.project_department} onSelect={handleChange} onChange={handleChange} {...register('project_department', {required:true ,message:'Please select atleast one option', })}>
+                              <select id="Department" name="project_department" className="form-control signup-input" value={uoption.project_department} onChange={handleChange} >
                                 <option value=""  disabled selected>Select Your Department...</option>
                                 <option value="HR">HR</option>
                                 <option value="UI & UX">UI & UX</option>
@@ -594,7 +581,7 @@ return(
                         <GridItem xs={12} sm={12} md={6}>
                           <div className="form-group">
                           <span>Project Language</span>
-                            <select name="project_language" id="Project_created_by" className="form-control signup-input"  value={uoption.project_language} onSelect={handleChange} onChange={handleChange} {...register('project_language', {required:true ,message:'Please select atleast one option', })}>
+                            <select name="project_language" id="Project_created_by" className="form-control signup-input"  value={uoption.project_language} onChange={handleChange} >
                               <option value="" disabled selected>Select Language</option>
                               <option value="Wordpress">Wordpress</option>
                               <option value="Shopify">Shopify</option>
@@ -610,37 +597,36 @@ return(
                       </GridContainer><br/>
 
                       <GridContainer>  
-
                         <GridItem xs={12} sm={12} md={6}>
-                          <div className="form-group" onSelect={handleChange} onChange={handleChange} {...register('project_start')}>
+                          <div className="form-group" onChange={handleChange} >
                           <span>Project Start Date</span>
                             <DatePicker
                               placeholderText="Start_Date : dd/mm/yyyy"
                               isClearable
                               name="datetime"
                               className={"form-control"}
-                              value={project.project_start}
+                              // value={uoption.project_start}
+                              value={new Date(uoption.project_start)}
                               selected={startDate}
                               onChange={val => {
                                 setStartDate(val);
                                 setValue("start", val);
                               }}
                               dateFormat="dd-MM-yyyy"
-                              minDate={new Date()}
                             />
                           <div className="error-msg">{errors.project_start && <span>{errors.project_start.message}</span>}</div>
                           </div> 
                         </GridItem>
 
                         <GridItem xs={12} sm={12} md={6}>
-                          <div className="form-group" onChange={handleChange} {...register('project_deadline')}>
+                          <div className="form-group" onChange={handleChange}>
                           <span>Project End Date</span>
                             <DatePicker
                               placeholderText="End_Date : dd/mm/yyyy"
                               isClearable
                               name="datetime1"
-                              onSelect={handleChange}
-                              value={project.project_deadline}
+                              // onSelect={handleChange}
+                              value={new Date(uoption.project_deadline)}
                               className={"form-control"}
                               selected={endDate}
                               onChange={val => {
@@ -659,7 +645,7 @@ return(
                         <GridItem xs={12} sm={12} md={6}>
                           <div className="form-group">
                           <span>Project Priority</span>
-                            <select name="project_priority" id="priority" className="form-control signup-input" value={uoption.project_priority} onSelect={handleChange} onChange={handleChange} {...register('project_priority', {required:true ,message:'Please select atleast one option', })}>
+                            <select name="project_priority" id="priority" className="form-control signup-input" value={uoption.project_priority} onChange={handleChange}>
                               <option value=""  disabled selected>Select Project Priority</option>
                               <option value="High">High</option>
                               <option value="Medium">Medium</option>
@@ -675,7 +661,7 @@ return(
                               {/*<input type="text" className="form-control signup-input" placeholder="Status" {...register('status',  { required: "Please enter your Status", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
                               <div className="error-msg">{errors.status && <p>{errors.status.message}</p>}</div>*/}
                               <span>Project Status</span>
-                              <select name="project_status" id="Status" className="form-control signup-input" value={uoption.project_status} onSelect={handleChange} onChange={handleChange} {...register('project_status', {required:true ,message:'Please select atleast one option', })}>
+                              <select name="project_status" id="Status" className="form-control signup-input" value={uoption.project_status} onChange={handleChange}>
                                 <option value=""  disabled selected>Select Project Status</option>
                                 <option value="on hold">On hold</option>
                                 <option value="running">Running</option>
@@ -715,7 +701,7 @@ return(
                         <GridItem xs={12} sm={12} md={12}>
                           <div className="form-group">
                           <span>Comments</span>
-                            <textarea className="form-control signup-input" name="project_comment" value={uoption.project_comment} onSelect={handleChange} onChange={handleChange} placeholder="Comment" {...register('project_comment')} />
+                            <textarea className="form-control signup-input" name="project_comment" value={uoption.project_comment} onChange={handleChange} placeholder="Comment" />
                             <div className="error-msg">{errors.position && <span>{errors.position.message}</span>}</div>
                           </div> 
                         </GridItem>
@@ -742,7 +728,7 @@ return(
                         {close => (
                           <div>
                           <Card>                            
-                            <GridContainer>
+                              <GridContainer>
                               <GridItem xs={12} sm={12} md={12}>
                                   <GridContainer>
                                     <GridItem>

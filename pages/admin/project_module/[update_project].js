@@ -144,18 +144,9 @@ const [uoption, setOption] = useState({
 useEffect(() =>{
   const u_data = async() =>{
 
-    if(project_details % 2 === 0){
-      project_details.map((projects)=>{
-        setUpdate(projects);
-      });
-    
-    }
-    return null;
-
-
-    // project_details.map((project)=>{
-    //   setOption(project);
-    // });
+    project_details.map((project)=>{
+      setOption(project);
+    });
   }
   u_data();
 },[]);
