@@ -62,7 +62,7 @@ html * {
   -moz-osx-font-smoothing: grayscale;
 }
 body {
-  background-color: #eeeeee;
+  background-color: #ADD8E6;
   color: #3c4858;
   margin: 0;
   font-family: Roboto, Helvetica, Arial, sans-serif;
@@ -112,7 +112,7 @@ h6 {
 }
 
 body {
-  background-color: #eeeeee;
+  background-color:#eeeeee;
   color: #3c4858;
 }
 
@@ -186,8 +186,8 @@ output {
 label {
   font-size: 14px;
   line-height: 1.42857;
-  color: #aaaaaa;
-  font-weight: 400;
+  color: #000;
+  font-weight: 500;
 }
 
 footer {

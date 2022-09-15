@@ -19,11 +19,11 @@ a {
 
 .dropdown_button {
   
-  padding: 6px 20px;
+  padding: 9px 20px;
   font-size: 16px;
   border: none;
   background-color: #ADD8E6;
-  border-radius: 15px;
+  border-radius: 8px;
 }
 
 .department_dropdown {
@@ -75,7 +75,8 @@ a {
   border: 1px solid #ADD8E6 ;
 }
 .buttonalign{
-  justify-content: center;
+  float: right;
+  /* justify-content: center; */
   display: flex;
   margin-bottom: 10px;
 } 
@@ -87,11 +88,11 @@ a {
   justify-content: center;
 }
 .bttn-design{
-  padding: 6px 20px;
+  padding: 9px 20px;
   font-size: 16px;
   background-color: #ADD8E6;
   border: none;
-  border-radius: 15px;
+  border-radius: 8px;
 }
 
 .icon-display{
@@ -142,4 +143,8 @@ a {
   display: flex;
   align-items: center;
   margin-left: auto;
+}
+.makeStyles-grid-340{
+  width: 100%!important;
+  margin: 0px 0px !important;
 }
