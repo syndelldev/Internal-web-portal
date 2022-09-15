@@ -146,7 +146,7 @@ function UserRights({UserList,ModuleList}){
                                             UserList.map((users)=>{
                                                 return(
                                                     <>
-                                                        <option key={users.id} value={users.id}>{users.username} - {users.id}</option> 
+                                                        <option key={users.id} value={users.id}>{users.username}</option> 
                                                     </>      
                                                 )
                                             })
@@ -183,7 +183,7 @@ function UserRights({UserList,ModuleList}){
                                             <TableCell>Contributor(edit)</TableCell>
                                         </TableRow>
                                     </TableHead>
-                                        <TableBody>
+                                    <TableBody>
                                         {
                                             users.map((data)=>{
                                                 const isInArray = data.user_id.includes(user);
@@ -191,31 +191,21 @@ function UserRights({UserList,ModuleList}){
                                                 // console.log(isInArray);   
                                                 return(       
                                                     <TableRow key={data.project_id} value={data.project_id}>
-                                                        <TableCell>{data.project_title}-{data.project_id}</TableCell>  
+                                                        <TableCell>{data.project_title}</TableCell>  
                                                           
                                                         <TableCell>
                                                             <input type="checkbox" name="view_rights" value={data.view_rights} onChange={viewCheckbox} defaultChecked={data.view_rights==1} onClick={()=>view_rights(data.project_id)}/>
                                                         </TableCell>
 
                                                         <TableCell>
-                                                            <input type="checkbox" name="edit_rights" value={isInArray} onChange={editCheckbox} defaultChecked={isInArray==true} onClick={()=>view_rights(data.project_id)} /> {data.edit_rights} - {data.user_id}
+                                                            <input type="checkbox" name="edit_rights" value={isInArray} onChange={editCheckbox} defaultChecked={isInArray==true} onClick={()=>view_rights(data.project_id)} /> 
                                                         </TableCell>
                                                                             
                                                     </TableRow>   
                                                     )
                                                 })
                                             }                                       
-                                            </TableBody>
-                                            
-                                            {/* {
-                                                            rightslist.map((r)=>{
-                                                                return(
-                                                                    <>
-                                                                        <p>{r.user_id}-{r.project_id}</p>
-                                                                    </>
-                                                                )
-                                                            })
-                                                        }   */}
+                                        </TableBody>
                                 </Table>
                             </div>
                         </CardBody>

@@ -48,6 +48,10 @@ import {
 } from "variables/charts.js";
 import { FiEdit } from "react-icons/fi";
 import { MdDelete } from 'react-icons/md';
+import { useCookies } from 'react-cookie';
+import axios from "axios";
+
+
 
 const styles = {
     cardCategoryWhite: {
@@ -105,31 +109,42 @@ const styles = {
 };
 
   
-export async function getServerSideProps(){
+// export async function getServerSideProps(context){
+//     console.log(context.req.cookies);
+//     const res = await fetch(`${server}/api/user_dashboard/subtask_person`, {
+//         headers: {
+//           'Access-Control-Allow-Credentials': true,
+//           Cookie: context.req.headers.cookie
+//         },
+//     })
+//     const project = await res.json()
+//     return { props: {project}, }
 
-    const res = await fetch(`${server}/api/project`);
-    const project_details = await res.json();
-  
-    const response = await fetch(`${server}/api/admin`)
-    const User_name = await response.json();
-  
-    const task = await fetch(`${server}/api/subtask`)
-    const allTask = await task.json();
-  
-    return{ props: {project_details, User_name, allTask} }
-}
+// }
 
-function Dashboard( { allTask } ) {
+function Dashboard() {
+    // console.log(allTask)
+    const useStyles = makeStyles(styles);
+    const classes = useStyles();
 
-//   console.log(allTask)
+    const [cookies, setCookie] = useCookies('');
+    console.log(cookies.Id)
 
-  const useStyles = makeStyles(styles);
-  const classes = useStyles();
+    const [Task, setTask] = useState([]);
+    
+    useEffect(async()=>{
+    axios.get(`${server}/api/subtask/` )
+      .then((res)=>{
+        setTask(res.data)
+        // console.log(res.data)
+      })    
+    },[])
+    console.log(Task)
 
-  return (
+    return (
     <>
         <GridContainer>
-            {allTask.map((task)=>{
+            {Task.map((task)=>{
                 var person = task.task_person.split(",");
                 return(
                     <GridItem xs={6} sm={6} md={4} key={task.task_id}>
@@ -148,7 +163,6 @@ function Dashboard( { allTask } ) {
                                         <GridItem>
                                             <div className="icon-edit-delete">
                                                 <a href={`${server}/admin/subtask_module/${task.task_id}`}><FiEdit/></a>
-                                                <a href='#'>Detail</a>
                                             </div>
                                         </GridItem>
                                     </GridContainer>
@@ -163,18 +177,59 @@ function Dashboard( { allTask } ) {
                                             })
                                         }
                                         </GridItem>
+
+                                        <div className="buttonalign">
+                                            <Popup trigger={<div><a className="bttn-design">Add comment</a></div>}  className="popupReact"  modal>
+                                                {close => (
+                                                    <div>
+                                                        <GridContainer>
+                                                            <GridItem xs={12} sm={12} md={12}>
+                                                                <form> 
+                                                                    <Card>
+                                                                        <CardHeader color="primary">
+                                                                            <GridContainer>
+                                                                            <GridItem>
+                                                                                <h4 className={classes.cardTitleWhite}>Create Task</h4>
+                                                                                <p className={classes.cardCategoryWhite}>Enter your new task details</p>
+                                                                            </GridItem>
+                                                                            <div className={classes.close}>
+                                                                                <a onClick={close}>&times;</a>
+                                                                            </div>
+                                                                            </GridContainer>
+                                                                        </CardHeader>
+                                                                        <CardBody>
+                                                                            
+                                                                        </CardBody>
+                                                                    </Card>
+                                                                </form>
+                                                            </GridItem>
+                                                        </GridContainer>
+                                                    </div>
+                                                )}
+                                            </Popup>
+                                        </div>
+                                                
                                     </GridContainer>
                                     <GridContainer>
                                         <GridItem>
                                             <p className="projectPriority">Task Priority : {task.task_priority}</p>
                                         </GridItem>
+                                        
                                     </GridContainer>
                                 </CardBody>
+
+                                
+
                             </Card>
                         </form>
-                    </GridItem>
+
+                        
+
+                    </GridItem>                  
                 )
             })}
+
+            
         </GridContainer>
     </>
   );
