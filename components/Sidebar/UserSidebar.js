@@ -134,6 +134,15 @@ export default function Sidebar(props) {
                     <span className="MuiTouchRipple-root"></span>
                   </div>
                 </a>
+                <a className=" makeStyles-item-15" href="/user/subtask">
+                  <div className="MuiButtonBase-root MuiListItem-root makeStyles-itemLink-16undefined MuiListItem-gutters MuiListItem-button" tabIndex="0" role="button" aria-disabled="false">
+                    <svg className="MuiSvgIcon-root makeStyles-itemIcon-17" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path>
+                    </svg>
+                    <div className="MuiListItemText-root makeStyles-itemText-19">Sub Task</div>
+                    <span className="MuiTouchRipple-root"></span>
+                  </div>
+                </a>
                     {/*<a className=" makeStyles-item-15" href="/user/dashboard">
                         <div className="MuiButtonBase-root MuiListItem-root makeStyles-itemLink-16undefined MuiListItem-gutters MuiListItem-button" tabIndex="0" role="button" aria-disabled="false">
                             <svg className="MuiSvgIcon-root makeStyles-itemIcon-17" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
