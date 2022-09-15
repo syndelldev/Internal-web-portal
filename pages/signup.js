@@ -55,10 +55,10 @@ function SignIn(){
         {
             toast.success('SignUp Successfully !', {
                 position: "top-right",
-                autoClose:5000,
+                autoClose:1000,
                 onClose: () => router.push("/login")
             });
-            //router.push("/login");
+            router.push("/login");
         }
         else
         {
@@ -71,7 +71,7 @@ function SignIn(){
             <section className='login-section'>
                 <div className='container login-container'>
                     <div className='login-div'>
-                        <h2 className='login-title'>Automation Tool SignUp</h2>
+                        <h2 className='login-title'>Automation Tool Sign Up</h2>
 
 
                         <form method="POST" onSubmit={handleSubmit(onSubmit)} >
@@ -210,13 +210,14 @@ function SignIn(){
                                 <button type="submit" className="login-create-acc-btn" >Create Account</button>
                             </div>  
                             <div className='login-text'>
-                                <p>Already have an Account ? <a href='/login'><span className='signup-text-login'>Login</span></a></p>
+                                <div><p>Already have an Account? </p></div>
+                                <div><p><a href='/login'><span className='signup-text-login'>Login</span></a></p></div>
                             </div>
                         </form>
                     </div>
                 </div>
             </section>
-            <ToastContainer />
+            <ToastContainer limit={1}/>
 
         </>
     )

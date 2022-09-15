@@ -18,10 +18,12 @@ a {
 /* filter project language, department dropdown */
 
 .dropdown_button {
-  color: black;
-  padding: 3px 15px;
+  
+  padding: 9px 20px;
   font-size: 16px;
-  border: 2px solid #000;
+  border: none;
+  background-color: #ADD8E6;
+  border-radius: 8px;
 }
 
 .department_dropdown {
@@ -73,7 +75,76 @@ a {
   border: 1px solid #ADD8E6 ;
 }
 .buttonalign{
-  justify-content: center;
+  float: right;
+  /* justify-content: center; */
   display: flex;
   margin-bottom: 10px;
-}  
+} 
+
+.logout{
+  background-color: #ADD8E6 !important;
+}
+.MuiGrid-root.makeStyles-grid-479.MuiGrid-container{
+  justify-content: center;
+}
+.bttn-design{
+  padding: 9px 20px;
+  font-size: 16px;
+  background-color: #ADD8E6;
+  border: none;
+  border-radius: 8px;
+}
+
+.icon-display{
+  display: flex;
+}
+.icon-width{
+  width: auto;
+}
+.icon-align{
+  vertical-align: top;
+} 
+
+.add_new_user{
+  color: white;
+  margin-bottom: 0px;
+}
+
+.icon{
+  margin-left: auto;
+}
+.icon2{
+  display: flex;
+}
+.project_delete_icon{
+  background-color: white;
+  border: none;
+}
+.text ,.projectTitle{
+  color: black;
+}
+.popup-align
+{
+  position: relative;
+  top: 120px;
+  left: 50%;
+  transform: translate(-50px, -50px);
+}
+
+.copyright{
+  display: flex;
+}
+.copyright a:hover{
+  color: darkblue;
+  font-weight: 900;
+}
+
+.icon-edit-delete{
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+.makeStyles-grid-340{
+  width: 100%!important;
+  margin: 0px 0px !important;
+}

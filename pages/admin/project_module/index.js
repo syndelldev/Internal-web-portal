@@ -24,8 +24,8 @@ import DatePicker from "react-datepicker";
 import LibraryBooks from "@material-ui/icons/LibraryBooks";
 import Popup from "reactjs-popup";
 import Multiselect from "multiselect-react-dropdown";
+import { MdDelete } from "react-icons/md";
 import { FiEdit } from "react-icons/fi";
-import { MdDelete } from 'react-icons/md';
 
 const styles = {
   cardCategoryWhite: {
@@ -102,6 +102,7 @@ function AddProject({ project_details , User_name }) {
     console.log(id);
 
     const res = await fetch(`${server}/api/project/${id}`);
+    router.push(`${server}/admin/project_module`);
   }
   const { register,  watch, handleSubmit, formState: { errors }, setValue } = useForm(); 
   const [startDate, setStartDate] = useState();
@@ -169,9 +170,9 @@ const [selected, setSelected] = useState([]);
 <div className="buttonalign">
 <GridContainer>
       <GridItem>
-         
-        <Popup trigger={<div><button className="buttonpopup5">Add Project</button></div>} className="popupReact" modal>
-  
+
+        <Popup trigger={<div><button className="bttn-design">Add Project</button></div>} className="popupReact" modal>
+
         {close => (
     <div>
     <GridContainer>
@@ -225,10 +226,10 @@ const [selected, setSelected] = useState([]);
                               <option value=""  disabled selected>Select Your Department...</option>
                               <option value="HR">HR</option>
                               <option value="UI & UX">UI & UX</option>
-                              <option value="Web development">Web development</option>
-                              <option value="Content writer">Content writer</option>
-                              <option value="Project manager">Project manager</option>
-                              <option value="Mobile App developer">Mobile App developer</option>
+                              <option value="Web development">Web Development</option>
+                              <option value="Content writer">Content Writer</option>
+                              <option value="Project manager">Project Manager</option>
+                              <option value="Mobile App developer">Mobile App Developer</option>
                               <option value="SEO">SEO</option>
                             </select>
                             <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
@@ -250,7 +251,7 @@ const [selected, setSelected] = useState([]);
                           </select>
                           <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                           <div className="error-msg">{errors.project_language && <span>{errors.project_language.message}</span>}</div>
-                        </div>   
+                        </div> 
                       </GridItem>
                     </GridContainer><br/>
 
@@ -380,16 +381,17 @@ const [selected, setSelected] = useState([]);
 </GridItem>
 
 <GridItem>
+
 <div className="department_dropdown">
   <button className="dropdown_button">Project Department</button>
       <div className="department-link">
         <a href={`${server}/admin/project_module`}>All</a>
         <a href={`${server}/admin/project_module/project_department/HR`}>HR</a>
         <a href={`${server}/admin/project_module/project_department/UI & UX`}>UI & UX</a>
-        <a href={`${server}/admin/project_module/project_department/Web development`}>Web development</a>
-        <a href={`${server}/admin/project_module/project_department/Content writer`}>Content writer</a>
-        <a href={`${server}/admin/project_module/project_department/Project manager`}>Project manager</a>
-        <a href={`${server}/admin/project_module/project_department/Mobile App developer`}>Mobile App developer</a>
+        <a href={`${server}/admin/project_module/project_department/Web development`}>Web Development</a>
+        <a href={`${server}/admin/project_module/project_department/Content writer`}>Content Writer</a>
+        <a href={`${server}/admin/project_module/project_department/Project manager`}>Project Manager</a>
+        <a href={`${server}/admin/project_module/project_department/Mobile App developer`}>Mobile App Developer</a>
         <a href={`${server}/admin/project_module/project_department/SEO`}>SEO</a>
       </div>
 </div>
@@ -409,6 +411,7 @@ const [selected, setSelected] = useState([]);
       </div>
 </div>
 </GridItem>
+
 </GridContainer>
 </div>
 
@@ -440,8 +443,40 @@ const [selected, setSelected] = useState([]);
                       </GridItem>
 
                       <GridItem>
+                        <div className="icon-edit-delete">
                         <a href={`${server}/admin/project_module/${project.project_id}`}><FiEdit/></a>
-                        <button onClick={()=>deleteProject(project.project_id)} className="project_delete_icon"><MdDelete/></button>
+                        {/* <button onClick={()=>deleteProject(project.project_id)}>Delete</button> */}
+                        <Popup trigger={<span><MdDelete/></span>} modal>
+                        {close => (
+                          <div>
+                          <Card>                            
+                            <GridContainer>
+                              <GridItem xs={12} sm={12} md={12}>
+                                  <GridContainer>
+                                    <GridItem>
+                                      <div>
+                                        <CardBody>
+                                          <h4 className={classes.cardTitleWhite}>Are you sure you want to delete {project.project_title}?</h4>
+                                        </CardBody>
+                                        <CardFooter>
+                                            <Button onClick={()=>deleteProject(project.project_id)}>Yes</Button>
+                                            <Button className="button" onClick={() => { close(); }}> No </Button>
+                                        </CardFooter>
+                                      </div>
+                                    </GridItem>
+
+                                      <div className={classes.close}>
+                                        <a onClick={close}>&times;</a>
+                                      </div>
+                                  </GridContainer>
+                              </GridItem>
+                            </GridContainer>
+                          </Card>
+  
+                          </div>
+                        )}
+                      </Popup>
+                      </div>
                       </GridItem>
                     </GridContainer>
 

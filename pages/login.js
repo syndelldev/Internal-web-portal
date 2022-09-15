@@ -22,6 +22,8 @@ export default function home()
     //Password Hide and Show
     const [isRevealPwd, setIsRevealPwd] = useState(false);
 
+    const toastId = React.useRef(null);
+
     console.log(email);
 
     const login = async(e) => {
@@ -36,9 +38,7 @@ export default function home()
             document.getElementById("errpassword").innerHTML = text;
         }
 
-        
-
-        const res = await fetch(`${server}/api/admin/login/`,{
+        const res = await fetch(`${server}/api/admin/login`,{
             method: "POST",
             headers: { "Content-Type": "application/json",},
             body:JSON.stringify({email,password}),
@@ -58,7 +58,7 @@ export default function home()
             var role = data[0].role
             console.log(role)
 
-
+            
             if(dbpass == password)
             {
                 if(role=='Admin'){
@@ -74,14 +74,14 @@ export default function home()
                     setCookie('Avtar', data[0].avtar, { path:'/' , sameSite:true, });
                     setCookie('Role_id', data[0].role_id, { path:'/' , sameSite:true, });
 
-                    toast.success('Login Successfully! 🎉', {
-                        position: "top-right",
-                        autoClose:5000,
-                        onClose: () => router.push("/admin/dashboard")
-                    });
-
-                    //router.push("/admin/dashboard");
-                }
+                    if(! toast.isActive(toastId.current)) {
+                        toastId.current = toast.success('Login Successful! 🎉', {
+                            position: "top-right",
+                            autoClose:1000,
+                            onClose: () => router.push("/admin/dashboard")
+                            });
+                        }
+                    }
                 else if(role=='User'){
                     setCookie('name', data[0].username, { path:'/' , sameSite:true, });
                     setCookie('Email', data[0].email, { path:'/' , sameSite:true, });
@@ -94,13 +94,19 @@ export default function home()
                     setCookie('Avtar', data[0].avtar, { path:'/' , sameSite:true, });
                     setCookie('Role_id', data[0].role_id, { path:'/' , sameSite:true, });
 
-                    toast.success('Login Successfully! 🎉', {
+  
+                    if(! toast.isActive(toastId.current)) {
+                    toastId.current = toast.success('Login Successful! 🎉', {
                         position: "top-right",
-                        autoClose:5000,
+                        autoClose:1000,
                         onClose: () => router.push("/user/dashboard")
-                    });
-
-                    //router.push("/user/dashboard");
+                        });
+                    }
+                    // toast.success('Login Successfully! 🎉', {
+                    //     position: "top-right",
+                    //     autoClose:1000,
+                    //     onClose: () => router.push("/user/dashboard")
+                    // });
                 }
                 //alert("Sucess")
             }
@@ -153,7 +159,9 @@ return(
                                     <button type="submit" className="login-create-acc-btn">Login</button>  
                                 </div> 
                                 <div className='login-text'>
-                                    <p>Don&apos;t have an account? <a href='/signup'><span className='signup-text-login'>Sign Up</span></a></p>
+                                    {/* <p>Don&apos;t have an account? <a href='/signup'><span className='signup-text-login'>Sign Up</span></a></p> */}
+                                    <div> <p>Don&apos;t have an account?</p> </div>
+                                    <div> <p><a href='/signup' className='signup-text-login'>Sign Up</a></p> </div>
                                 </div>
 
                             </div>
@@ -161,7 +169,7 @@ return(
                     </div>
                 </div>
             </section>
-            <ToastContainer />
+            <ToastContainer limit={1}/>
         </>
     );
 

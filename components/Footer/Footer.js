@@ -39,9 +39,9 @@ export default function Footer(props) {
           </List>*/}
         </div>
         <p className={classes.right}>
-          <span>
+          <span className="copyright">
             &copy; {1900 + new Date().getYear()}{" "}
-            <a
+            &nbsp;<a
               href="https://syndelltech.com/"
               target="_blank"
               className={classes.a}
