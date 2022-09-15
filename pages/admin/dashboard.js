@@ -103,6 +103,10 @@ export async function getServerSideProps(){
 function Dashboard( { project_details , User_name, all_status } ) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
+
+  const [addStartDate, setStart_Date] = useState();
+  const [addEndDate, setEnd_Date] = useState();
+
   
   const deleteProject = async(id) =>{
     console.log('delete');
@@ -129,6 +133,8 @@ function Dashboard( { project_details , User_name, all_status } ) {
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
 
+  const [updateSelected, setUpdateSelected] = React.useState([]);
+
   const projectId = async(id) =>{
     console.log('update project id');
     console.log(id);
@@ -138,15 +144,19 @@ function Dashboard( { project_details , User_name, all_status } ) {
     // console.log(update_data[0]);
 
     const udata = update_data[0];
-    console.log(udata.project_start);
+    console.log(udata.project_person);
+
     const dateStart = (udata.project_start).slice(0,10);
     const dateEnd = (udata.project_deadline).slice(0,10);
 
     setUpdate(udata);
     setStartDate(new Date(dateStart));
     setEndDate(new Date(dateEnd));
+    setUpdateSelected(udata.project_person);
   
     }
+
+    const [selected, setSelected] = useState([]);
 
   const handleChange = ({ target: { name, value } }) =>{
     console.log("name");
@@ -155,27 +165,41 @@ function Dashboard( { project_details , User_name, all_status } ) {
     setUpdate({ ...uoption, [name]: value });
   }
   console.log("update start date");
+  console.log(uoption.project_person);
   console.log(uoption.project_start);
   console.log(uoption);
-  // const dateStart = (uoption.project_start).slice(0,10);
-  // console.log(new Date(dateStart));
 
-var dateY = "2022";
-var dateM = "02";
-var dateD = "22";
+  var uMember = uoption.project_person;
 
-var date = dateY+"/" + dateM +"/"+dateD;
+
+  const allSelectedMember = [];
+  const projectMember = (uMember).split(",");
+
+  console.log("member");
+  console.log(projectMember);
+
+  for(var i=0; i<projectMember.length; i++){
+    allSelectedMember.push({'label' :projectMember[i] , 'value' : projectMember[i]});
+  }
 
 
   const updateProject = async(id) =>{
 
-    console.log("uoption date");
-    console.log(uoption.project_start);
-    console.log(startDate);
+    const allMember = [];
+    for(var i=0; i<updateSelected.length; i++){
+          allMember.push(updateSelected[i].value);
+    }
+
+    if(allMember == ""){
+      var members = projectMember;
+    }else{
+      var members = allMember;
+    }
+
     const res = await fetch(`${server}/api/project/update_project`,{
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ project_id:uoption.project_id, project_person:selected, project_title: uoption.project_title , project_description:uoption.project_description, project_language:uoption.project_language, project_comment:uoption.project_comment, project_priority:uoption.project_priority, project_start: startDate , project_deadline: endDate }),
+      body: JSON.stringify({ project_id:uoption.project_id, project_person:members, project_title: uoption.project_title , project_description:uoption.project_description, project_language:uoption.project_language, project_comment:uoption.project_comment, project_priority:uoption.project_priority, project_start: startDate , project_deadline: endDate }),
     });
     router.push(`${server}/admin/dashboard`);
   }
@@ -221,7 +245,6 @@ useEffect(() =>{
   u_data();
 },[]);
 
-const [selected, setSelected] = useState([]);
 
   return (
     <>
@@ -320,11 +343,11 @@ const [selected, setSelected] = useState([]);
                         <DatePicker
                           placeholderText="Start_Date : dd/mm/yyyy"
                           isClearable
-                          name="datetime1"
+                          name="datetime"
                           className={"form-control"}
-                          selected={startDate}
+                          selected={addStartDate}
                           onChange={val => {
-                            setStartDate(val);
+                            setStart_Date(val);
                             setValue("start", val);
                           }}
                           dateFormat="dd-MM-yyyy"
@@ -342,13 +365,13 @@ const [selected, setSelected] = useState([]);
                           isClearable
                           name="datetime1"
                           className={"form-control"}
-                          selected={endDate}
+                          selected={addEndDate}
                           onChange={val => {
-                            setEndDate(val);
+                            setEnd_Date(val);
                             setValue("end", val);
                           }}
                           dateFormat="dd-MM-yyyy"
-                          minDate={startDate}
+                          minDate={addStartDate}
                         />
                       <div className="error-msg">{errors.project_deadline && <span>{errors.project_deadline.message}</span>}</div>
                       </div> 
@@ -439,7 +462,7 @@ const [selected, setSelected] = useState([]);
 
   <GridItem>
   <div className="department_dropdown">
-  <button className="dropdown_button">Project Department</button>
+  <button className="dropdown_button">Project Departments</button>
       <div className="department-link">
         <a href={`${server}/admin/project_module`}>All</a>
         <a href={`${server}/admin/project_module/project_department/HR`}>HR</a>
@@ -455,7 +478,7 @@ const [selected, setSelected] = useState([]);
 
 <GridItem>
 <div className="department_dropdown">
-  <button className="dropdown_button">Project Language</button>
+  <button className="dropdown_button">Project Languages</button>
       <div className="department-link">
         <a href={`${server}/admin/project_module`}>All</a>
         <a href={`${server}/admin/project_module/project_language/Wordpress`}>Wordpress</a>
@@ -472,24 +495,18 @@ const [selected, setSelected] = useState([]);
 </div>
     <GridContainer>
 
-{all_status.map((status)=>{
+    {project_details.map((project)=>{
+
+if(project.project_delete == "no"){
+
+// if(status.project_status == project.project_status){
+
+  var person = project.project_person.split(",");
 
 return(
   <>
     <GridItem xs={6} sm={6} md={4}>
 
-    {project_details.map((project)=>{
-
-    if(project.project_delete == "no"){
-
-    if(status.project_status == project.project_status){
-
-      var person = project.project_person.split(",");
-
-    return(
-    <>
-
-    <GridItem>
         <form>
         <Card>
             <CardHeader color="primary">
@@ -681,13 +698,11 @@ return(
                           <Multiselect
                           displayValue="value"
                             options={uoptions}
-                            value={selected}
-                            // selectedValues={allSelectedMember}
-                            onChange={setSelected}
-                            // onKeyPressFn={function noRefCheck(){}}
-                            onRemove={setSelected}
-                            // onSearch={function noRefCheck(){}}
-                            onSelect={setSelected}
+                            value={updateSelected}
+                            selectedValues={allSelectedMember}
+                            onChange={setUpdateSelected}
+                            onRemove={setUpdateSelected}
+                            onSelect={setUpdateSelected}
                             placeholder="Select Project Members"
                             showArrow={true}
                           />
@@ -710,7 +725,7 @@ return(
                     </CardBody>
 
                     <CardFooter>
-                        <Button color="primary"  onClick={()=>updateProject(project.project_id)}>Save</Button>
+                        <Button color="primary"  onClick={()=> { updateProject(project.project_id); close() } }>Save</Button>
                         <Button className="button" onClick={() => { close(); }}> Cancel </Button>
                     </CardFooter>
                     
@@ -786,16 +801,11 @@ return(
                 </CardFooter>
             </Card>
         </form>
-    </GridItem>
-  </>
-        )}    
-                  }
-    })
- }
+        
   </GridItem>
 
  </>);
-
+}
 })
 }
 
