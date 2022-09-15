@@ -122,13 +122,20 @@ a {
 }
 .text ,.projectTitle{
   color: black;
+  font-weight: bold;
 }
 .popup-align
-{
+{/*
   position: relative;
   top: 120px;
   left: 50%;
-  transform: translate(-50px, -50px);
+  transform: translate(-50px, -50px);*/
+ /* position: fixed;
+    top:0 !important;
+    left:100% !important;
+    height:100% !important;
+    transition: transform .2s ease-in-out !important;*/
+    transform: translateX(100%);
 }
 
 .copyright{
@@ -148,3 +155,12 @@ a {
   width: 100%!important;
   margin: 0px 0px !important;
 }
+/*
+@media only screen   
+and (min-width: 1030px)   
+and (max-width: 1366px){
+  .project{
+  width: 100%!important;
+  margin: 0px 0px !important;
+  }
+}*/
