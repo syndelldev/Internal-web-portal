@@ -23,6 +23,7 @@ import { server } from 'config';
 import Popup from "reactjs-popup";
 import DatePicker from "react-datepicker";
 import Multiselect from "multiselect-react-dropdown";
+import { ToastContainer, toast } from 'react-toastify';
 import {
   dailySalesChart,
   emailsSubscriptionChart,
@@ -93,14 +94,11 @@ export async function getServerSideProps(){
   const response = await fetch(`${server}/api/admin`)
   const User_name = await response.json();
   // console.log(User_name);
-  const status = await fetch(`${server}/api/project/project_status`)
-  const all_status = await status.json();
-  console.log(all_status);
 
-  return{ props: {project_details, User_name, all_status } }
+  return{ props: {project_details, User_name } }
 }
 
-function Dashboard( { project_details , User_name, all_status } ) {
+function Dashboard( { project_details , User_name } ) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
 
@@ -184,6 +182,7 @@ function Dashboard( { project_details , User_name, all_status } ) {
     allSelectedMember.push({'label' :projectMember[i] , 'value' : projectMember[i]});
   }
 
+  const toastId = React.useRef(null);
 
   const updateProject = async(id) =>{
 
@@ -197,14 +196,41 @@ function Dashboard( { project_details , User_name, all_status } ) {
     }else{
       var members = allMember;
     }
+    console.log("all users");
+    console.log(members);
+    console.log(projectMember);
+    console.log(updateSelected);
+
+    if( uoption.project_title=="" || uoption.project_description=="" ||  uoption.project_department=="" || uoption.project_language=="" || members=="" || startDate=="" || endDate=="" || uoption.project_priority=="" || uoption.project_status=="" ){
+      if(! toast.isActive(toastId.current)) {
+        toastId.current = toast.error('Please fill all the required fields', {
+            position: "top-right",
+            autoClose:5000,
+            theme: "colored",
+            closeOnClick: true,
+            hideProgressBar: true,
+          });
+        }
+  
+  }else{
 
     const res = await fetch(`${server}/api/project/update_project`,{
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ project_id:uoption.project_id, project_person:members, project_title: uoption.project_title , project_description:uoption.project_description, project_language:uoption.project_language, project_comment:uoption.project_comment, project_priority:uoption.project_priority, project_start: startDate , project_deadline: endDate }),
+      body: JSON.stringify({ project_id:uoption.project_id, project_person: members, project_status:uoption.project_status , project_department:uoption.project_department ,  project_title: uoption.project_title , project_description:uoption.project_description , project_language:uoption.project_language, project_comment:uoption.project_comment, project_priority:uoption.project_priority, project_start: startDate , project_deadline: endDate }),
     });
+    if(!toast.isActive(toastId.current)) {
+      toastId.current = toast.success('Updated Successfully ! 🎉', {
+          position: "top-right",
+          autoClose:1000,
+          onClose: () => router.push(`${server}/admin/project_module`)
+          });
+      }
+
     router.push(`${server}/admin/project_module`);
+
   }
+}
 
   const { register,  watch, handleSubmit, formState: { errors }, setValue } = useForm(); 
   const router = useRouter();
@@ -558,8 +584,8 @@ return(
                       <GridContainer>
                         <GridItem xs={12} sm={12} md={12}>                      
                           <div className="form-group">
-                            <span>Project Title</span>
-                            <input type="text" className="form-control signup-input" name="project_title" placeholder="Project Title" value={uoption.project_title} onChange={handleChange} />
+                            <span>Project Title</span><span className="required">*</span>
+                            <input type="text" className="form-control signup-input" name="project_title" placeholder="Project Title" value={uoption.project_title} onChange={handleChange} required />
                             <div className="error-msg">{errors.project_title && <span>{errors.project_title.message}</span>}</div>
                           </div>
 
@@ -569,7 +595,7 @@ return(
                       <GridContainer>  
                         <GridItem xs={12} sm={12} md={12}>
                           <div className="form-group">
-                          <span>Project Description</span>
+                          <span>Project Description</span><span className="required">*</span>
                             <textarea className="form-control signup-input" value={uoption.project_description} name="project_description"onChange={handleChange} placeholder="Project Description" />
                             <div className="error-msg">{errors.project_description && <span>{errors.project_description.message}</span>}</div>
                           </div> 
@@ -581,7 +607,7 @@ return(
                             <div className="form-group">
                               {/*<input type="text" className="form-control signup-input" placeholder="Department" {...register('department',  { required: "Please enter your Department", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
                               <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>*/}
-                            <span>Project Department</span>
+                            <span>Project Department</span><span className="required">*</span>
                               <select id="Department" name="project_department" className="form-control signup-input" value={uoption.project_department} onChange={handleChange} >
                                 <option value=""  disabled selected>Select Your Department...</option>
                                 <option value="HR">HR</option>
@@ -599,7 +625,7 @@ return(
 
                         <GridItem xs={12} sm={12} md={6}>
                           <div className="form-group">
-                          <span>Project Language</span>
+                          <span>Project Language</span><span className="required">*</span>
                             <select name="project_language" id="Project_created_by" className="form-control signup-input"  value={uoption.project_language} onChange={handleChange} >
                               <option value="" disabled selected>Select Language</option>
                               <option value="Wordpress">Wordpress</option>
@@ -727,7 +753,7 @@ return(
                     </CardBody>
 
                     <CardFooter>
-                        <Button color="primary"  onClick={()=> { updateProject(project.project_id); close() } }>Save</Button>
+                        <Button color="primary"  onClick={()=> { updateProject(project.project_id); } }>Save</Button>
                         <Button className="button" onClick={() => { close(); }}> Cancel </Button>
                     </CardFooter>
                     
@@ -737,6 +763,7 @@ return(
               </GridContainer>
 
               </div>
+
 
               )}
               </Popup>
@@ -803,7 +830,8 @@ return(
                 </CardFooter>
             </Card>
         </form>
-        
+        <ToastContainer limit={1}/>
+
   </GridItem>
 
  </>);
