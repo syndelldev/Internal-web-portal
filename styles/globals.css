@@ -75,10 +75,10 @@ a {
   border: 1px solid #ADD8E6 ;
 }
 .buttonalign{
-  /* float: right; */
-  justify-content: center;
+  float: right;
+  /* justify-content: center; */
   display: flex;
-  margin-bottom: 40px;
+  margin-bottom: 10px;
 } 
 
 .logout{
@@ -151,35 +151,7 @@ a {
   align-items: center;
   margin-left: auto;
 }
-/* .makeStyles-grid-340{
+.makeStyles-grid-340{
   width: 100%!important;
   margin: 0px 0px !important;
-} */
-/*
-@media only screen   
-and (min-width: 1030px)   
-and (max-width: 1366px){
-  .project{
-  width: 100%!important;
-  margin: 0px 0px !important;
-  }
-}*/
-
-.chip{
-  border-radius: 30px!important;
-    padding: 10px!important;
-    font-weight: 500!important;
- background:#eee5ff!important;
-  color:#000!important;
-}
-.highlightOption{
-  background: #eee5ff!important;;
-    color: #000!important;
-    font-weight: 500!important;
-}
-.multiSelectContainer li:hover{
-  font-weight: 500!important;
-  background: #eee5ff!important;
-  color: #000!important;
-
 }
