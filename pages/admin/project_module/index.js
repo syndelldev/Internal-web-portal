@@ -31,6 +31,7 @@ import {
 } from "variables/charts.js";
 import { FiEdit } from "react-icons/fi";
 import { MdDelete } from 'react-icons/md';
+import { useCookies } from 'react-cookie';
 
 const styles = {
   cardCategoryWhite: {
@@ -99,6 +100,10 @@ export async function getServerSideProps(){
 }
 
 function Dashboard( { project_details , User_name } ) {
+
+  const [cookies, setCookie] = useCookies(['name']);
+  console.log(cookies.name);
+
   const useStyles = makeStyles(styles);
   const classes = useStyles();
 
@@ -159,6 +164,12 @@ function Dashboard( { project_details , User_name } ) {
     }
 
     const [selected, setSelected] = useState([]);
+
+    var name = cookies.name;
+    const added_By = {'label': name, 'value': name}
+    console.log("name");
+    console.log(added_By);
+
 
   const handleChange = ({ target: { name, value } }) =>{
     console.log("name");
@@ -230,21 +241,35 @@ function Dashboard( { project_details , User_name } ) {
     console.log("result");
     console.log(selected);
     
-    const res = await fetch(`${server}/api/project/addproject`,{
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body:JSON.stringify({project_person:selected,project_department:result.project_department,project_status:result.project_status , project_title:result.project_title, project_description:result.project_description, project_language:result.project_language, project_comment:result.project_comment, project_priority:result.project_priority, project_start: result.start , project_deadline: result.end }),
-    })
-    const data=await res.json()
-    
-    if(res.status==200)
-    {
-      // alert("success");
-      router.push(`${server}/admin/project_module/project_department/${result.project_department}`);
-    }
-    else
-    {
-      alert("Fail");
+    if(result.project_title != ""){
+      const res = await fetch(`${server}/api/project/addproject`,{
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body:JSON.stringify({project_person:selected,project_department:result.project_department,project_status:result.project_status , project_title:result.project_title, project_description:result.project_description, project_language:result.project_language, project_comment:result.project_comment, project_priority:result.project_priority, project_start: result.start , project_deadline: result.end , projectAdded_by: cookies }),
+      })
+      const data=await res.json()
+      
+      if(res.status==200)
+      {
+        // alert("success");
+        router.reload(`${server}/admin/project_module`);
+      }
+      else
+      {
+        alert("Fail");
+      }
+    }else{
+
+      if(! toast.isActive(toastId.current)) {
+        toastId.current = toast.error('Please fill all the required fields', {
+            position: "top-right",
+            autoClose:5000,
+            theme: "colored",
+            closeOnClick: true,
+            hideProgressBar: true,
+          });
+        }
+
     }
   }
 
@@ -437,6 +462,7 @@ useEffect(() =>{
                       displayValue="value"
                         options={uoptions}
                         value={selected}
+                        selectedValues={added_By}
                         onChange={setSelected}
                         // onKeyPressFn={function noRefCheck(){}}
                         onRemove={setSelected}
@@ -526,26 +552,14 @@ return(
     <GridItem xs={12} sm={6} md={4}>
 
         <form>
-        <Card>
-            <CardHeader color="primary">
+    <Card>
+      <CardHeader color="primary">
 
-            <img class="image" src={`${server}/reactlogo.png`}/>
-            <h4 className="projectTitle">{project.project_title}</h4>
-             
-            </CardHeader>
+        <img src={`${server}/reactlogo.png`} className={classes.img}/>
+        <h4 className="projectTitle">{project.project_title}</h4>
 
-              <CardBody>
-              <GridContainer>
-                  <GridItem>
-                    <p className="projectLanguage">{project.project_language}</p>
-                  </GridItem>
-
-                  <GridItem>
-                    <div className="icon-display">
-                      {/* <div onClick={()=>updateProject(project.project_id)}>project</div> */}
-                      {/* <a href={`${server}/admin/project_module/${project.project_id}`}><FiEdit/></a> */}
-                      {/* <Button onClick={()=>updateProject(project.project_id)}>Yes</Button> */}
-                      <Popup trigger={<a><div className='icon-width' onClick={()=>projectId(project.project_id)}><FiEdit/></div></a>} className="popupReact" modal>
+        <div className="icon-display">
+          <Popup trigger={<a><div className='icon-width' onClick={()=>projectId(project.project_id)}><FiEdit/></div></a>} className="popupReact" modal>
 
               {close => (
               <div className="popup-align">
@@ -575,7 +589,6 @@ return(
                           <div className="form-group">
                             <span>Project Title</span><span className="required">*</span>
                             <input type="text" className="form-control signup-input" name="project_title" placeholder="Project Title" value={uoption.project_title} onChange={handleChange} required />
-                            <div className="error-msg">{errors.project_title && <span>{errors.project_title.message}</span>}</div>
                           </div>
 
                         </GridItem>
@@ -586,7 +599,6 @@ return(
                           <div className="form-group">
                           <span>Project Description</span><span className="required">*</span>
                             <textarea className="form-control signup-input" value={uoption.project_description} name="project_description"onChange={handleChange} placeholder="Project Description" />
-                            <div className="error-msg">{errors.project_description && <span>{errors.project_description.message}</span>}</div>
                           </div> 
                         </GridItem>
                       </GridContainer><br/>
@@ -594,13 +606,12 @@ return(
                       <GridContainer>
                         <GridItem xs={12} sm={12} md={6}>
                             <div className="form-group">
-                              {/*<input type="text" className="form-control signup-input" placeholder="Department" {...register('department',  { required: "Please enter your Department", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
-                              <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>*/}
                             <span>Project Department</span><span className="required">*</span>
                               <select id="Department" name="project_department" className="form-control signup-input" value={uoption.project_department} onChange={handleChange} >
                                 <option value=""  disabled selected>Select Your Department...</option>
                                 <option value="HR">HR</option>
                                 <option value="UI & UX">UI & UX</option>
+                                <option value="Testing">Testing</option>
                                 <option value="Web development">Web development</option>
                                 <option value="Content writer">Content writer</option>
                                 <option value="Project manager">Project manager</option>
@@ -608,7 +619,6 @@ return(
                                 <option value="SEO">SEO</option>
                               </select>
                               <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                              <div className="error-msg">{errors.project_department && <span>{errors.project_department.message}</span>}</div>
                             </div> 
                         </GridItem>
 
@@ -625,7 +635,6 @@ return(
                               <option value="Bubble">Bubble</option>
                             </select>
                             <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                            <div className="error-msg">{errors.project_language && <span>{errors.project_language.message}</span>}</div>
                           </div> 
                         </GridItem>
                       </GridContainer><br/>
@@ -639,7 +648,6 @@ return(
                               isClearable
                               name="datetime"
                               className={"form-control"}
-                              // value={uoption.project_start}
                               value={new Date(uoption.project_start)}
                               selected={startDate}
                               onChange={val => {
@@ -648,7 +656,6 @@ return(
                               }}
                               dateFormat="dd-MM-yyyy"
                             />
-                          <div className="error-msg">{errors.project_start && <span>{errors.project_start.message}</span>}</div>
                           </div> 
                         </GridItem>
 
@@ -659,7 +666,6 @@ return(
                               placeholderText="End Date : dd/mm/yyyy"
                               isClearable
                               name="datetime1"
-                              // onSelect={handleChange}
                               value={new Date(uoption.project_deadline)}
                               className={"form-control"}
                               selected={endDate}
@@ -670,7 +676,6 @@ return(
                               dateFormat="dd-MM-yyyy"
                               minDate={startDate}
                             />
-                          <div className="error-msg">{errors.project_deadline && <span>{errors.project_deadline.message}</span>}</div>
                           </div> 
                         </GridItem>
                       </GridContainer><br/>
@@ -686,7 +691,6 @@ return(
                               <option value="Low"class="Low">Low</option>
                             </select>
                             <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                            <div className="error-msg">{errors.project_priority && <span>{errors.project_priority.message}</span>}</div>
                           </div> 
                         </GridItem>
                       
@@ -720,8 +724,6 @@ return(
                               placeholder="Select Project Members"
                               showArrow={true}
                             />
-                          
-                            <div className="error-msg">{errors.project_person && <span>{errors.project_person.message}</span>}</div>
                           </div> 
                         </GridItem>
                       </GridContainer><br/>
@@ -731,7 +733,6 @@ return(
                           <div className="form-group">
                           <span>Comments</span>
                             <textarea className="form-control signup-input" name="project_comment" value={uoption.project_comment} onChange={handleChange} placeholder="Comment" />
-                            <div className="error-msg">{errors.position && <span>{errors.position.message}</span>}</div>
                           </div> 
                         </GridItem>
                       </GridContainer>
@@ -788,32 +789,17 @@ return(
                       </Popup>
 
                     </div>
-                  </GridItem>
-                </GridContainer>
 
-                <GridContainer>
-                  <GridItem>
-                    {person.map((data)=>{
-                      return(
-                        <>
-                          <p className="projectPerson">{data}</p>
-                        </>
-                      )
-                    })
-                    }
-                  </GridItem>
-                </GridContainer>
-
-                <GridContainer>
-                  <GridItem>
-                    <p className="projectPriority">Project Priority : {project.project_priority}</p>
-                  </GridItem>
-                </GridContainer>
                 
-                </CardBody>
+            </CardHeader>
 
-                <CardFooter>
-                </CardFooter>
+              <CardBody>
+                <GridContainer>
+                  <GridItem>
+                    <p className="projectLanguage">{project.project_language}</p>
+                  </GridItem>
+                </GridContainer>
+              </CardBody>
             </Card>
         </form>
         <ToastContainer limit={1}/>
