@@ -200,6 +200,6 @@ span.MuiButton-label{
     }
 }
 @media only screen (min-width: 960px) {
-  .projectTitle{
+  h4.projectTitle{
 font-size: 17px!important;
   }}
