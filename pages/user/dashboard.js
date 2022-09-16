@@ -74,7 +74,7 @@ function Dashboard({project}) {
         //console.log(res)
       })    
   },[])
-  console.log(users)
+  // console.log(users)
 
   // const [rights, setrights] = useState([])
   // useEffect(async()=>{
@@ -112,8 +112,8 @@ function Dashboard({project}) {
                     <p className="projectPriority">
                       {/* {project.project_id} */}
                       
-                      <Button disabled={project.view_rights==0} >View</Button>{project.view_rights}
-                      <Button disabled={project.edit_rights==0} >Edit</Button>{project.edit_rights}
+                      <Button disabled={project.view_rights==0} >View</Button>
+                      <Button disabled={project.edit_rights==0} >Edit</Button>
                     </p>
                   </CardFooter>
                   <CardFooter>
