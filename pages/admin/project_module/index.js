@@ -369,7 +369,7 @@ useEffect(() =>{
                       <div className="form-group" {...register('project_start')}>
                       <span>Project Start Date</span>
                         <DatePicker
-                          placeholderText="Start_Date : dd/mm/yyyy"
+                          placeholderText="Start Date : dd/mm/yyyy"
                           isClearable
                           name="datetime"
                           className={"form-control"}
@@ -389,7 +389,7 @@ useEffect(() =>{
                       <div className="form-group" {...register('project_deadline')}>
                       <span>Project End Date</span>
                         <DatePicker
-                          placeholderText="End_Date : dd/mm/yyyy"
+                          placeholderText="End Date : dd/mm/yyyy"
                           isClearable
                           name="datetime1"
                           className={"form-control"}
@@ -412,9 +412,9 @@ useEffect(() =>{
                       <span>Project Priority</span>
                         <select name="priority" id="priority" className="form-control signup-input" {...register('project_priority', {required:true ,message:'Please select atleast one option', })}>
                           <option value=""  disabled selected>Select Project Priority</option>
-                          <option value="High">High</option>
-                          <option value="Medium">Medium</option>
-                          <option value="Low">Low</option>
+                          <option value="High" class="high">High</option>
+                          <option value="Medium" class="medium">Medium</option>
+                          <option value="Low"class="low">Low</option>
                         </select>
                         <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                         <div className="error-msg">{errors.project_priority && <span>{errors.project_priority.message}</span>}</div>
@@ -646,7 +646,7 @@ return(
                           <div className="form-group" onChange={handleChange} >
                           <span>Project Start Date</span>
                             <DatePicker
-                              placeholderText="Start_Date : dd/mm/yyyy"
+                              placeholderText="Start Date : dd/mm/yyyy"
                               isClearable
                               name="datetime"
                               className={"form-control"}
@@ -667,7 +667,7 @@ return(
                           <div className="form-group" onChange={handleChange}>
                           <span>Project End Date</span>
                             <DatePicker
-                              placeholderText="End_Date : dd/mm/yyyy"
+                              placeholderText="End Date : dd/mm/yyyy"
                               isClearable
                               name="datetime1"
                               // onSelect={handleChange}
@@ -692,9 +692,9 @@ return(
                           <span>Project Priority</span>
                             <select name="project_priority" id="priority" className="form-control signup-input" value={uoption.project_priority} onChange={handleChange}>
                               <option value=""  disabled selected>Select Project Priority</option>
-                              <option value="High">High</option>
-                              <option value="Medium">Medium</option>
-                              <option value="Low">Low</option>
+                              <option value="High" class="High">High</option>
+                              <option value="Medium" class="Medium">Medium</option>
+                              <option value="Low"class="Low">Low</option>
                             </select>
                             <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                             <div className="error-msg">{errors.project_priority && <span>{errors.project_priority.message}</span>}</div>

@@ -75,10 +75,10 @@ a {
   border: 1px solid #ADD8E6 ;
 }
 .buttonalign{
-  float: right;
-  /* justify-content: center; */
+  /* float: right; */
+  justify-content: center;
   display: flex;
-  margin-bottom: 10px;
+  margin-bottom: 50px;
 } 
 
 .logout{
@@ -154,4 +154,27 @@ a {
 .makeStyles-grid-340{
   width: 100%!important;
   margin: 0px 0px !important;
+}
+.chip{
+  border-radius: 30px!important;
+  padding: 10px!important;
+  font-weight: 500!important;
+  background: #eee5ff!important;
+  color: #000!important;;
+}
+.multiSelectContainer li:hover{
+  font-weight: 500!important;
+  background: #eee5ff!important;
+  color: #000!important;
+
+}
+.highlightOption{
+  font-weight: 500!important;
+  background: #eee5ff!important;
+  color: #000!important;
+}
+span.MuiButton-label{
+  color: #000!important;
+  font-weight: 500!important;
+
 }
