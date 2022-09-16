@@ -719,17 +719,17 @@ return(
                           <div className="form-group">
                           
                           <span>Project Members</span><span className="required">*</span>
-                          <Multiselect
-                          displayValue="value"
-                            options={uoptions}
-                            value={updateSelected}
-                            selectedValues={allSelectedMember}
-                            onChange={setUpdateSelected}
-                            onRemove={setUpdateSelected}
-                            onSelect={setUpdateSelected}
-                            placeholder="Select Project Members"
-                            showArrow={true}
-                          />
+                            <Multiselect
+                              displayValue="value"
+                              options={uoptions}
+                              value={updateSelected}
+                              selectedValues={allSelectedMember}
+                              onChange={setUpdateSelected}
+                              onRemove={setUpdateSelected}
+                              onSelect={setUpdateSelected}
+                              placeholder="Select Project Members"
+                              showArrow={true}
+                            />
                           
                             <div className="error-msg">{errors.project_person && <span>{errors.project_person.message}</span>}</div>
                           </div> 
