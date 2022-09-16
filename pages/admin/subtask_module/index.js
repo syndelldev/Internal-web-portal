@@ -512,7 +512,6 @@ const [p_selected, setProject] = useState([]);
                                         </CardFooter>
                                       </div>
                                     </GridItem>
-
                                       <div className={classes.close}>
                                         <a onClick={close}>&times;</a>
                                       </div>

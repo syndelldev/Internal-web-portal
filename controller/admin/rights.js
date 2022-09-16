@@ -29,7 +29,7 @@ const ModuleById = async (req,res) => {
     {
         try{
             //let rightsId=await executeQuery(` SELECT * FROM tbl_user INNER JOIN tbl_project INNER JOIN tbl_module WHERE tbl_module.module_id=? AND tbl_user.id=${id} `, [req.body.moduleid] );
-            let rightsId=await executeQuery(` SELECT * FROM tbl_project_rights LEFT JOIN tbl_rights ON tbl_rights.project_id=tbl_project_rights.project_id LEFT JOIN tbl_project ON tbl_project.project_id=tbl_rights.project_id WHERE tbl_rights.user_id=${id} `, [req.body.userid] );
+            let rightsId=await executeQuery(` SELECT * FROM tbl_project_rights RIGHT JOIN tbl_rights ON tbl_project_rights.project_id=tbl_rights.project_id INNER JOIN tbl_project ON tbl_project.project_id=tbl_rights.project_id WHERE tbl_rights.user_id=${id} `, [req.body.userid] );/*WHERE tbl_rights.user_id=${id}*/
             res.status(200).json(rightsId);
             //console.log(rightsId)
         }

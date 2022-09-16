@@ -63,7 +63,7 @@ function Dashboard({project}) {
   const classes = useStyles();
   
   const [cookies, setCookie] = useCookies('');
-  //console.log(cookies.Id);
+  console.log(cookies.Id);
 
   const [users, setusers] = useState([])
 
@@ -76,19 +76,19 @@ function Dashboard({project}) {
   // },[])
   //console.log(users)
 
-  const [rights, setrights] = useState([])
-  useEffect(async()=>{
-    axios.get(`${server}/api/rights/` )
+    useEffect(async()=>{
+    axios.get(`${server}/api/rights/`)
       .then((res)=>{
-        setrights(res.data)
-        console.log(res.data)
+        setusers(res.data)
+        //console.log(res)
       })    
-  },[])
-  console.log(rights)
+    },[])
+    console.log(users)
+
 
   return (
     <>
-      <div>
+      {/* <div>
         {users.map((user)=>{
           return(
             <div key={user.id}>
@@ -96,7 +96,8 @@ function Dashboard({project}) {
             </div>
           )
         })}
-      </div>
+      </div> */}
+      <Button color="primary" onClick={()=>{getData}} type="submit">Submit</Button><br/><br/>
       <GridContainer>
        {
           project.map((project)=>{
@@ -110,18 +111,9 @@ function Dashboard({project}) {
                   <CardFooter>
                     <p className="projectLanguage">{project.project_language}</p>
                     <p className="projectPriority">
-                      {project.project_id}
-
-                      {rights.map((r)=>{
-                        console.log(r.project_id)
-                        if(r.project_id==project.project_id){
-                          console.log("Matched")
-                        }
-                        else{
-                          console.log("Not Matched")
-                        }
-                      })}
-
+                      {/* {project.project_id} */}
+                      <Button disabled >View</Button>
+                      <Button>Edit</Button>
                     </p>
                   </CardFooter>
                   <CardFooter>
