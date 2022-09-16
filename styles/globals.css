@@ -186,6 +186,10 @@ a.makeStyles-item-15 {
   padding-top: 8px;
   padding-bottom: 8px;
 }
+img.image {
+  float: right;
+  width: 40px;
+}
 @media only screen and (max-width: 1365px) and (min-width: 1280px){
   .projectTitle{
     font-size: 17px!important;

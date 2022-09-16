@@ -539,10 +539,9 @@ return(
         <Card>
             <CardHeader color="primary">
 
-              <img src={`${server}/reactlogo.png`} className={classes.img}/>
-
-                <h4 className="projectTitle">{project.project_title}</h4>
-                <p className={classes.cardCategoryWhite}></p>
+            <img class="image" src={`${server}/reactlogo.png`}/>
+            <h4 className="projectTitle">{project.project_title}</h4>
+             
             </CardHeader>
 
               <CardBody>

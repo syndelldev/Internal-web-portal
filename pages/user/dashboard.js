@@ -105,7 +105,8 @@ function Dashboard({project}) {
               <GridItem xs={6} sm={6} md={4} key={project.project_id}>
                 <Card >
                   <CardHeader color="primary">
-                    <h4>{project.project_title}</h4>
+                  <img class="image" src={`${server}/reactlogo.png`} className={classes.img}/>
+                    <h4 className="projectTitle">{project.project_title}</h4>
                   </CardHeader>
                   <CardFooter>
                     <p className="projectLanguage">{project.project_language}</p>
