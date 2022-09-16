@@ -20,7 +20,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 import { useCookies } from 'react-cookie';
 import { Button } from "@material-ui/core";
-
+import Pusher from "pusher-js";
 
 export async function getServerSideProps(context){
   //console.log(context.req.cookies);
@@ -37,7 +37,7 @@ export async function getServerSideProps(context){
 }
 
 function Dashboard({project}) {
-  console.log(project)
+  // console.log(project)
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   
@@ -55,16 +55,31 @@ function Dashboard({project}) {
   },[])
   // console.log(users)
 
-  // const [rights, setrights] = useState([])
-  // useEffect(async()=>{
-  //   axios.get(`${server}/api/rights/` )
-  //     .then((res)=>{
-  //       setrights(res.data)
-  //       console.log(res.data)
-  //     })    
-  // },[])
-  // console.log(rights)
+  const [username, setusername] = useState('')
+  const [message, setMessage] = useState('');
 
+  const [messages, setmessages] = useState([])
+
+  let allMessages = [];
+
+    useEffect(() => {
+        Pusher.logToConsole = true;
+
+        const pusher = new Pusher('', {
+            cluster: ''
+        });
+
+        const channel = pusher.subscribe('chat');
+        channel.bind('message', function (data) {
+            allMessages.push(data);
+            setMessages(allMessages);
+        });
+    });
+
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+  }
   return (
     <>
       <div>
@@ -107,8 +122,7 @@ function Dashboard({project}) {
                                       </GridItem>
                                       <div className={classes.close}>
                                         <a onClick={close}>&times;</a>
-                                      </div>
-                                      
+                                      </div>   
                                     </GridContainer>
                                   </CardHeader><br/>
                                   <CardFooter>
@@ -140,16 +154,50 @@ function Dashboard({project}) {
                           {close => (
                             <div>
                               <GridItem xs={6} sm={6} md={12} key={project.project_id}>
-                                <Card >
+                                <Card>
                                   <CardHeader color="primary">
                                     <h4>{project.project_title}</h4>
                                       <div className={classes.close}>
                                         <a onClick={close}>&times;</a>
                                       </div>
-                                  </CardHeader><br/>
+                                  </CardHeader>
                                   <CardFooter>
-                                    
+                                    <p>{project.project_language}</p>
                                   </CardFooter>
+                                  <CardFooter>
+                                    <p>{project.project_person}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p>{project.project_description}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p>{project.project_department}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p>{project.project_status}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p className="projectPriority">{project.project_priority} Priority</p>
+                                  </CardFooter>
+                                  <CardFooter style={{ minHeight: '300px' }}>
+                                    {messages.map((msg,index)=>{
+                                      return(
+                                        <div key={index}>
+                                          {msg}
+                                        </div>
+                                      )
+                                    })}
+                                    <form onSubmit={onSubmit}>
+                                      <GridItem xs={12} sm={12} md={12}>
+                                        <div className="form-group">
+                                          <textarea value={message} onChange={(e)=>{setMessage(e.target.value)}} className="form-control signup-input" placeholder="Ask a question or post an update…"  />
+                                        </div> 
+                                      </GridItem>
+                                      <GridItem xs={12} sm={12} md={12}>
+                                        <Button type="submit" color="primary">Comment</Button>
+                                      </GridItem>
+                                    </form>
+                                  </CardFooter >
                                 </Card>
                               </GridItem>
                             </div>
