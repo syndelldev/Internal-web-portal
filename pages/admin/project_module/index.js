@@ -643,7 +643,7 @@ return(
                       <GridContainer>  
                         <GridItem xs={12} sm={12} md={6}>
                           <div className="form-group" onChange={handleChange} >
-                          <span>Project Start Date</span>
+                          <span>Project Start Date</span><span className="required">*</span>
                             <DatePicker
                               placeholderText="Start_Date : dd/mm/yyyy"
                               isClearable
@@ -664,7 +664,7 @@ return(
 
                         <GridItem xs={12} sm={12} md={6}>
                           <div className="form-group" onChange={handleChange}>
-                          <span>Project End Date</span>
+                          <span>Project End Date</span><span className="required">*</span>
                             <DatePicker
                               placeholderText="End_Date : dd/mm/yyyy"
                               isClearable
@@ -688,7 +688,7 @@ return(
                       <GridContainer>
                         <GridItem xs={12} sm={12} md={6}>
                           <div className="form-group">
-                          <span>Project Priority</span>
+                          <span>Project Priority</span><span className="required">*</span>
                             <select name="project_priority" id="priority" className="form-control signup-input" value={uoption.project_priority} onChange={handleChange}>
                               <option value=""  disabled selected>Select Project Priority</option>
                               <option value="High">High</option>
@@ -702,17 +702,14 @@ return(
                       
                         <GridItem xs={12} sm={12} md={6}>
                             <div className="form-group">
-                              {/*<input type="text" className="form-control signup-input" placeholder="Status" {...register('status',  { required: "Please enter your Status", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
-                              <div className="error-msg">{errors.status && <p>{errors.status.message}</p>}</div>*/}
-                              <span>Project Status</span>
-                              <select name="project_status" id="Status" className="form-control signup-input" value={uoption.project_status} onChange={handleChange}>
-                                <option value=""  disabled selected>Select Project Status</option>
-                                <option value="on hold">On hold</option>
-                                <option value="running">Running</option>
-                                <option value="completed">Completed</option>
-                              </select>
+                              <span>Project Status</span><span className="required">*</span>
+                                <select name="project_status" id="Status" className="form-control signup-input" value={uoption.project_status} onChange={handleChange}>
+                                  <option value=""  disabled selected>Select Project Status</option>
+                                  <option value="on hold">On hold</option>
+                                  <option value="running">Running</option>
+                                  <option value="completed">Completed</option>
+                                </select>
                               <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                              {/* <div className="error-msg">{errors.status && <p>{errors.status.message}</p>}</div> */}
                             </div> 
                         </GridItem>
                       </GridContainer><br/>
@@ -721,7 +718,7 @@ return(
                       <GridItem xs={12} sm={12} md={12}>
                           <div className="form-group">
                           
-                          <span>Project Members</span>
+                          <span>Project Members</span><span className="required">*</span>
                           <Multiselect
                           displayValue="value"
                             options={uoptions}

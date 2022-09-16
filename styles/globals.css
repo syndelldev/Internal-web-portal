@@ -144,3 +144,8 @@ a {
   align-items: center;
   margin-left: auto;
 }
+
+.required{
+  color: crimson;
+  padding-left: 5px;
+}
