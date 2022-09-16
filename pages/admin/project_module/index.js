@@ -31,6 +31,7 @@ import {
 } from "variables/charts.js";
 import { FiEdit } from "react-icons/fi";
 import { MdDelete } from 'react-icons/md';
+import { useCookies } from 'react-cookie';
 
 const styles = {
   cardCategoryWhite: {
@@ -99,6 +100,10 @@ export async function getServerSideProps(){
 }
 
 function Dashboard( { project_details , User_name } ) {
+
+  const [cookies, setCookie] = useCookies(['name']);
+  console.log(cookies.name);
+
   const useStyles = makeStyles(styles);
   const classes = useStyles();
 
@@ -159,6 +164,12 @@ function Dashboard( { project_details , User_name } ) {
     }
 
     const [selected, setSelected] = useState([]);
+
+    var name = cookies.name;
+    const added_By = {'label': name, 'value': name}
+    console.log("name");
+    console.log(added_By);
+
 
   const handleChange = ({ target: { name, value } }) =>{
     console.log("name");
@@ -234,14 +245,14 @@ function Dashboard( { project_details , User_name } ) {
       const res = await fetch(`${server}/api/project/addproject`,{
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body:JSON.stringify({project_person:selected,project_department:result.project_department,project_status:result.project_status , project_title:result.project_title, project_description:result.project_description, project_language:result.project_language, project_comment:result.project_comment, project_priority:result.project_priority, project_start: result.start , project_deadline: result.end }),
+        body:JSON.stringify({project_person:selected,project_department:result.project_department,project_status:result.project_status , project_title:result.project_title, project_description:result.project_description, project_language:result.project_language, project_comment:result.project_comment, project_priority:result.project_priority, project_start: result.start , project_deadline: result.end , projectAdded_by: cookies }),
       })
       const data=await res.json()
       
       if(res.status==200)
       {
         // alert("success");
-        router.push(`${server}/admin/project_module/project_department/${result.project_department}`);
+        router.reload(`${server}/admin/project_module`);
       }
       else
       {
@@ -451,6 +462,7 @@ useEffect(() =>{
                       displayValue="value"
                         options={uoptions}
                         value={selected}
+                        selectedValues={added_By}
                         onChange={setSelected}
                         // onKeyPressFn={function noRefCheck(){}}
                         onRemove={setSelected}
