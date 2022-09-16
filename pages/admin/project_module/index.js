@@ -32,6 +32,8 @@ import {
 import { FiEdit } from "react-icons/fi";
 import { MdDelete } from 'react-icons/md';
 import { useCookies } from 'react-cookie';
+import axios from "axios";
+
 
 const styles = {
   cardCategoryWhite: {
@@ -95,11 +97,13 @@ export async function getServerSideProps(){
   const response = await fetch(`${server}/api/admin`)
   const User_name = await response.json();
   // console.log(User_name);
+  const user = await fetch(`${server}/api/admin/adminprofile`)
+  const AdminProfile = await user.json()
 
-  return{ props: {project_details, User_name } }
+  return{ props: {project_details, User_name , AdminProfile} }
 }
 
-function Dashboard( { project_details , User_name } ) {
+function Dashboard( { project_details , User_name , AdminProfile } ) {
 
   const [cookies, setCookie] = useCookies(['name']);
   console.log(cookies.name);
@@ -165,11 +169,17 @@ function Dashboard( { project_details , User_name } ) {
 
     const [selected, setSelected] = useState([]);
 
-    var name = cookies.name;
-    const added_By = {'label': name, 'value': name}
-    console.log("name");
-    console.log(added_By);
+const added_By = [];
+const getUser = [];
+AdminProfile.map((user) => {
+  added_By.push({ 'label' : user.username, 'value' : user.username  })
+})
+console.log(added_By);
+// getUser.push(added_By[0]);
+// console.log(getUser);
 
+// const [created, setCreated] = useState([]);
+// setCreated(added_By[0]);
 
   const handleChange = ({ target: { name, value } }) =>{
     console.log("name");
