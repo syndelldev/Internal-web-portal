@@ -142,17 +142,19 @@ function Dashboard( { project_details , User_name } ) {
     // console.log(update_data[0]);
 
     const udata = update_data[0];
-    console.log(udata.project_person);
 
-    // if(udata.project_start != ""){
-    //   // const dateStart = (udata.project_start).slice(0,10);
-    // }
-    // const dateEnd = (udata.project_deadline).slice(0,10);
+    const selectedMember = (udata.project_person).split(",");
 
+    const getAllname = [];
+
+    selectedMember.map((user)=>{
+      getAllname.push( {'label' :user, 'value' :user} );
+    });
+
+    setUpdateSelected(getAllname);
     setUpdate(udata);
     setStartDate(new Date(udata.project_start));
     setEndDate(new Date(udata.project_deadline));
-    setUpdateSelected(udata.project_person);
   
     }
 
@@ -164,19 +166,16 @@ function Dashboard( { project_details , User_name } ) {
   
     setUpdate({ ...uoption, [name]: value });
   }
-  console.log("update start date");
-  console.log(uoption.project_person);
-  console.log(uoption.project_start);
-  console.log(uoption);
+  // console.log("update start date");
+  // console.log(uoption.project_person);
+  // console.log(uoption.project_start);
+  // console.log(uoption);
 
   var uMember = uoption.project_person;
-
 
   const allSelectedMember = [];
   const projectMember = (uMember).split(",");
 
-  console.log("member");
-  console.log(projectMember);
 
   for(var i=0; i<projectMember.length; i++){
     allSelectedMember.push({'label' :projectMember[i] , 'value' : projectMember[i]});
@@ -184,22 +183,20 @@ function Dashboard( { project_details , User_name } ) {
 
   const toastId = React.useRef(null);
 
-  const updateProject = async(id) =>{
+  const updateProject = async() =>{
 
     const allMember = [];
     for(var i=0; i<updateSelected.length; i++){
           allMember.push(updateSelected[i].value);
     }
 
-    if(allMember == ""){
-      var members = projectMember;
-    }else{
+    // if(allMember == ""){
+    //   var members = projectMember;
+    // }else{
       var members = allMember;
-    }
+    // }
     console.log("all users");
-    console.log(members);
-    console.log(projectMember);
-    console.log(updateSelected);
+    console.log( members );
 
     if( uoption.project_title=="" || uoption.project_description=="" ||  uoption.project_department=="" || uoption.project_language=="" || members=="" || startDate=="" || endDate=="" || uoption.project_priority=="" || uoption.project_status=="" ){
       if(! toast.isActive(toastId.current)) {
@@ -223,11 +220,13 @@ function Dashboard( { project_details , User_name } ) {
       toastId.current = toast.success('Updated Successfully ! 🎉', {
           position: "top-right",
           autoClose:1000,
+          theme: "colored",
+          hideProgressBar: true,
           onClose: () => router.push(`${server}/admin/project_module`)
           });
       }
 
-    router.push(`${server}/admin/project_module`);
+      router.reload(`${server}/admin/project_module`);
 
   }
 }
@@ -533,7 +532,7 @@ if(project.project_delete == "no"){
 
 return(
   <>
-    <GridItem xs={6} sm={6} md={4}>
+    <GridItem xs={12} sm={6} md={4}>
 
         <form>
         <Card>
@@ -643,7 +642,7 @@ return(
                       <GridContainer>  
                         <GridItem xs={12} sm={12} md={6}>
                           <div className="form-group" onChange={handleChange} >
-                          <span>Project Start Date</span>
+                          <span>Project Start Date</span><span className="required">*</span>
                             <DatePicker
                               placeholderText="Start Date : dd/mm/yyyy"
                               isClearable
@@ -664,7 +663,7 @@ return(
 
                         <GridItem xs={12} sm={12} md={6}>
                           <div className="form-group" onChange={handleChange}>
-                          <span>Project End Date</span>
+                          <span>Project End Date</span><span className="required">*</span>
                             <DatePicker
                               placeholderText="End Date : dd/mm/yyyy"
                               isClearable
@@ -688,7 +687,7 @@ return(
                       <GridContainer>
                         <GridItem xs={12} sm={12} md={6}>
                           <div className="form-group">
-                          <span>Project Priority</span>
+                          <span>Project Priority</span><span className="required">*</span>
                             <select name="project_priority" id="priority" className="form-control signup-input" value={uoption.project_priority} onChange={handleChange}>
                               <option value=""  disabled selected>Select Project Priority</option>
                               <option value="High" class="High">High</option>
@@ -702,17 +701,14 @@ return(
                       
                         <GridItem xs={12} sm={12} md={6}>
                             <div className="form-group">
-                              {/*<input type="text" className="form-control signup-input" placeholder="Status" {...register('status',  { required: "Please enter your Status", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
-                              <div className="error-msg">{errors.status && <p>{errors.status.message}</p>}</div>*/}
-                              <span>Project Status</span>
-                              <select name="project_status" id="Status" className="form-control signup-input" value={uoption.project_status} onChange={handleChange}>
-                                <option value=""  disabled selected>Select Project Status</option>
-                                <option value="on hold">On hold</option>
-                                <option value="running">Running</option>
-                                <option value="completed">Completed</option>
-                              </select>
+                              <span>Project Status</span><span className="required">*</span>
+                                <select name="project_status" id="Status" className="form-control signup-input" value={uoption.project_status} onChange={handleChange}>
+                                  <option value=""  disabled selected>Select Project Status</option>
+                                  <option value="on hold">On hold</option>
+                                  <option value="running">Running</option>
+                                  <option value="completed">Completed</option>
+                                </select>
                               <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                              {/* <div className="error-msg">{errors.status && <p>{errors.status.message}</p>}</div> */}
                             </div> 
                         </GridItem>
                       </GridContainer><br/>
@@ -721,18 +717,18 @@ return(
                       <GridItem xs={12} sm={12} md={12}>
                           <div className="form-group">
                           
-                          <span>Project Members</span>
-                          <Multiselect
-                          displayValue="value"
-                            options={uoptions}
-                            value={updateSelected}
-                            selectedValues={allSelectedMember}
-                            onChange={setUpdateSelected}
-                            onRemove={setUpdateSelected}
-                            onSelect={setUpdateSelected}
-                            placeholder="Select Project Members"
-                            showArrow={true}
-                          />
+                          <span>Project Members</span><span className="required">*</span>
+                            <Multiselect
+                              displayValue="value"
+                              options={uoptions}
+                              value={updateSelected}
+                              selectedValues={allSelectedMember}
+                              onChange={setUpdateSelected}
+                              onRemove={setUpdateSelected}
+                              onSelect={setUpdateSelected}
+                              placeholder="Select Project Members"
+                              showArrow={true}
+                            />
                           
                             <div className="error-msg">{errors.project_person && <span>{errors.project_person.message}</span>}</div>
                           </div> 
