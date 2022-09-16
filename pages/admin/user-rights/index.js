@@ -62,16 +62,6 @@ function UserRights({UserList,ModuleList}){
     const [module, setmodule] = useState(1)
     // console.log(module)
 
-    const [rightslist, setrightslist] = useState([])
-    const rights_list = ()=>{
-        axios.post(`${server}/api/rights/rights_list/`,{user:user})
-        .then((res)=>{
-            setrightslist(res.data)
-            console.log(res.data)
-        })
-    }
-    // console.log(rightslist)
-
     const [users, setusers] = useState([])
     const getData = () => {
         axios.post(`${server}/api/rights/${user}`, {userid:user,moduleid:module})
@@ -81,9 +71,6 @@ function UserRights({UserList,ModuleList}){
     }
     // console.log(users)
     
-    const [rightsList,setrightsList] = useState([])
-    
-
     const [viewcheckbox,setviewcheckbox] = useState(0)
     // console.log(viewcheckbox)
     const viewCheckbox = (e) =>{
@@ -172,7 +159,7 @@ function UserRights({UserList,ModuleList}){
                                 <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                             </GridItem> 
                         </GridContainer><br/>
-                        <Button color="primary" onClick={()=>{getData();rights_list();}} type="submit">Submit</Button><br/><br/>
+                        <Button color="primary" onClick={getData} type="submit">Submit</Button><br/><br/>
 
                             <div className={classes.tableResponsive}>
                                 <Table className={classes.table}>
@@ -187,18 +174,18 @@ function UserRights({UserList,ModuleList}){
                                         {
                                             users.map((data)=>{
                                                 const isInArray = data.user_id.includes(user);
-                                                console.log(users)
+                                                // console.log(users)
                                                 // console.log(isInArray);   
                                                 return(       
                                                     <TableRow key={data.project_id} value={data.project_id}>
-                                                        <TableCell>{data.project_title}</TableCell>  
+                                                        <TableCell>{data.project_title}-{data.project_id}</TableCell>  
                                                           
                                                         <TableCell>
                                                             <input type="checkbox" name="view_rights" value={data.view_rights} onChange={viewCheckbox} defaultChecked={data.view_rights==1} onClick={()=>view_rights(data.project_id)}/>
                                                         </TableCell>
 
                                                         <TableCell>
-                                                            <input type="checkbox" name="edit_rights" value={isInArray} onChange={editCheckbox} defaultChecked={isInArray==true} onClick={()=>view_rights(data.project_id)} /> 
+                                                            <input type="checkbox" name="edit_rights" value={data.edit_rights} onChange={editCheckbox} defaultChecked={data.edit_rights==1} onClick={()=>view_rights(data.project_id)} /> 
                                                         </TableCell>
                                                                             
                                                     </TableRow>   
