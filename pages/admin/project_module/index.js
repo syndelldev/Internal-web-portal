@@ -230,21 +230,35 @@ function Dashboard( { project_details , User_name } ) {
     console.log("result");
     console.log(selected);
     
-    const res = await fetch(`${server}/api/project/addproject`,{
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body:JSON.stringify({project_person:selected,project_department:result.project_department,project_status:result.project_status , project_title:result.project_title, project_description:result.project_description, project_language:result.project_language, project_comment:result.project_comment, project_priority:result.project_priority, project_start: result.start , project_deadline: result.end }),
-    })
-    const data=await res.json()
-    
-    if(res.status==200)
-    {
-      // alert("success");
-      router.push(`${server}/admin/project_module/project_department/${result.project_department}`);
-    }
-    else
-    {
-      alert("Fail");
+    if(result.project_title != ""){
+      const res = await fetch(`${server}/api/project/addproject`,{
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body:JSON.stringify({project_person:selected,project_department:result.project_department,project_status:result.project_status , project_title:result.project_title, project_description:result.project_description, project_language:result.project_language, project_comment:result.project_comment, project_priority:result.project_priority, project_start: result.start , project_deadline: result.end }),
+      })
+      const data=await res.json()
+      
+      if(res.status==200)
+      {
+        // alert("success");
+        router.push(`${server}/admin/project_module/project_department/${result.project_department}`);
+      }
+      else
+      {
+        alert("Fail");
+      }
+    }else{
+
+      if(! toast.isActive(toastId.current)) {
+        toastId.current = toast.error('Please fill all the required fields', {
+            position: "top-right",
+            autoClose:5000,
+            theme: "colored",
+            closeOnClick: true,
+            hideProgressBar: true,
+          });
+        }
+
     }
   }
 
@@ -543,9 +557,6 @@ return(
 
                   <GridItem>
                     <div className="icon-display">
-                      {/* <div onClick={()=>updateProject(project.project_id)}>project</div> */}
-                      {/* <a href={`${server}/admin/project_module/${project.project_id}`}><FiEdit/></a> */}
-                      {/* <Button onClick={()=>updateProject(project.project_id)}>Yes</Button> */}
                       <Popup trigger={<a><div className='icon-width' onClick={()=>projectId(project.project_id)}><FiEdit/></div></a>} className="popupReact" modal>
 
               {close => (
@@ -576,7 +587,6 @@ return(
                           <div className="form-group">
                             <span>Project Title</span><span className="required">*</span>
                             <input type="text" className="form-control signup-input" name="project_title" placeholder="Project Title" value={uoption.project_title} onChange={handleChange} required />
-                            <div className="error-msg">{errors.project_title && <span>{errors.project_title.message}</span>}</div>
                           </div>
 
                         </GridItem>
@@ -587,7 +597,6 @@ return(
                           <div className="form-group">
                           <span>Project Description</span><span className="required">*</span>
                             <textarea className="form-control signup-input" value={uoption.project_description} name="project_description"onChange={handleChange} placeholder="Project Description" />
-                            <div className="error-msg">{errors.project_description && <span>{errors.project_description.message}</span>}</div>
                           </div> 
                         </GridItem>
                       </GridContainer><br/>
@@ -595,8 +604,6 @@ return(
                       <GridContainer>
                         <GridItem xs={12} sm={12} md={6}>
                             <div className="form-group">
-                              {/*<input type="text" className="form-control signup-input" placeholder="Department" {...register('department',  { required: "Please enter your Department", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
-                              <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>*/}
                             <span>Project Department</span><span className="required">*</span>
                               <select id="Department" name="project_department" className="form-control signup-input" value={uoption.project_department} onChange={handleChange} >
                                 <option value=""  disabled selected>Select Your Department...</option>
@@ -609,7 +616,6 @@ return(
                                 <option value="SEO">SEO</option>
                               </select>
                               <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                              <div className="error-msg">{errors.project_department && <span>{errors.project_department.message}</span>}</div>
                             </div> 
                         </GridItem>
 
@@ -626,7 +632,6 @@ return(
                               <option value="Bubble">Bubble</option>
                             </select>
                             <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                            <div className="error-msg">{errors.project_language && <span>{errors.project_language.message}</span>}</div>
                           </div> 
                         </GridItem>
                       </GridContainer><br/>
@@ -640,7 +645,6 @@ return(
                               isClearable
                               name="datetime"
                               className={"form-control"}
-                              // value={uoption.project_start}
                               value={new Date(uoption.project_start)}
                               selected={startDate}
                               onChange={val => {
@@ -649,7 +653,6 @@ return(
                               }}
                               dateFormat="dd-MM-yyyy"
                             />
-                          <div className="error-msg">{errors.project_start && <span>{errors.project_start.message}</span>}</div>
                           </div> 
                         </GridItem>
 
@@ -660,7 +663,6 @@ return(
                               placeholderText="End Date : dd/mm/yyyy"
                               isClearable
                               name="datetime1"
-                              // onSelect={handleChange}
                               value={new Date(uoption.project_deadline)}
                               className={"form-control"}
                               selected={endDate}
@@ -671,7 +673,6 @@ return(
                               dateFormat="dd-MM-yyyy"
                               minDate={startDate}
                             />
-                          <div className="error-msg">{errors.project_deadline && <span>{errors.project_deadline.message}</span>}</div>
                           </div> 
                         </GridItem>
                       </GridContainer><br/>
@@ -687,7 +688,6 @@ return(
                               <option value="Low"class="Low">Low</option>
                             </select>
                             <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                            <div className="error-msg">{errors.project_priority && <span>{errors.project_priority.message}</span>}</div>
                           </div> 
                         </GridItem>
                       
@@ -721,8 +721,6 @@ return(
                               placeholder="Select Project Members"
                               showArrow={true}
                             />
-                          
-                            <div className="error-msg">{errors.project_person && <span>{errors.project_person.message}</span>}</div>
                           </div> 
                         </GridItem>
                       </GridContainer><br/>
@@ -732,7 +730,6 @@ return(
                           <div className="form-group">
                           <span>Comments</span>
                             <textarea className="form-control signup-input" name="project_comment" value={uoption.project_comment} onChange={handleChange} placeholder="Comment" />
-                            <div className="error-msg">{errors.position && <span>{errors.position.message}</span>}</div>
                           </div> 
                         </GridItem>
                       </GridContainer>
