@@ -142,17 +142,19 @@ function Dashboard( { project_details , User_name } ) {
     // console.log(update_data[0]);
 
     const udata = update_data[0];
-    console.log(udata.project_person);
 
-    // if(udata.project_start != ""){
-    //   // const dateStart = (udata.project_start).slice(0,10);
-    // }
-    // const dateEnd = (udata.project_deadline).slice(0,10);
+    const selectedMember = (udata.project_person).split(",");
 
+    const getAllname = [];
+
+    selectedMember.map((user)=>{
+      getAllname.push( {'label' :user, 'value' :user} );
+    });
+
+    setUpdateSelected(getAllname);
     setUpdate(udata);
     setStartDate(new Date(udata.project_start));
     setEndDate(new Date(udata.project_deadline));
-    setUpdateSelected(udata.project_person);
   
     }
 
@@ -164,19 +166,12 @@ function Dashboard( { project_details , User_name } ) {
   
     setUpdate({ ...uoption, [name]: value });
   }
-  console.log("update start date");
-  console.log(uoption.project_person);
-  console.log(uoption.project_start);
-  console.log(uoption);
 
   var uMember = uoption.project_person;
-
 
   const allSelectedMember = [];
   const projectMember = (uMember).split(",");
 
-  console.log("member");
-  console.log(projectMember);
 
   for(var i=0; i<projectMember.length; i++){
     allSelectedMember.push({'label' :projectMember[i] , 'value' : projectMember[i]});
@@ -184,24 +179,17 @@ function Dashboard( { project_details , User_name } ) {
 
   const toastId = React.useRef(null);
 
-  const updateProject = async(id) =>{
+  const updateProject = async() =>{
 
     const allMember = [];
     for(var i=0; i<updateSelected.length; i++){
           allMember.push(updateSelected[i].value);
     }
 
-    if(allMember == ""){
-      var members = projectMember;
-    }else{
-      var members = allMember;
-    }
     console.log("all users");
-    console.log(members);
-    console.log(projectMember);
-    console.log(updateSelected);
+    console.log( allMember );
 
-    if( uoption.project_title=="" || uoption.project_description=="" ||  uoption.project_department=="" || uoption.project_language=="" || members=="" || startDate=="" || endDate=="" || uoption.project_priority=="" || uoption.project_status=="" ){
+    if( uoption.project_title=="" || uoption.project_description=="" ||  uoption.project_department=="" || uoption.project_language=="" || allMember=="" || startDate=="" || endDate=="" || uoption.project_priority=="" || uoption.project_status=="" ){
       if(! toast.isActive(toastId.current)) {
         toastId.current = toast.error('Please fill all the required fields', {
             position: "top-right",
@@ -217,17 +205,19 @@ function Dashboard( { project_details , User_name } ) {
     const res = await fetch(`${server}/api/project/update_project`,{
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ project_id:uoption.project_id, project_person: members, project_status:uoption.project_status , project_department:uoption.project_department ,  project_title: uoption.project_title , project_description:uoption.project_description , project_language:uoption.project_language, project_comment:uoption.project_comment, project_priority:uoption.project_priority, project_start: startDate , project_deadline: endDate }),
+      body: JSON.stringify({ project_id:uoption.project_id, project_person: allMember, project_status:uoption.project_status , project_department:uoption.project_department ,  project_title: uoption.project_title , project_description:uoption.project_description , project_language:uoption.project_language, project_comment:uoption.project_comment, project_priority:uoption.project_priority, project_start: startDate , project_deadline: endDate }),
     });
     if(!toast.isActive(toastId.current)) {
       toastId.current = toast.success('Updated Successfully ! 🎉', {
           position: "top-right",
           autoClose:1000,
+          theme: "colored",
+          hideProgressBar: true,
           onClose: () => router.push(`${server}/admin/project_module`)
           });
       }
 
-    router.push(`${server}/admin/project_module`);
+      router.reload(`${server}/admin/project_module`);
 
   }
 }
@@ -308,7 +298,7 @@ useEffect(() =>{
                   <GridContainer>
                     <GridItem xs={12} sm={12} md={12}>                      
                       <div className="form-group">
-                        <span>Project Title</span>
+                        <span>Project Title</span><span className="required">*</span>
                         <input type="text" className="form-control signup-input" placeholder="Project Title" {...register('project_title',  { required: "Please enter project title"})} />
                         <div className="error-msg">{errors.project_title && <span>{errors.project_title.message}</span>}</div>
                       </div> 
@@ -318,7 +308,7 @@ useEffect(() =>{
                   <GridContainer>  
                     <GridItem xs={12} sm={12} md={12}>
                       <div className="form-group">
-                      <span>Project Description</span>
+                      <span>Project Description</span><span className="required">*</span>
                         <textarea className="form-control signup-input" placeholder="Project Description" {...register('project_description', { required: 'Description is required', } )}  />
                         <div className="error-msg">{errors.project_description && <span>{errors.project_description.message}</span>}</div>
                       </div> 
@@ -330,7 +320,7 @@ useEffect(() =>{
                         <div className="form-group">
                           {/*<input type="text" className="form-control signup-input" placeholder="Department" {...register('department',  { required: "Please enter your Department", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
                           <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>*/}
-                        <span>Project Department</span>
+                        <span>Project Department</span><span className="required">*</span>
                           <select name="Department" id="Department" className="form-control signup-input" {...register('project_department', {required:true ,message:'Please select atleast one option', })}>
                             <option value=""  disabled selected>Select Your Department...</option>
                             <option value="HR">HR</option>
@@ -348,7 +338,7 @@ useEffect(() =>{
 
                     <GridItem xs={12} sm={12} md={6}>
                       <div className="form-group">
-                      <span>Project Language</span>
+                      <span>Project Language</span><span className="required">*</span>
                         <select name="Project_created_by" id="Project_created_by" className="form-control signup-input" {...register('project_language', {required:true ,message:'Please select atleast one option', })}>
                           <option value="" disabled selected>Select Language</option>
                           <option value="Wordpress">Wordpress</option>
@@ -367,7 +357,7 @@ useEffect(() =>{
                   <GridContainer>  
                     <GridItem xs={12} sm={12} md={6}>
                       <div className="form-group" {...register('project_start')}>
-                      <span>Project Start Date</span>
+                      <span>Project Start Date</span><span className="required">*</span>
                         <DatePicker
                           placeholderText="Start Date : dd/mm/yyyy"
                           isClearable
@@ -387,7 +377,7 @@ useEffect(() =>{
 
                     <GridItem xs={12} sm={12} md={6}>
                       <div className="form-group" {...register('project_deadline')}>
-                      <span>Project End Date</span>
+                      <span>Project End Date</span><span className="required">*</span>
                         <DatePicker
                           placeholderText="End Date : dd/mm/yyyy"
                           isClearable
@@ -409,7 +399,7 @@ useEffect(() =>{
                   <GridContainer>
                     <GridItem xs={12} sm={12} md={6}>
                       <div className="form-group">
-                      <span>Project Priority</span>
+                      <span>Project Priority</span><span className="required">*</span>
                         <select name="priority" id="priority" className="form-control signup-input" {...register('project_priority', {required:true ,message:'Please select atleast one option', })}>
                           <option value=""  disabled selected>Select Project Priority</option>
                           <option value="High" class="high">High</option>
@@ -425,7 +415,7 @@ useEffect(() =>{
                         <div className="form-group">
                           {/*<input type="text" className="form-control signup-input" placeholder="Status" {...register('status',  { required: "Please enter your Status", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
                           <div className="error-msg">{errors.status && <p>{errors.status.message}</p>}</div>*/}
-                          <span>Project Status</span>
+                          <span>Project Status</span><span className="required">*</span>
                           <select name="Status" id="Status" className="form-control signup-input" {...register('project_status', {required:true ,message:'Please select atleast one option', })}>
                             <option value=""  disabled selected>Select Project Status</option>
                             <option value="on hold">On hold</option>
@@ -442,7 +432,7 @@ useEffect(() =>{
                   <GridItem xs={12} sm={12} md={12}>
                       <div className="form-group" {...register('project_person')}>
                       
-                      <span>Project Members</span>
+                      <span>Project Members</span><span className="required">*</span>
                       <Multiselect
                       displayValue="value"
                         options={uoptions}
@@ -474,7 +464,7 @@ useEffect(() =>{
                 </CardBody>
 
                 <CardFooter>
-                    <Button color="primary" type="submit" onClick={() => { close(); }}>Add Project</Button>
+                    <Button color="primary" type="submit">Add Project</Button>
                     <Button className="button" onClick={() => { close(); }}> Cancel </Button>
                 </CardFooter>
                 
@@ -533,16 +523,15 @@ if(project.project_delete == "no"){
 
 return(
   <>
-    <GridItem xs={6} sm={6} md={4}>
+    <GridItem xs={12} sm={6} md={4}>
 
         <form>
         <Card>
             <CardHeader color="primary">
 
-              <img src={`${server}/reactlogo.png`} className={classes.img}/>
-
-                <h4 className="projectTitle">{project.project_title}</h4>
-                <p className={classes.cardCategoryWhite}></p>
+            <img class="image" src={`${server}/reactlogo.png`}/>
+            <h4 className="projectTitle">{project.project_title}</h4>
+             
             </CardHeader>
 
               <CardBody>
@@ -644,7 +633,7 @@ return(
                       <GridContainer>  
                         <GridItem xs={12} sm={12} md={6}>
                           <div className="form-group" onChange={handleChange} >
-                          <span>Project Start Date</span>
+                          <span>Project Start Date</span><span className="required">*</span>
                             <DatePicker
                               placeholderText="Start Date : dd/mm/yyyy"
                               isClearable
@@ -665,7 +654,7 @@ return(
 
                         <GridItem xs={12} sm={12} md={6}>
                           <div className="form-group" onChange={handleChange}>
-                          <span>Project End Date</span>
+                          <span>Project End Date</span><span className="required">*</span>
                             <DatePicker
                               placeholderText="End Date : dd/mm/yyyy"
                               isClearable
@@ -689,7 +678,7 @@ return(
                       <GridContainer>
                         <GridItem xs={12} sm={12} md={6}>
                           <div className="form-group">
-                          <span>Project Priority</span>
+                          <span>Project Priority</span><span className="required">*</span>
                             <select name="project_priority" id="priority" className="form-control signup-input" value={uoption.project_priority} onChange={handleChange}>
                               <option value=""  disabled selected>Select Project Priority</option>
                               <option value="High" class="High">High</option>
@@ -703,17 +692,14 @@ return(
                       
                         <GridItem xs={12} sm={12} md={6}>
                             <div className="form-group">
-                              {/*<input type="text" className="form-control signup-input" placeholder="Status" {...register('status',  { required: "Please enter your Status", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
-                              <div className="error-msg">{errors.status && <p>{errors.status.message}</p>}</div>*/}
-                              <span>Project Status</span>
-                              <select name="project_status" id="Status" className="form-control signup-input" value={uoption.project_status} onChange={handleChange}>
-                                <option value=""  disabled selected>Select Project Status</option>
-                                <option value="on hold">On hold</option>
-                                <option value="running">Running</option>
-                                <option value="completed">Completed</option>
-                              </select>
+                              <span>Project Status</span><span className="required">*</span>
+                                <select name="project_status" id="Status" className="form-control signup-input" value={uoption.project_status} onChange={handleChange}>
+                                  <option value=""  disabled selected>Select Project Status</option>
+                                  <option value="on hold">On hold</option>
+                                  <option value="running">Running</option>
+                                  <option value="completed">Completed</option>
+                                </select>
                               <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                              {/* <div className="error-msg">{errors.status && <p>{errors.status.message}</p>}</div> */}
                             </div> 
                         </GridItem>
                       </GridContainer><br/>
@@ -722,18 +708,18 @@ return(
                       <GridItem xs={12} sm={12} md={12}>
                           <div className="form-group">
                           
-                          <span>Project Members</span>
-                          <Multiselect
-                          displayValue="value"
-                            options={uoptions}
-                            value={updateSelected}
-                            selectedValues={allSelectedMember}
-                            onChange={setUpdateSelected}
-                            onRemove={setUpdateSelected}
-                            onSelect={setUpdateSelected}
-                            placeholder="Select Project Members"
-                            showArrow={true}
-                          />
+                          <span>Project Members</span><span className="required">*</span>
+                            <Multiselect
+                              displayValue="value"
+                              options={uoptions}
+                              value={updateSelected}
+                              selectedValues={allSelectedMember}
+                              onChange={setUpdateSelected}
+                              onRemove={setUpdateSelected}
+                              onSelect={setUpdateSelected}
+                              placeholder="Select Project Members"
+                              showArrow={true}
+                            />
                           
                             <div className="error-msg">{errors.project_person && <span>{errors.project_person.message}</span>}</div>
                           </div> 
