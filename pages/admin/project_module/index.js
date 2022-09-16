@@ -540,24 +540,14 @@ return(
     <GridItem xs={12} sm={6} md={4}>
 
         <form>
-        <Card>
-            <CardHeader color="primary">
+    <Card>
+      <CardHeader color="primary">
 
-              <img src={`${server}/reactlogo.png`} className={classes.img}/>
+        <img src={`${server}/reactlogo.png`} className={classes.img}/>
+        <h4 className="projectTitle">{project.project_title}</h4>
 
-                <h4 className="projectTitle">{project.project_title}</h4>
-                <p className={classes.cardCategoryWhite}></p>
-            </CardHeader>
-
-              <CardBody>
-              <GridContainer>
-                  <GridItem>
-                    <p className="projectLanguage">{project.project_language}</p>
-                  </GridItem>
-
-                  <GridItem>
-                    <div className="icon-display">
-                      <Popup trigger={<a><div className='icon-width' onClick={()=>projectId(project.project_id)}><FiEdit/></div></a>} className="popupReact" modal>
+        <div className="icon-display">
+          <Popup trigger={<a><div className='icon-width' onClick={()=>projectId(project.project_id)}><FiEdit/></div></a>} className="popupReact" modal>
 
               {close => (
               <div className="popup-align">
@@ -609,6 +599,7 @@ return(
                                 <option value=""  disabled selected>Select Your Department...</option>
                                 <option value="HR">HR</option>
                                 <option value="UI & UX">UI & UX</option>
+                                <option value="Testing">Testing</option>
                                 <option value="Web development">Web development</option>
                                 <option value="Content writer">Content writer</option>
                                 <option value="Project manager">Project manager</option>
@@ -786,32 +777,17 @@ return(
                       </Popup>
 
                     </div>
-                  </GridItem>
-                </GridContainer>
 
-                <GridContainer>
-                  <GridItem>
-                    {person.map((data)=>{
-                      return(
-                        <>
-                          <p className="projectPerson">{data}</p>
-                        </>
-                      )
-                    })
-                    }
-                  </GridItem>
-                </GridContainer>
-
-                <GridContainer>
-                  <GridItem>
-                    <p className="projectPriority">Project Priority : {project.project_priority}</p>
-                  </GridItem>
-                </GridContainer>
                 
-                </CardBody>
+            </CardHeader>
 
-                <CardFooter>
-                </CardFooter>
+              <CardBody>
+                <GridContainer>
+                  <GridItem>
+                    <p className="projectLanguage">{project.project_language}</p>
+                  </GridItem>
+                </GridContainer>
+              </CardBody>
             </Card>
         </form>
         <ToastContainer limit={1}/>
