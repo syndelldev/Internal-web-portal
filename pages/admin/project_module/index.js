@@ -280,7 +280,7 @@ useEffect(() =>{
     <GridContainer>
         <GridItem>
 
-          <Popup trigger={<div><button className="bttn-design">+ Project</button></div>} className="popupReact" modal>
+          <Popup trigger={<div><button className="bttn-design">Add Project</button></div>} className="popupReact" modal>
 
           {close => (
       <div>

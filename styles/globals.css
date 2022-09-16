@@ -184,3 +184,13 @@ span.MuiButton-label{
   }
 
 }
+@media only screen and (max-width: 1279px) and (min-width: 1024px){
+  .projectTitle{
+    font-size: 17px!important;
+  }
+  .MuiGrid-grid-md-4{
+    max-width: 55.333333%!important;
+    flex-basis:50%!important
+    }
+ }
+
