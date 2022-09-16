@@ -23,31 +23,18 @@ const modules = async (req,res) =>{
 const ModuleById = async (req,res) => {
     let id = req.query.id;
     // console.log(id)
-    // console.log(req.body)
+    console.log(req.body)
 
-    if(req.body.moduleid==1)
-    {
-        try{
-            //let rightsId=await executeQuery(` SELECT * FROM tbl_user INNER JOIN tbl_project INNER JOIN tbl_module WHERE tbl_module.module_id=? AND tbl_user.id=${id} `, [req.body.moduleid] );
-            let rightsId=await executeQuery(` SELECT * FROM tbl_project_rights RIGHT JOIN tbl_rights ON tbl_project_rights.project_id=tbl_rights.project_id INNER JOIN tbl_project ON tbl_project.project_id=tbl_rights.project_id WHERE tbl_rights.user_id=${id} `, [req.body.userid] );/*WHERE tbl_rights.user_id=${id}*/
-            res.status(200).json(rightsId);
-            //console.log(rightsId)
-        }
-        catch(err){
-            res.status(500).json(err);
-        }
+    
+    try{
+        // let rightsId=await executeQuery(` SELECT * FROM tbl_project_rights RIGHT JOIN tbl_rights ON tbl_project_rights.project_id=tbl_rights.project_id INNER JOIN tbl_project ON tbl_project.project_id=tbl_rights.project_id WHERE tbl_rights.user_id=${id} `, [req.body.userid] );/*WHERE tbl_rights.user_id=${id}*/
+        let rightsId=await executeQuery(" SELECT * FROM tbl_project_rights RIGHT JOIN tbl_rights ON tbl_project_rights.project_id=tbl_rights.project_id INNER JOIN tbl_project ON tbl_project.project_id=tbl_rights.project_id WHERE tbl_project_rights.user_id LIKE ? AND tbl_rights.user_id=?", [`%${req.body.userid}%`,req.body.userid] );
+        res.status(200).json(rightsId);
+        //console.log(rightsId)
     }
-    // else if(req.body.moduleid==2)
-    // {
-    //     try{
-    //         let rightsId=await executeQuery(` SELECT * FROM tbl_module INNER JOIN tbl_subtask INNER JOIN tbl_user WHERE tbl_module.module_id=? AND tbl_user.id=${id} `, [req.body.moduleid] );
-    //         res.status(200).json(rightsId);
-    //         //console.log(rightsId)
-    //     }
-    //     catch(err){
-    //         res.status(500).json(err);
-    //     }
-    // }
+    catch(err){
+        res.status(500).json(err);
+    }
 }
 
 const ProjectById = async (req,res) =>{

@@ -179,7 +179,7 @@ function Dashboard() {
                                         </GridItem>
 
                                         <div className="buttonalign">
-                                            <Popup trigger={<div><a className="bttn-design">Add comment</a></div>}  className="popupReact"  modal>
+                                            {/* <Popup trigger={<div><a className="bttn-design">Add comment</a></div>}  className="popupReact"  modal>
                                                 {close => (
                                                     <div>
                                                         <GridContainer>
@@ -206,7 +206,7 @@ function Dashboard() {
                                                         </GridContainer>
                                                     </div>
                                                 )}
-                                            </Popup>
+                                            </Popup> */}
                                         </div>
                                                 
                                     </GridContainer>

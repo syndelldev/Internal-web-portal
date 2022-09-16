@@ -58,37 +58,37 @@ export async function getServerSideProps(context){
 }
 
 function Dashboard({project}) {
-  //console.log(project)
+  console.log(project)
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   
   const [cookies, setCookie] = useCookies('');
-  console.log(cookies.Id);
+  //console.log(cookies.Id);
 
   const [users, setusers] = useState([])
 
-  // useEffect(async()=>{
-  //   axios.get(`${server}/api/admin/${cookies.Id}` )
-  //     .then((res)=>{
-  //       setusers(res.data)
-  //       //console.log(res)
-  //     })    
-  // },[])
-  //console.log(users)
-
-    useEffect(async()=>{
-    axios.get(`${server}/api/rights/`)
+  useEffect(async()=>{
+    axios.get(`${server}/api/admin/${cookies.Id}` )
       .then((res)=>{
         setusers(res.data)
         //console.log(res)
       })    
-    },[])
-    console.log(users)
+  },[])
+  // console.log(users)
 
+  // const [rights, setrights] = useState([])
+  // useEffect(async()=>{
+  //   axios.get(`${server}/api/rights/` )
+  //     .then((res)=>{
+  //       setrights(res.data)
+  //       console.log(res.data)
+  //     })    
+  // },[])
+  // console.log(rights)
 
   return (
     <>
-      {/* <div>
+      <div>
         {users.map((user)=>{
           return(
             <div key={user.id}>
@@ -96,8 +96,7 @@ function Dashboard({project}) {
             </div>
           )
         })}
-      </div> */}
-      <Button color="primary" onClick={()=>{getData}} type="submit">Submit</Button><br/><br/>
+      </div>
       <GridContainer>
        {
           project.map((project)=>{
@@ -112,8 +111,9 @@ function Dashboard({project}) {
                     <p className="projectLanguage">{project.project_language}</p>
                     <p className="projectPriority">
                       {/* {project.project_id} */}
-                      <Button disabled >View</Button>
-                      <Button>Edit</Button>
+                      
+                      <Button disabled={project.view_rights==0} >View</Button>
+                      <Button disabled={project.edit_rights==0} >Edit</Button>
                     </p>
                   </CardFooter>
                   <CardFooter>
