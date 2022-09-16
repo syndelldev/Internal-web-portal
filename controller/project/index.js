@@ -69,7 +69,7 @@ const projectStatus = async (req,res) => {
     console.log(req.query.language);
 
     try{
-        let projectStatus = await executeQuery("Select `project_status` from `tbl_project` group by `project_status` ");
+        let projectStatus = await executeQuery("Select COUNT(`project_id`)as 'project_total' ,`project_status` from `tbl_project` group by `project_status`; ");
         res.status(200).json(projectStatus);
     }
     catch(err){

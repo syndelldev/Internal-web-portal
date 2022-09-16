@@ -532,7 +532,7 @@ if(project.project_delete == "no"){
 
 return(
   <>
-    <GridItem xs={6} sm={6} md={4}>
+    <GridItem xs={12} sm={6} md={4}>
 
         <form>
         <Card>
