@@ -549,13 +549,15 @@ if(project.project_delete == "no"){
 
 return(
   <>
-    <GridItem xs={12} sm={6} md={4}>
+    <GridItem xs={12} sm={6} md={9}>
+
+
 
         <form>
     <Card>
       <CardHeader color="primary">
 
-        <img src={`${server}/reactlogo.png`} className={classes.img}/>
+        {/* <img src={`${server}/reactlogo.png`} className={classes.img}/> */}
         <h4 className="projectTitle">{project.project_title}</h4>
 
         <div className="icon-display">
@@ -790,13 +792,14 @@ return(
 
                     </div>
 
-                
+        <p className="projectLanguage">{project.project_language}</p>
+
             </CardHeader>
 
               <CardBody>
                 <GridContainer>
                   <GridItem>
-                    <p className="projectLanguage">{project.project_language}</p>
+                    {/* <p className="projectLanguage">{project.project_language}</p> */}
                   </GridItem>
                 </GridContainer>
               </CardBody>
@@ -806,7 +809,8 @@ return(
 
   </GridItem>
 
- </>);
+
+</>);
 }
 })
 }
