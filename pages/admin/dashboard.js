@@ -107,7 +107,7 @@ function Dashboard( { project_details , User_name, all_status } ) {
   return (
     <>
     
-    <h4 className="project_status">Project Dashboard</h4>
+    <h4 className="project_status">Projects</h4>
     <GridContainer>
 
       {all_status.map((status) =>{

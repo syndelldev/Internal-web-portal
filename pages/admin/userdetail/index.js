@@ -100,7 +100,7 @@ function UserDetail({UserDetail}) {
   const classes = useStyles();
   return (
     <>
-        <Button color="primary"  className="add_new_user"><a href='/admin/adduser'  className="add_new_user"> + Add New User</a></Button>
+        {/* <Button color="primary"  className="add_new_user"><a href='/admin/adduser'  className="add_new_user"> + Add New User</a></Button> */}
     <div>
       
       <GridContainer>
@@ -119,7 +119,8 @@ function UserDetail({UserDetail}) {
        
           <Card>
             <CardHeader color="primary">
-              <h4 className="text">User Details</h4>
+              <h4 className="text">User Details<Button color="primary"  className="add_new_user"><a href='/admin/adduser'  className="add_new_user"> + Add New User</a></Button>
+              </h4>
             </CardHeader>
             <CardBody>
             <div className={classes.tableResponsive}>
