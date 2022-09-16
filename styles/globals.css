@@ -58,6 +58,11 @@ a {
 	overflow-x: hidden;
 }
 
+.required{
+  color: crimson;
+  padding-left: 5px;
+}
+
 .dropdown_button:hover{
   background-color: #ADD8E6;
   color: white;
@@ -101,6 +106,7 @@ a {
 
 .icon-display{
   display: flex;
+  cursor: pointer;
 }
 .icon-width{
   width: auto;
