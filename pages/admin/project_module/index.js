@@ -142,17 +142,19 @@ function Dashboard( { project_details , User_name } ) {
     // console.log(update_data[0]);
 
     const udata = update_data[0];
-    console.log(udata.project_person);
 
-    // if(udata.project_start != ""){
-    //   // const dateStart = (udata.project_start).slice(0,10);
-    // }
-    // const dateEnd = (udata.project_deadline).slice(0,10);
+    const selectedMember = (udata.project_person).split(",");
 
+    const getAllname = [];
+
+    selectedMember.map((user)=>{
+      getAllname.push( {'label' :user, 'value' :user} );
+    });
+
+    setUpdateSelected(getAllname);
     setUpdate(udata);
     setStartDate(new Date(udata.project_start));
     setEndDate(new Date(udata.project_deadline));
-    setUpdateSelected(udata.project_person);
   
     }
 
@@ -164,19 +166,16 @@ function Dashboard( { project_details , User_name } ) {
   
     setUpdate({ ...uoption, [name]: value });
   }
-  console.log("update start date");
-  console.log(uoption.project_person);
-  console.log(uoption.project_start);
-  console.log(uoption);
+  // console.log("update start date");
+  // console.log(uoption.project_person);
+  // console.log(uoption.project_start);
+  // console.log(uoption);
 
   var uMember = uoption.project_person;
-
 
   const allSelectedMember = [];
   const projectMember = (uMember).split(",");
 
-  console.log("member");
-  console.log(projectMember);
 
   for(var i=0; i<projectMember.length; i++){
     allSelectedMember.push({'label' :projectMember[i] , 'value' : projectMember[i]});
@@ -184,22 +183,20 @@ function Dashboard( { project_details , User_name } ) {
 
   const toastId = React.useRef(null);
 
-  const updateProject = async(id) =>{
+  const updateProject = async() =>{
 
     const allMember = [];
     for(var i=0; i<updateSelected.length; i++){
           allMember.push(updateSelected[i].value);
     }
 
-    if(allMember == ""){
-      var members = projectMember;
-    }else{
+    // if(allMember == ""){
+    //   var members = projectMember;
+    // }else{
       var members = allMember;
-    }
+    // }
     console.log("all users");
-    console.log(members);
-    console.log(projectMember);
-    console.log(updateSelected);
+    console.log( members );
 
     if( uoption.project_title=="" || uoption.project_description=="" ||  uoption.project_department=="" || uoption.project_language=="" || members=="" || startDate=="" || endDate=="" || uoption.project_priority=="" || uoption.project_status=="" ){
       if(! toast.isActive(toastId.current)) {
@@ -223,11 +220,13 @@ function Dashboard( { project_details , User_name } ) {
       toastId.current = toast.success('Updated Successfully ! 🎉', {
           position: "top-right",
           autoClose:1000,
+          theme: "colored",
+          hideProgressBar: true,
           onClose: () => router.push(`${server}/admin/project_module`)
           });
       }
 
-    router.push(`${server}/admin/project_module`);
+      router.reload(`${server}/admin/project_module`);
 
   }
 }
