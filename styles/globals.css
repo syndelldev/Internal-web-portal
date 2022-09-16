@@ -61,7 +61,11 @@ a {
 .dropdown_button:hover{
   background-color: #ADD8E6;
   color: white;
-  border: 1px solid #ADD8E6 ;
+  border:none;
+}
+.bttn-design:hover{
+  color: white;
+
 }
 
 .buttonpopup5{
@@ -177,6 +181,10 @@ span.MuiButton-label{
   color: #000!important;
   font-weight: 500!important;
 
+}
+a.makeStyles-item-15 {
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
 @media only screen and (max-width: 1365px) and (min-width: 1280px){
   .projectTitle{
