@@ -12,12 +12,12 @@ const getAllTask = async (req,res) =>{
 }
 
 const getTaskById = async (req,res) => {
-    let id = req.query.task_id;
+    let id = req.query.subtask_id;
     console.log(req.query);
     console.log(req.query);
 
     try{
-        let taskById=await executeQuery(` SELECT * FROM tbl_subtask where task_id= ${id}`, [] );
+        let taskById=await executeQuery(` SELECT * FROM tbl_subtask where task_id= ${id}`, [req.query.subtask_id] );
         res.status(200).json(taskById);
     }
     catch(err){

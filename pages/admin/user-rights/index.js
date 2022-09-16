@@ -62,16 +62,6 @@ function UserRights({UserList,ModuleList}){
     const [module, setmodule] = useState(1)
     // console.log(module)
 
-    const [rightslist, setrightslist] = useState([])
-    const rights_list = ()=>{
-        axios.post(`${server}/api/rights/rights_list/`,{user:user})
-        .then((res)=>{
-            setrightslist(res.data)
-            console.log(res.data)
-        })
-    }
-    // console.log(rightslist)
-
     const [users, setusers] = useState([])
     const getData = () => {
         axios.post(`${server}/api/rights/${user}`, {userid:user,moduleid:module})
@@ -81,9 +71,6 @@ function UserRights({UserList,ModuleList}){
     }
     // console.log(users)
     
-    const [rightsList,setrightsList] = useState([])
-    
-
     const [viewcheckbox,setviewcheckbox] = useState(0)
     // console.log(viewcheckbox)
     const viewCheckbox = (e) =>{
@@ -135,7 +122,7 @@ function UserRights({UserList,ModuleList}){
                 <GridItem xs={12} sm={12} md={12}>
                     <Card>
                         <CardHeader color="primary">
-                            <h4 className={classes.cardTitleWhite}>User Rights</h4>
+                            <h4 className="text">User Rights</h4>
                         </CardHeader><br/><br/>
                         <CardBody>
                         <GridContainer>
@@ -146,7 +133,7 @@ function UserRights({UserList,ModuleList}){
                                             UserList.map((users)=>{
                                                 return(
                                                     <>
-                                                        <option key={users.id} value={users.id}>{users.username} - {users.id}</option> 
+                                                        <option key={users.id} value={users.id}>{users.username}</option> 
                                                     </>      
                                                 )
                                             })
@@ -172,7 +159,7 @@ function UserRights({UserList,ModuleList}){
                                 <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                             </GridItem> 
                         </GridContainer><br/>
-                        <Button color="primary" onClick={()=>{getData();rights_list();}} type="submit">Submit</Button><br/><br/>
+                        <Button color="primary" onClick={getData} type="submit">Submit</Button><br/><br/>
 
                             <div className={classes.tableResponsive}>
                                 <Table className={classes.table}>
@@ -183,11 +170,11 @@ function UserRights({UserList,ModuleList}){
                                             <TableCell>Contributor(edit)</TableCell>
                                         </TableRow>
                                     </TableHead>
-                                        <TableBody>
+                                    <TableBody>
                                         {
                                             users.map((data)=>{
                                                 const isInArray = data.user_id.includes(user);
-                                                console.log(users)
+                                                // console.log(users)
                                                 // console.log(isInArray);   
                                                 return(       
                                                     <TableRow key={data.project_id} value={data.project_id}>
@@ -198,24 +185,14 @@ function UserRights({UserList,ModuleList}){
                                                         </TableCell>
 
                                                         <TableCell>
-                                                            <input type="checkbox" name="edit_rights" value={data.edit_rights} onChange={editCheckbox} defaultChecked={isInArray==true} onClick={()=>view_rights(data.project_id)} /> {data.edit_rights} - {data.user_id}
+                                                            <input type="checkbox" name="edit_rights" value={data.edit_rights} onChange={editCheckbox} defaultChecked={data.edit_rights==1} onClick={()=>view_rights(data.project_id)} /> 
                                                         </TableCell>
                                                                             
                                                     </TableRow>   
                                                     )
                                                 })
                                             }                                       
-                                            </TableBody>
-                                            
-                                            {/* {
-                                                            rightslist.map((r)=>{
-                                                                return(
-                                                                    <>
-                                                                        <p>{r.user_id}-{r.project_id}</p>
-                                                                    </>
-                                                                )
-                                                            })
-                                                        }   */}
+                                        </TableBody>
                                 </Table>
                             </div>
                         </CardBody>

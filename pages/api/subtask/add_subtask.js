@@ -24,6 +24,17 @@ async function addSubtask(req,res){
             }
             console.log(allSelectedUser);
 
+            const userid = [];
+                
+            for(var i=0; i<members.length; i++){
+                var addUserQuery =  await executeQuery("SELECT id FROM `tbl_user` where username =? ",[`${members[i].value}`])
+                // console.log(addUserQuery[0].id)
+                var memberId = addUserQuery[0].id
+                userid.push(memberId);
+                //console.log(userid);
+            }
+            console.log(`${userid}`);
+
             var addUserQuery = await executeQuery("create table IF NOT EXISTS `tbl_subtask` ( `task_id` int AUTO_INCREMENT PRIMARY KEY , `project_name` varchar(255), `task_title` varchar(255), `task_description` text, `task_language` varchar(255), `task_priority` varchar(255), `task_person` text , `task_status` varchar(255) , `task_start` varchar(255) , `task_deadline` varchar(255) ,  `task_delete` varchar(255) ,  `task_comment` text , `task_created_date` timestamp  )");
             var addUserQuery = await executeQuery("INSERT INTO `tbl_subtask` ( `project_name`, `task_title`, `task_description` , `task_language`, `task_priority`, `task_person`, `task_status`, `task_start` , `task_deadline`, `task_delete` , `task_comment` ) VALUES (?,?,?,?,?,?,?,?,?,?,?)", 
             [ `${projectName}` , req.body.task_title, req.body.task_description ,  req.body.task_language, req.body.task_priority , `${allSelectedUser}` , "task to do" , req.body.task_start , req.body.task_deadline , "no" , req.body.task_comment ] );

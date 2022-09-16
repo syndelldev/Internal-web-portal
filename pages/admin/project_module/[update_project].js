@@ -296,7 +296,7 @@ console.log(edit_check_date);
                         <GridItem xs={12} sm={12} md={6}>
                           <div className="form-group">
                             <DatePicker
-                              placeholderText="Start_Date : dd/mm/yyyy"
+                              placeholderText="Start Date : dd/mm/yyyy"
                               isClearable
                               name="project_start"
                               className={"form-control"}
@@ -316,7 +316,7 @@ console.log(edit_check_date);
                         <GridItem xs={12} sm={12} md={6}>
                           <div className="form-group">
                             <DatePicker
-                              placeholderText="End_Date : dd/mm/yyyy"
+                              placeholderText="End Date : dd/mm/yyyy"
                               isClearable
                               name="project_deadline"
                               className={"form-control"}

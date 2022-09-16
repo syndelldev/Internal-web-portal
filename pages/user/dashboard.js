@@ -58,7 +58,7 @@ export async function getServerSideProps(context){
 }
 
 function Dashboard({project}) {
-  //console.log(project)
+  console.log(project)
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   
@@ -67,24 +67,24 @@ function Dashboard({project}) {
 
   const [users, setusers] = useState([])
 
-  // useEffect(async()=>{
-  //   axios.get(`${server}/api/admin/${cookies.Id}` )
-  //     .then((res)=>{
-  //       setusers(res.data)
-  //       //console.log(res)
-  //     })    
-  // },[])
-  //console.log(users)
-
-  const [rights, setrights] = useState([])
   useEffect(async()=>{
-    axios.get(`${server}/api/rights/` )
+    axios.get(`${server}/api/admin/${cookies.Id}` )
       .then((res)=>{
-        setrights(res.data)
-        console.log(res.data)
+        setusers(res.data)
+        //console.log(res)
       })    
   },[])
-  console.log(rights)
+  // console.log(users)
+
+  // const [rights, setrights] = useState([])
+  // useEffect(async()=>{
+  //   axios.get(`${server}/api/rights/` )
+  //     .then((res)=>{
+  //       setrights(res.data)
+  //       console.log(res.data)
+  //     })    
+  // },[])
+  // console.log(rights)
 
   return (
     <>
@@ -110,18 +110,10 @@ function Dashboard({project}) {
                   <CardFooter>
                     <p className="projectLanguage">{project.project_language}</p>
                     <p className="projectPriority">
-                      {project.project_id}
-
-                      {rights.map((r)=>{
-                        console.log(r.project_id)
-                        if(r.project_id==project.project_id){
-                          console.log("Matched")
-                        }
-                        else{
-                          console.log("Not Matched")
-                        }
-                      })}
-
+                      {/* {project.project_id} */}
+                      
+                      <Button disabled={project.view_rights==0} >View</Button>
+                      <Button disabled={project.edit_rights==0} >Edit</Button>
                     </p>
                   </CardFooter>
                   <CardFooter>

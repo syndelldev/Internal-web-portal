@@ -19,11 +19,11 @@ a {
 
 .dropdown_button {
   
-  padding: 6px 20px;
+  padding: 9px 20px;
   font-size: 16px;
   border: none;
   background-color: #ADD8E6;
-  border-radius: 15px;
+  border-radius: 8px;
 }
 
 .department_dropdown {
@@ -47,7 +47,7 @@ a {
   display: block;
 }
 
-.department-link a:hover {background-color:  #ADD8E6;color:#000;}
+  .department-link a:hover {background-color:  #ADD8E6;color:#000;}
 
 .department_dropdown:hover .department-link {display: block;background-color:#ddd;color: #ADD8E6;}
 
@@ -61,7 +61,11 @@ a {
 .dropdown_button:hover{
   background-color: #ADD8E6;
   color: white;
-  border: 1px solid #ADD8E6 ;
+  border:none;
+}
+.bttn-design:hover{
+  color: white;
+
 }
 
 .buttonpopup5{
@@ -75,9 +79,10 @@ a {
   border: 1px solid #ADD8E6 ;
 }
 .buttonalign{
+  /* float: right; */
   justify-content: center;
   display: flex;
-  margin-bottom: 10px;
+  margin-bottom: 50px;
 } 
 
 .logout{
@@ -87,16 +92,15 @@ a {
   justify-content: center;
 }
 .bttn-design{
-  padding: 6px 20px;
+  padding: 9px 20px;
   font-size: 16px;
   background-color: #ADD8E6;
   border: none;
-  border-radius: 15px;
+  border-radius: 8px;
 }
 
 .icon-display{
   display: flex;
-  cursor: pointer;
 }
 .icon-width{
   width: auto;
@@ -122,13 +126,20 @@ a {
 }
 .text ,.projectTitle{
   color: black;
+  font-weight: bold;
 }
 .popup-align
-{
+{/*
   position: relative;
   top: 120px;
   left: 50%;
-  transform: translate(-50px, -50px);
+  transform: translate(-50px, -50px);*/
+ /* position: fixed;
+    top:0 !important;
+    left:100% !important;
+    height:100% !important;
+    transition: transform .2s ease-in-out !important;*/
+    transform: translateX(100%);
 }
 
 .copyright{
@@ -144,8 +155,59 @@ a {
   align-items: center;
   margin-left: auto;
 }
-
-.required{
-  color: crimson;
-  padding-left: 5px;
+.makeStyles-grid-340{
+  width: 100%!important;
+  margin: 0px 0px !important;
 }
+.chip{
+  border-radius: 30px!important;
+  padding: 10px!important;
+  font-weight: 500!important;
+  background: #eee5ff!important;
+  color: #000!important;;
+}
+.multiSelectContainer li:hover{
+  font-weight: 500!important;
+  background: #eee5ff!important;
+  color: #000!important;
+
+}
+.highlightOption{
+  font-weight: 500!important;
+  background: #eee5ff!important;
+  color: #000!important;
+}
+span.MuiButton-label{
+  color: #000!important;
+  font-weight: 500!important;
+
+}
+a.makeStyles-item-15 {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+@media only screen and (max-width: 1365px) and (min-width: 1280px){
+  .projectTitle{
+    font-size: 17px!important;
+  }
+
+}
+@media only screen and (max-width: 1279px) and (min-width: 1024px){
+  .projectTitle{
+    font-size: 17px!important;
+  }
+  .MuiGrid-grid-md-4{
+    max-width: 55.333333%!important;
+    flex-basis:50%!important
+    }
+ }
+ @media only screen and (max-width: 1080px) and (min-width: 960px) {
+  .MuiGrid-grid-md-4{
+    max-width: 55.333333%!important;
+    flex-basis:50% !important;
+    }
+}
+@media only screen (min-width: 960px) {
+  h4.projectTitle{
+font-size: 17px!important;
+  }}
