@@ -23,19 +23,17 @@ const modules = async (req,res) =>{
 const ModuleById = async (req,res) => {
     let id = req.query.id;
     // console.log(id)
-    // console.log(req.body)
+    console.log(req.body)
 
-    if(req.body.moduleid==1)
-    {
-        try{
-            // let rightsId=await executeQuery(` SELECT * FROM tbl_project_rights RIGHT JOIN tbl_rights ON tbl_project_rights.project_id=tbl_rights.project_id INNER JOIN tbl_project ON tbl_project.project_id=tbl_rights.project_id WHERE tbl_rights.user_id=${id} `, [req.body.userid] );/*WHERE tbl_rights.user_id=${id}*/
-            let rightsId=await executeQuery(" SELECT * FROM tbl_project_rights RIGHT JOIN tbl_rights ON tbl_project_rights.project_id=tbl_rights.project_id INNER JOIN tbl_project ON tbl_project.project_id=tbl_rights.project_id WHERE tbl_project_rights.user_id LIKE ? ", [`%${req.body.userid}%`] );
-            res.status(200).json(rightsId);
-            //console.log(rightsId)
-        }
-        catch(err){
-            res.status(500).json(err);
-        }
+    
+    try{
+        // let rightsId=await executeQuery(` SELECT * FROM tbl_project_rights RIGHT JOIN tbl_rights ON tbl_project_rights.project_id=tbl_rights.project_id INNER JOIN tbl_project ON tbl_project.project_id=tbl_rights.project_id WHERE tbl_rights.user_id=${id} `, [req.body.userid] );/*WHERE tbl_rights.user_id=${id}*/
+        let rightsId=await executeQuery(" SELECT * FROM tbl_project_rights RIGHT JOIN tbl_rights ON tbl_project_rights.project_id=tbl_rights.project_id INNER JOIN tbl_project ON tbl_project.project_id=tbl_rights.project_id WHERE tbl_project_rights.user_id LIKE ? AND tbl_rights.user_id=?", [`%${req.body.userid}%`,req.body.userid] );
+        res.status(200).json(rightsId);
+        //console.log(rightsId)
+    }
+    catch(err){
+        res.status(500).json(err);
     }
 }
 

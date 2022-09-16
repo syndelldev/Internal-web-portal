@@ -70,7 +70,7 @@ function UserRights({UserList,ModuleList}){
             console.log(res.data)
         })
     }
-    // console.log(rightslist)
+    console.log(rightslist)
 
     const [users, setusers] = useState([])
     const getData = () => {
@@ -79,11 +79,8 @@ function UserRights({UserList,ModuleList}){
             setusers(res.data)
         })
     }
-    // console.log(users)
+    console.log(users)
     
-    const [rightsList,setrightsList] = useState([])
-    
-
     const [viewcheckbox,setviewcheckbox] = useState(0)
     // console.log(viewcheckbox)
     const viewCheckbox = (e) =>{
@@ -172,7 +169,7 @@ function UserRights({UserList,ModuleList}){
                                 <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                             </GridItem> 
                         </GridContainer><br/>
-                        <Button color="primary" onClick={()=>{getData();rights_list();}} type="submit">Submit</Button><br/><br/>
+                        <Button color="primary" onClick={getData} type="submit">Submit</Button><br/><br/>
 
                             <div className={classes.tableResponsive}>
                                 <Table className={classes.table}>
@@ -198,7 +195,7 @@ function UserRights({UserList,ModuleList}){
                                                         </TableCell>
 
                                                         <TableCell>
-                                                            <input type="checkbox" name="edit_rights" value={isInArray} onChange={editCheckbox} defaultChecked={isInArray==true} onClick={()=>view_rights(data.project_id)} /> 
+                                                            <input type="checkbox" name="edit_rights" value={data.edit_rights} onChange={editCheckbox} defaultChecked={isInArray==true} onClick={()=>view_rights(data.project_id)} /> 
                                                         </TableCell>
                                                                             
                                                     </TableRow>   
