@@ -193,10 +193,10 @@ span.MuiButton-label{
     flex-basis:50%!important
     }
  }
- @media only screen and (max-width: 1366px) and (min-width: 768px){
+ @media only screen and (min-width: 960px){
   .MuiGrid-grid-md-4{
     max-width: 55.333333%!important;
-    flex-basis:50%!important
+    flex-basis:50% !important;
     }
 }
 
