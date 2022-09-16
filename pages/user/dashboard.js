@@ -112,14 +112,24 @@ function Dashboard({project}) {
                     <p className="projectPriority">
                       {/* {project.project_id} */}
                       
-                      {/* <Button disabled={project.view_rights==0} >View</Button> */}
+                      {/*View Project PopUp*/}
+                      {/* <Button disabled={project.view_rights==0} >View</Button>
+                      <Button disabled={project.edit_rights==0} >Edit</Button> */}
                         <Popup trigger={<Button disabled={project.view_rights==0} >View</Button>}  className="popupReact"  modal>
                           {close => (
                             <div>
                               <GridItem xs={6} sm={6} md={12} key={project.project_id}>
                                 <Card >
                                   <CardHeader color="primary">
-                                    <h4>{project.project_title}</h4>
+                                    <GridContainer>
+                                      <GridItem>
+                                        <h4>{project.project_title}</h4>
+                                      </GridItem>
+                                      <div className={classes.close}>
+                                        <a onClick={close}>&times;</a>
+                                      </div>
+                                      
+                                    </GridContainer>
                                   </CardHeader><br/>
                                   <CardFooter>
                                     <p>{project.project_language}</p>
@@ -145,7 +155,26 @@ function Dashboard({project}) {
                           )}
                         </Popup>
 
-                      <Button disabled={project.edit_rights==0} >Edit</Button>
+                        {/*Edit Project PopUp*/}
+                        <Popup trigger={<Button disabled={project.edit_rights==0} >Edit</Button>}  className="popupReact"  modal>
+                          {close => (
+                            <div>
+                              <GridItem xs={6} sm={6} md={12} key={project.project_id}>
+                                <Card >
+                                  <CardHeader color="primary">
+                                    <h4>{project.project_title}</h4>
+                                      <div className={classes.close}>
+                                        <a onClick={close}>&times;</a>
+                                      </div>
+                                  </CardHeader><br/>
+                                  <CardFooter>
+                                    
+                                  </CardFooter>
+                                </Card>
+                              </GridItem>
+                            </div>
+                          )}
+                        </Popup>
                     </p>
                   </CardFooter>
                   <CardFooter>
