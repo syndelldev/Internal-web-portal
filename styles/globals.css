@@ -47,7 +47,7 @@ a {
   display: block;
 }
 
-  .department-link a:hover {background-color:  #ADD8E6;color:#000;}
+.department-link a:hover {background-color:  #ADD8E6;color:#000;}
 
 .department_dropdown:hover .department-link {display: block;background-color:#ddd;color: #ADD8E6;}
 
@@ -96,6 +96,7 @@ a {
 
 .icon-display{
   display: flex;
+  cursor: pointer;
 }
 .icon-width{
   width: auto;
