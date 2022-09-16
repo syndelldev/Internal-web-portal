@@ -199,3 +199,7 @@ span.MuiButton-label{
     flex-basis:50% !important;
     }
 }
+@media only screen (min-width: 960px) {
+  .MuiGrid-grid-md-4{
+font-size: 17px!important;
+  }}
