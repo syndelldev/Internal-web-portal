@@ -28,7 +28,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableBody from "@material-ui/core/TableBody";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
-
+import Popup from "reactjs-popup";
 import axios from "axios";
 import { server } from 'config';
 
@@ -113,7 +113,39 @@ function Dashboard({project}) {
                     <p className="projectPriority">
                       {/* {project.project_id} */}
                       
-                      <Button disabled={project.view_rights==0} >View</Button>
+                      {/* <Button disabled={project.view_rights==0} >View</Button> */}
+                        <Popup trigger={<Button disabled={project.view_rights==0} >View</Button>}  className="popupReact"  modal>
+                          {close => (
+                            <div>
+                              <GridItem xs={6} sm={6} md={12} key={project.project_id}>
+                                <Card >
+                                  <CardHeader color="primary">
+                                    <h4>{project.project_title}</h4>
+                                  </CardHeader><br/>
+                                  <CardFooter>
+                                    <p>{project.project_language}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p>{project.project_person}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p>{project.project_description}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p>{project.project_department}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p>{project.project_status}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p className="projectPriority">{project.project_priority} Priority</p>
+                                  </CardFooter>
+                                </Card>
+                              </GridItem>
+                            </div>
+                          )}
+                        </Popup>
+
                       <Button disabled={project.edit_rights==0} >Edit</Button>
                     </p>
                   </CardFooter>
