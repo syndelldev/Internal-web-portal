@@ -100,6 +100,7 @@ function Dashboard({project}) {
       <GridContainer>
        {
           project.map((project)=>{
+            var person = project.project_person.split(",");
             // const bDate = ((project.project_deadline).substr(0,10).split("-",3));
             return(
               <GridItem xs={6} sm={6} md={4} key={project.project_id}>
@@ -114,7 +115,7 @@ function Dashboard({project}) {
                       {/* {project.project_id} */}
                       
                       {/* <Button disabled={project.view_rights==0} >View</Button> */}
-                        <Popup trigger={<Button disabled={project.view_rights==0} >View</Button>}  className="popupReact"  modal>
+                        <Popup trigger={<Button disabled={project.view_rights==0} ><FaEye/></Button>}  className="popupReact"  modal>
                           {close => (
                             <div>
                               <GridItem xs={6} sm={6} md={12} key={project.project_id}>
@@ -146,11 +147,21 @@ function Dashboard({project}) {
                           )}
                         </Popup>
 
-                      <Button disabled={project.edit_rights==0} >Edit</Button>
+                      <Button disabled={project.edit_rights==0} ><FiEdit/></Button>
                     </p>
                   </CardFooter>
                   <CardFooter>
-                    <p>{project.project_person}</p>
+                    <p>
+                      {person.map((data)=>{
+                      return(
+                        <>
+                          <p className="projectPerson">{data}</p>
+                        </>
+                      )
+                      })
+                      }
+                    </p>
+                    
                   </CardFooter>
                   <CardFooter>
                     <p className="projectPriority">{project.project_priority} Priority</p>
