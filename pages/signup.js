@@ -174,6 +174,7 @@ function SignIn(){
                                     <option value="Project manager">Project manager</option>
                                     <option value="Mobile App developer">Mobile App developer</option>
                                     <option value="SEO">SEO</option>
+                                    <option value="Testing Department">Testing Department</option>
                                 </select>
                                 <span className='icon-eyes'><IoMdArrowDropdown /></span>
                                 <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>
@@ -183,9 +184,6 @@ function SignIn(){
                                 <label htmlFor="position" className='form-label label' >Position</label><br/>
                                 <select name="position" id="position" className="form-control signup-input" {...register('position', {required: "Please enter your department" ,message:'Please select atleast one option', })}>
                                     <option value="">Select Your Position</option>
-                                    {/*<option value="Senior">Senior</option>
-                                    <option value="Junior">Junior</option>
-                                    <option value="Team Lead">Team Lead</option>*/}
                                     <option value="Junior HR">Junior HR</option>
                                     <option value="Junior UI & UX">Junior UI & UX</option>
                                     <option value="Junior Web development">Junior Web development</option>
@@ -193,6 +191,7 @@ function SignIn(){
                                     <option value="Junior Project manager">Junior Project manager</option>
                                     <option value="Junior Mobile App developer">Junior Mobile App developer</option>
                                     <option value="Junior SEO">Junior SEO</option>
+                                    <option value="Junior Tester">Junior Tester</option>
                                     <option value="Senior HR">Senior HR</option>
                                     <option value="Senior UI & UX">Senior UI & UX</option>
                                     <option value="Senior Web development">Senior Web development</option>
@@ -200,6 +199,7 @@ function SignIn(){
                                     <option value="Senior Project manager">Senior Project manager</option>
                                     <option value="Senior Mobile App developer">Senior Mobile App developer</option>
                                     <option value="Senior SEO">Senior SEO</option>
+                                    <option value="Senior Tester">Senior Tester</option>
                                 </select>
                                 <span className='icon-eyes'><IoMdArrowDropdown /></span>
                                 <div className="error-msg">{errors.position && <p>{errors.position.message}</p>}</div>

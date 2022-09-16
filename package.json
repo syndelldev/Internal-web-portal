@@ -36,6 +36,7 @@
     "path": "0.12.7",
     "perfect-scrollbar": "^1.5.5",
     "prop-types": "^15.8.1",
+    "pusher-js": "^7.4.0",
     "react": "^17.0.0",
     "react-beautiful-dnd": "^13.1.1",
     "react-bootstrap": "^2.5.0",
