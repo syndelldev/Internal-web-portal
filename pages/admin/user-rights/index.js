@@ -191,7 +191,7 @@ function UserRights({UserList,ModuleList}){
                                                 // console.log(isInArray);   
                                                 return(       
                                                     <TableRow key={data.project_id} value={data.project_id}>
-                                                        <TableCell>{data.project_title}</TableCell>  
+                                                        <TableCell>{data.project_title}-{data.project_id}</TableCell>  
                                                           
                                                         <TableCell>
                                                             <input type="checkbox" name="view_rights" value={data.view_rights} onChange={viewCheckbox} defaultChecked={data.view_rights==1} onClick={()=>view_rights(data.project_id)}/>
