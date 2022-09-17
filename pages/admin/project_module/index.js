@@ -564,12 +564,13 @@ return(
 
 
         <form>
-    <Card>
-      <CardHeader color="primary">
+    <Card className= "projects">
+      <CardHeader color="primary" className="project-block">
 
         {/* <img src={`${server}/reactlogo.png`} className={classes.img}/> */}
+        <div className="project-content">
         <h4 className="projectTitle">{project.project_title}</h4>
-
+        {/* <p className="projectLanguage">{project.project_status}</p> */}
         <div className="icon-display">
           <Popup trigger={<a><div className='icon-width' onClick={()=>projectId(project.project_id)}><FiEdit/></div></a>} className="popupReact" modal>
 
@@ -801,18 +802,9 @@ return(
                       </Popup>
 
                     </div>
-
-        <p className="projectLanguage">{project.project_language}</p>
-
-            </CardHeader>
-
-              <CardBody>
-                <GridContainer>
-                  <GridItem>
-                    {/* <p className="projectLanguage">{project.project_language}</p> */}
-                  </GridItem>
-                </GridContainer>
-              </CardBody>
+                    </div>
+                    </CardHeader>
+      
             </Card>
         </form>
         <ToastContainer limit={1}/>

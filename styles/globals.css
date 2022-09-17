@@ -18,7 +18,7 @@ a {
 /* filter project language, department dropdown */
 
 .dropdown_button {
-  
+  font-weight: 600;
   padding: 9px 20px;
   font-size: 16px;
   border: none;
@@ -88,9 +88,19 @@ h4.project_status {
   font-size: 30px;
   font-weight: 700;
 }
-.makeStyles-card{
-  background: red!important;
+.projects{
+  margin-bottom: 10px!important;
+  background:transparent!important;
+  box-shadow: none!important;
 }
+.project-content{
+  justify-content: space-between;
+  display: flex!important;
+}
+/* .project-block {
+  color: #fff!important;
+  background: #F29393!important;
+} */
 
 /* Project, task popup : overflow-y */
 
@@ -161,14 +171,19 @@ button.MuiButtonBase-root.MuiButton-root.makeStyles-button-117.makeStyles-primar
   padding: 9px 9px!important;
 }
 .bttn-design{
+  font-weight: 600;
   padding: 9px 20px;
   font-size: 16px;
   background-color: #ADD8E6;
   border: none;
   border-radius: 8px;
 }
-
+.MuiGrid-grid-md-9{
+  max-width: 100%!important;
+  flex-basis: 100%!important;
+}
 .icon-display{
+  color: #000;
   display: flex;
   cursor: pointer;
 }

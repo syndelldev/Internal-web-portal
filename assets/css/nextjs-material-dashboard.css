@@ -558,6 +558,7 @@ p.projectPerson {
     display: inline-flex;
 }
 p.projectLanguage {
+  margin: 0px!important;
   font-weight: 600;
   font-size: 20px;
 }
