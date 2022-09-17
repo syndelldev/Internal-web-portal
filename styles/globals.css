@@ -50,6 +50,47 @@ a {
   .department-link a:hover {background-color:  #ADD8E6;color:#000;}
 
 .department_dropdown:hover .department-link {display: block;background-color:#ddd;color: #ADD8E6;}
+/*Dashboard css start*/
+.makeStyles-content-1552{margin-top: 30px!important;}
+img.completed,img.on.hold,img.running {
+  width: 100px;
+}
+.completed {
+  border-radius: 25px;
+  color: #fff;
+  font-size: 30px;
+  font-weight: 700;
+  background:#554994;
+}
+.on.hold{
+  border-radius: 25px;
+  color: #fff;
+  font-size: 30px;
+  font-weight: 700;
+  background: #F675A8;
+}
+.running{
+  border-radius: 25px;
+  color: #fff;
+  font-size: 30px;
+  font-weight: 700;
+  background: #F29393;
+}
+h6.completed,h6.on.hold,h6.running{
+  padding-left: 30px;
+  padding-top: 14px;
+  color: #fff;
+  font-size: 25px;
+  font-weight: 600;
+}
+h4.project_status {
+  text-align: center;
+  font-size: 30px;
+  font-weight: 700;
+}
+.makeStyles-card{
+  background: red!important;
+}
 
 /* Project, task popup : overflow-y */
 
