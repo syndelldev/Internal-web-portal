@@ -571,6 +571,7 @@ return(
         <div className="project-content">
         <h4 className="projectTitle">{project.project_title}</h4>
         {/* <p className="projectLanguage">{project.project_status}</p> */}
+        
         <div className="icon-display">
           <Popup trigger={<a><div className='icon-width' onClick={()=>projectId(project.project_id)}><FiEdit/></div></a>} className="popupReact" modal>
 

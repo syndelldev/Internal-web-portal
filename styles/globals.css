@@ -188,6 +188,7 @@ button.MuiButtonBase-root.MuiButton-root.makeStyles-button-117.makeStyles-primar
   cursor: pointer;
 }
 .icon-width{
+  margin-right: 20px;
   width: auto;
 }
 .icon-align{
@@ -226,7 +227,12 @@ button.MuiButtonBase-root.MuiButton-root.makeStyles-button-117.makeStyles-primar
     transition: transform .2s ease-in-out !important;*/
     transform: translateX(100%);
 }
-
+.project-block {
+  padding-bottom: 4px!important;
+}
+.MuiGrid-item .MuiGrid-grid-md-9 {
+  margin-bottom: 0px!important;
+}
 .copyright{
   display: flex;
 }
@@ -307,4 +313,15 @@ font-size: 17px!important;
     border-radius: 30px!important;
     padding: 10px!important;
     font-weight: 500!important;
+}
+@media (min-width:320px) {
+  .buttonalign .MuiGrid-item {
+  margin-bottom: 20px!important;
+}
+.buttonalign{
+  margin-bottom: 20px!important;
+}
+.popup-align{
+  padding: 30px !important;
+}
 }

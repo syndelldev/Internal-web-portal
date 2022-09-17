@@ -172,11 +172,11 @@ for(var i=0; i<selected.length; i++){
       </Popup> */}
 
 {/* create project form start */}
-
+  <div className="buttonalign">
 <GridContainer>
       <GridItem>
 
-      <Popup trigger={<div><button>Add Project</button></div>} className="popupReact"  modal>
+      <Popup trigger={<div><button className="bttn-design">Add Project</button></div>} className="popupReact"  modal>
 
 {close => (
 <div>
@@ -231,10 +231,11 @@ for(var i=0; i<selected.length; i++){
                       <option value=""  disabled selected>Select Your Department...</option>
                       <option value="HR">HR</option>
                       <option value="UI & UX">UI & UX</option>
-                      <option value="Web development">Web development</option>
-                      <option value="Content writer">Content writer</option>
-                      <option value="Project manager">Project manager</option>
-                      <option value="Mobile App developer">Mobile App developer</option>
+                      <option value="Web development">Web Development</option>
+                      <option value="Content writer">Content Writer</option>
+                      <option value="Project manager">Project Manager</option>
+                      <option value="Mobile App developer">Mobile App Developer</option>
+                      <option value="Mobile App developer">Tesing</option>
                       <option value="SEO">SEO</option>
                     </select>
                     <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
@@ -265,7 +266,7 @@ for(var i=0; i<selected.length; i++){
                 <div className="form-group" {...register('project_start')}>
                 <span>Project Start Date</span>
                   <DatePicker
-                    placeholderText="Start_Date : dd/mm/yyyy"
+                    placeholderText="Start Date : dd/mm/yyyy"
                     isClearable
                     name="datetime1"
                     className={"form-control"}
@@ -285,7 +286,7 @@ for(var i=0; i<selected.length; i++){
                 <div className="form-group" {...register('project_deadline')}>
                 <span>Project End Date</span>
                   <DatePicker
-                    placeholderText="End_Date : dd/mm/yyyy"
+                    placeholderText="End Date : dd/mm/yyyy"
                     isClearable
                     name="datetime1"
                     className={"form-control"}
@@ -418,6 +419,7 @@ for(var i=0; i<selected.length; i++){
 
 
 </GridContainer>
+</div>
     <GridContainer>
     {project_details.map((project)=>{
 
@@ -430,10 +432,9 @@ for(var i=0; i<selected.length; i++){
 
         <GridItem xs={6} sm={6} md={4}>
             <form>
-            <Card>
-                <CardHeader color="primary">
-
-                  <img src={`${server}/reactlogo.png`} className={classes.img}/>
+            <Card className= "projects">     
+            <CardHeader color="primary" className="project-block">         
+                  {/* <img src={`${server}/reactlogo.png`} className={classes.img}/> */}
 
                     <h4 className="projectTitle">{project.project_title}</h4>
                     <p className={classes.cardCategoryWhite}></p>
@@ -442,7 +443,6 @@ for(var i=0; i<selected.length; i++){
                   <CardBody>
                   <GridContainer>
                       <GridItem>
-                        <p className="projectLanguage">{project.project_language}</p>
                       </GridItem>
 
                       <GridItem>
