@@ -16,5 +16,16 @@ const ProjectPerson = async (req,res) =>{
     }
 }
 
+const userProfile = async (req, res) => {
+    console.log(req.query);
+    try{
+        let AdminData=await executeQuery(" SELECT * FROM `tbl_user` where `id` = ? ", req.query.userId );
+        res.send(AdminData);
+    }
+    catch(err){
+        res.status(500).json(err);
+    }
+}
 
-export { ProjectPerson }
+
+export { ProjectPerson, userProfile }

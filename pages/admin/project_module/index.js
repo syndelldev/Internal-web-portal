@@ -90,23 +90,19 @@ const styles = {
   },
 };
 
-export async function getServerSideProps(){
+export async function getServerSideProps(context){
   const res = await fetch(`${server}/api/project`);
   const project_details = await res.json();
   // console.log(project_details);
   const response = await fetch(`${server}/api/admin`)
   const User_name = await response.json();
-  // console.log(User_name);
-  const user = await fetch(`${server}/api/admin/adminprofile`)
-  const AdminProfile = await user.json()
 
-  return{ props: {project_details, User_name , AdminProfile} }
+  return{ props: {project_details, User_name} }
 }
 
-function Dashboard( { project_details , User_name , AdminProfile } ) {
+function Dashboard( { project_details , User_name } ) {
 
   const [cookies, setCookie] = useCookies(['name']);
-  console.log(cookies.name);
 
   const useStyles = makeStyles(styles);
   const classes = useStyles();
@@ -122,7 +118,6 @@ function Dashboard( { project_details , User_name , AdminProfile } ) {
     const res = await fetch(`${server}/api/project/${id}`);
     router.push(`${server}/admin/project_module`);
   }
-
 
   const [uoption, setUpdate] = React.useState({ 
     project_title: "",
@@ -141,6 +136,27 @@ function Dashboard( { project_details , User_name , AdminProfile } ) {
   const [endDate, setEndDate] = useState();
 
   const [updateSelected, setUpdateSelected] = React.useState([]);
+
+  const [ userID , setUserId] = useState();
+
+  const userId = async(id) =>{
+    console.log("cookies");
+    console.log(id);
+
+    const added_By = [];
+    const user = await fetch(`${server}/api/user_dashboard/${id}`)
+    const User_id = await user.json()
+
+    User_id.map((user) => {
+      added_By.push({ 'label' : user.username , 'value' : user.username  })
+    })
+    setUserId(added_By[0]);
+
+  }
+  const added_By = [];
+  // console.log(userID);
+  added_By.push(userID);
+  console.log(added_By[0]);
 
   const projectId = async(id) =>{
     console.log('update project id');
@@ -164,22 +180,10 @@ function Dashboard( { project_details , User_name , AdminProfile } ) {
     setUpdate(udata);
     setStartDate(new Date(udata.project_start));
     setEndDate(new Date(udata.project_deadline));
-  
+
     }
 
-    const [selected, setSelected] = useState([]);
-
-const added_By = [];
-const getUser = [];
-AdminProfile.map((user) => {
-  added_By.push({ 'label' : user.username, 'value' : user.username  })
-})
-console.log(added_By);
-// getUser.push(added_By[0]);
-// console.log(getUser);
-
-// const [created, setCreated] = useState([]);
-// setCreated(added_By[0]);
+  const [selected, setSelected] = useState([userID]);
 
   const handleChange = ({ target: { name, value } }) =>{
     console.log("name");
@@ -206,7 +210,7 @@ console.log(added_By);
     for(var i=0; i<updateSelected.length; i++){
           allMember.push(updateSelected[i].value);
     }
-
+  
     console.log("all users");
     console.log( allMember );
 
@@ -305,7 +309,7 @@ useEffect(() =>{
     <GridContainer>
         <GridItem>
 
-          <Popup trigger={<div><button className="bttn-design">Add Project</button></div>} className="popupReact" modal>
+          <Popup trigger={<div><button className="bttn-design" onClick={ ()=> userId(cookies.Id)}>Add Project</button></div>} className="popupReact" modal>
 
           {close => (
       <div>
@@ -472,11 +476,9 @@ useEffect(() =>{
                       displayValue="value"
                         options={uoptions}
                         value={selected}
-                        selectedValues={added_By}
+                        selectedValues={added_By[0]}
                         onChange={setSelected}
-                        // onKeyPressFn={function noRefCheck(){}}
                         onRemove={setSelected}
-                        // onSearch={function noRefCheck(){}}
                         onSelect={setSelected}
                         placeholder="Select Project Members"
                         showArrow={true}
@@ -573,7 +575,7 @@ return(
         {/* <p className="projectLanguage">{project.project_status}</p> */}
         
         <div className="icon-display">
-          <Popup trigger={<a><div className='icon-width' onClick={()=>projectId(project.project_id)}><FiEdit/></div></a>} className="popupReact" modal>
+          <Popup trigger={<a><div className='icon-width' onClick={()=> { projectId(project.project_id) }  }><FiEdit/></div></a>} className="popupReact" modal>
 
               {close => (
               <div className="popup-align">
