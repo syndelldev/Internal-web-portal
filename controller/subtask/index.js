@@ -17,7 +17,7 @@ const getTaskById = async (req,res) => {
     console.log(req.query);
 
     try{
-        let taskById=await executeQuery(` SELECT * FROM tbl_subtask where task_id= ${id}`, [req.query.subtask_id] );
+        let taskById=await executeQuery(` SELECT * FROM tbl_subtask where task_id= ?`, [req.query.subtask_id] );
         res.status(200).json(taskById);
     }
     catch(err){

@@ -90,7 +90,7 @@ const styles = {
   },
 };
 
-export async function getServerSideProps(context){
+export async function getServerSideProps(){
   const res = await fetch(`${server}/api/project`);
   const project_details = await res.json();
   // console.log(project_details);
@@ -476,7 +476,7 @@ useEffect(() =>{
                       displayValue="value"
                         options={uoptions}
                         value={selected}
-                        selectedValues={added_By[0]}
+                        selectedValues={added_By}
                         onChange={setSelected}
                         onRemove={setSelected}
                         onSelect={setSelected}
@@ -604,7 +604,7 @@ return(
                         <GridItem xs={12} sm={12} md={12}>                      
                           <div className="form-group">
                             <span>Project Title</span><span className="required">*</span>
-                            <input type="text" className="form-control signup-input" name="project_title" placeholder="Project Title" value={uoption.project_title} onChange={handleChange} required />
+                            <input type="text" className="form-control signup-input" name="project_title" placeholder="Project Title" value={uoption.project_title} onChange={handleChange} />
                           </div>
 
                         </GridItem>
