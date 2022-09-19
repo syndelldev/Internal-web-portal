@@ -153,10 +153,9 @@ function Dashboard( { project_details , User_name } ) {
     setUserId(added_By[0]);
 
   }
-  const added_By = [];
-  // console.log(userID);
-  added_By.push(userID);
-  console.log(added_By[0]);
+  const add_user = [];
+  add_user.push(userID);
+  console.log(add_user);
 
   const projectId = async(id) =>{
     console.log('update project id');
@@ -203,7 +202,6 @@ function Dashboard( { project_details , User_name } ) {
   }
 
   const toastId = React.useRef(null);
-
   const updateProject = async() =>{
 
     const allMember = [];
@@ -266,6 +264,16 @@ function Dashboard( { project_details , User_name } ) {
       if(res.status==200)
       {
         // alert("success");
+        if(!toast.isActive(toastId.current)) {
+          toastId.current = toast.success('Project added Successfully ! 🎉', {
+              position: "top-right",
+              autoClose:1000,
+              theme: "colored",
+              hideProgressBar: true,
+              onClose: () => router.push(`${server}/admin/project_module`)
+              });
+          }
+  
         router.reload(`${server}/admin/project_module`);
       }
       else
@@ -441,9 +449,9 @@ useEffect(() =>{
                       <span>Project Priority</span><span className="required">*</span>
                         <select name="priority" id="priority" className="form-control signup-input" {...register('project_priority', {required:true ,message:'Please select atleast one option', })}>
                           <option value=""  disabled selected>Select Project Priority</option>
-                          <option value="High" class="high">High</option>
-                          <option value="Medium" class="medium">Medium</option>
-                          <option value="Low"class="low">Low</option>
+                          <option value="High" className="high">High</option>
+                          <option value="Medium" className="medium">Medium</option>
+                          <option value="Low"className="low">Low</option>
                         </select>
                         <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                         <div className="error-msg">{errors.project_priority && <span>{errors.project_priority.message}</span>}</div>
@@ -476,7 +484,7 @@ useEffect(() =>{
                       displayValue="value"
                         options={uoptions}
                         value={selected}
-                        selectedValues={added_By}
+                        // selectedValues={add_user}
                         onChange={setSelected}
                         onRemove={setSelected}
                         onSelect={setSelected}
@@ -702,9 +710,9 @@ return(
                           <span>Project Priority</span><span className="required">*</span>
                             <select name="project_priority" id="priority" className="form-control signup-input" value={uoption.project_priority} onChange={handleChange}>
                               <option value=""  disabled selected>Select Project Priority</option>
-                              <option value="High" class="High">High</option>
-                              <option value="Medium" class="Medium">Medium</option>
-                              <option value="Low"class="Low">Low</option>
+                              <option value="High" className="High">High</option>
+                              <option value="Medium" className="Medium">Medium</option>
+                              <option value="Low"className="Low">Low</option>
                             </select>
                             <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                           </div> 
@@ -756,7 +764,7 @@ return(
                     </CardBody>
 
                     <CardFooter>
-                        <Button color="primary"  onClick={()=> { updateProject(project.project_id); } }>Save</Button>
+                        <Button color="primary" onClick={()=> { updateProject(project.project_id); } }>Save</Button>
                         <Button className="button" onClick={() => { close(); }}> Cancel </Button>
                     </CardFooter>
                     

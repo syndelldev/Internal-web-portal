@@ -48,6 +48,8 @@ import {
 } from "variables/charts.js";
 import { FiEdit } from "react-icons/fi";
 import { MdDelete } from 'react-icons/md';
+import { ToastContainer, toast } from 'react-toastify';
+
 
 const styles = {
   cardCategoryWhite: {
@@ -173,16 +175,14 @@ function Dashboard( { project_details , User_name , allTask } ) {
     selectedProject.push({'label' :projectName[0] , 'value' : projectName[0]});
   // console.log(selectedProject[0]);
 
-  const project_Name = [];
-  project_Name.push(selectedProject[0]);
-  console.log(allSelectedMember[1]);
-  console.log(project_Name[0].value);
+  // const project_Name = [];
+  // project_Name.push(selectedProject[0]);
 
   const [updateSelected, setUpdateSelected] = React.useState([]);
 
   const projectId = async(id) =>{
-    console.log('update project id');
-    console.log(id);
+    // console.log('update project id');
+    // console.log(id);
 
     const response = await fetch(`${server}/api/subtask/${id}`)
     const update_data = await response.json();
@@ -205,11 +205,79 @@ function Dashboard( { project_details , User_name , allTask } ) {
 
     }
 
+    const [p_selected, setProject] = useState([]);
+    const [select_updateProject, setUpdateProject] = useState([]);
+
+
+    const toastId = React.useRef(null);
+    const updateProject = async() =>{
+
+      const allMember = [];
+      for(var i=0; i<updateSelected.length; i++){
+            allMember.push(updateSelected[i].value);
+      }
+    
+        console.log("project name");
+        console.log(selectedProject);
+        console.log(select_updateProject);
+        if(select_updateProject == ""){
+          var u_project = selectedProject;
+        }else{
+          var u_project = select_updateProject;
+        }
+        console.log("project");
+        console.log(u_project);
+  
+      if( uoption.task_id == ""  ||  u_project  == ""  || allMember  == ""  || uoption.task_status == ""  || uoption.task_department == ""  || uoption.task_title == ""  || uoption.task_description == ""  ||  uoption.task_language == ""  || uoption.task_priority == ""  || startDate == ""  || endDate == "" ){
+        if(! toast.isActive(toastId.current)) {
+          toastId.current = toast.error('Please fill all the required fields', {
+              position: "top-right",
+              autoClose:5000,
+              theme: "colored",
+              closeOnClick: true,
+              hideProgressBar: true,
+            });
+          }
+    
+    }else{
+  
+      const res = await fetch(`${server}/api/project/update_subtask`,{
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ task_id:uoption.task_id, project_name:u_project , task_person: allMember, task_status:uoption.task_status , task_department:uoption.task_department ,  task_title: uoption.task_title , task_description:uoption.task_description , task_language:uoption.task_language, task_comment:uoption.task_comment, task_priority:uoption.task_priority, task_start: startDate , task_deadline: endDate }),
+      });
+      if(!toast.isActive(toastId.current)) {
+        toastId.current = toast.success('Task updated Successfully ! 🎉', {
+            position: "top-right",
+            autoClose:1000,
+            theme: "colored",
+            hideProgressBar: true,
+            onClose: () => router.push(`${server}/admin/subtask_module`)
+          });
+        }
+        // router.reload(`${server}/admin/subtask_module`);
+  
+    }
+  }
+
+  const toastID = React.useRef(null);
   const onSubmit = async (result) =>{
     
     console.log(result);
     console.log(selected);
-    console.log(p_selected);
+
+    if(selected == "" || p_selected == "" ||  result.task_status == "" ||  result.task_title  == "" || result.task_description == "" || result.task_language == "" || result.task_priority == "" ||  result.start == "" ||  result.end == "" ){
+      if(! toast.isActive(toastId.current)) {
+        toastID.current = toast.error('Please fill all the required fields', {
+            position: "top-right",
+            autoClose:5000,
+            theme: "colored",
+            closeOnClick: true,
+            hideProgressBar: true,
+          });
+        }
+
+    }else{
     
     const res = await fetch(`${server}/api/subtask/add_subtask`,{
       method: "POST",
@@ -221,6 +289,16 @@ function Dashboard( { project_details , User_name , allTask } ) {
     if(res.status==200)
     {
       // alert("success");
+      if(!toast.isActive(toastID.current)) {
+        toastId.current = toast.success('Task added Successfully ! 🎉', {
+            position: "top-right",
+            autoClose:1000,
+            theme: "colored",
+            hideProgressBar: true,
+            onClose: () => router.push(`${server}/admin/subtask_module`)
+            });
+        }
+
       router.reload(`${server}/admin/subtask_module`);
     }
     else
@@ -228,6 +306,7 @@ function Dashboard( { project_details , User_name , allTask } ) {
       alert("Fail");
     }
   }
+}
 
 const [uoptions, setOptions] = useState([]);
 
@@ -265,13 +344,10 @@ useEffect(() =>{
   }
   u_data();
 },[]);
-const [p_selected, setProject] = useState([]);
-
-
 
 
   return (
-    <>
+    <div>
     <div className="buttonalign">
     <GridContainer>
         <GridItem>
@@ -305,9 +381,9 @@ const [p_selected, setProject] = useState([]);
                   <GridContainer>
                     <GridItem xs={12} sm={12} md={12}>                      
                       <div className="form-group">
-                        <span>Task Title</span>
+                        <span>Task Title</span><span className="required">*</span>
                         <input type="text" className="form-control signup-input" placeholder="Task Title" {...register('task_title',  { required: "Please enter task title"})} />
-                        <div className="error-msg">{errors.task_title && <span>{errors.task_title.message}</span>}</div>
+                        {/* <div className="error-msg">{errors.task_title && <span>{errors.task_title.message}</span>}</div> */}
                       </div> 
                     </GridItem>
                   </GridContainer><br/>
@@ -316,7 +392,7 @@ const [p_selected, setProject] = useState([]);
                     <GridItem xs={12} sm={12} md={12}>
                     <div className="form-group" {...register('project_name')}>
                       
-                      <span>Select Project</span>
+                      <span>Select Project</span><span className="required">*</span>
                       <Multiselect
                         displayValue="value"
                         options={project_list}
@@ -331,7 +407,7 @@ const [p_selected, setProject] = useState([]);
                         showArrow={true}
                       />
                       
-                        <div className="error-msg">{errors.project_name && <span>{errors.project_name.message}</span>}</div>
+                        {/* <div className="error-msg">{errors.project_name && <span>{errors.project_name.message}</span>}</div> */}
                       </div> 
                     </GridItem>
                   </GridContainer><br/>
@@ -339,9 +415,9 @@ const [p_selected, setProject] = useState([]);
                   <GridContainer>  
                     <GridItem xs={12} sm={12} md={12}>
                       <div className="form-group">
-                      <span>Task Description</span>
+                      <span>Task Description</span><span className="required">*</span>
                         <textarea className="form-control signup-input" placeholder="Task Description" {...register('task_description', { required: 'Description is required', } )}  />
-                        <div className="error-msg">{errors.task_description && <span>{errors.task_description.message}</span>}</div>
+                        {/* <div className="error-msg">{errors.task_description && <span>{errors.task_description.message}</span>}</div> */}
                       </div> 
                     </GridItem>
                   </GridContainer><br/>
@@ -349,7 +425,7 @@ const [p_selected, setProject] = useState([]);
                   <GridContainer>
                     <GridItem xs={12} sm={12} md={6}>
                       <div className="form-group">
-                      <span>Task Priority</span>
+                      <span>Task Priority</span><span className="required">*</span>
                         <select name="priority" id="priority" className="form-control signup-input" {...register('task_priority', {required:true ,message:'Please select atleast one option', })}>
                           <option value=""  disabled selected>Select Task Priority</option>
                           <option value="High">High</option>
@@ -357,13 +433,13 @@ const [p_selected, setProject] = useState([]);
                           <option value="Low">Low</option>
                         </select>
                         <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                        <div className="error-msg">{errors.task_priority && <span>{errors.task_priority.message}</span>}</div>
+                        {/* <div className="error-msg">{errors.task_priority && <span>{errors.task_priority.message}</span>}</div> */}
                       </div> 
                     </GridItem>
 
                     <GridItem xs={12} sm={12} md={6}>
                       <div className="form-group">
-                      <span>Task Language</span>
+                      <span>Task Language</span><span className="required">*</span>
                         <select name="Task_created_by" id="Task_created_by" className="form-control signup-input" {...register('task_language', {required:true ,message:'Please select atleast one option', })}>
                           <option value="" disabled selected>Select Language</option>
                           <option value="Wordpress">Wordpress</option>
@@ -374,7 +450,7 @@ const [p_selected, setProject] = useState([]);
                           <option value="Bubble">Bubble</option>
                         </select>
                         <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                        <div className="error-msg">{errors.task_language && <span>{errors.task_language.message}</span>}</div>
+                        {/* <div className="error-msg">{errors.task_language && <span>{errors.task_language.message}</span>}</div> */}
                       </div> 
                     </GridItem>
                   </GridContainer><br/>
@@ -382,11 +458,11 @@ const [p_selected, setProject] = useState([]);
                   <GridContainer>  
                     <GridItem xs={12} sm={12} md={6}>
                       <div className="form-group" {...register('task_start')}>
-                      <span>Task Start Date</span>
+                      <span>Task Start Date</span><span className="required">*</span>
                         <DatePicker
                           placeholderText="Start_Date : dd/mm/yyyy"
                           isClearable
-                          name="datetime1"
+                          name="datetime"
                           className={"form-control"}
                           selected={startDate}
                           onChange={val => {
@@ -396,13 +472,13 @@ const [p_selected, setProject] = useState([]);
                           dateFormat="dd-MM-yyyy"
                           minDate={new Date()}
                         />
-                      <div className="error-msg">{errors.task_start && <span>{errors.task_start.message}</span>}</div>
+                      {/* <div className="error-msg">{errors.task_start && <span>{errors.task_start.message}</span>}</div> */}
                       </div> 
                     </GridItem>
 
                     <GridItem xs={12} sm={12} md={6}>
                       <div className="form-group" {...register('task_deadline')}>
-                      <span>Task End Date</span>
+                      <span>Task End Date</span><span className="required">*</span>
                         <DatePicker
                           placeholderText="End_Date : dd/mm/yyyy"
                           isClearable
@@ -416,7 +492,7 @@ const [p_selected, setProject] = useState([]);
                           dateFormat="dd-MM-yyyy"
                           minDate={startDate}
                         />
-                      <div className="error-msg">{errors.task_deadline && <span>{errors.task_deadline.message}</span>}</div>
+                      {/* <div className="error-msg">{errors.task_deadline && <span>{errors.task_deadline.message}</span>}</div> */}
                       </div> 
                     </GridItem>
                   </GridContainer><br/>
@@ -425,7 +501,7 @@ const [p_selected, setProject] = useState([]);
                   <GridItem xs={12} sm={12} md={12}>
                       <div className="form-group" {...register('task_person')}>
                       
-                      <span>Task Members</span>
+                      <span>Task Members</span><span className="required">*</span>
                       <Multiselect
                       displayValue="value"
                         options={uoptions}
@@ -437,7 +513,7 @@ const [p_selected, setProject] = useState([]);
                         showArrow={true}
                       />
                       
-                        <div className="error-msg">{errors.task_person && <span>{errors.task_person.message}</span>}</div>
+                        {/* <div className="error-msg">{errors.task_person && <span>{errors.task_person.message}</span>}</div> */}
                       </div> 
                     </GridItem>
                   </GridContainer><br/>
@@ -447,7 +523,7 @@ const [p_selected, setProject] = useState([]);
                       <div className="form-group">
                       <span>Comments</span>
                         <textarea className="form-control signup-input" placeholder="Comment" {...register('task_comment')} />
-                        <div className="error-msg">{errors.position && <span>{errors.position.message}</span>}</div>
+                        {/* <div className="error-msg">{errors.position && <span>{errors.position.message}</span>}</div> */}
                       </div> 
                     </GridItem>
                   </GridContainer>
@@ -514,10 +590,9 @@ const [p_selected, setProject] = useState([]);
     if(task.task_delete == "no"){
 
     return(
-    <>
 
     <GridItem xs={12} sm={6} md={4}>
-        <form>
+      <form>
         <Card>
             <CardHeader color="primary">
 
@@ -540,8 +615,8 @@ const [p_selected, setProject] = useState([]);
 
                         <GridContainer>
                           <GridItem>
-                            <h4 className={classes.cardTitleWhite}>Create Task</h4>
-                            <p className={classes.cardCategoryWhite}>Enter your new task details</p>
+                            <h4 className={classes.cardTitleWhite}>Edit Task</h4>
+                            <p className={classes.cardCategoryWhite}>Update your task details</p>
                           </GridItem>
 
                           {/* <GridItem> */}
@@ -557,34 +632,30 @@ const [p_selected, setProject] = useState([]);
                             <GridContainer>
                               <GridItem xs={12} sm={12} md={12}>                      
                                 <div className="form-group">
-                                  <span>Task Title</span>
-                                  <input type="text" className="form-control signup-input" placeholder="Task Title" value={uoption.task_title} onChange={handleChange} />
-                                  <div className="error-msg">{errors.task_title && <span>{errors.task_title.message}</span>}</div>
+                                  <span>Task Title</span><span className="required">*</span>
+                                  <input type="text" className="form-control signup-input" placeholder="Task Title" name="task_title" value={uoption.task_title} onChange={handleChange} />
                                 </div> 
                               </GridItem>
                             </GridContainer><br/>
                               
                             <GridContainer>
                               <GridItem xs={12} sm={12} md={12}>
-                              <div className="form-group" value={uoption.project_name} onChange={handleChange} >
+                              <div className="form-group" name="project_name" onChange={handleChange} >
                                 
-                                <span>Select Project</span>
+                                <span>Select Project</span><span className="required">*</span>
                                 <Multiselect
                                   displayValue="value"
                                   options={project_list}
-                                  value={p_selected}
+                                  value={select_updateProject}
                                   selectedValues={selectedProject}
                                   singleSelect={true}
-                                  onChange={setProject}
-                                  // onKeyPressFn={function noRefCheck(){}}
-                                  onRemove={setProject}
-                                  onSearch={function noRefCheck(){}}
-                                  onSelect={setProject}
+                                  onChange={setUpdateProject}
+                                  onRemove={setUpdateProject}
+                                  onSelect={setUpdateProject}
                                   placeholder="Project List"
                                   showArrow={true}
                                 />
                                 
-                                  <div className="error-msg">{errors.project_name && <span>{errors.project_name.message}</span>}</div>
                                 </div> 
                               </GridItem>
                             </GridContainer><br/>
@@ -592,9 +663,8 @@ const [p_selected, setProject] = useState([]);
                             <GridContainer>  
                               <GridItem xs={12} sm={12} md={12}>
                                 <div className="form-group">
-                                <span>Task Description</span>
-                                  <textarea className="form-control signup-input" placeholder="Task Description" value={uoption.task_description} onChange={handleChange}  />
-                                  <div className="error-msg">{errors.task_description && <span>{errors.task_description.message}</span>}</div>
+                                <span>Task Description</span><span className="required">*</span>
+                                  <textarea className="form-control signup-input" placeholder="Task Description" name="task_description" value={uoption.task_description} onChange={handleChange} />
                                 </div> 
                               </GridItem>
                             </GridContainer><br/>
@@ -602,22 +672,21 @@ const [p_selected, setProject] = useState([]);
                             <GridContainer>
                               <GridItem xs={12} sm={12} md={6}>
                                 <div className="form-group">
-                                <span>Task Priority</span>
-                                  <select name="priority" id="priority" className="form-control signup-input" value={uoption.task_priority} onChange={handleChange}  >
+                                <span>Task Priority</span><span className="required">*</span>
+                                  <select id="priority" className="form-control signup-input" name="task_priority" value={uoption.task_priority} onChange={handleChange}  >
                                     <option value=""  disabled selected>Select Task Priority</option>
                                     <option value="High">High</option>
                                     <option value="Medium">Medium</option>
                                     <option value="Low">Low</option>
                                   </select>
                                   <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                                  <div className="error-msg">{errors.task_priority && <span>{errors.task_priority.message}</span>}</div>
                                 </div> 
                               </GridItem>
 
                               <GridItem xs={12} sm={12} md={6}>
                                 <div className="form-group">
-                                <span>Task Language</span>
-                                  <select name="Task_created_by" id="Task_created_by" className="form-control signup-input" value={uoption.task_language} onChange={handleChange} >
+                                <span>Task Language</span><span className="required">*</span>
+                                  <select id="Task_created_by" className="form-control signup-input" name="task_language" value={uoption.task_language} onChange={handleChange} >
                                     <option value="" disabled selected>Select Language</option>
                                     <option value="Wordpress">Wordpress</option>
                                     <option value="Shopify">Shopify</option>
@@ -627,7 +696,6 @@ const [p_selected, setProject] = useState([]);
                                     <option value="Bubble">Bubble</option>
                                   </select>
                                   <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                                  <div className="error-msg">{errors.task_language && <span>{errors.task_language.message}</span>}</div>
                                 </div> 
                               </GridItem>
                             </GridContainer><br/>
@@ -635,11 +703,11 @@ const [p_selected, setProject] = useState([]);
                             <GridContainer>  
                               <GridItem xs={12} sm={12} md={6}>
                                 <div className="form-group" onChange={handleChange} >
-                                <span>Task Start Date</span>
+                                <span>Task Start Date</span><span className="required">*</span>
                                   <DatePicker
                                     placeholderText="Start_Date : dd/mm/yyyy"
                                     isClearable
-                                    name="datetime1"
+                                    name="datetime"
                                     className={"form-control"}
                                     selected={startDate}
                                     onChange={val => {
@@ -649,13 +717,12 @@ const [p_selected, setProject] = useState([]);
                                     dateFormat="dd-MM-yyyy"
                                     minDate={new Date()}
                                   />
-                                <div className="error-msg">{errors.task_start && <span>{errors.task_start.message}</span>}</div>
                                 </div> 
                               </GridItem>
 
                               <GridItem xs={12} sm={12} md={6}>
                                 <div className="form-group" onChange={handleChange} >
-                                <span>Task End Date</span>
+                                <span>Task End Date</span><span className="required">*</span>
                                   <DatePicker
                                     placeholderText="End_Date : dd/mm/yyyy"
                                     isClearable
@@ -669,7 +736,6 @@ const [p_selected, setProject] = useState([]);
                                     dateFormat="dd-MM-yyyy"
                                     minDate={startDate}
                                   />
-                                <div className="error-msg">{errors.task_deadline && <span>{errors.task_deadline.message}</span>}</div>
                                 </div> 
                               </GridItem>
                             </GridContainer><br/>
@@ -678,7 +744,7 @@ const [p_selected, setProject] = useState([]);
                               <GridItem xs={12} sm={12} md={12}>
                                 <div className="form-group">
                                 
-                                <span>Task Members</span>
+                                <span>Task Members</span><span className="required">*</span>
                                 <Multiselect
                                 displayValue="value"
                                   options={uoptions}
@@ -690,8 +756,6 @@ const [p_selected, setProject] = useState([]);
                                   placeholder="Select Task Members"
                                   showArrow={true}
                                 />
-                                
-                                  <div className="error-msg">{errors.task_person && <span>{errors.task_person.message}</span>}</div>
                                 </div> 
                               </GridItem>
                             </GridContainer><br/>
@@ -700,8 +764,7 @@ const [p_selected, setProject] = useState([]);
                               <GridItem xs={12} sm={12} md={12}>
                                 <div className="form-group">
                                 <span>Comments</span>
-                                  <textarea className="form-control signup-input" placeholder="Comment" value={uoption.task_comment} onChange={handleChange} />
-                                  <div className="error-msg">{errors.position && <span>{errors.position.message}</span>}</div>
+                                  <textarea className="form-control signup-input" placeholder="Comment" name="task_comment" value={uoption.task_comment} onChange={handleChange} />
                                 </div> 
                               </GridItem>
                             </GridContainer>
@@ -709,7 +772,7 @@ const [p_selected, setProject] = useState([]);
                           </CardBody>
 
                           <CardFooter>
-                              <Button color="primary" type="submit">Save</Button>
+                              <Button color="primary" type="submit" onClick={()=> { updateProject(task.task_id); } }>Save</Button>
                               <Button className="button" onClick={() => { close(); }}> Cancel </Button>
                           </CardFooter>
                           
@@ -762,9 +825,11 @@ const [p_selected, setProject] = useState([]);
             </CardHeader>
 
         </Card>
-        </form>
+      </form>
+      <ToastContainer limit={1}/>
+
     </GridItem>
-  </>
+
         )   
                   }
     })
@@ -773,7 +838,7 @@ const [p_selected, setProject] = useState([]);
     {/* </GridItem> */}
 
     </GridContainer>
-    </>
+    </div>
   );
 }
 
