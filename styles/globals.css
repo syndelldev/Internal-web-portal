@@ -325,3 +325,10 @@ font-size: 17px!important;
   padding: 30px !important;
 }
 }
+
+/*Sub Task*/
+.MuiGrid-grid-xs-6 {
+  flex-grow: 0;
+  max-width: 100% !important;
+  flex-basis: 100% !important;
+}
