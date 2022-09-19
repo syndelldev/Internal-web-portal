@@ -102,13 +102,28 @@ export default function home()
                         onClose: () => router.push("/user/dashboard")
                         });
                     }
-                    // toast.success('Login Successfully! 🎉', {
-                    //     position: "top-right",
-                    //     autoClose:1000,
-                    //     onClose: () => router.push("/user/dashboard")
-                    // });
                 }
-                //alert("Sucess")
+                else if(role=='Super User'){
+                    setCookie('name', data[0].username, { path:'/' , sameSite:true, });
+                    setCookie('Email', data[0].email, { path:'/' , sameSite:true, });
+                    setCookie('Mobile_num', data[0].mobile_no, { path:'/' , sameSite:true, });
+                    setCookie('DOB', data[0].dob, { path:'/' , sameSite:true, });
+                    setCookie('Department', data[0].department, { path:'/' , sameSite:true, });
+                    setCookie('Position', data[0].position, { path:'/' , sameSite:true, });
+                    setCookie('Role', data[0].role, { path:'/' , sameSite:true, });
+                    setCookie('Id', data[0].id, { path:'/' , sameSite:true, });
+                    setCookie('Avtar', data[0].avtar, { path:'/' , sameSite:true, });
+                    setCookie('Role_id', data[0].role_id, { path:'/' , sameSite:true, });
+
+                    if(! toast.isActive(toastId.current)) 
+                    {
+                        toastId.current = toast.success('Login Successful! 🎉', {
+                            position: "top-right",
+                            autoClose:1000,
+                            onClose: () => router.push("/superuser/dashboard")
+                            });
+                        }
+                }
             }
             else{
                 //alert("password wrong")

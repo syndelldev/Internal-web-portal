@@ -261,6 +261,7 @@ function AddUser() {
                               <option value="Select...">Select Your Role...</option>
                               <option value="User">User</option>
                               <option value="Admin">Admin</option>
+                              <option value="Super User">Super User</option>
                             </select>
                             <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                             <div className="error-msg">{errors.role && <p>{errors.role.message}</p>}</div>
