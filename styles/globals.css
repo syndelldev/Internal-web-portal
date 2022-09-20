@@ -332,3 +332,9 @@ font-size: 17px!important;
   max-width: 100% !important;
   flex-basis: 100% !important;
 }
+
+.user-icon
+{
+  border: none;
+  background-color: white;
+}

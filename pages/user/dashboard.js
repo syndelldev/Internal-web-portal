@@ -15,7 +15,8 @@ import { useForm } from 'react-hook-form';
 import Popup from "reactjs-popup";
 import axios from "axios";
 import { server } from 'config';
-
+import { FiEdit } from "react-icons/fi";
+import { FaEye } from 'react-icons/fa';
 import { makeStyles } from "@material-ui/core/styles";
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 import { useCookies } from 'react-cookie';
@@ -97,20 +98,21 @@ function Dashboard({project}) {
             // const bDate = ((project.project_deadline).substr(0,10).split("-",3));
             return(
               <GridItem xs={6} sm={6} md={4} key={project.project_id}>
-                <Card >
-                  <CardHeader color="primary">
-                  <img className="image" src={`${server}/reactlogo.png`} />
+                <Card className="projects">
+                  <CardHeader color="primary" className="project-block">
+                  {/*<img className="image" src={`${server}/reactlogo.png`} />*/}
+                  <div className="project-content">
                     <h4 className="projectTitle">{project.project_title}</h4>
-                  </CardHeader>
-                  <CardFooter>
+                  
+                  {/*<CardFooter>
                     <p className="projectLanguage">{project.project_language}</p>
-                    <p className="projectPriority">
-                      {/* {project.project_id} */}
+            <p className="projectPriority">*/}
                       
                       {/*View Project PopUp*/}
                       {/* <Button disabled={project.view_rights==0} >View</Button>
                       <Button disabled={project.edit_rights==0} >Edit</Button> */}
-                        <Popup trigger={<Button disabled={project.view_rights==0} >View</Button>}  className="popupReact"  modal>
+                      <div className="icon-display">
+                        <Popup trigger={<Button disabled={project.view_rights==0} ><FaEye/></Button>}  className="popupReact"  modal>
                           {close => (
                             <div>
                               <GridItem xs={6} sm={6} md={12} key={project.project_id}>
@@ -150,7 +152,7 @@ function Dashboard({project}) {
                         </Popup>
 
                         {/*Edit Project PopUp*/}
-                        <Popup trigger={<div> <button disabled={project.edit_rights==0} onClick={()=>getData(project.project_id)} >Edit</button> </div>}  className="popupReact"  modal >
+                        <Popup trigger={<div> <button disabled={project.edit_rights==0} onClick={()=>getData(project.project_id)} className="user-icon"><FiEdit/></button> </div>}  className="popupReact"  modal >
                           {close => (
                             <div>
                               
@@ -180,7 +182,6 @@ function Dashboard({project}) {
                                   <CardFooter>
                                     <p className="projectPriority">{project.project_priority} Priority</p>
                                   </CardFooter>
-                                  {/* <CardFooter> */}
                                   {comments.map((m)=>{
                                     const Date = ((m.creation_time).substr(0,10).split("-",3));
                                     const Time = ((m.creation_time).substr(11,16).split(":",3));
@@ -217,22 +218,23 @@ function Dashboard({project}) {
                                       ></textarea>
                                       <Button type="submit" onClick={()=>sendMessage(project.project_id)}>comment</Button>
                                     </form>
-                                  {/* </CardFooter > */}
                                 </Card>
                               </GridItem>
 
                             </div>
                           )}
                         </Popup>
-                    </p>
-                  </CardFooter>
-                  <CardFooter>
+                    {/*</p>
+                  </CardFooter>*/}
+                  {/*<CardFooter>
                     <p>{project.project_person}</p>
                   </CardFooter>
                   <CardFooter>
                     <p className="projectPriority">{project.project_priority} Priority</p>
-                    {/* <p className="projectPriority"><GiSandsOfTime /> : {bDate[2]}/{bDate[1]}/{bDate[0]}</p> */}
-                  </CardFooter>
+                </CardFooter>*/}
+                </div>
+                </div>
+                </CardHeader>
                 </Card>
               </GridItem>
             )
