@@ -14,7 +14,7 @@ import Router from "next/router";
 export default function Index({data}) {
   console.log(data);
   React.useEffect(() => {
-    Router.push("/404");
+    Router.push("/login");
   });
 
   return <div />;
