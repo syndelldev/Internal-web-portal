@@ -173,7 +173,7 @@ function UserRights({UserList,ModuleList}){
                                     <TableBody>
                                         {
                                             users.map((data)=>{
-                                                const isInArray = data.user_id.includes(user);
+                                                // const isInArray = data.user_id.includes(user);
                                                 // console.log(users)
                                                 // console.log(isInArray);   
                                                 return(       
