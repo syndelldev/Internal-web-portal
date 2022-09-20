@@ -589,7 +589,7 @@ return(
         <span className={project.project_priority}>{project.project_priority}</span>
         {person.map((project_person) => {
           return(
-            <div>
+            <div className="chip">
               <span>{project_person}</span>
             </div>
           )

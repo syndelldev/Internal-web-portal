@@ -254,7 +254,7 @@ button.MuiButtonBase-root.MuiButton-root.makeStyles-button-117.makeStyles-primar
   border-radius: 30px!important;
   padding: 10px!important;
   font-weight: 500!important;
-  background: #eee5ff!important;
+  /*background: #eee5ff!important;*/
   color: #000!important;;
 }
 .multiSelectContainer li:hover{
@@ -336,5 +336,27 @@ font-size: 17px!important;
 .user-icon
 {
   border: none;
-  background-color: white;
+  background-color: white ;
+}
+
+.High
+{
+  background-color: yellow;
+  border-radius: 30px;
+  padding: 10px;
+  margin-right: 5px;
+}
+.Medium
+{
+  background-color: red;
+  border-radius: 30px;
+  padding: 10px;
+  margin-right: 5px;
+}
+.Low
+{
+  background-color: green;
+  border-radius: 30px;
+  padding: 10px;
+  margin-right: 5px;
 }
