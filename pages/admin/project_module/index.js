@@ -566,23 +566,37 @@ if(project.project_delete == "no"){
 // if(status.project_status == project.project_status){
 
   var person = project.project_person.split(",");
+  // const name =[];
+  // for(i=0 ; i<person.length; i++){
+  //   console.log(person[i]);
+  //   var member = person[i].slice(0,2);
+  //   console.log(member);
+  // }
 
 return(
   <>
     <GridItem xs={12} sm={6} md={9}>
 
-
-
-        <form>
+  <form>
     <Card className= "projects">
       <CardHeader color="primary" className="project-block">
 
         {/* <img src={`${server}/reactlogo.png`} className={classes.img}/> */}
         <div className="project-content">
         <h4 className="projectTitle">{project.project_title}</h4>
-        {/* <p className="projectLanguage">{project.project_status}</p> */}
         
         <div className="icon-display">
+        <span className={project.project_priority}>{project.project_priority}</span>
+        {person.map((project_person) => {
+          return(
+            <div>
+              <span>{project_person}</span>
+            </div>
+          )
+        })
+
+        }
+        {/* <span className="project_person">{project.project_person}</span> */}
           <Popup trigger={<a><div className='icon-width' onClick={()=> { projectId(project.project_id) }  }><FiEdit/></div></a>} className="popupReact" modal>
 
               {close => (
