@@ -126,6 +126,13 @@ export default function Sidebar(props) {
                     <span className="MuiTouchRipple-root"></span>
                   </div>
                 </a>
+                <a className=" makeStyles-item-15" href="/superuser/user_rights">
+                  <div className="MuiButtonBase-root MuiListItem-root makeStyles-itemLink-16undefined MuiListItem-gutters MuiListItem-button" tabIndex="0" role="button" aria-disabled="false">
+                    <span className="material-icons MuiIcon-root makeStyles-itemIcon-17  makeStyles-whiteFont-21" aria-hidden="true">content_paste</span>
+                    <div className="MuiListItemText-root makeStyles-itemText-19">User Rights</div>
+                    <span className="MuiTouchRipple-root"></span>
+                  </div>
+                </a>
                 </ul>
             </div>
           </div>
