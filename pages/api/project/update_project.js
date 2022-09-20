@@ -10,14 +10,14 @@ async function updateProject(req,res){
             // console.log(req.body.project_title);
             // console.log(req.body.project_id);
             console.log("person");
-            // console.log(req.body.project_person);
+            console.log(req.body.project_person);
             // console.log(req.body);
 
-            const allMember = [];
-            for(var i=0; i<=req.body.project_person.length; i++){
-                allMember.push(req.body.project_person[i].value);
-            }
-            console.log(allMember);
+            // const allMember = [];
+            // for(var i=0; i<=req.body.project_person.length; i++){
+            //     allMember.push(req.body.project_person[i].value);
+            // }
+            // console.log(allMember);
 
 
 

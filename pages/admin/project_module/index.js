@@ -96,17 +96,13 @@ export async function getServerSideProps(){
   // console.log(project_details);
   const response = await fetch(`${server}/api/admin`)
   const User_name = await response.json();
-  // console.log(User_name);
-  const user = await fetch(`${server}/api/admin/adminprofile`)
-  const AdminProfile = await user.json()
 
-  return{ props: {project_details, User_name , AdminProfile} }
+  return{ props: {project_details, User_name} }
 }
 
-function Dashboard( { project_details , User_name , AdminProfile } ) {
+function Dashboard( { project_details , User_name } ) {
 
   const [cookies, setCookie] = useCookies(['name']);
-  console.log(cookies.name);
 
   const useStyles = makeStyles(styles);
   const classes = useStyles();
@@ -122,7 +118,6 @@ function Dashboard( { project_details , User_name , AdminProfile } ) {
     const res = await fetch(`${server}/api/project/${id}`);
     router.push(`${server}/admin/project_module`);
   }
-
 
   const [uoption, setUpdate] = React.useState({ 
     project_title: "",
@@ -141,6 +136,26 @@ function Dashboard( { project_details , User_name , AdminProfile } ) {
   const [endDate, setEndDate] = useState();
 
   const [updateSelected, setUpdateSelected] = React.useState([]);
+
+  const [ userID , setUserId] = useState();
+
+  const userId = async(id) =>{
+    console.log("cookies");
+    console.log(id);
+
+    const added_By = [];
+    const user = await fetch(`${server}/api/user_dashboard/${id}`)
+    const User_id = await user.json()
+
+    User_id.map((user) => {
+      added_By.push({ 'label' : user.username , 'value' : user.username  })
+    })
+    setUserId(added_By[0]);
+
+  }
+  const add_user = [];
+  add_user.push(userID);
+  console.log(add_user);
 
   const projectId = async(id) =>{
     console.log('update project id');
@@ -164,22 +179,10 @@ function Dashboard( { project_details , User_name , AdminProfile } ) {
     setUpdate(udata);
     setStartDate(new Date(udata.project_start));
     setEndDate(new Date(udata.project_deadline));
-  
+
     }
 
-    const [selected, setSelected] = useState([]);
-
-const added_By = [];
-const getUser = [];
-AdminProfile.map((user) => {
-  added_By.push({ 'label' : user.username, 'value' : user.username  })
-})
-console.log(added_By);
-// getUser.push(added_By[0]);
-// console.log(getUser);
-
-// const [created, setCreated] = useState([]);
-// setCreated(added_By[0]);
+  const [selected, setSelected] = useState([userID]);
 
   const handleChange = ({ target: { name, value } }) =>{
     console.log("name");
@@ -199,14 +202,13 @@ console.log(added_By);
   }
 
   const toastId = React.useRef(null);
-
   const updateProject = async() =>{
 
     const allMember = [];
     for(var i=0; i<updateSelected.length; i++){
           allMember.push(updateSelected[i].value);
     }
-
+  
     console.log("all users");
     console.log( allMember );
 
@@ -262,6 +264,16 @@ console.log(added_By);
       if(res.status==200)
       {
         // alert("success");
+        if(!toast.isActive(toastId.current)) {
+          toastId.current = toast.success('Project added Successfully ! 🎉', {
+              position: "top-right",
+              autoClose:1000,
+              theme: "colored",
+              hideProgressBar: true,
+              onClose: () => router.push(`${server}/admin/project_module`)
+              });
+          }
+  
         router.reload(`${server}/admin/project_module`);
       }
       else
@@ -305,7 +317,7 @@ useEffect(() =>{
     <GridContainer>
         <GridItem>
 
-          <Popup trigger={<div><button className="bttn-design">Add Project</button></div>} className="popupReact" modal>
+          <Popup trigger={<div><button className="bttn-design" onClick={ ()=> userId(cookies.Id)}>Add Project</button></div>} className="popupReact" modal>
 
           {close => (
       <div>
@@ -437,9 +449,9 @@ useEffect(() =>{
                       <span>Project Priority</span><span className="required">*</span>
                         <select name="priority" id="priority" className="form-control signup-input" {...register('project_priority', {required:true ,message:'Please select atleast one option', })}>
                           <option value=""  disabled selected>Select Project Priority</option>
-                          <option value="High" class="high">High</option>
-                          <option value="Medium" class="medium">Medium</option>
-                          <option value="Low"class="low">Low</option>
+                          <option value="High" className="high">High</option>
+                          <option value="Medium" className="medium">Medium</option>
+                          <option value="Low"className="low">Low</option>
                         </select>
                         <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                         <div className="error-msg">{errors.project_priority && <span>{errors.project_priority.message}</span>}</div>
@@ -472,11 +484,9 @@ useEffect(() =>{
                       displayValue="value"
                         options={uoptions}
                         value={selected}
-                        selectedValues={added_By}
+                        // selectedValues={add_user}
                         onChange={setSelected}
-                        // onKeyPressFn={function noRefCheck(){}}
                         onRemove={setSelected}
-                        // onSearch={function noRefCheck(){}}
                         onSelect={setSelected}
                         placeholder="Select Project Members"
                         showArrow={true}
@@ -556,24 +566,38 @@ if(project.project_delete == "no"){
 // if(status.project_status == project.project_status){
 
   var person = project.project_person.split(",");
+  // const name =[];
+  // for(i=0 ; i<person.length; i++){
+  //   console.log(person[i]);
+  //   var member = person[i].slice(0,2);
+  //   console.log(member);
+  // }
 
 return(
   <>
     <GridItem xs={12} sm={6} md={9}>
 
-
-
-        <form>
+  <form>
     <Card className= "projects">
       <CardHeader color="primary" className="project-block">
 
         {/* <img src={`${server}/reactlogo.png`} className={classes.img}/> */}
         <div className="project-content">
         <h4 className="projectTitle">{project.project_title}</h4>
-        {/* <p className="projectLanguage">{project.project_status}</p> */}
         
         <div className="icon-display">
-          <Popup trigger={<a><div className='icon-width' onClick={()=>projectId(project.project_id)}><FiEdit/></div></a>} className="popupReact" modal>
+        <span className={project.project_priority}>{project.project_priority}</span>
+        {person.map((project_person) => {
+          return(
+            <div>
+              <span>{project_person}</span>
+            </div>
+          )
+        })
+
+        }
+        {/* <span className="project_person">{project.project_person}</span> */}
+          <Popup trigger={<a><div className='icon-width' onClick={()=> { projectId(project.project_id) }  }><FiEdit/></div></a>} className="popupReact" modal>
 
               {close => (
               <div className="popup-align">
@@ -602,7 +626,7 @@ return(
                         <GridItem xs={12} sm={12} md={12}>                      
                           <div className="form-group">
                             <span>Project Title</span><span className="required">*</span>
-                            <input type="text" className="form-control signup-input" name="project_title" placeholder="Project Title" value={uoption.project_title} onChange={handleChange} required />
+                            <input type="text" className="form-control signup-input" name="project_title" placeholder="Project Title" value={uoption.project_title} onChange={handleChange} />
                           </div>
 
                         </GridItem>
@@ -700,9 +724,9 @@ return(
                           <span>Project Priority</span><span className="required">*</span>
                             <select name="project_priority" id="priority" className="form-control signup-input" value={uoption.project_priority} onChange={handleChange}>
                               <option value=""  disabled selected>Select Project Priority</option>
-                              <option value="High" class="High">High</option>
-                              <option value="Medium" class="Medium">Medium</option>
-                              <option value="Low"class="Low">Low</option>
+                              <option value="High" className="High">High</option>
+                              <option value="Medium" className="Medium">Medium</option>
+                              <option value="Low"className="Low">Low</option>
                             </select>
                             <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                           </div> 
@@ -754,7 +778,7 @@ return(
                     </CardBody>
 
                     <CardFooter>
-                        <Button color="primary"  onClick={()=> { updateProject(project.project_id); } }>Save</Button>
+                        <Button color="primary" onClick={()=> { updateProject(project.project_id); } }>Save</Button>
                         <Button className="button" onClick={() => { close(); }}> Cancel </Button>
                     </CardFooter>
                     
