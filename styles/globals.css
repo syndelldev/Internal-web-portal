@@ -179,7 +179,7 @@ button.MuiButtonBase-root.MuiButton-root.makeStyles-button-117.makeStyles-primar
   border-radius: 8px;
 }
 .MuiGrid-grid-md-9{
-  max-width: 100%!important;
+  max-width: 60%!important;
   flex-basis: 100%!important;
 }
 .icon-display{
@@ -329,7 +329,7 @@ font-size: 17px!important;
 /*Sub Task*/
 .MuiGrid-grid-xs-6 {
   flex-grow: 0;
-  max-width: 100% !important;
+  max-width: 60% !important;
   flex-basis: 100% !important;
 }
 
