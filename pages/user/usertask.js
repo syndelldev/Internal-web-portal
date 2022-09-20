@@ -149,24 +149,25 @@ function Dashboard() {
                 return(
                     <GridItem xs={6} sm={6} md={4} key={task.task_id}>
                         <form>
-                            <Card>
-                                <CardHeader color="primary">
-                                    <img src={`${server}/reactlogo.png`} className={classes.img}/>
+                            <Card className="projects">
+                                <CardHeader color="primary" className="project-block">
+                                    {/*<img src={`${server}/reactlogo.png`} className={classes.img}/>*/}
+                                    <div className="project-content">
                                     <h4 className="projectTitle">{task.task_title}</h4>
-                                    <p className={classes.cardCategoryWhite}></p>
-                                </CardHeader>
-                                <CardBody>
-                                    <GridContainer>
-                                        <GridItem>
+                                    {/*<p className={classes.cardCategoryWhite}></p>*/}
+                                
+                                {/*<CardBody>*/}
+                                    {/*<GridContainer>*/}
+                                        {/*<GridItem>
                                             <p className="projectLanguage">{task.task_language}</p>
-                                        </GridItem>
-                                        <GridItem>
-                                            <div className="icon-edit-delete">
-                                                <a href={`${server}/admin/subtask_module/${task.task_id}`}><FiEdit/></a>
+                                        </GridItem>*/}
+                                        {/*<GridItem>*/}
+                                            <div className="icon-display">
+                                                <Popup trigger={<a href={`${server}/admin/subtask_module/${task.task_id}`}><FiEdit/></a>} modal></Popup>
                                             </div>
-                                        </GridItem>
-                                    </GridContainer>
-                                    <GridContainer>
+                                        {/*</GridItem>*/}
+                                    {/*</GridContainer>*/}
+                                    {/*<GridContainer>
                                         <GridItem>
                                         {person.map((data,index)=>{
                                             return(
@@ -178,7 +179,7 @@ function Dashboard() {
                                         }
                                         </GridItem>
 
-                                        <div className="buttonalign">
+                                    <div className="buttonalign">*/}
                                             {/* <Popup trigger={<div><a className="bttn-design">Add comment</a></div>}  className="popupReact"  modal>
                                                 {close => (
                                                     <div>
@@ -207,19 +208,19 @@ function Dashboard() {
                                                     </div>
                                                 )}
                                             </Popup> */}
-                                        </div>
+                                        {/*</div>
                                                 
-                                    </GridContainer>
-                                    <GridContainer>
+                                    </GridContainer>*/}
+                                    {/*<GridContainer>
                                         <GridItem>
                                             <p className="projectPriority">Task Priority : {task.task_priority}</p>
                                         </GridItem>
                                         
-                                    </GridContainer>
-                                </CardBody>
+                                        </GridContainer>*/}
+                                {/*</CardBody>*/}
 
-                                
-
+                                </div>
+                                </CardHeader>
                             </Card>
                         </form>
 

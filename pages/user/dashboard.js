@@ -98,11 +98,12 @@ function Dashboard({project}) {
             // const bDate = ((project.project_deadline).substr(0,10).split("-",3));
             return(
               <GridItem xs={6} sm={6} md={4} key={project.project_id}>
-                <Card >
-                  <CardHeader color="primary">
+                <Card className="projects">
+                  <CardHeader color="primary" className="project-block">
                   {/*<img className="image" src={`${server}/reactlogo.png`} />*/}
+                  <div className="project-content">
                     <h4 className="projectTitle">{project.project_title}</h4>
-                  </CardHeader>
+                  
                   {/*<CardFooter>
                     <p className="projectLanguage">{project.project_language}</p>
             <p className="projectPriority">*/}
@@ -110,6 +111,7 @@ function Dashboard({project}) {
                       {/*View Project PopUp*/}
                       {/* <Button disabled={project.view_rights==0} >View</Button>
                       <Button disabled={project.edit_rights==0} >Edit</Button> */}
+                      <div className="icon-display">
                         <Popup trigger={<Button disabled={project.view_rights==0} ><FaEye/></Button>}  className="popupReact"  modal>
                           {close => (
                             <div>
@@ -150,7 +152,7 @@ function Dashboard({project}) {
                         </Popup>
 
                         {/*Edit Project PopUp*/}
-                        <Popup trigger={<div> <button disabled={project.edit_rights==0} onClick={()=>getData(project.project_id)} ><FiEdit/></button> </div>}  className="popupReact"  modal >
+                        <Popup trigger={<div> <button disabled={project.edit_rights==0} onClick={()=>getData(project.project_id)} className="user-icon"><FiEdit/></button> </div>}  className="popupReact"  modal >
                           {close => (
                             <div>
                               
@@ -230,6 +232,9 @@ function Dashboard({project}) {
                   <CardFooter>
                     <p className="projectPriority">{project.project_priority} Priority</p>
                 </CardFooter>*/}
+                </div>
+                </div>
+                </CardHeader>
                 </Card>
               </GridItem>
             )
