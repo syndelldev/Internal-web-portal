@@ -54,7 +54,6 @@ export async function getServerSideProps(context){
 function UserRights({UserList,ModuleList}){
     const useStyles = makeStyles(styles);
     const classes = useStyles();
-    const router = useRouter();
 
     const [user, setuser] = useState(1)
     // console.log(user)
@@ -62,14 +61,24 @@ function UserRights({UserList,ModuleList}){
     const [module, setmodule] = useState(1)
     // console.log(module)
 
-    const [users, setusers] = useState([])
+    const [projects, setprojects] = useState([])
     const getData = () => {
         axios.post(`${server}/api/rights/${user}`, {userid:user,moduleid:module})
         .then((res)=>{
-            setusers(res.data)
+            setprojects(res.data)
         })
     }
-    console.log(users)
+    console.log(projects)
+
+    const [RightList, setRightList] = useState([])
+    const getRightList = () =>{
+        axios.post(`${server}/api/rights/right_lists`, {userid:user})
+        .then((res)=>{
+            setRightList(res.data)
+        })
+    }
+    console.log(RightList)
+    var myArr = [1,2,3,4];
 
     return(
         <>
@@ -112,11 +121,67 @@ function UserRights({UserList,ModuleList}){
                                         </select>
                                     </div>
                                     <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                                </GridItem> 
+                                </GridItem>
                             </GridContainer><br/>
-                            
-                            <Button color="primary" onClick={getData} type="submit">Submit</Button><br/><br/>
+                            <Button color="primary" onClick={()=>{getData();getRightList();}}  type="submit">Submit</Button><br/><br/>
 
+                            <div className={classes.tableResponsive}>
+                                <Table className={classes.table}>
+                                    <TableHead className={classes.TableHeader}>
+                                        <TableRow className={classes.tableHeadRow}>
+                                            <TableCell>Modules Names</TableCell>
+                                            <TableCell>Monitor(View)</TableCell>
+                                            <TableCell>Contributor(edit)</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        
+                                        {projects.map((projects)=>{
+                                            return(
+                                                <TableRow>
+                                                    <TableCell>{projects.project_title}-{projects.project_id}</TableCell> 
+                                                    {RightList.map((rights)=>{
+                                                        //console.log(RightList[1])
+                                                        return(
+                                                            <>
+                                                                <TableRow> 
+                                                                    <input type="checkbox"/>{rights.view_rights}
+                                                                    <input type="checkbox"/>{rights.edit_rights}
+                                                                </TableRow>  
+                                                            </>
+                                                        )
+                                                    })} 
+                                                    {/* <TableCell>
+                                                        <input type="checkbox"/>
+                                                    </TableCell> 
+                                                    <TableCell>
+                                                        <input type="checkbox"/>
+                                                    </TableCell>  */}
+                                                </TableRow>
+                                            )
+                                        })}
+                                        {/* {RightList.map((rights)=>{
+                                            return(
+                                                <>
+                                                    <TableCell>
+                                                        <input type="checkbox"/>
+                                                    </TableCell> 
+                                                </>
+                                            )
+                                        })} */}
+
+                                        {/* {
+                                            myArr.forEach(function(elem){
+                                                if (elem === 4) {
+                                                  return;
+                                                }
+                                              
+                                                console.log(elem);
+                                              })
+                                        } */}
+                                    </TableBody>
+                                </Table>
+                            </div>
                         </CardBody>
                     </Card>
                 </GridItem>
@@ -126,5 +191,4 @@ function UserRights({UserList,ModuleList}){
 }
 
 UserRights.layout = SuperUser;
-
 export default UserRights;
