@@ -472,29 +472,29 @@ const [p_selected, setProject] = useState([]);
 
     <GridItem xs={6} sm={6} md={4}>
         <form>
-        <Card>
-            <CardHeader color="primary">
+        <Card className='projects'>
+            <CardHeader color="primary" className='project-block'>
 
-              <img src={`${server}/reactlogo.png`} className={classes.img}/>
-
+             {/* <img src={`${server}/reactlogo.png`} className={classes.img}/>*/}
+              <div className="project-content">
                 <h4 className="projectTitle">{task.task_title}</h4>
-                <p className={classes.cardCategoryWhite}></p>
-            </CardHeader>
+                {/*<p className={classes.cardCategoryWhite}></p>*/}
+            
 
-              <CardBody>
-              <GridContainer>
+             {/* <CardBody>
+              <GridContainer>*/}
                 
-                  <GridItem>
+                  {/*<GridItem>
                     <p className="projectLanguage">{task.task_language}</p>
-                  </GridItem>
+                  </GridItem>*/}
                   
-                  <GridItem>
-                  <div className="icon-edit-delete">
-                    <a href={`${server}/admin/subtask_module/${task.task_id}`}><FiEdit/></a>
+                 {/* <GridItem>*/}
+                  <div className="icon-display">
+                    <Popup trigger={<a href={`${server}/admin/subtask_module/${task.task_id}`}><div className="icon-width"><FiEdit/></div></a>} modal></Popup>
                     {/* <button onClick={()=>deleteTask(task.task_id)} className="project_delete_icon"><MdDelete/></button> */}
 
 
-                    <Popup trigger={<span><MdDelete/></span>} modal>
+                    <Popup trigger={<a><MdDelete/></a>} modal>
                         {close => (
                           <div>
                           <Card>                            
@@ -525,20 +525,20 @@ const [p_selected, setProject] = useState([]);
                       </Popup>
 
                     </div>
-                  </GridItem>
+                 {/* </GridItem>*/}
                   
-                </GridContainer>
+               {/* </GridContainer>*/}
 
-                <GridContainer>
+                {/*<GridContainer>
                   <GridItem>
-                    {person.map((data)=>{
+                    person.map((data)=>{
                       return(
                         <>
                           <p className="projectPerson">{data}</p>
                         </>
                       )
                     })
-                    }
+                  
                   </GridItem>
                 </GridContainer>
 
@@ -546,12 +546,15 @@ const [p_selected, setProject] = useState([]);
                   <GridItem>
                     <p className="projectPriority">Task Priority : {task.task_priority}</p>
                   </GridItem>
-                </GridContainer>
+                </GridContainer>*/}
                 
-                </CardBody>
+                {/*</CardBody>*/}
 
-                <CardFooter>
-                </CardFooter>
+                {/*<CardFooter>
+                </CardFooter>*/}
+                </div>
+                </CardHeader>
+                
             </Card>
         </form>
     </GridItem>
