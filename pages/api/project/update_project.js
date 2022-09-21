@@ -32,6 +32,9 @@ async function updateProject(req,res){
                 var userId =  await executeQuery("SELECT id FROM `tbl_user` where username =? ",[`${members[i]}`])
                 var memberId = userId[0].id
                 console.log(memberId);
+
+                var rightsQuery = await executeQuery("INSERT INTO `tbl_rights` ( `user_id`,`project_id`,`module_id`,`view_rights`, `edit_rights` ) VALUES (?,?,1,1,1)", [ memberId,  req.body.project_id ]);    
+                console.log(rightsQuery)
             }
             
 
