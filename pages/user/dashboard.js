@@ -246,10 +246,10 @@ function Dashboard({project}) {
                                     const Date = ((m.creation_time).substr(0,10).split("-",3));
                                     const Time = ((m.creation_time).substr(11,16).split(":",3));
                                     var dateP = m.creation_time;
-                                    var textArea = (m.comment).split("http");
-                                    console.log("textArea");
-                                    console.log(textArea);
-                                    if(textArea == ""){
+                                    var textArea = (m.comment).split(`\n`);
+                                    // console.log("textArea");
+                                    // console.log(textArea);
+                                    // if(textArea == ""){
                                       return(
                                         <span>
                                           <GridContainer>
@@ -265,37 +265,56 @@ function Dashboard({project}) {
                                           <GridContainer>
                                             <GridItem>
                                               <div>
-                                                <span id="userComment">{m.comment}</span>
-                                                {/* <p>{Time[0]}:{Time[1]}:{Time[2]}</p> */}
-                                              </div>
-                                            </GridItem>
-                                          </GridContainer>
-                                        </span>
-                                      )
-                                    }else{
-                                      return(
-                                        <span>
-                                          <GridContainer>
-                                            <GridItem>
-                                              <span>{m.username}</span>
-                                            </GridItem>
-                                                
-                                            <GridItem>
-                                            <span><p>{Date[2]}/{Date[1]}/{Date[0]}</p></span>
-                                            </GridItem>
-                                          </GridContainer>
+                                                {textArea.map((text)=>{
+                                                  var commentText = text;
+                                                  var Text = (commentText).includes("http");
+                                                  console.log(Text);
 
-                                          <GridContainer>
-                                            <GridItem>
-                                              <div>
-                                                <a href={m.comment} target="_blank" id="userComment">{m.comment}</a>
+                                                  if(Text == true){
+                                                    return(
+                                                      <div>
+                                                        <a href={text} target="_blank" id="userCommentLink">{text}</a>
+                                                      </div>
+                                                    )
+                                                  }else{
+                                                    return(
+                                                      <div>
+                                                        <span id="userComment">{text}</span>
+                                                      </div>
+                                                    )
+                                                  }
+                                                })}
+                                                {/* <span id="userComment">{m.comment}</span> */}
                                                 {/* <p>{Time[0]}:{Time[1]}:{Time[2]}</p> */}
                                               </div>
                                             </GridItem>
                                           </GridContainer>
                                         </span>
                                       )
-                                    }
+                                    // }else{
+                                    //   return(
+                                    //     <span>
+                                    //       <GridContainer>
+                                    //         <GridItem>
+                                    //           <span>{m.username}</span>
+                                    //         </GridItem>
+                                                
+                                    //         <GridItem>
+                                    //         <span><p>{Date[2]}/{Date[1]}/{Date[0]}</p></span>
+                                    //         </GridItem>
+                                    //       </GridContainer>
+
+                                    //       <GridContainer>
+                                    //         <GridItem>
+                                    //           <div>
+                                    //             <a href={m.comment} target="_blank" id="userComment">{m.comment}</a>
+                                    //             {/* <p>{Time[0]}:{Time[1]}:{Time[2]}</p> */}
+                                    //           </div>
+                                    //         </GridItem>
+                                    //       </GridContainer>
+                                    //     </span>
+                                    //   )
+                                    // }
                                   })}
                                   <form>
                               
