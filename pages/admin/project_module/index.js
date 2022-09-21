@@ -609,7 +609,7 @@ return(
 
                   <GridContainer>
                     <GridItem>
-                      <h4 className={classes.cardTitleWhite}>Edit Project</h4>
+                      <h4 className={classes.cardTitleWhite}>Edit Project{project.project_created_date}</h4>
                       <p className={classes.cardCategoryWhite}>Update your project details</p>
                     </GridItem>
 

@@ -10,6 +10,7 @@ import GridContainer from "components/Grid/GridContainer.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardFooter from "components/Card/CardFooter.js";
+import CardBody from "components/Card/CardBody.js";
 
 import { useForm } from 'react-hook-form';
 import Popup from "reactjs-popup";
@@ -18,10 +19,66 @@ import { server } from 'config';
 import { FiEdit } from "react-icons/fi";
 import { FaEye } from 'react-icons/fa';
 import { makeStyles } from "@material-ui/core/styles";
-import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
+// import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 import { useCookies } from 'react-cookie';
 import { Button } from "@material-ui/core";
 import { getAllJSDocTags } from "typescript";
+
+
+const styles = {
+  cardCategoryWhite: {
+    color: "rgba(0,0,0,.62)",
+    margin: "0",
+    fontSize: "14px",
+    marginTop: "0",
+    marginBottom: "0",
+  },
+  cardTitleWhite: {
+    color: "#000000",
+    marginTop: "0px",
+    minHeight: "auto",
+    fontWeight: "300",
+    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+    marginBottom: "3px",
+    textDecoration: "none",
+  },
+  cardWhite: {
+    color: "#000000",
+    marginTop: "0px",
+    minHeight: "auto",
+    fontWeight: "300",
+    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+    marginBottom: "3px",
+    textDecoration: "none",
+    background: "#ADD8E6",
+    float: "right",
+  },
+  img:{
+    marginLeft: "auto",
+    width: "40px",
+  },
+  popup:{
+    // position: "fixed",
+    width: "100%",
+    height: "100%",
+    top: "0",
+    left: "0",
+    right: "0",
+    bottom: "0",
+    backgroundColor: "rgba(0,0,0,0.5)",
+  },
+  link:{
+    border: "1px solid #000000",
+    color: "#000000",
+    padding: "5px 10px",
+  },
+  close:{
+    marginLeft: "auto",
+    fontSize: "40px",
+    paddingRight: "15px",
+    cursor: "pointer",
+  },
+};
 
 
 export async function getServerSideProps(context){
@@ -164,50 +221,84 @@ function Dashboard({project}) {
                                         <a onClick={close}>&times;</a>
                                       </div>
                                   </CardHeader>
-                                  <CardFooter>
-                                    <p>Project Language - {project.project_language}</p>
-                                  </CardFooter>
-                                  <CardFooter>
-                                    <p>Project Person - {project.project_person}</p>
-                                  </CardFooter>
-                                  <CardFooter>
-                                    <p>Project Description - {project.project_description}</p>
-                                  </CardFooter>
-                                  <CardFooter>
-                                    <p>Department - {project.project_department}</p>
-                                  </CardFooter>
-                                  <CardFooter>
-                                    <p>Project Status - {project.project_status}</p>
-                                  </CardFooter>
-                                  <CardFooter>
-                                    <p className="projectPriority">{project.project_priority} Priority</p>
-                                  </CardFooter>
+                                  <CardBody>
+                                      <GridContainer>
+                                        <GridItem>
+                                          <p>Project Language - {project.project_language}</p>
+                                          <p>Project Person - {project.project_person}</p>
+                                          <p>Project Description - {project.project_description}</p>
+                                          <p>Department - {project.project_department}</p>
+                                          <p>Project Status - {project.project_status}</p>
+                                        </GridItem>
+                                        <GridItem>
+                                          <p className="projectPriority">{project.project_priority} Priority</p>
+                                        </GridItem>
+                                      </GridContainer>
+                                  {/* </CardBody> */}
+
+                                  <GridContainer>
+                                    <GridItem>
+                                      <h5 className="projectPriority">Comments</h5>
+                                    </GridItem>
+                                  </GridContainer>
+
                                   {comments.map((m)=>{
                                     const Date = ((m.creation_time).substr(0,10).split("-",3));
                                     const Time = ((m.creation_time).substr(11,16).split(":",3));
-                                    return(
-                                      <>
-                                        <GridContainer>
-                                          <GridItem xs={12} sm={12} md={12}>
-                                            <p>{m.username}</p>
-                                            <p>{m.comment}</p>
-                                            <p>{Date[2]}/{Date[1]}/{Date[0]}</p>
-                                            <p>{Time[0]}:{Time[1]}:{Time[2]}</p>
-                                          </GridItem>
-                                        </GridContainer><br/>
-                                      </>
-                                    )
+                                    var dateP = m.creation_time;
+                                    var textArea = (m.comment).split("http");
+                                    console.log("textArea");
+                                    console.log(textArea);
+                                    if(textArea == ""){
+                                      return(
+                                        <span>
+                                          <GridContainer>
+                                            <GridItem>
+                                              <span>{m.username}</span>
+                                            </GridItem>
+                                                
+                                            <GridItem>
+                                            <span><p>{Date[2]}/{Date[1]}/{Date[0]}</p></span>
+                                            </GridItem>
+                                          </GridContainer>
+
+                                          <GridContainer>
+                                            <GridItem>
+                                              <div>
+                                                <span id="userComment">{m.comment}</span>
+                                                {/* <p>{Time[0]}:{Time[1]}:{Time[2]}</p> */}
+                                              </div>
+                                            </GridItem>
+                                          </GridContainer>
+                                        </span>
+                                      )
+                                    }else{
+                                      return(
+                                        <span>
+                                          <GridContainer>
+                                            <GridItem>
+                                              <span>{m.username}</span>
+                                            </GridItem>
+                                                
+                                            <GridItem>
+                                            <span><p>{Date[2]}/{Date[1]}/{Date[0]}</p></span>
+                                            </GridItem>
+                                          </GridContainer>
+
+                                          <GridContainer>
+                                            <GridItem>
+                                              <div>
+                                                <a href={m.comment} target="_blank" id="userComment">{m.comment}</a>
+                                                {/* <p>{Time[0]}:{Time[1]}:{Time[2]}</p> */}
+                                              </div>
+                                            </GridItem>
+                                          </GridContainer>
+                                        </span>
+                                      )
+                                    }
                                   })}
-                                  
                                   <form>
-                                  <br/>
-                                      {/* <input
-                                        type="text"
-                                        value={username}
-                                        onChange={(e) => {
-                                          setusername(e.target.value);
-                                        }}
-                                      />  */}
+                              
                                       <textarea
                                         className="form-control signup-input"
                                         type="text"
@@ -218,23 +309,17 @@ function Dashboard({project}) {
                                       ></textarea>
                                       <Button type="submit" onClick={()=>sendMessage(project.project_id)}>comment</Button>
                                     </form>
+                                  </CardBody>
+
                                 </Card>
                               </GridItem>
 
                             </div>
                           )}
                         </Popup>
-                    {/*</p>
-                  </CardFooter>*/}
-                  {/*<CardFooter>
-                    <p>{project.project_person}</p>
-                  </CardFooter>
-                  <CardFooter>
-                    <p className="projectPriority">{project.project_priority} Priority</p>
-                </CardFooter>*/}
-                </div>
-                </div>
-                </CardHeader>
+                      </div>
+                    </div>
+                  </CardHeader>
                 </Card>
               </GridItem>
             )
