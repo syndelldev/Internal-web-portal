@@ -65,7 +65,7 @@ function Dashboard({project}) {
   
   const getData = async (project_id)=>{
 
-    alert(project_id)
+    // alert(project_id)
     let comment = await axios.post(`${server}/api/comment/comment`, { project_id: project_id });
     // console.log(comment.data)
     setcomments(comment.data)
@@ -75,7 +75,7 @@ function Dashboard({project}) {
 
   const sendMessage = async (project_id) => {
     // e.preventDefault();
-    alert(project_id)
+    // alert(project_id)
     let addComment = await axios.post(`${server}/api/comment/addcomment`, {  username: cookies.name, message: message , project_id: project_id });
     console.log(addComment)
     console.log(cookies.name)
