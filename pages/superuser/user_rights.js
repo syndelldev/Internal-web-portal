@@ -78,7 +78,6 @@ function UserRights({UserList,ModuleList}){
         })
     }
     console.log(RightList)
-    var myArr = [1,2,3,4];
 
     return(
         <>
@@ -136,49 +135,22 @@ function UserRights({UserList,ModuleList}){
                                     </TableHead>
                                     <TableBody>
                                         
-                                        {projects.map((projects)=>{
+                                        {projects.map((data)=>{
                                             return(
-                                                <TableRow>
-                                                    <TableCell>{projects.project_title}-{projects.project_id}</TableCell> 
-                                                    {RightList.map((rights)=>{
-                                                        //console.log(RightList[1])
-                                                        return(
-                                                            <>
-                                                                <TableRow> 
-                                                                    <input type="checkbox"/>{rights.view_rights}
-                                                                    <input type="checkbox"/>{rights.edit_rights}
-                                                                </TableRow>  
-                                                            </>
-                                                        )
-                                                    })} 
-                                                    {/* <TableCell>
-                                                        <input type="checkbox"/>
-                                                    </TableCell> 
+                                                <TableRow key={data.project_id} value={data.project_id}>
+                                                    <TableCell>{data.project_title}-{data.project_id}</TableCell>  
+                                                          
                                                     <TableCell>
-                                                        <input type="checkbox"/>
-                                                    </TableCell>  */}
-                                                </TableRow>
+                                                        <input type="checkbox" name="view_rights" value={data.view_rights}  defaultChecked={data.view_rights==1} />
+                                                    </TableCell>
+
+                                                    <TableCell>
+                                                        <input type="checkbox" name="edit_rights" value={data.edit_rights}  defaultChecked={data.edit_rights==1} /> 
+                                                    </TableCell>
+                                                                            
+                                                </TableRow>  
                                             )
                                         })}
-                                        {/* {RightList.map((rights)=>{
-                                            return(
-                                                <>
-                                                    <TableCell>
-                                                        <input type="checkbox"/>
-                                                    </TableCell> 
-                                                </>
-                                            )
-                                        })} */}
-
-                                        {/* {
-                                            myArr.forEach(function(elem){
-                                                if (elem === 4) {
-                                                  return;
-                                                }
-                                              
-                                                console.log(elem);
-                                              })
-                                        } */}
                                     </TableBody>
                                 </Table>
                             </div>
