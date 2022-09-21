@@ -255,7 +255,7 @@ function Dashboard( { project_details , User_name , allTask } ) {
             onClose: () => router.push(`${server}/admin/subtask_module`)
           });
         }
-        // router.reload(`${server}/admin/subtask_module`);
+        router.reload(`${server}/admin/subtask_module`);
   
     }
   }
