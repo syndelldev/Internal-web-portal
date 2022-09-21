@@ -46,6 +46,9 @@ a {
   text-decoration: none;
   display: block;
 }
+#userComment {
+  white-space: pre-line;
+}
 
   .department-link a:hover {background-color:  #ADD8E6;color:#000;}
 
