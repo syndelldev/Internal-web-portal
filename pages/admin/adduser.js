@@ -93,8 +93,8 @@ function AddUser() {
             <form onSubmit={handleSubmit(onSubmit)}>              
             <Card>
                 <CardHeader color="primary">
-                    <h4 className={classes.cardTitleWhite}>Create User Profile</h4>
-                    <p className={classes.cardCategoryWhite}>Complete your profile</p>
+                    <h4 className={classes.cardTitleWhite} class="usertitle">Create User Profile</h4>
+                    <p className={classes.cardCategoryWhite} class="usersubtitle">Complete your profile</p>
                 </CardHeader>
                   <CardBody><br/>
                     <GridContainer>  

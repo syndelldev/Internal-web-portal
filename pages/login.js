@@ -163,10 +163,10 @@ return(
                                         <input type="checkbox" /><label className="check" htmlFor="">Remember me</label>
                                     </div>
 
-                                    <div className='login-two'>
-                                        <a href='#'><span className='login-text-login'>Forgot Password?</span></a>
+                                    {/* <div className='login-two'>
+                                        <a href='#'><span className='login-text-login'>Forgot Password?</span></a> */}
                                         {/*<a href='/signin'><span className='login-text-login'>Create Account</span></a>*/}
-                                    </div>
+                                    {/* </div> */}
                                 </div> 
 
                                 <p className='error-msg'>{passwrong}</p>
