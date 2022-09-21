@@ -24,11 +24,10 @@ const ModuleById = async (req,res) => {
     let id = req.query.id;
     // console.log(id)
     console.log(req.body)
-
     
     try{
-        // let rightsId=await executeQuery(` SELECT * FROM tbl_project `, [] );/*WHERE tbl_rights.user_id=${id}*/
-        let rightsId=await executeQuery(" SELECT * FROM tbl_project_rights RIGHT JOIN tbl_rights ON tbl_project_rights.project_id=tbl_rights.project_id INNER JOIN tbl_project ON tbl_project.project_id=tbl_rights.project_id WHERE tbl_project_rights.user_id LIKE ? AND tbl_rights.user_id=?", [`%${req.body.userid}%`,req.body.userid] );
+        let rightsId=await executeQuery(` SELECT * FROM tbl_rights LEFT JOIN tbl_project ON tbl_project.project_id=tbl_rights.project_id WHERE tbl_rights.user_id=?`, [req.body.userid] );/*WHERE tbl_rights.user_id=${id}*/
+        // let rightsId=await executeQuery(" SELECT * FROM tbl_project_rights RIGHT JOIN tbl_rights ON tbl_project_rights.project_id=tbl_rights.project_id INNER JOIN tbl_project ON tbl_project.project_id=tbl_rights.project_id WHERE tbl_project_rights.user_id LIKE ? AND tbl_rights.user_id=?", [`%${req.body.userid}%`,req.body.userid] );
         res.status(200).json(rightsId);
         //console.log(rightsId)
     }
@@ -40,8 +39,6 @@ const ModuleById = async (req,res) => {
 const ProjectById = async (req,res) =>{
     // console.log(req.body)
 
-    // var check_condition = await executeQuery(" SELECT * FROM `tbl_rights` INNER JOIN tbl_project_rights WHERE tbl_project_rights.user_id=? AND tbl_rights.project_id=? AND tbl_rights.module_id=? AND tbl_rights.user_id=?  ", [req.body.userid, req.body.projectid, req.body.moduleid, req.body.userid] );
-    // var check_condition = await executeQuery(" SELECT * FROM `tbl_rights` INNER JOIN tbl_project_rights WHERE tbl_project_rights.user_id LIKE ? AND tbl_rights.project_id=? AND tbl_rights.module_id=? AND tbl_rights.user_id=? ", [`%${req.body.userid}%`, req.body.projectid, req.body.moduleid, req.body.userid] );
     var check_condition = await executeQuery(" SELECT * FROM `tbl_rights` WHERE user_id=? AND module_id=? AND project_id=? ", [req.body.userid, req.body.moduleid, req.body.projectid] );
 
     console.log(check_condition)
@@ -59,25 +56,25 @@ const ProjectById = async (req,res) =>{
             // // res.send(data); 
 
     }
-    else
-    {
-        console.log("data does not exist") 
+    // else
+    // {
+    //     console.log("data does not exist") 
         
-        let data = await executeQuery(" SELECT * FROM `tbl_rights` WHERE user_id=? AND project_id=? ", [req.body.userid, req.body.projectid])
-        // console.log(data)
+    //     let data = await executeQuery(" SELECT * FROM `tbl_rights` WHERE user_id=? AND project_id=? ", [req.body.userid, req.body.projectid])
+    //     // console.log(data)
         
-        if(data == "" )
-        {
-            try{
-                let project = await executeQuery("INSERT INTO `tbl_rights` ( `user_id`, `project_id`, `module_id`,`view_rights`, `edit_rights` ) VALUES (?,?,?,0,0)", [req.body.userid, req.body.projectid, req.body.moduleid])
-                res.status(200).json(project);
-                console.log(project);
-            }
-            catch(err){
-                console.log(err)
-            }
-        }
-    }
+    //     if(data == "" )
+    //     {
+    //         try{
+    //             let project = await executeQuery("INSERT INTO `tbl_rights` ( `user_id`, `project_id`, `module_id`,`view_rights`, `edit_rights` ) VALUES (?,?,?,0,0)", [req.body.userid, req.body.projectid, req.body.moduleid])
+    //             res.status(200).json(project);
+    //             console.log(project);
+    //         }
+    //         catch(err){
+    //             console.log(err)
+    //         }
+    //     }
+    // }
     
 }
 

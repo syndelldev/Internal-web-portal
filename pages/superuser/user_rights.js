@@ -78,7 +78,6 @@ function UserRights({UserList,ModuleList}){
         })
     }
     console.log(RightList)
-    var myArr = [1,2,3,4];
 
     return(
         <>
@@ -152,25 +151,6 @@ function UserRights({UserList,ModuleList}){
                                                 </TableRow>  
                                             )
                                         })}
-                                        {/* {RightList.map((rights)=>{
-                                            return(
-                                                <>
-                                                    <TableCell>
-                                                        <input type="checkbox"/>
-                                                    </TableCell> 
-                                                </>
-                                            )
-                                        })} */}
-
-                                        {/* {
-                                            myArr.forEach(function(elem){
-                                                if (elem === 4) {
-                                                  return;
-                                                }
-                                              
-                                                console.log(elem);
-                                              })
-                                        } */}
                                     </TableBody>
                                 </Table>
                             </div>
