@@ -603,7 +603,7 @@ useEffect(() =>{
                 <div className="icon-display">
                 <GridItem>
                   <div className="icon-edit-delete">
-                    <Popup trigger={<div><a className="bttn-design" onClick={()=> { projectId(task.task_id) }  }><FiEdit/></a></div>}  className="popupReact"  modal>
+                    <Popup trigger={<div><a className="bttn-design1" onClick={()=> { projectId(task.task_id) }  }><FiEdit/></a></div>}  className="popupReact"  modal>
 
                     {close => (
                     <div>
