@@ -650,10 +650,10 @@ return(
                                 <option value="HR">HR</option>
                                 <option value="UI & UX">UI & UX</option>
                                 <option value="Testing">Testing</option>
-                                <option value="Web development">Web development</option>
-                                <option value="Content writer">Content writer</option>
-                                <option value="Project manager">Project manager</option>
-                                <option value="Mobile App developer">Mobile App developer</option>
+                                <option value="Web development">Web Development</option>
+                                <option value="Content writer">Content Writer</option>
+                                <option value="Project manager">Project Manager</option>
+                                <option value="Mobile App developer">Mobile App Developer</option>
                                 <option value="SEO">SEO</option>
                               </select>
                               <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
