@@ -2,6 +2,7 @@ import React, { useEffect, useState , useRef } from "react";
 // layout for this page
 
 import User from "layouts/User.js";
+import { useRouter } from 'next/router';
 
 // core components
 import GridItem from "components/Grid/GridItem.js";
@@ -99,6 +100,7 @@ function Dashboard({project}) {
   // console.log(project)
   const useStyles = makeStyles(styles);
   const classes = useStyles();
+  const router = useRouter();
 
   const [cookies, setCookie] = useCookies('');
   //console.log(cookies.Id);
@@ -123,7 +125,7 @@ function Dashboard({project}) {
   const getData = async (project_id)=>{
 
     // alert(project_id)
-    let comment = await axios.post(`${server}/api/comment/comment`, { project_id: project_id });
+    var comment = await axios.post(`${server}/api/comment/comment`, { project_id: project_id });
     // console.log(comment.data)
     setcomments(comment.data)
     console.log(comments)
@@ -133,9 +135,10 @@ function Dashboard({project}) {
   const sendMessage = async (project_id) => {
     // e.preventDefault();
     // alert(project_id)
-    let addComment = await axios.post(`${server}/api/comment/addcomment`, {  username: cookies.name, message: message , project_id: project_id });
+    var addComment = await axios.post(`${server}/api/comment/addcomment`, {  username: cookies.name, message: message , project_id: project_id });
     console.log(addComment)
     console.log(cookies.name)
+    router.reload(`${server}/user/dashboard`);
   }
 
   return (
@@ -213,7 +216,7 @@ function Dashboard({project}) {
                           {close => (
                             <div>
                               
-                              <GridItem xs={6} sm={6} md={12} key={project.project_id}>
+                              <GridItem xs={12} sm={12} md={12} key={project.project_id}>
                                 <Card>
                                   <CardHeader color="primary">
                                     <h4>{project.project_title}</h4>
@@ -239,6 +242,21 @@ function Dashboard({project}) {
                                   <GridContainer>
                                     <GridItem>
                                       <h5 className="projectPriority">Comments</h5>
+                                    </GridItem>
+                                  </GridContainer>
+                                  <GridContainer>
+                                    <GridItem xs={12} sm={12} md={6} >
+                                      <form>
+                                        <textarea
+                                          className="form-control signup-input"
+                                          type="text"
+                                          value={message}
+                                          onChange={(e) => {
+                                            setmessage(e.target.value);
+                                          }}
+                                        ></textarea>
+                                        <div onClick={() => sendMessage(project.project_id)}>Save</div>
+                                      </form>
                                     </GridItem>
                                   </GridContainer>
 
@@ -268,15 +286,56 @@ function Dashboard({project}) {
                                                 {textArea.map((text)=>{
                                                   var commentText = text;
                                                   var Text = (commentText).includes("http");
-                                                  console.log(Text);
 
                                                   if(Text == true){
-                                                    return(
-                                                      <div>
-                                                        <a href={text} target="_blank" id="userCommentLink">{text}</a>
-                                                      </div>
-                                                    )
+                                                    var textComment = commentText.split(" ");
+                                                    for (var i=0; i<textComment.length; i++){
+                                                      // console.log(textComment.length);
+                                                      // console.log(textComment[i]);
+
+                                                      // if(textComment[i].startsWith("http")){
+                                                      //   return(
+                                                      //     <>
+                                                      //       <a href={textComment[i]} target="_blank" id="userCommentLink">{textComment[i]}</a>
+                                                      //     </>
+                                                      //   )
+                                                      // }else{
+                                                        return(
+                                                          <>
+                                                            <span  id="userCommentLink">{textComment[i]}</span>
+                                                          </>
+                                                        )
+                                                      // }
+                                                    }
+                                                    // console.log(getLink);
+                                                    // var link = textComment[2].startsWith("http");
+                                                    // console.log("split http");
+                                                    // console.log(textComment);
+                                                    // for(var i=0; i<getLink.length; i++){
+                                                    //   console.log(getLink[i]);
+                                                    //   if(getLink[i].startsWith("http")){
+                                                    //     return(
+                                                    //       <>
+                                                    //         <a href={getLink[i]} target="_blank" id="userCommentLink">{getLink[i]}</a>
+                                                    //       </>
+                                                    //     )
+                                                    //   }
+                                                      // else{
+                                                      //   return(
+                                                      //     <>
+                                                      //       <span  id="userCommentLink">{getLink[i]}</span>
+                                                      //     </>
+                                                      //   )
+                                                      // }
+
+                                                    // }
+                                                    // return(
+                                                    //   <div>
+                                                    //     <a href={text} target="_blank" id="userCommentLink">{text}</a>
+                                                    //   </div>
+                                                    // )
                                                   }else{
+                                                    var textComment = commentText.split(" ");
                                                     return(
                                                       <div>
                                                         <span id="userComment">{text}</span>
@@ -316,18 +375,6 @@ function Dashboard({project}) {
                                     //   )
                                     // }
                                   })}
-                                  <form>
-                              
-                                      <textarea
-                                        className="form-control signup-input"
-                                        type="text"
-                                        value={message}
-                                        onChange={(e) => {
-                                          setmessage(e.target.value);
-                                        }}
-                                      ></textarea>
-                                      <Button type="submit" onClick={()=>sendMessage(project.project_id)}>comment</Button>
-                                    </form>
                                   </CardBody>
 
                                 </Card>
