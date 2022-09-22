@@ -44,9 +44,6 @@ export async function getServerSideProps(context){
 
     const responce = await fetch(`${server}/api/rights/module`)
     const ModuleList = await responce.json()
-
-    // const resp = await fetch(`${server}/api/rights/rights_list`)
-    // const rights_list = await resp.json()
     
     return{ props: {UserList,ModuleList} }
 }
@@ -70,14 +67,64 @@ function UserRights({UserList,ModuleList}){
     }
     console.log(projects)
 
-    const [RightList, setRightList] = useState([])
-    const getRightList = () =>{
-        axios.post(`${server}/api/rights/right_lists`, {userid:user})
-        .then((res)=>{
-            setRightList(res.data)
-        })
+    const [viewcheckbox,setviewcheckbox] = useState(0)
+    const viewCheckbox = (e) =>{
+        console.log(e.target.checked);
+
+        if(e.target.checked)
+        {
+            setviewcheckbox(0)
+        }
+        else
+        {
+            setviewcheckbox(1)
+        }
     }
-    console.log(RightList)
+    console.log(viewcheckbox)
+
+    const view_rights = (project_id) =>{
+        // console.log(project_id)
+
+        let data = axios.put(`${server}/api/rights/project/${project_id}`, {userid:user, moduleid:module, projectid:project_id, view:viewcheckbox})
+        .then((responce)=>{
+            setrightsList(responce.data)
+        })  
+        // console.log(rightsList)
+    }
+
+    const [editcheckbox,seteditcheckbox] = useState(0)
+    const editCheckbox = (e) =>{
+        console.log(e.target.checked)
+
+        if(e.target.checked)
+        {
+            console.log('✅ Checkbox is checked');
+            seteditcheckbox(1)
+        }
+        else
+        {
+            console.log('⛔️ Checkbox is NOT checked');
+            seteditcheckbox(0)
+        }
+    }
+    const edit_rights = (project_id) =>{
+        // console.log(project_id)
+
+        let data = axios.put(`${server}/api/rights/project/${project_id}`, {userid:user, moduleid:module, projectid:project_id, edit:editcheckbox})
+        .then((responce)=>{
+            setrightsList(responce.data)
+        })  
+        // console.log(rightsList)
+    }
+
+    // const [RightList, setRightList] = useState([])
+    // const getRightList = () =>{
+    //     axios.post(`${server}/api/rights/right_lists`, {userid:user})
+    //     .then((res)=>{
+    //         setRightList(res.data)
+    //     })
+    // }
+    // console.log(RightList)
 
     return(
         <>
@@ -139,15 +186,12 @@ function UserRights({UserList,ModuleList}){
                                             return(
                                                 <TableRow key={data.project_id} value={data.project_id}>
                                                     <TableCell>{data.project_title}-{data.project_id}</TableCell>  
-                                                          
                                                     <TableCell>
-                                                        <input type="checkbox" name="view_rights" value={data.view_rights}  defaultChecked={data.view_rights==1} />
+                                                        <input type="checkbox" name="view_rights" value={data.view_rights} onChange={viewCheckbox} defaultChecked={data.view_rights==1} onClick={()=>view_rights(data.project_id)}/>
                                                     </TableCell>
-
                                                     <TableCell>
-                                                        <input type="checkbox" name="edit_rights" value={data.edit_rights}  defaultChecked={data.edit_rights==1} /> 
-                                                    </TableCell>
-                                                                            
+                                                        <input type="checkbox" name="edit_rights" value={data.edit_rights} onChange={editCheckbox} defaultChecked={data.edit_rights==1} onClick={()=>edit_rights(data.project_id)} /> 
+                                                    </TableCell>                         
                                                 </TableRow>  
                                             )
                                         })}
