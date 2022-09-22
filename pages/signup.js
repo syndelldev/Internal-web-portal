@@ -67,7 +67,7 @@ function SignIn(){
     }
     return(
         <>
-           
+            <style global jsx>{`html, body,div#__next{background-color: #ADD8E6; }`}</style>
             <section className='login-section'>
                 <div className='container login-container'>
                     <div className='login-div'>

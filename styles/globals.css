@@ -63,14 +63,14 @@ img.completed,img.on.hold,img.running {
   color: #fff;
   font-size: 30px;
   font-weight: 700;
-  background:#554994;
+  background:darkgreen;
 }
 .on.hold{
   border-radius: 25px;
   color: #fff;
   font-size: 30px;
   font-weight: 700;
-  background: #F675A8;
+  background: yellow;
 }
 .running{
   border-radius: 25px;
@@ -93,12 +93,14 @@ h4.project_status {
 }
 .projects{
   margin-bottom: 10px!important;
+  margin-top: 10px!important;
   background:transparent!important;
   box-shadow: none!important;
 }
 .project-content{
   justify-content: space-between;
   display: flex!important;
+  align-items: center;
 }
 .project-block {
   border-left: 5px solid #ADD8E6;
@@ -189,6 +191,7 @@ button.MuiButtonBase-root.MuiButton-root.makeStyles-button-117.makeStyles-primar
   color: #000;
   display: flex;
   cursor: pointer;
+  
 }
 .icon-width{
   margin-right: 20px;
@@ -216,6 +219,8 @@ button.MuiButtonBase-root.MuiButton-root.makeStyles-button-117.makeStyles-primar
 .text ,.projectTitle{
   color: black;
   font-weight: bold;
+  margin-bottom: 0;
+  height: max-content;
 }
 .popup-align
 {/*
@@ -231,7 +236,8 @@ button.MuiButtonBase-root.MuiButton-root.makeStyles-button-117.makeStyles-primar
     transform: translateX(100%);
 }
 .project-block {
-  padding-bottom: 4px!important;
+  /*padding-bottom: 4px!important;*/
+  margin-top: 0 !important;
 }
 .MuiGrid-item .MuiGrid-grid-md-9 {
   margin-bottom: 0px!important;
@@ -245,9 +251,11 @@ button.MuiButtonBase-root.MuiButton-root.makeStyles-button-117.makeStyles-primar
 }
 
 .icon-edit-delete{
-  display: flex;
+  /*display: flex;
   align-items: center;
-  margin-left: auto;
+  margin-left: auto;*/
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 .makeStyles-grid-340{
   width: 100%!important;
@@ -258,7 +266,8 @@ button.MuiButtonBase-root.MuiButton-root.makeStyles-button-117.makeStyles-primar
   padding: 10px!important;
   font-weight: 500!important;
   background: #eee5ff!important;
-  color: #000!important;;
+  color: #000!important;
+  margin-bottom: 0 !important;
 }
 .multiSelectContainer li:hover{
   font-weight: 500!important;
@@ -356,6 +365,7 @@ p.usersubtitle{
   border-radius: 5px;
   padding: 10px;
   margin-right: 5px;
+  height: max-content;
 }
 .Medium
 {
@@ -363,6 +373,7 @@ p.usersubtitle{
   border-radius: 5px;
   padding: 10px;
   margin-right: 5px;
+  height: max-content;
 }
 .Low
 {
@@ -370,4 +381,15 @@ p.usersubtitle{
   border-radius: 5px;
   padding: 10px;
   margin-right: 5px;
+  height: max-content;
+}
+.add_new_user.makeStyles-primary-120:hover
+{
+  background-color: unset !important;
+  box-shadow: unset;
+}
+.add_new_user.makeStyles-primary-117:hover
+{
+  background-color: unset !important;
+  box-shadow: unset;
 }

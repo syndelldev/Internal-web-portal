@@ -588,6 +588,7 @@ useEffect(() =>{
     {allTask.map((task)=>{
 
     if(task.task_delete == "no"){
+      var person = task.task_person.split(",");
 
     return(
 
@@ -601,9 +602,19 @@ useEffect(() =>{
                 <h4 className="projectTitle">{task.task_title}</h4>
                 <p className={classes.cardCategoryWhite}></p>
                 <div className="icon-display">
-                <GridItem>
-                  <div className="icon-edit-delete">
-                    <Popup trigger={<div><a className="bttn-design1" onClick={()=> { projectId(task.task_id) }  }><FiEdit/></a></div>}  className="popupReact"  modal>
+                <span className={task.task_priority}>{task.task_priority}</span>
+                {person.map((task_person) => {
+                  return(
+                    <div className="chip">
+                      <span>{task_person}</span>
+                    </div>
+                  )
+                })
+
+                }
+               {/*} <GridItem>
+                  <div className="icon-edit-delete">*/}
+                    <Popup trigger={<a className="icon-edit-delete"><div className="icon-width" onClick={()=> { projectId(task.task_id) }  }><FiEdit/></div></a>}  className="popupReact"  modal>
 
                     {close => (
                     <div>
@@ -790,7 +801,7 @@ useEffect(() =>{
                     {/* <button onClick={()=>deleteTask(task.task_id)} className="project_delete_icon"><MdDelete/></button> */}
 
 
-                    <Popup trigger={<span><MdDelete/></span>} modal>
+                    <Popup trigger={<a className="icon-edit-delete"><MdDelete/></a>} modal>
                         {close => (
                           <div>
                           <Card>                            
@@ -820,10 +831,11 @@ useEffect(() =>{
                         )}
                       </Popup>
 
-                    </div>
-                  </GridItem>
+                   {/* </div>
+                  </GridItem>*/}
               
-              </div></div>
+              </div>
+              </div>
             </CardHeader>
 
         </Card>

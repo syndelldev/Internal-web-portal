@@ -597,7 +597,7 @@ return(
 
         }
         {/* <span className="project_person">{project.project_person}</span> */}
-          <Popup trigger={<a><div className='icon-width' onClick={()=> { projectId(project.project_id) }  }><FiEdit/></div></a>} className="popupReact" modal>
+          <Popup trigger={<a className="icon-edit-delete"><div className='icon-width' onClick={()=> { projectId(project.project_id) }  }><FiEdit/></div></a>} className="popupReact" modal>
 
               {close => (
               <div className="popup-align">
@@ -793,7 +793,7 @@ return(
               )}
               </Popup>
 
-                      <Popup trigger={<a><MdDelete/></a>} modal>
+                      <Popup trigger={<a className="icon-edit-delete"><MdDelete/></a>} modal>
                         {close => (
                           <div>
                           <Card>                            
