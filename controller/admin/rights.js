@@ -51,7 +51,7 @@ const ProjectById = async (req,res) =>{
         console.log(req.body)
 
             // let data = await executeQuery(" SELECT * FROM `tbl_rights` WHERE user_id=? AND project_id=? ", [req.body.userid, req.body.projectid])
-            let data = await executeQuery(" UPDATE `tbl_rights` SET  view_rights=?,edit_rights=?  WHERE `user_id`=? AND `project_id`=? ", [req.body.view, req.body.edit, req.body.userid, req.body.projectid])
+            let data = await executeQuery(" UPDATE `tbl_rights` SET  view_rights=?  WHERE `user_id`=? AND `project_id`=? ", [req.body.view, req.body.userid, req.body.projectid])
             console.log(data)
             // // res.send(data); 
 
