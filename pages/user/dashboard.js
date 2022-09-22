@@ -119,7 +119,7 @@ function Dashboard({project}) {
   const [message, setmessage] = useState('');
 
   const [comments, setcomments] = useState([]);
-  console.log(comments)
+  console.log(comments);
   
   const getData = async (project_id)=>{
 
@@ -127,13 +127,16 @@ function Dashboard({project}) {
     var comment = await axios.post(`${server}/api/comment/comment`, { project_id: project_id });
     // console.log(comment.data)
     setcomments(comment.data)
-    console.log(comments)
+    // console.log(comments)
   }
   
 
   const sendMessage = async (project_id) => {
     // e.preventDefault();
     // alert(project_id)
+    console.log("comm");
+    console.log(textComment);
+
     var addComment = await axios.post(`${server}/api/comment/addcomment`, {  username: cookies.name, message: message , project_id: project_id });
     console.log(addComment)
     console.log(cookies.name)
@@ -141,69 +144,133 @@ function Dashboard({project}) {
   }
 
   const [textComment, setText] = useState([]);
-  console.log(textComment);
 
-  class Editor extends React.Component {
+  class RichTextEditor extends React.Component {
     constructor(props) {
       super(props);
-      this.state = { editorHtml: "" };
-      this.handleChange = this.handleChange.bind(this);
-      console.log(props);
+  
+      this.modules = {
+        toolbar: [
+            [{ 'font': [] }],
+            [{ 'size': ['small', false, 'large', 'huge'] }],
+            ['bold', 'italic', 'underline'],
+            [{'list': 'ordered'}, {'list': 'bullet'}],
+            [{ 'align': [] }],
+            [{ 'color': [] }, { 'background': [] }],
+            ['clean']
+          ]
+      };
+  
+      this.formats = [
+          'font',
+          'size',
+          'bold', 'italic', 'underline',
+          'list', 'bullet',
+          'align',
+          'color', 'background'
+        ];
+  
+        this.state = {
+        comments: ''
+      }
+  
+      this.rteChange = this.rteChange.bind(this);
     }
   
-    handleChange(html) {
-      this.setState({ editorHtml: html });
-      // console.log(html);
-      // setText(html);
+    rteChange = (content, delta, source, editor) => {
+      // console.log(editor.getHTML()); // rich text
+      // console.log(content);
+      // console.log(delta.ops[1]);
+      // console.log(source);
+      // console.log(editor.getText()); // plain text
+      // console.log(editor.getLength()); // number of characters
     }
   
     render() {
-      return (
-        <div className="text-editor">
-          <ReactQuill
-            onChange={this.handleChange}
-            placeholder={this.props.placeholder}
-            modules={Editor.modules}
-            formats={Editor.formats}
-            theme={"snow"} // pass false to use minimal theme
-          />
-        </div>
-      );
+        return (
+          <div>
+            <ReactQuill theme="snow"  modules={this.modules}
+              formats={this.formats} onChange={this.rteChange}
+              value={this.state.comments || ''}/>
+              {console.log("123")}
+              {setText(this.state.comments)}
+          </div>
+        );
     }
+  
   }
+  // class Editor extends React.Component {
+  //   constructor(props) {
+  //     super(props);
+  //     this.state = { editorHtml: "" };
+  //     this.handleChange = this.handleChange.bind(this);
+  //     // console.log("text");      
+  //   }
   
-  Editor.modules = {
-    toolbar: [
-      [{ 'header': [1, 2, 3, 4, 5, false] }],
-      [{ 'color': ["#fff", "#d0d1d2", "#000", "red" ,"green", "blue", "orange", "violet" ]}],
-      ['bold', 'italic', 'underline','strike', 'blockquote'],
-      [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
-      ['link', 'image'],
-      ['clean'],
-      
-    ],
-    // clipboard: {
-    //   matchVisual: false,
-    // }
-  };
+  //   handleChange(html) {
+  //     this.setState({ editorHtml: html });
+  //     // console.log(html);
+  //     // setText(this.state.editorHtml);
+  //     console.log(this.state.editorHtml);
+  //   }
+  
+  //   render() {
+  //     return (
+  //       <div className="text-editor">
+  //         <ReactQuill
+  //           onChange={this.handleChange}
+  //           placeholder={this.props.placeholder}
+  //           modules={Editor.modules}
+  //           formats={Editor.formats}
+  //           // value={this.state.editorHtml}
+  //           theme={"snow"} // pass false to use minimal theme
+  //         />
+  //       </div>
+  //     );
+  //   }
+  // }
+  
+  // Editor.modules = {
+  //   toolbar: [
+  //     [{ 'header': [1, 2, 3, 4, 5, false] }],
+  //     [{ 'color': ["#fff", "#d0d1d2", "#000", "red" ,"green", "blue", "orange", "violet" ]}],
+  //     ['bold', 'italic', 'underline','strike', 'blockquote'],
+  //     [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+  //     ['link', 'image'],
+  //     ['clean'],
+  //   ],
+  //   handlers: {
+  //     // handlers object will be merged with default handlers object
+  //     'link': function(value) {
+  //       if (value) {
+  //         console.log("value");
+  //       }else{
+  //         console.log("no data");
+  //       }
+  //     }
+  //   }
+  //   // clipboard: {
+  //   //   matchVisual: false,
+  //   // }
+  // };
   
   
-  Editor.formats = [
-    "header",
-    "font",
-    "size",
-    "bold",
-    "italic",
-    "underline",
-    "strike",
-    "blockquote",
-    "list",
-    "bullet",
-    "indent",
-    "link",
-    "image",
-    "color"
-  ];
+  // Editor.formats = [
+  //   "header",
+  //   "font",
+  //   "size",
+  //   "bold",
+  //   "italic",
+  //   "underline",
+  //   "strike",
+  //   "blockquote",
+  //   "list",
+  //   "bullet",
+  //   "indent",
+  //   "link",
+  //   "image",
+  //   "color"
+  // ];
   
   return (
     <>
@@ -319,9 +386,14 @@ function Dashboard({project}) {
                                             setmessage(e.target.value);
                                           }}
                                         ></textarea> */}
-    <Editor placeholder={"Write your comment"} />
+    <RichTextEditor placeholder={"Write your comment"}
+                                          // value={message}
+                                          // onChange={(e) => {
+                                          //   setmessage(e.target.value);
+                                          // }}
+    />
 
-                                        <div onClick={() => setmessage(project.project_id) }>Save</div>
+                                        <div onClick={()=> sendMessage(project.project_id)}>Save</div>
 
                                         {/* <div onClick={() => sendMessage(project.project_id)}>Save</div> */}
                                       </form>
