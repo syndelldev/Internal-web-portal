@@ -120,7 +120,7 @@ export async function getServerSideProps(){
   return{ props: {project_details, User_name, allTask} }
 }
 
-function Dashboard( { project_details , User_name , allTask } ) {
+function SubTask( { project_details , User_name , allTask } ) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   
@@ -844,6 +844,6 @@ useEffect(() =>{
   );
 }
 
-Dashboard.layout = SuperUser;
+SubTask.layout = SuperUser;
 
-export default Dashboard;
+export default SubTask;

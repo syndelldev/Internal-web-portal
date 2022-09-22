@@ -102,7 +102,7 @@ export async function getServerSideProps(){
   return{ props: {project_details, User_name} }
 }
 
-function Dashboard( { project_details , User_name } ) {
+function ProjectModule( { project_details , User_name } ) {
 
   const [cookies, setCookie] = useCookies(['name']);
 
@@ -848,5 +848,5 @@ return(
   );
 }
 
-Dashboard.layout = SuperUser;
-export default Dashboard;
+ProjectModule.layout = SuperUser;
+export default ProjectModule;
