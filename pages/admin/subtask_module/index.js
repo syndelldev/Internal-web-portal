@@ -460,7 +460,7 @@ useEffect(() =>{
                       <div className="form-group" {...register('task_start')}>
                       <span>Task Start Date</span><span className="required">*</span>
                         <DatePicker
-                          placeholderText="Start_Date : dd/mm/yyyy"
+                          placeholderText="Start Date : dd/mm/yyyy"
                           isClearable
                           name="datetime"
                           className={"form-control"}
@@ -480,7 +480,7 @@ useEffect(() =>{
                       <div className="form-group" {...register('task_deadline')}>
                       <span>Task End Date</span><span className="required">*</span>
                         <DatePicker
-                          placeholderText="End_Date : dd/mm/yyyy"
+                          placeholderText="End Date : dd/mm/yyyy"
                           isClearable
                           name="datetime1"
                           className={"form-control"}
@@ -591,19 +591,19 @@ useEffect(() =>{
 
     return(
 
-    <GridItem xs={12} sm={6} md={4}>
+    <GridItem xs={12} sm={6} md={9}>
       <form>
-        <Card>
-            <CardHeader color="primary">
+        <Card className= "projects">
+            <CardHeader color="primary" className="project-block">
 
-              <img src={`${server}/reactlogo.png`} className={classes.img}/>
-
+              {/* <img src={`${server}/reactlogo.png`} className={classes.img}/> */}
+              <div className="project-content">
                 <h4 className="projectTitle">{task.task_title}</h4>
                 <p className={classes.cardCategoryWhite}></p>
-
+                <div className="icon-display">
                 <GridItem>
                   <div className="icon-edit-delete">
-                    <Popup trigger={<div><a className="bttn-design" onClick={()=> { projectId(task.task_id) }  }><FiEdit/></a></div>}  className="popupReact"  modal>
+                    <Popup trigger={<div><a className="bttn-design1" onClick={()=> { projectId(task.task_id) }  }><FiEdit/></a></div>}  className="popupReact"  modal>
 
                     {close => (
                     <div>
@@ -627,6 +627,7 @@ useEffect(() =>{
                         </GridContainer>
 
                         </CardHeader>
+                        
                           <CardBody>
 
                             <GridContainer>
@@ -705,7 +706,7 @@ useEffect(() =>{
                                 <div className="form-group" onChange={handleChange} >
                                 <span>Task Start Date</span><span className="required">*</span>
                                   <DatePicker
-                                    placeholderText="Start_Date : dd/mm/yyyy"
+                                    placeholderText="Start Date : dd/mm/yyyy"
                                     isClearable
                                     name="datetime"
                                     className={"form-control"}
@@ -724,7 +725,7 @@ useEffect(() =>{
                                 <div className="form-group" onChange={handleChange} >
                                 <span>Task End Date</span><span className="required">*</span>
                                   <DatePicker
-                                    placeholderText="End_Date : dd/mm/yyyy"
+                                    placeholderText="End Date : dd/mm/yyyy"
                                     isClearable
                                     name="datetime1"
                                     className={"form-control"}
@@ -821,7 +822,8 @@ useEffect(() =>{
 
                     </div>
                   </GridItem>
-
+              
+              </div></div>
             </CardHeader>
 
         </Card>

@@ -98,6 +98,7 @@ function UserDetail({UserDetail}) {
   const router = useRouter();
   const useStyles = makeStyles(styles);
   const classes = useStyles();
+  
   return (
     <>
         {/* <Button color="primary"  className="add_new_user"><a href='/admin/adduser'  className="add_new_user"> + Add New User</a></Button> */}

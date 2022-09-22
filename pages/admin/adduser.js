@@ -93,8 +93,8 @@ function AddUser() {
             <form onSubmit={handleSubmit(onSubmit)}>              
             <Card>
                 <CardHeader color="primary">
-                    <h4 className={classes.cardTitleWhite}>Create User Profile</h4>
-                    <p className={classes.cardCategoryWhite}>Complete your profile</p>
+                    <h4 className={classes.cardTitleWhite} class="usertitle">Create User Profile</h4>
+                    <p className={classes.cardCategoryWhite} class="usersubtitle">Complete your profile</p>
                 </CardHeader>
                   <CardBody><br/>
                     <GridContainer>  
@@ -194,10 +194,10 @@ function AddUser() {
                               <option value="">Select Your Department...</option>
                               <option value="HR">HR</option>
                               <option value="UI & UX">UI & UX</option>
-                              <option value="Web development">Web development</option>
-                              <option value="Content writer">Content writer</option>
-                              <option value="Project manager">Project manager</option>
-                              <option value="Mobile App developer">Mobile App developer</option>
+                              <option value="Web Developer">Web Developer</option>
+                              <option value="Content Writer">Content Writer</option>
+                              <option value="Project Manager">Project Manager</option>
+                              <option value="Mobile App Developer">Mobile App Developer</option>
                               <option value="SEO">SEO</option>
                             </select>
                             <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
@@ -216,20 +216,20 @@ function AddUser() {
                           <div className="form-group">
                             <select name="position" id="position" className="form-control signup-input" {...register('position', {required: "Please enter your department" ,message:'Please select atleast one option', })}>
                               <option value="">Select Your Position</option>
-                              <option value="Junior HR">Junior HR</option>
-                              <option value="Junior UI & UX">Junior UI & UX</option>
-                              <option value="Junior Web development">Junior Web development</option>
-                              <option value="Junior Content writer">Junior Content writer</option>
-                              <option value="Junior Project manager">Junior Project manager</option>
-                              <option value="Junior Mobile App developer">Junior Mobile App developer</option>
-                              <option value="Junior SEO">Junior SEO</option>
-                              <option value="Senior HR">Senior HR</option>
-                              <option value="Senior UI & UX">Senior UI & UX</option>
-                              <option value="Senior Web development">Senior Web development</option>
-                              <option value="Senior Content writer">Senior Content writer</option>
-                              <option value="Senior Project manager">Senior Project manager</option>
-                              <option value="Senior Mobile App developer">Senior Mobile App developer</option>
-                              <option value="Senior SEO">Senior SEO</option>
+                              <option value="Jr. HR">Jr. HR</option>
+                              <option value="Jr. UI & UX">Jr. UI & UX</option>
+                              <option value="Jr. Web Development">Jr. Web Developer</option>
+                              <option value="Jr. Content Writer">Jr. Content Writer</option>
+                              <option value="Jr. Project Manager">Jr. Project Manager</option>
+                              <option value="Jr. Mobile App Developer">Jr. Mobile App Developer</option>
+                              <option value="Jr. SEO">Jr. SEO</option>
+                              <option value="Sr. HR">Sr. HR</option>
+                              <option value="Sr. UI & UX">Sr. UI & UX</option>
+                              <option value="Sr. Web Developer">Sr. Web Developer</option>
+                              <option value="Sr. Content Writer">Sr. Content Writer</option>
+                              <option value="Sr. Project Manager">Sr. Project Manager</option>
+                              <option value="Sr. Mobile App Developer">Sr. Mobile App Developer</option>
+                              <option value="Sr. SEO">Sr. SEO</option>
                             </select>
                             <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                             <div className="error-msg">{errors.position && <p>{errors.position.message}</p>}</div>
@@ -246,7 +246,7 @@ function AddUser() {
                             <select name="Status" id="Status" className="form-control signup-input" {...register('status', {required:true ,message:'Please select atleast one option', })}>
                               <option value="Select...">Select Your Status...</option>
                               <option value="Active">Active</option>
-                              <option value="Deactive">Deactive</option>
+                              <option value="Inactive">Inactive</option>
                             </select>
                             <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                             <div className="error-msg">{errors.status && <p>{errors.status.message}</p>}</div>

@@ -2,7 +2,9 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useRouter } from 'next/router';
 import { makeStyles } from "@material-ui/core/styles";
-import Admin from "layouts/Admin.js";
+// layout for this page
+import SuperUser from "layouts/SuperUser.js";
+
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import Table from "components/Table/Table.js";
@@ -372,10 +374,10 @@ useEffect(() =>{
                             <option value=""  disabled selected>Select Your Department...</option>
                             <option value="HR">HR</option>
                             <option value="UI & UX">UI & UX</option>
-                            <option value="Web Developer">Web Developer</option>
-                            <option value="Content Writer">Content Writer</option>
-                            <option value="Project Manager">Project Manager</option>
-                            <option value="Mobile App Developer">Mobile App Developer</option>
+                            <option value="Web development">Web development</option>
+                            <option value="Content writer">Content writer</option>
+                            <option value="Project manager">Project manager</option>
+                            <option value="Mobile App developer">Mobile App developer</option>
                             <option value="SEO">SEO</option>
                           </select>
                           <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
@@ -528,14 +530,14 @@ useEffect(() =>{
   <div className="department_dropdown">
   <button className="dropdown_button">Project Departments</button>
       <div className="department-link">
-        <a href={`${server}/admin/project_module`}>All</a>
-        <a href={`${server}/admin/project_module/project_department/HR`}>HR</a>
-        <a href={`${server}/admin/project_module/project_department/UI & UX`}>UI & UX</a>
-        <a href={`${server}/admin/project_module/project_department/Web development`}>Web Developer</a>
-        <a href={`${server}/admin/project_module/project_department/Content writer`}>Content Writer</a>
-        <a href={`${server}/admin/project_module/project_department/Project manager`}>Project Manager</a>
-        <a href={`${server}/admin/project_module/project_department/Mobile App developer`}>Mobile App Developer</a>
-        <a href={`${server}/admin/project_module/project_department/SEO`}>SEO</a>
+        <a href={`${server}/superuser/project_module`}>All</a>
+        <a href={`${server}/superuser/project_module/project_department/HR`}>HR</a>
+        <a href={`${server}/superuser/project_module/project_department/UI & UX`}>UI & UX</a>
+        <a href={`${server}/superuser/project_module/project_department/Web development`}>Web Development</a>
+        <a href={`${server}/superuser/project_module/project_department/Content writer`}>Content Writer</a>
+        <a href={`${server}/superuser/project_module/project_department/Project manager`}>Project Manager</a>
+        <a href={`${server}/superuser/project_module/project_department/Mobile App developer`}>Mobile App Developer</a>
+        <a href={`${server}/superuser/project_module/project_department/SEO`}>SEO</a>
       </div>
 </div>
 </GridItem>
@@ -544,13 +546,13 @@ useEffect(() =>{
 <div className="department_dropdown">
   <button className="dropdown_button">Project Languages</button>
       <div className="department-link">
-        <a href={`${server}/admin/project_module`}>All</a>
-        <a href={`${server}/admin/project_module/project_language/Wordpress`}>Wordpress</a>
-        <a href={`${server}/admin/project_module/project_language/Shopify`}>Shopify</a>
-        <a href={`${server}/admin/project_module/project_language/ReactJS`}>ReactJS</a>
-        <a href={`${server}/admin/project_module/project_language/Laravel`}>Laravel</a>
-        <a href={`${server}/admin/project_module/project_language/Android`}>Android</a>
-        <a href={`${server}/admin/project_module/project_language/Bubble`}>Bubble</a>
+        <a href={`${server}/superuser/project_module`}>All</a>
+        <a href={`${server}/superuser/project_module/project_language/Wordpress`}>Wordpress</a>
+        <a href={`${server}/superuser/project_module/project_language/Shopify`}>Shopify</a>
+        <a href={`${server}/superuser/project_module/project_language/ReactJS`}>ReactJS</a>
+        <a href={`${server}/superuser/project_module/project_language/Laravel`}>Laravel</a>
+        <a href={`${server}/superuser/project_module/project_language/Android`}>Android</a>
+        <a href={`${server}/superuser/project_module/project_language/Bubble`}>Bubble</a>
       </div>
 </div>
   </GridItem>
@@ -609,7 +611,7 @@ return(
 
                   <GridContainer>
                     <GridItem>
-                      <h4 className={classes.cardTitleWhite}>Edit Project{project.project_created_date}</h4>
+                      <h4 className={classes.cardTitleWhite}>Edit Project</h4>
                       <p className={classes.cardCategoryWhite}>Update your project details</p>
                     </GridItem>
 
@@ -650,10 +652,10 @@ return(
                                 <option value="HR">HR</option>
                                 <option value="UI & UX">UI & UX</option>
                                 <option value="Testing">Testing</option>
-                                <option value="Web development">Web Development</option>
-                                <option value="Content writer">Content Writer</option>
-                                <option value="Project manager">Project Manager</option>
-                                <option value="Mobile App developer">Mobile App Developer</option>
+                                <option value="Web development">Web development</option>
+                                <option value="Content writer">Content writer</option>
+                                <option value="Project manager">Project manager</option>
+                                <option value="Mobile App developer">Mobile App developer</option>
                                 <option value="SEO">SEO</option>
                               </select>
                               <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
@@ -846,5 +848,5 @@ return(
   );
 }
 
-Dashboard.layout = Admin;
+Dashboard.layout = SuperUser;
 export default Dashboard;
