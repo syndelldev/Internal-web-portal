@@ -95,7 +95,7 @@ const styles = {
 export async function getServerSideProps(){
   const res = await fetch(`${server}/api/project`);
   const project_details = await res.json();
-  // console.log(project_details);
+  
   const response = await fetch(`${server}/api/admin`)
   const User_name = await response.json();
 
@@ -103,7 +103,7 @@ export async function getServerSideProps(){
 }
 
 function ProjectModule( { project_details , User_name } ) {
-
+  // console.log(project_details);
   const [cookies, setCookie] = useCookies(['name']);
 
   const useStyles = makeStyles(styles);
@@ -562,44 +562,52 @@ useEffect(() =>{
     <GridContainer>
 
     {project_details.map((project)=>{
+      // console.log(project.project_person)
+      // console.log(cookies.name)
 
-if(project.project_delete == "no"){
+      const isInArray = project.project_person.includes(cookies.name);
+      // console.log(isInArray); 
 
-// if(status.project_status == project.project_status){
+      if(isInArray==true){
+        // console.log("True")
+      }
+      else{
+        // console.log("false")
+      }
+      if(project.project_delete == "no"){
 
-  var person = project.project_person.split(",");
-  // const name =[];
-  // for(i=0 ; i<person.length; i++){
-  //   console.log(person[i]);
-  //   var member = person[i].slice(0,2);
-  //   console.log(member);
-  // }
+      // if(status.project_status == project.project_status){
 
-return(
-  <>
-    <GridItem xs={12} sm={6} md={9}>
+      var person = project.project_person.split(",");
+      // const name =[];
+      // for(i=0 ; i<person.length; i++){
+      //   console.log(person[i]);
+      //   var member = person[i].slice(0,2);
+      //   console.log(member);
+      // }
 
-  <form>
-    <Card className= "projects">
-      <CardHeader color="primary" className="project-block">
-
-        {/* <img src={`${server}/reactlogo.png`} className={classes.img}/> */}
-        <div className="project-content">
-        <h4 className="projectTitle">{project.project_title}</h4>
-        
-        <div className="icon-display">
-        <span className={project.project_priority}>{project.project_priority}</span>
-        {person.map((project_person) => {
-          return(
-            <div className="chip">
-              <span>{project_person}</span>
-            </div>
-          )
-        })
+      return(
+        <>
+          <GridItem xs={12} sm={6} md={9}>
+            <form>
+            <Card className= "projects">
+              <CardHeader color="primary" className="project-block">
+                {/* <img src={`${server}/reactlogo.png`} className={classes.img}/> */}
+                <div className="project-content">
+                <h4 className="projectTitle">{project.project_title}</h4>        
+                <div className="icon-display">
+                <span className={project.project_priority}>{project.project_priority}</span>
+                {person.map((project_person) => {
+                  return(
+                    <div className="chip">
+                      <span>{project_person}</span>
+                    </div>
+                  )
+                })
 
         }
         {/* <span className="project_person">{project.project_person}</span> */}
-          <Popup trigger={<a><div className='icon-width' onClick={()=> { projectId(project.project_id) }  }><FiEdit/></div></a>} className="popupReact" modal>
+          <Popup trigger={<Button className='icon-width' onClick={()=> { projectId(project.project_id) }} disabled={isInArray==false}><FiEdit/></Button>} className="popupReact" modal>
 
               {close => (
               <div className="popup-align">

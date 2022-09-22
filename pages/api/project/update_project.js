@@ -8,7 +8,7 @@ async function updateProject(req,res){
     {
         try{
             // console.log(req.body.project_title);
-            console.log(req.body.project_id);
+            console.log(req.body);
  
             // console.log(req.body.project_person);
             // console.log(req.body);
@@ -19,8 +19,8 @@ async function updateProject(req,res){
             
             
 
-            var addUserQuery = await executeQuery("Update `tbl_project` set `project_title` = ?, `project_description` = ?, `project_language` = ?, `project_comment` = ?, `project_priority` = ?, `project_start` = ?, `project_deadline` = ? , `project_person`= ? where `project_id` = ?",
-            [req.body.project_title, req.body.project_description, req.body.project_language , req.body.project_comment , req.body.project_priority , req.body.project_start , req.body.project_deadline , `${members}` , req.body.project_id ] );
+            var addUserQuery = await executeQuery("Update `tbl_project` set `project_title` = ?, `project_description` = ?, `project_language` = ?, `project_comment` = ?, `project_priority` = ?, `project_start` = ?, `project_deadline` = ? , `project_person`= ?, `project_status`=? where `project_id` = ?",
+            [req.body.project_title, req.body.project_description, req.body.project_language , req.body.project_comment , req.body.project_priority , req.body.project_start , req.body.project_deadline , `${members}` , req.body.project_status, req.body.project_id ] );
 
             var rightslist = await executeQuery("SELECT * FROM `tbl_rights` WHERE project_id=?", [req.body.project_id])
             var rightslist = await executeQuery("DELETE FROM `tbl_rights` WHERE project_id=?", [req.body.project_id])
