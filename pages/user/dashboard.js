@@ -1,9 +1,7 @@
 import React, { useEffect, useState , useRef } from "react";
 // layout for this page
-
 import User from "layouts/User.js";
 import { useRouter } from 'next/router';
-
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -23,8 +21,9 @@ import { makeStyles } from "@material-ui/core/styles";
 // import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 import { useCookies } from 'react-cookie';
 import { Button } from "@material-ui/core";
-import { getAllJSDocTags } from "typescript";
+import dynamic from "next/dynamic";
 
+const ReactQuill = dynamic(import('react-quill'), { ssr: false })
 
 const styles = {
   cardCategoryWhite: {
@@ -138,9 +137,74 @@ function Dashboard({project}) {
     var addComment = await axios.post(`${server}/api/comment/addcomment`, {  username: cookies.name, message: message , project_id: project_id });
     console.log(addComment)
     console.log(cookies.name)
-    router.reload(`${server}/user/dashboard`);
+    // router.reload(`${server}/user/dashboard`);
   }
 
+  const [textComment, setText] = useState([]);
+  console.log(textComment);
+
+  class Editor extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = { editorHtml: "" };
+      this.handleChange = this.handleChange.bind(this);
+      console.log(props);
+    }
+  
+    handleChange(html) {
+      this.setState({ editorHtml: html });
+      // console.log(html);
+      // setText(html);
+    }
+  
+    render() {
+      return (
+        <div className="text-editor">
+          <ReactQuill
+            onChange={this.handleChange}
+            placeholder={this.props.placeholder}
+            modules={Editor.modules}
+            formats={Editor.formats}
+            theme={"snow"} // pass false to use minimal theme
+          />
+        </div>
+      );
+    }
+  }
+  
+  Editor.modules = {
+    toolbar: [
+      [{ 'header': [1, 2, 3, 4, 5, false] }],
+      [{ 'color': ["#fff", "#d0d1d2", "#000", "red" ,"green", "blue", "orange", "violet" ]}],
+      ['bold', 'italic', 'underline','strike', 'blockquote'],
+      [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+      ['link', 'image'],
+      ['clean'],
+      
+    ],
+    // clipboard: {
+    //   matchVisual: false,
+    // }
+  };
+  
+  
+  Editor.formats = [
+    "header",
+    "font",
+    "size",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "blockquote",
+    "list",
+    "bullet",
+    "indent",
+    "link",
+    "image",
+    "color"
+  ];
+  
   return (
     <>
       <div>
@@ -245,17 +309,21 @@ function Dashboard({project}) {
                                     </GridItem>
                                   </GridContainer>
                                   <GridContainer>
-                                    <GridItem xs={12} sm={12} md={6} >
+                                    <GridItem xs={12} sm={12} md={12} >
                                       <form>
-                                        <textarea
+                                        {/* <textarea
                                           className="form-control signup-input"
                                           type="text"
                                           value={message}
                                           onChange={(e) => {
                                             setmessage(e.target.value);
                                           }}
-                                        ></textarea>
-                                        <div onClick={() => sendMessage(project.project_id)}>Save</div>
+                                        ></textarea> */}
+    <Editor placeholder={"Write your comment"} />
+
+                                        <div onClick={() => setmessage(project.project_id) }>Save</div>
+
+                                        {/* <div onClick={() => sendMessage(project.project_id)}>Save</div> */}
                                       </form>
                                     </GridItem>
                                   </GridContainer>
@@ -268,6 +336,8 @@ function Dashboard({project}) {
                                     // console.log("textArea");
                                     // console.log(textArea);
                                     // if(textArea == ""){
+                                      // function Setcontent() {
+                                      //  }
                                       return(
                                         <span>
                                           <GridContainer>
@@ -283,68 +353,7 @@ function Dashboard({project}) {
                                           <GridContainer>
                                             <GridItem>
                                               <div>
-                                                {textArea.map((text)=>{
-                                                  var commentText = text;
-                                                  var Text = (commentText).includes("http");
-
-                                                  if(Text == true){
-                                                    var textComment = commentText.split(" ");
-                                                    for (var i=0; i<textComment.length; i++){
-                                                      // console.log(textComment.length);
-                                                      // console.log(textComment[i]);
-
-                                                      // if(textComment[i].startsWith("http")){
-                                                      //   return(
-                                                      //     <>
-                                                      //       <a href={textComment[i]} target="_blank" id="userCommentLink">{textComment[i]}</a>
-                                                      //     </>
-                                                      //   )
-                                                      // }else{
-                                                        return(
-                                                          <>
-                                                            <span  id="userCommentLink">{textComment[i]}</span>
-                                                          </>
-                                                        )
-                                                      // }
-                                                    }
-                                                    // console.log(getLink);
-                                                    // var link = textComment[2].startsWith("http");
-                                                    // console.log("split http");
-                                                    // console.log(textComment);
-                                                    // for(var i=0; i<getLink.length; i++){
-                                                    //   console.log(getLink[i]);
-                                                    //   if(getLink[i].startsWith("http")){
-                                                    //     return(
-                                                    //       <>
-                                                    //         <a href={getLink[i]} target="_blank" id="userCommentLink">{getLink[i]}</a>
-                                                    //       </>
-                                                    //     )
-                                                    //   }
-                                                      // else{
-                                                      //   return(
-                                                      //     <>
-                                                      //       <span  id="userCommentLink">{getLink[i]}</span>
-                                                      //     </>
-                                                      //   )
-                                                      // }
-
-                                                    // }
-                                                    // return(
-                                                    //   <div>
-                                                    //     <a href={text} target="_blank" id="userCommentLink">{text}</a>
-                                                    //   </div>
-                                                    // )
-                                                  }else{
-                                                    var textComment = commentText.split(" ");
-                                                    return(
-                                                      <div>
-                                                        <span id="userComment">{text}</span>
-                                                      </div>
-                                                    )
-                                                  }
-                                                })}
-                                                {/* <span id="userComment">{m.comment}</span> */}
-                                                {/* <p>{Time[0]}:{Time[1]}:{Time[2]}</p> */}
+                                                <span id="editorOne">{m.comment}</span>
                                               </div>
                                             </GridItem>
                                           </GridContainer>
