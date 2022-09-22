@@ -90,25 +90,49 @@ export async function getServerSideProps(){
   const res = await fetch(`${server}/api/project`);
   const project_details = await res.json();
   // console.log(project_details);
+
   const response = await fetch(`${server}/api/admin`)
   const User_name = await response.json();
   // console.log(User_name);
-  const status = await fetch(`${server}/api/project/project_status`)
-  const all_status = await status.json();
-  console.log(all_status);
 
-  return{ props: {project_details, User_name, all_status } }
+  const hold = await fetch(`${server}/api/project/project_status/project_hold`)
+  const project_hold = await hold.json();
+
+  const completed = await fetch(`${server}/api/project/project_status/project_completed`)
+  const project_completed = await completed.json();
+
+  const running = await fetch(`${server}/api/project/project_status/project_running`)
+  const project_running = await running.json();
+
+  // console.log(all_status);
+
+  return{ props: { project_hold, project_completed, project_running } }
 }
 
-function Dashboard( { project_details , User_name, all_status } ) {
+function Dashboard( { project_hold, project_completed, project_running } ) {
+  console.log(project_hold);
+  console.log(project_completed);
+  console.log(project_running);
+
   const useStyles = makeStyles(styles);
   const classes = useStyles();
+
+  const [trackdate,settrackdate] = useState("")
+  console.log(trackdate)
+
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var yyyy = today.getFullYear();
+
+  today = yyyy + '/' + mm + '/' + dd;
+  console.log(today);
 
   return (
     <>
     
     <h4 className="project_status">Projects</h4>
-    <GridContainer>
+    {/* <GridContainer>
 
       {all_status.map((status) =>{
       return(<>
@@ -117,12 +141,64 @@ function Dashboard( { project_details , User_name, all_status } ) {
           <div className={status.project_status}>
             <h6 className={status.project_status}>{status.project_status}</h6>
             <h3 className={status.project_status}><img src={`${server}/reactlogo.png`} className={status.project_status}/>{status.project_total}</h3>
-          </div>
-
+          </div> 
         </GridItem>
+
       </>)
       })
       }
+    </GridContainer> */}
+
+    <GridContainer>
+      {project_running.map((status)=>{
+        const MySQLDate  = status.project_deadline;
+        let date = MySQLDate.replace(/[-]/g, '/').substr(0,10);
+        console.log(date)
+
+        if(date>today)
+        {
+          console.log("On track")
+        }
+        else{
+          console.log("off track")
+        }
+        return(
+          <GridItem xs={12} sm={6} md={4} key={status.project_id}>
+            <div className={status.project_status}>
+
+              <h6>{status.project_status}</h6>
+              <h6>{date}</h6>
+              <h6>{today}- {trackdate}</h6>
+            </div>
+          </GridItem>
+        )
+      })}
+    </GridContainer>
+
+    <GridContainer>
+      {project_completed.map((status)=>{
+        return(
+          <GridItem xs={12} sm={6} md={4} key={status.project_id}>
+            <div className={status.project_status}>
+              <h6>{status.project_status}-{project_completed.length}</h6>
+              <h3 className={status.project_status}><img src={`${server}/reactlogo.png`} className={status.project_status}/>{status.project_total}</h3>
+            </div>
+          </GridItem>
+        )
+      })}
+    </GridContainer>
+
+    <GridContainer>
+      {project_hold.map((status)=>{
+        return(
+          <GridItem xs={12} sm={6} md={4} key={status.project_id}>
+            <div className={status.project_status}>
+              <h6>{status.project_status}-{project_hold.length}</h6>
+              <h3 className={status.project_status}><img src={`${server}/reactlogo.png`} className={status.project_status}/>{status.project_total}</h3>
+            </div>
+          </GridItem>
+        )
+      })}
     </GridContainer>
     
     </>);

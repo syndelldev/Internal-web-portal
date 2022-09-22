@@ -562,17 +562,17 @@ useEffect(() =>{
     <GridContainer>
 
     {project_details.map((project)=>{
-      console.log(project.project_person)
-      console.log(cookies.name)
+      // console.log(project.project_person)
+      // console.log(cookies.name)
 
       const isInArray = project.project_person.includes(cookies.name);
-      console.log(isInArray); 
+      // console.log(isInArray); 
 
       if(isInArray==true){
-        console.log("True")
+        // console.log("True")
       }
       else{
-        console.log("false")
+        // console.log("false")
       }
       if(project.project_delete == "no"){
 
