@@ -110,15 +110,15 @@ export async function getServerSideProps(){
 }
 
 function Dashboard( { project_hold, project_completed, project_running } ) {
-  console.log(project_hold);
-  console.log(project_completed);
+  // console.log(project_hold);
+  // console.log(project_completed);
   console.log(project_running);
 
   const useStyles = makeStyles(styles);
   const classes = useStyles();
 
   const [trackdate,settrackdate] = useState("")
-  console.log(trackdate)
+  
 
   var today = new Date();
   var dd = String(today.getDate()).padStart(2, '0');
@@ -126,7 +126,13 @@ function Dashboard( { project_hold, project_completed, project_running } ) {
   var yyyy = today.getFullYear();
 
   today = yyyy + '/' + mm + '/' + dd;
-  console.log(today);
+  // console.log(today);
+
+  const On_track = [];
+  console.log(On_track)
+
+  const Off_track = [];
+  console.log(Off_track)
 
   return (
     <>
@@ -153,52 +159,66 @@ function Dashboard( { project_hold, project_completed, project_running } ) {
       {project_running.map((status)=>{
         const MySQLDate  = status.project_deadline;
         let date = MySQLDate.replace(/[-]/g, '/').substr(0,10);
-        console.log(date)
+        console.log("date");
+        // console.log(trackdate);
+        // console.log(status.project_id);
 
         if(date>today)
         {
-          console.log("On track")
+          console.count("On track")
+          console.log(status.project_id);
+
+          
+          On_track.push(status.project_id);
+          console.log(On_track)
+          
+          
         }
         else{
-          console.log("off track")
+          console.count("off track")
+          console.log(status.project_id);
+
+          Off_track.push(status.project_id);
+          console.log(Off_track)
+
         }
-        return(
-          <GridItem xs={12} sm={6} md={4} key={status.project_id}>
-            <div className={status.project_status}>
-
-              <h6>{status.project_status}</h6>
-              <h6>{date}</h6>
-              <h6>{today}- {trackdate}</h6>
-            </div>
-          </GridItem>
-        )
+        
+        // return(
+        //   <GridItem xs={12} sm={6} md={4}>
+        //     <div className={status.project_status}>
+        //       <h6>{status.project_status}</h6>
+        //       <h6>{date}</h6>
+        //       <h6>{today}</h6>
+        //     </div>
+        //   </GridItem>
+        // )
       })}
     </GridContainer>
 
     <GridContainer>
-      {project_completed.map((status)=>{
-        return(
-          <GridItem xs={12} sm={6} md={4} key={status.project_id}>
-            <div className={status.project_status}>
-              <h6>{status.project_status}-{project_completed.length}</h6>
-              <h3 className={status.project_status}><img src={`${server}/reactlogo.png`} className={status.project_status}/>{status.project_total}</h3>
-            </div>
+          <GridItem xs={12} sm={6} md={4} >
+              <h6>On track Project - {On_track.length}</h6>
           </GridItem>
-        )
-      })}
     </GridContainer>
 
     <GridContainer>
-      {project_hold.map((status)=>{
-        return(
-          <GridItem xs={12} sm={6} md={4} key={status.project_id}>
-            <div className={status.project_status}>
-              <h6>{status.project_status}-{project_hold.length}</h6>
-              <h3 className={status.project_status}><img src={`${server}/reactlogo.png`} className={status.project_status}/>{status.project_total}</h3>
+          <GridItem xs={12} sm={6} md={4} >
+              <h6>Off track Project - {Off_track.length}</h6>
+          </GridItem>
+    </GridContainer>
+
+    <GridContainer>
+          <GridItem xs={12} sm={6} md={4} >
+              <h6>Completed Project - {project_completed.length}</h6>
+          </GridItem>
+    </GridContainer>
+
+    <GridContainer>
+          <GridItem xs={12} sm={6} md={4}>
+            <div>
+              <h6>On Hold Project - {project_hold.length}</h6>
             </div>
           </GridItem>
-        )
-      })}
     </GridContainer>
     
     </>);
