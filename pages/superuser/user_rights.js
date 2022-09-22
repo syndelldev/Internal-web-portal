@@ -58,14 +58,15 @@ function UserRights({UserList,ModuleList}){
     const [module, setmodule] = useState(1)
     // console.log(module)
 
-    const [projects, setprojects] = useState([])
+    const [users, setusers] = useState([])
     const getData = () => {
         axios.post(`${server}/api/rights/${user}`, {userid:user,moduleid:module})
         .then((res)=>{
-            setprojects(res.data)
+            setusers(res.data)
         })
     }
-    console.log(projects)
+    console.log(users)
+    
 
     const [viewcheckbox,setviewcheckbox] = useState(0)
     const viewCheckbox = (e) =>{
@@ -169,7 +170,7 @@ function UserRights({UserList,ModuleList}){
                                     <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                                 </GridItem>
                             </GridContainer><br/>
-                            <Button color="primary" onClick={()=>{getData();getRightList();}}  type="submit">Submit</Button><br/><br/>
+                            <Button color="primary" onClick={getData}  type="submit">Submit</Button><br/><br/>
 
                             <div className={classes.tableResponsive}>
                                 <Table className={classes.table}>
@@ -182,7 +183,7 @@ function UserRights({UserList,ModuleList}){
                                     </TableHead>
                                     <TableBody>
                                         
-                                        {projects.map((data)=>{
+                                        {users.map((data)=>{
                                             return(
                                                 <TableRow key={data.project_id} value={data.project_id}>
                                                     <TableCell>{data.project_title}-{data.project_id}</TableCell>  
