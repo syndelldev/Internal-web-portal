@@ -49,6 +49,10 @@ a {
 #userComment {
   white-space: pre-line;
 }
+#userCommentLink {
+  white-space: pre-line;
+  color: #0052cc;
+}
 
   .department-link a:hover {background-color:  #ADD8E6;color:#000;}
 

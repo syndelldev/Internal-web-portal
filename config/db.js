@@ -3,15 +3,11 @@ const { createPool } = require("mysql");
 const { resolve } = require("path");
 
 const pool = createPool({
-    host:"192.249.127.21",
-    user:"spms_Masteradmin",
-    password:"yG#919G!Zv)i",
+    host:"127.0.0.1",
+    user:"root",
+    password:"",
     port:"3306",
-    database:"spms_automation_tool"
-
-
-    
-
+    database:"web_portal"
 })
 
 pool.getConnection((err)=>{

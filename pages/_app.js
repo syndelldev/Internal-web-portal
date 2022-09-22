@@ -31,6 +31,7 @@ import PageChange from "components/PageChange/PageChange.js";
 
 import "assets/css/nextjs-material-dashboard.css?v=1.1.0";
 import { CookiesProvider } from 'react-cookie';
+import 'react-quill/dist/quill.snow.css';
 
 
 Router.events.on("routeChangeStart", (url) => {
