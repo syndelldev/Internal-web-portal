@@ -117,15 +117,15 @@ function Dashboard( { project_details , User_name } ) {
   var yyyy = today.getFullYear();
 
   today = yyyy + '/' + mm + '/' + dd;
-  console.log(today);
+  // console.log(today);
 
   //for On_track
   const On_track = [];
-  console.log(On_track)
+  // console.log(On_track)
 
   //for Off_track
   const Off_track = [];
-  console.log(Off_track)
+  // console.log(Off_track)
 
   const deleteProject = async(id) =>{
     console.log('delete');
@@ -156,8 +156,6 @@ function Dashboard( { project_details , User_name } ) {
   const [ userID , setUserId] = useState();
 
   const userId = async(id) =>{
-    console.log("cookies");
-    console.log(id);
 
     const added_By = [];
     const user = await fetch(`${server}/api/user_dashboard/${id}`)
@@ -171,7 +169,7 @@ function Dashboard( { project_details , User_name } ) {
   }
   const add_user = [];
   add_user.push(userID);
-  console.log(add_user);
+  console.log(userID)
 
   const projectId = async(id) =>{
     console.log('update project id');
@@ -216,6 +214,7 @@ function Dashboard( { project_details , User_name } ) {
   for(var i=0; i<projectMember.length; i++){
     allSelectedMember.push({'label' :projectMember[i] , 'value' : projectMember[i]});
   }
+  console.log("projectMember", projectMember)
 
   const toastId = React.useRef(null);
   const updateProject = async() =>{
@@ -476,8 +475,6 @@ useEffect(() =>{
                   
                     <GridItem xs={12} sm={12} md={6}>
                         <div className="form-group">
-                          {/*<input type="text" className="form-control signup-input" placeholder="Status" {...register('status',  { required: "Please enter your Status", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
-                          <div className="error-msg">{errors.status && <p>{errors.status.message}</p>}</div>*/}
                           <span>Project Status</span><span className="required">*</span>
                           <select name="Status" id="Status" className="form-control signup-input" {...register('project_status', {required:true ,message:'Please select atleast one option', })}>
                             <option value=""  disabled selected>Select Project Status</option>
@@ -592,23 +589,23 @@ if(project.project_delete == "no"){
   // console.log(project.project_status)
   const MySQLDate  = project.project_deadline;
   let date = MySQLDate.replace(/[-]/g, '/').substr(0,10);
-  console.log(date)
+  // console.log(date)
 
   if(project.project_status=="running")
   {
     
     if(date>today)
     {
-      console.log("On track", project.project_id);
+      // console.log("On track", project.project_id);
       On_track.push(project.project_id);
-      console.log(On_track)
+      // console.log(On_track)
     }
     else
     {
-      console.log("off track", project.project_id);
+      // console.log("off track", project.project_id);
 
       Off_track.push(project.project_id);
-      console.log(Off_track)
+      // console.log(Off_track)
     }
   }
 return(
@@ -791,8 +788,7 @@ return(
 
                       <GridContainer>
                       <GridItem xs={12} sm={12} md={12}>
-                          <div className="form-group">
-                          
+                          <div className="form-group">     
                           <span>Project Members</span><span className="required">*</span>
                             <Multiselect
                               displayValue="value"
@@ -808,7 +804,7 @@ return(
                           </div> 
                         </GridItem>
                       </GridContainer><br/>
-
+                              
                       <GridContainer>
                         <GridItem xs={12} sm={12} md={12}>
                           <div className="form-group">
