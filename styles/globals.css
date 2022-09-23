@@ -378,3 +378,7 @@ p.usersubtitle{
 .Task_todo{
   display: none;
 }
+table,tr,th,td
+{
+  border: 3px solid black;
+}

@@ -285,11 +285,231 @@ function Dashboard({project}) {
           )
         })}
       </div>
+          <table>
+            <tr>
+              <th>Project Title</th>
+              <th>Project Priority</th>
+              <th>Project Status</th>
+              <th>Project Person</th>
+              <th>View & Edit</th>
+            </tr>
+            <tr>
+              <td>
+                {
+                  project.map((project)=>{
+                    return(
+                      <h4 className="projectTitle">{project.project_title}</h4>
+                    )
+                  })
+                }
+              </td>
+              <td>
+                {
+                  project.map((project)=>{
+                    return(
+                      <p className="projectPriority">{project.project_priority} Priority</p>
+                    )
+                  })
+                }
+              </td>
+              <td>
+                {
+                  project.map((project)=>{
+                    return(
+                      <p>{project.project_status}</p>
+                    )
+                  })
+                }
+              </td>
+              <td>
+                {
+                  project.map((project)=>{
+                    return(
+                      <p>{project.project_person}</p>
+                    )
+                  })
+                }
+              </td> 
+              <td>
+                {
+                  project.map((project)=>{
+                    return(
+                      <div className="icon-display">
+                        <Popup trigger={<Button disabled={project.view_rights==0} ><FaEye/></Button>}  className="popupReact"  modal>
+                          {close => (
+                            <div>
+                              <GridItem xs={6} sm={6} md={12} key={project.project_id}>
+                                <Card >
+                                  <CardHeader color="primary">
+                                    <GridContainer>
+                                      <GridItem>
+                                        <h4>{project.project_title}</h4>
+                                      </GridItem>
+                                      <div className={classes.close}>
+                                        <a onClick={close}>&times;</a>
+                                      </div>   
+                                    </GridContainer>
+                                  </CardHeader><br/>
+                                  <CardFooter>
+                                    <p>Project Language</p>-<p>{project.project_language}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p>{project.project_person}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p>{project.project_description}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p>{project.project_department}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p>{project.project_status}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p className="projectPriority">{project.project_priority} Priority</p>
+                                  </CardFooter>
+                                </Card>
+                              </GridItem>
+                            </div>
+                          )}
+                        </Popup>
+
+                        {/*Edit Project PopUp*/}
+                        <Popup trigger={<div> <button disabled={project.edit_rights==0} onClick={()=>getData(project.project_id)} className="user-icon"><FiEdit/></button> </div>}  className="popupReact"  modal >
+                          {close => (
+                            <div>
+                              
+                              <GridItem xs={12} sm={12} md={12} key={project.project_id}>
+                                <Card>
+                                  <CardHeader color="primary">
+                                    <h4>{project.project_title}</h4>
+                                      <div className={classes.close}>
+                                        <a onClick={close}>&times;</a>
+                                      </div>
+                                  </CardHeader>
+                                  <CardBody>
+                                      <GridContainer>
+                                        <GridItem>
+                                          <p>Project Language - {project.project_language}</p>
+                                          <p>Project Person - {project.project_person}</p>
+                                          <p>Project Description - {project.project_description}</p>
+                                          <p>Department - {project.project_department}</p>
+                                          <p>Project Status - {project.project_status}</p>
+                                        </GridItem>
+                                        <GridItem>
+                                          <p className="projectPriority">{project.project_priority} Priority</p>
+                                        </GridItem>
+                                      </GridContainer>
+                                  {/* </CardBody> */}
+
+                                  <GridContainer>
+                                    <GridItem>
+                                      <h5 className="projectPriority">Comments</h5>
+                                    </GridItem>
+                                  </GridContainer>
+                                  <GridContainer>
+                                    <GridItem xs={12} sm={12} md={12} >
+                                      <form>
+                                        {/* <textarea
+                                          className="form-control signup-input"
+                                          type="text"
+                                          value={message}
+                                          onChange={(e) => {
+                                            setmessage(e.target.value);
+                                          }}
+                                        ></textarea> */}
+    <RichTextEditor placeholder={"Write your comment"}
+                                          // value={message}
+                                          // onChange={(e) => {
+                                          //   setmessage(e.target.value);
+                                          // }}
+    />
+
+                                        <div onClick={()=> sendMessage(project.project_id)}>Save</div>
+
+                                        {/* <div onClick={() => sendMessage(project.project_id)}>Save</div> */}
+                                      </form>
+                                    </GridItem>
+                                  </GridContainer>
+
+                                  {comments.map((m)=>{
+                                    const Date = ((m.creation_time).substr(0,10).split("-",3));
+                                    const Time = ((m.creation_time).substr(11,16).split(":",3));
+                                    var dateP = m.creation_time;
+                                    var textArea = (m.comment).split(`\n`);
+                                    // console.log("textArea");
+                                    // console.log(textArea);
+                                    // if(textArea == ""){
+                                      // function Setcontent() {
+                                      //  }
+                                      return(
+                                        <span>
+                                          <GridContainer>
+                                            <GridItem>
+                                              <span>{m.username}</span>
+                                            </GridItem>
+                                                
+                                            <GridItem>
+                                            <span><p>{Date[2]}/{Date[1]}/{Date[0]}</p></span>
+                                            </GridItem>
+                                          </GridContainer>
+
+                                          <GridContainer>
+                                            <GridItem>
+                                              <div>
+                                                <span id="editorOne">{m.comment}</span>
+                                              </div>
+                                            </GridItem>
+                                          </GridContainer>
+                                        </span>
+                                      )
+                                    // }else{
+                                    //   return(
+                                    //     <span>
+                                    //       <GridContainer>
+                                    //         <GridItem>
+                                    //           <span>{m.username}</span>
+                                    //         </GridItem>
+                                                
+                                    //         <GridItem>
+                                    //         <span><p>{Date[2]}/{Date[1]}/{Date[0]}</p></span>
+                                    //         </GridItem>
+                                    //       </GridContainer>
+
+                                    //       <GridContainer>
+                                    //         <GridItem>
+                                    //           <div>
+                                    //             <a href={m.comment} target="_blank" id="userComment">{m.comment}</a>
+                                    //             {/* <p>{Time[0]}:{Time[1]}:{Time[2]}</p> */}
+                                    //           </div>
+                                    //         </GridItem>
+                                    //       </GridContainer>
+                                    //     </span>
+                                    //   )
+                                    // }
+                                  })}
+                                  </CardBody>
+
+                                </Card>
+                              </GridItem>
+
+                            </div>
+                          )}
+                        </Popup>
+                      </div>
+                    )
+                  })
+                }
+              </td>  
+            </tr>
+          </table>
+          
       <GridContainer>
        {
           project.map((project)=>{
             // const bDate = ((project.project_deadline).substr(0,10).split("-",3));
             return(
+              
               <GridItem xs={6} sm={6} md={4} key={project.project_id}>
                 <Card className="projects">
                   <CardHeader color="primary" className="project-block">
