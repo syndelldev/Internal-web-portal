@@ -22,6 +22,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useCookies } from 'react-cookie';
 import { Button } from "@material-ui/core";
 import dynamic from "next/dynamic";
+import 'react-quill/dist/quill.snow.css';
+
 
 const ReactQuill = dynamic(import('react-quill'), { ssr: false })
 
@@ -144,19 +146,8 @@ function Dashboard({project}) {
   }
 
   const [textComment, setText] = useState([]);
-  const [value, setValue] = useState({
-    comment: '',
-  });
-  const handleChange = ({ target: { name, value } }) =>{
-    console.log("name");
-    console.log([name]);
-  
-    setUpdate({ ...value, [name]: value });
-  }
-
 
   class RichTextEditor extends React.Component {
-
     constructor(props) {
       super(props);
   
@@ -181,9 +172,9 @@ function Dashboard({project}) {
           'color', 'background'
         ];
   
-      //   this.state = {
-      //   comments: ''
-      // }
+        this.state = {
+        comments: ''
+      }
   
       this.rteChange = this.rteChange.bind(this);
     }
@@ -200,15 +191,11 @@ function Dashboard({project}) {
     render() {
         return (
           <div>
-              <ReactQuill theme="snow"  
-              modules={this.modules}
-              formats={this.formats} 
-              onChange={setValue}
-              value={value}
-              // value={this.state.comments || ''}
-              />
+            <ReactQuill theme="snow"  modules={this.modules}
+              formats={this.formats} onChange={this.rteChange}
+              value={this.state.comments || ''}/>
               {console.log("123")}
-              {/* {setText(this.state.comments)} */}
+              {setText(this.state.comments)}
           </div>
         );
     }
