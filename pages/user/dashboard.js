@@ -337,6 +337,7 @@ function Dashboard({project}) {
                       {/* <Button disabled={project.view_rights==0} >View</Button>
                       <Button disabled={project.edit_rights==0} >Edit</Button> */}
                       <div className="icon-display">
+                      <span className={project.project_priority}>{project.project_priority}</span>
                       <span className={project.project_status}>
                         {(project.project_status=="on hold") ? "On Hold" : "" }
                         {(project.project_status=="completed") ? "Completed" : "" }

@@ -624,6 +624,7 @@ useEffect(() =>{
                 <div className="project-content">
                 <h4 className="projectTitle">{project.project_title}</h4>        
                 <div className="icon-display">
+                <span className={project.project_priority}>{project.project_priority}</span>
                 <span className={project.project_status}>
                   {(project.project_status=="on hold") ? "On Hold" : "" }
                   {(project.project_status=="completed") ? "Completed" : "" }
