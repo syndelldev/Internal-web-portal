@@ -62,26 +62,47 @@ a {
 img.completed,img.on.hold,img.running {
   width: 100px;
 }
-.completed {
-  border-radius: 25px;
+h3.on-track {
+  background: #0096FF;
+  padding: 50px;
+  border-radius: 30px;
   color: #fff;
-  font-size: 30px;
-  font-weight: 700;
-  background:darkgreen;
+  font-size: 20px;
+  font-weight: 600;
 }
-.on.hold{
-  border-radius: 25px;
+h3.off-track{
+  background: #FF0000;
+  padding: 50px;
+  border-radius: 30px;
   color: #fff;
-  font-size: 30px;
-  font-weight: 700;
-  background: yellow;
+  font-size: 20px;
+  font-weight: 600;
+
 }
-.running{
-  border-radius: 25px;
+h3.completed-project{
+  background: #34BE82;
+  padding: 50px;
+  border-radius: 30px;
   color: #fff;
-  font-size: 30px;
-  font-weight: 700;
-  background: #F29393;
+  font-size: 20px;
+  font-weight: 600;
+
+}
+h3.on-hold{
+  background:#FFD800;
+  padding: 50px;
+  border-radius: 30px;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
+}
+.project-status{
+  justify-content: space-around;
+  display: flex;
+}
+.project-status .MuiGrid-grid-sm-6{
+  max-width: 100%;
+  flex-basis: 100%;
 }
 h6.completed,h6.on.hold,h6.running{
   padding-left: 30px;

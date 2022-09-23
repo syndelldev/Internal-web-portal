@@ -194,33 +194,33 @@ function Dashboard( { project_hold, project_completed, project_running } ) {
         // )
       })}
     </GridContainer>
-
+<div className="project-status">
     <GridContainer>
           <GridItem xs={12} sm={6} md={4} >
-              <h6>On track Project - {On_track.length}</h6>
+              <h3 className="on-track">On Track Project - {On_track.length}</h3>
           </GridItem>
     </GridContainer>
 
     <GridContainer>
           <GridItem xs={12} sm={6} md={4} >
-              <h6>Off track Project - {Off_track.length}</h6>
+              <h3 className="off-track">Off Track Project - {Off_track.length}</h3>
           </GridItem>
     </GridContainer>
 
     <GridContainer>
           <GridItem xs={12} sm={6} md={4} >
-              <h6>Completed Project - {project_completed.length}</h6>
+              <h3 className="completed-project">Completed Project - {project_completed.length}</h3>
           </GridItem>
     </GridContainer>
 
     <GridContainer>
           <GridItem xs={12} sm={6} md={4}>
             <div>
-              <h6>On Hold Project - {project_hold.length}</h6>
+              <h3 className="on-hold">On Hold Project - {project_hold.length}</h3>
             </div>
           </GridItem>
     </GridContainer>
-    
+    </div>
     </>);
 
 }
