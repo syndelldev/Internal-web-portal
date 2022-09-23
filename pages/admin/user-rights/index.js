@@ -52,7 +52,6 @@ export async function getServerSideProps(context){
 } 
 
 function UserRights({UserList,ModuleList}){
-
     const useStyles = makeStyles(styles);
     const classes = useStyles();
     const router = useRouter();
@@ -72,26 +71,34 @@ function UserRights({UserList,ModuleList}){
     // console.log(users)
     
     const [viewcheckbox,setviewcheckbox] = useState(0)
-    // console.log(viewcheckbox)
     const viewCheckbox = (e) =>{
-        
-        console.log(e.target.value);
+        console.log(e.target.checked);
 
-        if(e.target.value==0)
-        {
-            setviewcheckbox(1)
-        }
-        else if(e.target.value==1)
+        if(e.target.checked)
         {
             setviewcheckbox(0)
         }
+        else
+        {
+            setviewcheckbox(1)
+        }
     }
-    // console.log(viewcheckbox)
+    console.log(viewcheckbox)
+
+    const view_rights = (project_id) =>{
+        // console.log(project_id)
+
+        let data = axios.put(`${server}/api/rights/project/${project_id}`, {userid:user, moduleid:module, projectid:project_id, view:viewcheckbox})
+        .then((responce)=>{
+            setrightsList(responce.data)
+        })  
+        // console.log(rightsList)
+    }
 
     const [editcheckbox,seteditcheckbox] = useState(0)
-
     const editCheckbox = (e) =>{
-        // console.log(e.target.checked)
+        console.log(e.target.checked)
+
         if(e.target.checked)
         {
             console.log('✅ Checkbox is checked');
@@ -103,13 +110,10 @@ function UserRights({UserList,ModuleList}){
             seteditcheckbox(0)
         }
     }
-    // console.log(editcheckbox)
-
-
-    const view_rights = (project_id) =>{
+    const edit_rights = (project_id) =>{
         // console.log(project_id)
 
-        let data = axios.put(`${server}/api/rights/project/${project_id}`, {userid:user,moduleid:module,projectid:project_id,view:viewcheckbox,edit:editcheckbox})
+        let data = axios.put(`${server}/api/rights/project/${project_id}`, {userid:user, moduleid:module, projectid:project_id, edit:editcheckbox})
         .then((responce)=>{
             setrightsList(responce.data)
         })  
@@ -185,7 +189,7 @@ function UserRights({UserList,ModuleList}){
                                                         </TableCell>
 
                                                         <TableCell>
-                                                            <input type="checkbox" name="edit_rights" value={data.edit_rights} onChange={editCheckbox} defaultChecked={data.edit_rights==1} onClick={()=>view_rights(data.project_id)} /> 
+                                                            <input type="checkbox" name="edit_rights" value={data.edit_rights} onChange={editCheckbox} defaultChecked={data.edit_rights==1} onClick={()=>edit_rights(data.project_id)} /> 
                                                         </TableCell>
                                                                             
                                                     </TableRow>   

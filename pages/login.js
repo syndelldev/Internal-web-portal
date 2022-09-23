@@ -139,7 +139,7 @@ export default function home()
 
 return(
         <>
-            <style global jsx>{`html, body,div#__next{ height: 100%; }`}</style> 
+            <style global jsx>{`html, body,div#__next{ height: 100%;background-color: #ADD8E6; }`}</style> 
             <section className='login-section'>
                 <div className='container login-container'>
                     <div className='login-div'>

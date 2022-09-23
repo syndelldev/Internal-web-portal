@@ -1,5 +1,5 @@
 // layout for this page
-import Admin from "layouts/Admin.js";
+import SuperUser from "layouts/SuperUser.js";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
@@ -10,7 +10,13 @@ import { useCookies } from 'react-cookie';
 
 import { server } from 'config';
 
-
+// export async function getServerSideProps(context){
+//     const res = await fetch(`${server}/api/admin/adminprofile`)
+//     const AdminProfile = await res.json()
+//     console.log(AdminProfile);
+  
+//     return{ props: {AdminProfile} }
+// }
 const styles = {
     typo: {
       paddingLeft: "25%",
@@ -48,9 +54,9 @@ const styles = {
     },
 };
 
-function AdminProfile(){  
+function ProfilePage(){  
     const [cookies, setCookie] = useCookies(['name']);
- 
+    
     const useStyles = makeStyles(styles);
     const classes = useStyles();
 
@@ -60,7 +66,7 @@ function AdminProfile(){
             <GridItem xs={12} sm={12} md={8}>      
                 <Card>
                     <CardHeader color="primary">
-                        <h4 className="text">Admin Profile</h4>
+                        <h4 className="text">Profile Page</h4>
                         {/*<p className={classes.cardCategoryWhite}>Created using Roboto Font Family</p>*/}
                     </CardHeader>
                     <CardBody><br/>
@@ -89,10 +95,6 @@ function AdminProfile(){
                             <h5>{cookies.Mobile_num}</h5>
                             {/*<h5>{admin.mobile_no}</h5>*/}
                         </div>
-                        {/*<div className={classes.typo}>
-                            <div className={classes.note}>Role</div>
-                            <h5>{admin.role}</h5>
-                        </div>*/}
                     </CardBody>
                 </Card>
             </GridItem>
@@ -101,6 +103,6 @@ function AdminProfile(){
     )
 }
 
-AdminProfile.layout = Admin;
+ProfilePage.layout = SuperUser;
 
-export default AdminProfile;
+export default ProfilePage;

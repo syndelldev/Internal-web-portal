@@ -49,6 +49,10 @@ a {
 #userComment {
   white-space: pre-line;
 }
+#userCommentLink {
+  white-space: pre-line;
+  color: #0052cc;
+}
 
   .department-link a:hover {background-color:  #ADD8E6;color:#000;}
 
@@ -158,7 +162,7 @@ h4.text {
   margin-bottom: 0em!important;
 }
 button.MuiButtonBase-root.MuiButton-root.makeStyles-button-117.makeStyles-primary-120.add_new_user.MuiButton-text {
-  vertical-align: !important;
+  /* vertical-align: !important; */
   float: right!important;
   padding: 0px !important;
 }
@@ -305,7 +309,7 @@ img.image {
     flex-basis:50% !important;
     }
 }
-@media only screen (min-width: 960px) {
+@media only screen and (min-width: 960px) {
   h4.projectTitle{
 font-size: 17px!important;
   }}
@@ -370,4 +374,69 @@ p.usersubtitle{
   border-radius: 5px;
   padding: 10px;
   margin-right: 5px;
+}
+.Task_todo{
+  display: none;
+}
+
+
+h3.on-track {
+  background: #0096FF;
+  padding: 50px;
+  border-radius: 30px;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
+}
+h3.off-track{
+  background: #FF0000;
+  padding: 50px;
+  border-radius: 30px;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
+}
+h3.completed-project{
+  background: #34BE82;
+  padding: 50px;
+  border-radius: 30px;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
+}
+h3.on-hold{
+  background:#FFD800;
+  padding: 50px;
+  border-radius: 30px;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
+}
+.project-status{
+  justify-content: space-around;
+  display: flex;
+}
+@media only screen and (max-width: 1279px) and (min-width: 1024px){
+  .project-status{
+    justify-content: normal;
+    display: grid!important;
+}
+}
+@media only screen and (max-width: 1023px) and (min-width: 768px){ 
+  .project-status{
+    justify-content: normal;
+    display: grid!important;
+}
+ }
+ 
+.project-status .MuiGrid-grid-sm-6{
+  max-width: 100%;
+  flex-basis: 100%;
+}
+@media only screen and (max-width: 767px) {
+  .project-status{
+    justify-content: normal;
+    display: grid!important;
+}
+
 }

@@ -40,52 +40,21 @@ const ProjectById = async (req,res) =>{
     // console.log(req.body)
 
     var check_condition = await executeQuery(" SELECT * FROM `tbl_rights` WHERE user_id=? AND module_id=? AND project_id=? ", [req.body.userid, req.body.moduleid, req.body.projectid] );
+    // console.log(check_condition)
 
-    console.log(check_condition)
-
-    if(check_condition != "" )
+    if(req.body.view==0 || req.body.view==1)
     {
-        console.log("data exist")
-        // res.send(check_condition);
-
-        console.log(req.body)
-
-            // let data = await executeQuery(" SELECT * FROM `tbl_rights` WHERE user_id=? AND project_id=? ", [req.body.userid, req.body.projectid])
-            let data = await executeQuery(" UPDATE `tbl_rights` SET  view_rights=?,edit_rights=?  WHERE `user_id`=? AND `project_id`=? ", [req.body.view, req.body.edit, req.body.userid, req.body.projectid])
-            console.log(data)
-            // // res.send(data); 
-
+        console.log("Update view_rights")
+        let data = await executeQuery(" UPDATE `tbl_rights` SET  view_rights=?  WHERE `user_id`=? AND `project_id`=? ", [req.body.view, req.body.userid, req.body.projectid])
+        console.log(data)
     }
-    // else
-    // {
-    //     console.log("data does not exist") 
-        
-    //     let data = await executeQuery(" SELECT * FROM `tbl_rights` WHERE user_id=? AND project_id=? ", [req.body.userid, req.body.projectid])
-    //     // console.log(data)
-        
-    //     if(data == "" )
-    //     {
-    //         try{
-    //             let project = await executeQuery("INSERT INTO `tbl_rights` ( `user_id`, `project_id`, `module_id`,`view_rights`, `edit_rights` ) VALUES (?,?,?,0,0)", [req.body.userid, req.body.projectid, req.body.moduleid])
-    //             res.status(200).json(project);
-    //             console.log(project);
-    //         }
-    //         catch(err){
-    //             console.log(err)
-    //         }
-    //     }
-    // }
+    else if(req.body.edit==0 || req.body.edit==1)
+    {
+        console.log("Update edit_rights")
+        let data = await executeQuery(" UPDATE `tbl_rights` SET  edit_rights=?  WHERE `user_id`=? AND `project_id`=? ", [req.body.edit, req.body.userid, req.body.projectid])
+        console.log(data)
+    }
     
 }
 
-
-
-
-const update_checkbox = async (req,res) =>{
-    console.log(req.body)
-
-    // let data2 = await executeQuery(" SELECT * FROM `tbl_rights` WHERE user_id=? AND project_id=? ", [req.body.userid, req.body.projectid])
-    // console.log(data2)
-}
-
-export { rights,modules,ModuleById,ProjectById,update_checkbox }
+export { rights,modules,ModuleById,ProjectById }
