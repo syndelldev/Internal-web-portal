@@ -162,7 +162,7 @@ h4.text {
   margin-bottom: 0em!important;
 }
 button.MuiButtonBase-root.MuiButton-root.makeStyles-button-117.makeStyles-primary-120.add_new_user.MuiButton-text {
-  vertical-align: !important;
+  /* vertical-align: !important; */
   float: right!important;
   padding: 0px !important;
 }
@@ -309,7 +309,7 @@ img.image {
     flex-basis:50% !important;
     }
 }
-@media only screen (min-width: 960px) {
+@media only screen and (min-width: 960px) {
   h4.projectTitle{
 font-size: 17px!important;
   }}
@@ -374,4 +374,7 @@ p.usersubtitle{
   border-radius: 5px;
   padding: 10px;
   margin-right: 5px;
+}
+.Task_todo{
+  display: none;
 }
