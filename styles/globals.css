@@ -100,6 +100,20 @@ h3.on-hold{
   justify-content: space-around;
   display: flex;
 }
+@media only screen and (max-width: 1279px) and (min-width: 1024px){
+  .project-status{
+    justify-content: normal;
+    display: grid!important;
+}
+}
+@media only screen and (max-width: 1023px) and (min-width: 768px){ 
+  .project-status{
+    justify-content: normal;
+    display: grid!important;
+}
+ }
+
+ 
 .project-status .MuiGrid-grid-sm-6{
   max-width: 100%;
   flex-basis: 100%;
