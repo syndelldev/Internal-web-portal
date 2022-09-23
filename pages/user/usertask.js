@@ -121,6 +121,9 @@ function Dashboard({project}) {
   const [username, setusername] = useState('');
   const [message, setmessage] = useState('');
 
+  const [estimate, setestimate] = useState('');
+  const [spent, setspent] = useState('');
+
   const [comments, setcomments] = useState([]);
   console.log(comments);
   
@@ -137,10 +140,10 @@ function Dashboard({project}) {
   const sendMessage = async (project_id) => {
     // e.preventDefault();
     // alert(project_id)
-    console.log("comm");
+    console.log();
     console.log(textComment);
 
-    var addComment = await axios.post(`${server}/api/comment/addcomment`, {  username: cookies.name, message: message , project_id: project_id });
+    var addComment = await axios.post(`${server}/api/comment/addcomment`, {  username: cookies.name, message: message , project_id: project_id, estimate:estimate , spent:spent });
     console.log(addComment)
     console.log(cookies.name)
     // router.reload(`${server}/user/dashboard`);
@@ -314,9 +317,9 @@ function Dashboard({project}) {
                                         <GridContainer>
                                             <GridItem>
                                                 <label>Estimate Time</label>
-                                                <input type="text" /><br/>
+                                                <input type="text" value={estimate} onChange={(e)=>{setestimate(e.target.value)}} /><br/>
                                                 <label>Spent Time</label>
-                                                <input type="text" />
+                                                <input type="text" value={spent} onChange={(e)=>{setspent(e.target.value)}}/>
                                             </GridItem>
                                         </GridContainer>
                                         
