@@ -21,9 +21,9 @@ import { makeStyles } from "@material-ui/core/styles";
 // import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 import { useCookies } from 'react-cookie';
 import { Button } from "@material-ui/core";
-import dynamic from "next/dynamic";
+// import dynamic from "next/dynamic";
 
-const ReactQuill = dynamic(import('react-quill'), { ssr: false })
+// const ReactQuill = dynamic(import('react-quill'), { ssr: false })
 
 const styles = {
   cardCategoryWhite: {
@@ -115,6 +115,24 @@ function Dashboard({project}) {
   },[])
   // console.log(users)
 
+  //today date
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var yyyy = today.getFullYear();
+
+  today = yyyy + '/' + mm + '/' + dd;
+  console.log(today);
+
+  //for On_track
+  const On_track = [];
+  console.log(On_track)
+
+  //for Off_track
+  const Off_track = [];
+  console.log(Off_track)
+
+
   const [username, setusername] = useState('');
   const [message, setmessage] = useState('');
 
@@ -143,62 +161,62 @@ function Dashboard({project}) {
     // router.reload(`${server}/user/dashboard`);
   }
 
-  const [textComment, setText] = useState([]);
+  // const [textComment, setText] = useState([]);
 
-  class RichTextEditor extends React.Component {
-    constructor(props) {
-      super(props);
+  // class RichTextEditor extends React.Component {
+  //   constructor(props) {
+  //     super(props);
   
-      this.modules = {
-        toolbar: [
-            [{ 'font': [] }],
-            [{ 'size': ['small', false, 'large', 'huge'] }],
-            ['bold', 'italic', 'underline'],
-            [{'list': 'ordered'}, {'list': 'bullet'}],
-            [{ 'align': [] }],
-            [{ 'color': [] }, { 'background': [] }],
-            ['clean']
-          ]
-      };
+  //     this.modules = {
+  //       toolbar: [
+  //           [{ 'font': [] }],
+  //           [{ 'size': ['small', false, 'large', 'huge'] }],
+  //           ['bold', 'italic', 'underline'],
+  //           [{'list': 'ordered'}, {'list': 'bullet'}],
+  //           [{ 'align': [] }],
+  //           [{ 'color': [] }, { 'background': [] }],
+  //           ['clean']
+  //         ]
+  //     };
   
-      this.formats = [
-          'font',
-          'size',
-          'bold', 'italic', 'underline',
-          'list', 'bullet',
-          'align',
-          'color', 'background'
-        ];
+  //     this.formats = [
+  //         'font',
+  //         'size',
+  //         'bold', 'italic', 'underline',
+  //         'list', 'bullet',
+  //         'align',
+  //         'color', 'background'
+  //       ];
   
-        this.state = {
-        comments: ''
-      }
+  //       this.state = {
+  //       comments: ''
+  //     }
   
-      this.rteChange = this.rteChange.bind(this);
-    }
+  //     this.rteChange = this.rteChange.bind(this);
+  //   }
   
-    rteChange = (content, delta, source, editor) => {
-      // console.log(editor.getHTML()); // rich text
-      // console.log(content);
-      // console.log(delta.ops[1]);
-      // console.log(source);
-      // console.log(editor.getText()); // plain text
-      // console.log(editor.getLength()); // number of characters
-    }
+  //   rteChange = (content, delta, source, editor) => {
+  //     // console.log(editor.getHTML()); // rich text
+  //     // console.log(content);
+  //     // console.log(delta.ops[1]);
+  //     // console.log(source);
+  //     // console.log(editor.getText()); // plain text
+  //     // console.log(editor.getLength()); // number of characters
+  //   }
   
-    render() {
-        return (
-          <div>
-            <ReactQuill theme="snow"  modules={this.modules}
-              formats={this.formats} onChange={this.rteChange}
-              value={this.state.comments || ''}/>
-              {console.log("123")}
-              {setText(this.state.comments)}
-          </div>
-        );
-    }
+  //   render() {
+  //       return (
+  //         <div>
+  //           <ReactQuill theme="snow"  modules={this.modules}
+  //             formats={this.formats} onChange={this.rteChange}
+  //             value={this.state.comments || ''}/>
+  //             {console.log("123")}
+  //             {setText(this.state.comments)}
+  //         </div>
+  //       );
+  //   }
   
-  }
+  // }
   // class Editor extends React.Component {
   //   constructor(props) {
   //     super(props);
@@ -286,7 +304,27 @@ function Dashboard({project}) {
       <GridContainer>
        {
           project.map((project)=>{
-            // const bDate = ((project.project_deadline).substr(0,10).split("-",3));
+            const MySQLDate  = project.project_deadline;
+            let date = MySQLDate.replace(/[-]/g, '/').substr(0,10);
+            console.log(date)
+
+            if(project.project_status=="running")
+            {
+              
+              if(date>today)
+              {
+                console.log("On track", project.project_id);
+                On_track.push(project.project_id);
+                console.log(On_track)
+              }
+              else
+              {
+                console.log("off track", project.project_id);
+
+                Off_track.push(project.project_id);
+                console.log(Off_track)
+              }  
+            }          
             return(
               <GridItem xs={6} sm={6} md={4} key={project.project_id}>
                 <Card className="projects">
@@ -294,15 +332,18 @@ function Dashboard({project}) {
                   {/*<img className="image" src={`${server}/reactlogo.png`} />*/}
                   <div className="project-content">
                     <h4 className="projectTitle">{project.project_title}</h4>
-                  
-                  {/*<CardFooter>
-                    <p className="projectLanguage">{project.project_language}</p>
-            <p className="projectPriority">*/}
                       
                       {/*View Project PopUp*/}
                       {/* <Button disabled={project.view_rights==0} >View</Button>
                       <Button disabled={project.edit_rights==0} >Edit</Button> */}
                       <div className="icon-display">
+                      <span className={project.project_priority}>{project.project_priority}</span>
+                      <span className={project.project_status}>
+                        {(project.project_status=="on hold") ? "On Hold" : "" }
+                        {(project.project_status=="completed") ? "Completed" : "" }
+                        {(project.project_status=="running") ? (date>today) ? "On track": "Off track" : "" }
+                      </span>
+
                         <Popup trigger={<Button disabled={project.view_rights==0} ><FaEye/></Button>}  className="popupReact"  modal>
                           {close => (
                             <div>
@@ -386,12 +427,12 @@ function Dashboard({project}) {
                                             setmessage(e.target.value);
                                           }}
                                         ></textarea> */}
-    <RichTextEditor placeholder={"Write your comment"}
+    {/* <RichTextEditor placeholder={"Write your comment"}
                                           // value={message}
                                           // onChange={(e) => {
                                           //   setmessage(e.target.value);
                                           // }}
-    />
+    /> */}
 
                                         <div onClick={()=> sendMessage(project.project_id)}>Save</div>
 

@@ -94,7 +94,7 @@ function Dashboard({project}) {
       <GridContainer>
        {
           project.map((project)=>{
-            // const bDate = ((project.project_deadline).substr(0,10).split("-",3));
+            
             return(
               <GridItem xs={6} sm={6} md={4} key={project.project_id}>
                 <Card >
