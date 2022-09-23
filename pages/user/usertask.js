@@ -24,7 +24,6 @@ import { Button } from "@material-ui/core";
 import dynamic from "next/dynamic";
 import 'react-quill/dist/quill.snow.css';
 
-
 const ReactQuill = dynamic(import('react-quill'), { ssr: false })
 
 const styles = {
@@ -173,15 +172,21 @@ function Dashboard({project}) {
         ];
   
         this.state = {
-        comments: ''
+        comment: ''
       }
   
       this.rteChange = this.rteChange.bind(this);
+      // console.log(this.rteChange.bind(this));
     }
   
     rteChange = (content, delta, source, editor) => {
-      // console.log(editor.getHTML()); // rich text
-      // console.log(content);
+      console.log(editor.getHTML()); // rich text
+      // setText(comment);
+      const user_Comment = editor.getHTML();
+      console.log("users");
+      console.log(user_Comment);
+      // setText(editor.getHTML());
+      console.log(content);
       // console.log(delta.ops[1]);
       // console.log(source);
       // console.log(editor.getText()); // plain text
@@ -193,14 +198,16 @@ function Dashboard({project}) {
           <div>
             <ReactQuill theme="snow"  modules={this.modules}
               formats={this.formats} onChange={this.rteChange}
-              value={this.state.comments || ''}/>
+              value={this.state.comment || ''} 
+              name="comment"
+            />
               {console.log("123")}
-              {setText(this.state.comments)}
           </div>
         );
     }
   
   }
+  console.log(textComment);
   // class Editor extends React.Component {
   //   constructor(props) {
   //     super(props);
