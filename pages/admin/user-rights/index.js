@@ -68,7 +68,7 @@ function UserRights({UserList,ModuleList}){
             setusers(res.data)
         })
     }
-    console.log(users)
+    // console.log(users)
     
     const [viewcheckbox,setviewcheckbox] = useState(0)
     const viewCheckbox = (e) =>{

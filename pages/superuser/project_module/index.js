@@ -95,7 +95,7 @@ const styles = {
 export async function getServerSideProps(){
   const res = await fetch(`${server}/api/project`);
   const project_details = await res.json();
-  // console.log(project_details);
+  
   const response = await fetch(`${server}/api/admin`)
   const User_name = await response.json();
 
@@ -103,7 +103,7 @@ export async function getServerSideProps(){
 }
 
 function ProjectModule( { project_details , User_name } ) {
-
+  // console.log(project_details);
   const [cookies, setCookie] = useCookies(['name']);
 
   const useStyles = makeStyles(styles);
@@ -112,6 +112,22 @@ function ProjectModule( { project_details , User_name } ) {
   const [addStartDate, setStart_Date] = useState();
   const [addEndDate, setEnd_Date] = useState();
 
+  //today date
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var yyyy = today.getFullYear();
+
+  today = yyyy + '/' + mm + '/' + dd;
+  console.log(today);
+
+  //for On_track
+  const On_track = [];
+  console.log(On_track)
+
+  //for Off_track
+  const Off_track = [];
+  console.log(Off_track)
   
   const deleteProject = async(id) =>{
     console.log('delete');
@@ -563,43 +579,69 @@ useEffect(() =>{
 
     {project_details.map((project)=>{
 
-if(project.project_delete == "no"){
+      const isInArray = project.project_person.includes(cookies.name);
+      // console.log(isInArray); 
+      if(isInArray==true){
+        // console.log("True")
+      }
+      else{
+        // console.log("false")
+      }
+      if(project.project_delete == "no"){
 
-// if(status.project_status == project.project_status){
+      // if(status.project_status == project.project_status){
 
-  var person = project.project_person.split(",");
-  // const name =[];
-  // for(i=0 ; i<person.length; i++){
-  //   console.log(person[i]);
-  //   var member = person[i].slice(0,2);
-  //   console.log(member);
-  // }
+      var person = project.project_person.split(",");
+      const MySQLDate  = project.project_deadline;
+      let date = MySQLDate.replace(/[-]/g, '/').substr(0,10);
+      console.log(date)
 
-return(
-  <>
-    <GridItem xs={12} sm={6} md={9}>
-
-  <form>
-    <Card className= "projects">
-      <CardHeader color="primary" className="project-block">
-
-        {/* <img src={`${server}/reactlogo.png`} className={classes.img}/> */}
-        <div className="project-content">
-        <h4 className="projectTitle">{project.project_title}</h4>
+      if(project.project_status=="running")
+      {
         
-        <div className="icon-display">
-        <span className={project.project_priority}>{project.project_priority}</span>
-        {person.map((project_person) => {
-          return(
-            <div className="chip">
-              <span>{project_person}</span>
-            </div>
-          )
-        })
+        if(date>today)
+        {
+          console.log("On track", project.project_id);
+          On_track.push(project.project_id);
+          console.log(On_track)
+        }
+        else
+        {
+          console.log("off track", project.project_id);
+
+          Off_track.push(project.project_id);
+          console.log(Off_track)
+        }
+      }
+
+      return(
+        <>
+          <GridItem xs={12} sm={6} md={9}>
+            <form>
+            <Card className= "projects">
+              <CardHeader color="primary" className="project-block">
+                {/* <img src={`${server}/reactlogo.png`} className={classes.img}/> */}
+                <div className="project-content">
+                <h4 className="projectTitle">{project.project_title}</h4>        
+                <div className="icon-display">
+                <span className={project.project_priority}>{project.project_priority}</span>
+                <span className={project.project_status}>
+                  {(project.project_status=="on hold") ? "On Hold" : "" }
+                  {(project.project_status=="completed") ? "Completed" : "" }
+                  {(project.project_status=="running") ? (date>today) ? "On track": "Off track" : "" }
+                </span>
+                {/* <span className={project.project_priority}>{project.project_priority}</span> */}
+                {person.map((project_person) => {
+                  return(
+                    <div className="chip">
+                      <span>{project_person}</span>
+                    </div>
+                  )
+                })
 
         }
         {/* <span className="project_person">{project.project_person}</span> */}
-          <Popup trigger={<a><div className='icon-width' onClick={()=> { projectId(project.project_id) }  }><FiEdit/></div></a>} className="popupReact" modal>
+          <Popup trigger={<Button className='icon-width' onClick={()=> { projectId(project.project_id) }} disabled={isInArray==false}><FiEdit/></Button>} className="popupReact" modal>
 
               {close => (
               <div className="popup-align">

@@ -1,236 +1,480 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
-import { useRouter } from 'next/router';
-// react plugin for creating charts
-import ChartistGraph from "react-chartist";
-// @material-ui/core
-import { makeStyles } from "@material-ui/core/styles";
-import Icon from "@material-ui/core/Icon";
-// @material-ui/icons
-import Store from "@material-ui/icons/Store";
-import Warning from "@material-ui/icons/Warning";
-import DateRange from "@material-ui/icons/DateRange";
-import LocalOffer from "@material-ui/icons/LocalOffer";
-import Update from "@material-ui/icons/Update";
-import ArrowUpward from "@material-ui/icons/ArrowUpward";
-import AccessTime from "@material-ui/icons/AccessTime";
-import Accessibility from "@material-ui/icons/Accessibility";
-import BugReport from "@material-ui/icons/BugReport";
-import Code from "@material-ui/icons/Code";
-import Cloud from "@material-ui/icons/Cloud";
+import React, { useEffect, useState , useRef } from "react";
 // layout for this page
 import User from "layouts/User.js";
+import { useRouter } from 'next/router';
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
-import Table from "components/Table/Table.js";
-import Tasks from "components/Tasks/Tasks.js";
-import CustomTabs from "components/CustomTabs/CustomTabs.js";
-import Danger from "components/Typography/Danger.js";
-import Button from "components/CustomButtons/Button.js";
+
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
-import CardIcon from "components/Card/CardIcon.js";
-import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
-import { IoMdArrowDropdown } from "react-icons/io";
-import { useForm  } from 'react-hook-form';
-import { bugs, website } from "variables/general.js";
-import { server } from 'config';
-// import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
+import CardBody from "components/Card/CardBody.js";
+
+import { useForm } from 'react-hook-form';
 import Popup from "reactjs-popup";
-import DatePicker from "react-datepicker";
-import Multiselect from "multiselect-react-dropdown";
-import {
-  dailySalesChart,
-  emailsSubscriptionChart,
-  completedTasksChart,
-} from "variables/charts.js";
-import { FiEdit } from "react-icons/fi";
-import { MdDelete } from 'react-icons/md';
-import { useCookies } from 'react-cookie';
 import axios from "axios";
+import { server } from 'config';
+import { FiEdit } from "react-icons/fi";
+import { FaEye } from 'react-icons/fa';
+import { makeStyles } from "@material-ui/core/styles";
+// import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
+import { useCookies } from 'react-cookie';
+import { Button } from "@material-ui/core";
+import dynamic from "next/dynamic";
+import 'react-quill/dist/quill.snow.css';
 
 
+const ReactQuill = dynamic(import('react-quill'), { ssr: false })
 
 const styles = {
-    cardCategoryWhite: {
-      color: "rgba(0,0,0,.62)",
-      margin: "0",
-      fontSize: "14px",
-      marginTop: "0",
-      marginBottom: "0",
-    },
-    cardTitleWhite: {
-      color: "#000000",
-      marginTop: "0px",
-      minHeight: "auto",
-      fontWeight: "300",
-      fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
-      marginBottom: "3px",
-      textDecoration: "none",
-    },
-    cardWhite: {
-      color: "#000000",
-      marginTop: "0px",
-      minHeight: "auto",
-      fontWeight: "300",
-      fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
-      marginBottom: "3px",
-      textDecoration: "none",
-      background: "#ADD8E6",
-      float: "right",
-    },
-    img:{
-      marginLeft: "auto",
-      width: "40px",
-    },
-    popup:{
-      // position: "fixed",
-      width: "100%",
-      height: "100%",
-      top: "0",
-      left: "0",
-      right: "0",
-      bottom: "0",
-      backgroundColor: "rgba(0,0,0,0.5)",
-    },
-    link:{
-      border: "1px solid #000000",
-      color: "#000000",
-      padding: "5px 10px",
-    },
-    close:{
-      marginLeft: "auto",
-      fontSize: "40px",
-      paddingRight: "10px",
-      cursor: "pointer",
-    },
+  cardCategoryWhite: {
+    color: "rgba(0,0,0,.62)",
+    margin: "0",
+    fontSize: "14px",
+    marginTop: "0",
+    marginBottom: "0",
+  },
+  cardTitleWhite: {
+    color: "#000000",
+    marginTop: "0px",
+    minHeight: "auto",
+    fontWeight: "300",
+    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+    marginBottom: "3px",
+    textDecoration: "none",
+  },
+  cardWhite: {
+    color: "#000000",
+    marginTop: "0px",
+    minHeight: "auto",
+    fontWeight: "300",
+    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+    marginBottom: "3px",
+    textDecoration: "none",
+    background: "#ADD8E6",
+    float: "right",
+  },
+  img:{
+    marginLeft: "auto",
+    width: "40px",
+  },
+  popup:{
+    // position: "fixed",
+    width: "100%",
+    height: "100%",
+    top: "0",
+    left: "0",
+    right: "0",
+    bottom: "0",
+    backgroundColor: "rgba(0,0,0,0.5)",
+  },
+  link:{
+    border: "1px solid #000000",
+    color: "#000000",
+    padding: "5px 10px",
+  },
+  close:{
+    marginLeft: "auto",
+    fontSize: "40px",
+    paddingRight: "15px",
+    cursor: "pointer",
+  },
 };
 
-  
-// export async function getServerSideProps(context){
-//     console.log(context.req.cookies);
-//     const res = await fetch(`${server}/api/user_dashboard/subtask_person`, {
-//         headers: {
-//           'Access-Control-Allow-Credentials': true,
-//           Cookie: context.req.headers.cookie
-//         },
-//     })
-//     const project = await res.json()
-//     return { props: {project}, }
 
-// }
+export async function getServerSideProps(context){
+  //console.log(context.req.cookies);
+  const res = await fetch(`${server}/api/user_dashboard`, {
+    headers: {
+      'Access-Control-Allow-Credentials': true,
+      Cookie: context.req.headers.cookie
+    },
+  })
+  const project = await res.json()
+  //console.log(project)
 
-function Dashboard() {
-    // console.log(allTask)
-    const useStyles = makeStyles(styles);
-    const classes = useStyles();
+  return { props: {project}, }
+}
 
-    const [cookies, setCookie] = useCookies('');
-    console.log(cookies.Id)
+function Dashboard({project}) {
+  // console.log(project)
+  const useStyles = makeStyles(styles);
+  const classes = useStyles();
+  const router = useRouter();
 
-    const [Task, setTask] = useState([]);
-    
-    useEffect(async()=>{
-    axios.get(`${server}/api/subtask/` )
+  const [cookies, setCookie] = useCookies('');
+  //console.log(cookies.Id);
+
+  const [users, setusers] = useState([])
+
+  useEffect(async()=>{
+    axios.get(`${server}/api/admin/${cookies.Id}` )
       .then((res)=>{
-        setTask(res.data)
-        // console.log(res.data)
+        setusers(res.data)
+        //console.log(res)
       })    
-    },[])
-    console.log(Task)
+  },[])
+  // console.log(users)
 
-    return (
+  const [username, setusername] = useState('');
+  const [message, setmessage] = useState('');
+
+  const [comments, setcomments] = useState([]);
+  console.log(comments);
+  
+  const getData = async (project_id)=>{
+
+    // alert(project_id)
+    var comment = await axios.post(`${server}/api/comment/comment`, { project_id: project_id });
+    // console.log(comment.data)
+    setcomments(comment.data)
+    // console.log(comments)
+  }
+  
+
+  const sendMessage = async (project_id) => {
+    // e.preventDefault();
+    // alert(project_id)
+    console.log("comm");
+    console.log(textComment);
+
+    var addComment = await axios.post(`${server}/api/comment/addcomment`, {  username: cookies.name, message: message , project_id: project_id });
+    console.log(addComment)
+    console.log(cookies.name)
+    // router.reload(`${server}/user/dashboard`);
+  }
+
+  const [textComment, setText] = useState([]);
+
+  class RichTextEditor extends React.Component {
+    constructor(props) {
+      super(props);
+  
+      this.modules = {
+        toolbar: [
+            [{ 'font': [] }],
+            [{ 'size': ['small', false, 'large', 'huge'] }],
+            ['bold', 'italic', 'underline'],
+            [{'list': 'ordered'}, {'list': 'bullet'}],
+            [{ 'align': [] }],
+            [{ 'color': [] }, { 'background': [] }],
+            ['clean']
+          ]
+      };
+  
+      this.formats = [
+          'font',
+          'size',
+          'bold', 'italic', 'underline',
+          'list', 'bullet',
+          'align',
+          'color', 'background'
+        ];
+  
+        this.state = {
+        comments: ''
+      }
+  
+      this.rteChange = this.rteChange.bind(this);
+    }
+  
+    rteChange = (content, delta, source, editor) => {
+      // console.log(editor.getHTML()); // rich text
+      // console.log(content);
+      // console.log(delta.ops[1]);
+      // console.log(source);
+      // console.log(editor.getText()); // plain text
+      // console.log(editor.getLength()); // number of characters
+    }
+  
+    render() {
+        return (
+          <div>
+            <ReactQuill theme="snow"  modules={this.modules}
+              formats={this.formats} onChange={this.rteChange}
+              value={this.state.comments || ''}/>
+              {console.log("123")}
+              {setText(this.state.comments)}
+          </div>
+        );
+    }
+  
+  }
+  // class Editor extends React.Component {
+  //   constructor(props) {
+  //     super(props);
+  //     this.state = { editorHtml: "" };
+  //     this.handleChange = this.handleChange.bind(this);
+  //     // console.log("text");      
+  //   }
+  
+  //   handleChange(html) {
+  //     this.setState({ editorHtml: html });
+  //     // console.log(html);
+  //     // setText(this.state.editorHtml);
+  //     console.log(this.state.editorHtml);
+  //   }
+  
+  //   render() {
+  //     return (
+  //       <div className="text-editor">
+  //         <ReactQuill
+  //           onChange={this.handleChange}
+  //           placeholder={this.props.placeholder}
+  //           modules={Editor.modules}
+  //           formats={Editor.formats}
+  //           // value={this.state.editorHtml}
+  //           theme={"snow"} // pass false to use minimal theme
+  //         />
+  //       </div>
+  //     );
+  //   }
+  // }
+  
+  // Editor.modules = {
+  //   toolbar: [
+  //     [{ 'header': [1, 2, 3, 4, 5, false] }],
+  //     [{ 'color': ["#fff", "#d0d1d2", "#000", "red" ,"green", "blue", "orange", "violet" ]}],
+  //     ['bold', 'italic', 'underline','strike', 'blockquote'],
+  //     [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+  //     ['link', 'image'],
+  //     ['clean'],
+  //   ],
+  //   handlers: {
+  //     // handlers object will be merged with default handlers object
+  //     'link': function(value) {
+  //       if (value) {
+  //         console.log("value");
+  //       }else{
+  //         console.log("no data");
+  //       }
+  //     }
+  //   }
+  //   // clipboard: {
+  //   //   matchVisual: false,
+  //   // }
+  // };
+  
+  
+  // Editor.formats = [
+  //   "header",
+  //   "font",
+  //   "size",
+  //   "bold",
+  //   "italic",
+  //   "underline",
+  //   "strike",
+  //   "blockquote",
+  //   "list",
+  //   "bullet",
+  //   "indent",
+  //   "link",
+  //   "image",
+  //   "color"
+  // ];
+  
+  return (
     <>
-        <GridContainer>
-            {Task.map((task)=>{
-                var person = task.task_person.split(",");
-                return(
-                    <GridItem xs={6} sm={6} md={4} key={task.task_id}>
-                        <form>
-                            <Card className="projects">
-                                <CardHeader color="primary" className="project-block">
-                                    {/*<img src={`${server}/reactlogo.png`} className={classes.img}/>*/}
-                                    <div className="project-content">
-                                    <h4 className="projectTitle">{task.task_title}</h4>
-                                    {/*<p className={classes.cardCategoryWhite}></p>*/}
-                                
-                                {/*<CardBody>*/}
-                                    {/*<GridContainer>*/}
-                                        {/*<GridItem>
-                                            <p className="projectLanguage">{task.task_language}</p>
-                                        </GridItem>*/}
-                                        {/*<GridItem>*/}
-                                            <div className="icon-display">
-                                                <Popup trigger={<a href={`${server}/admin/subtask_module/${task.task_id}`}><FiEdit/></a>} modal></Popup>
-                                            </div>
-                                        {/*</GridItem>*/}
-                                    {/*</GridContainer>*/}
-                                    {/*<GridContainer>
-                                        <GridItem>
-                                        {person.map((data,index)=>{
-                                            return(
-                                                <div key={index}>
-                                                    <p className="projectPerson">{data}</p>
-                                                </div>
-                                            )
-                                            })
-                                        }
-                                        </GridItem>
+      <div>
+        {users.map((user)=>{
+          return(
+            <div key={user.id}>
+              <h1>Welcome {user.username} </h1>
+            </div>
+          )
+        })}
+      </div>
+      <GridContainer>
+       {
+          project.map((project)=>{
+            // const bDate = ((project.project_deadline).substr(0,10).split("-",3));
+            return(
+              <GridItem xs={6} sm={6} md={4} key={project.project_id}>
+                <Card className="projects">
+                  <CardHeader color="primary" className="project-block">
+                  {/*<img className="image" src={`${server}/reactlogo.png`} />*/}
+                  <div className="project-content">
+                    <h4 className="projectTitle">{project.project_title}</h4>
+                  
+                  {/*<CardFooter>
+                    <p className="projectLanguage">{project.project_language}</p>
+            <p className="projectPriority">*/}
+                      
+                      {/*View Project PopUp*/}
+                      {/* <Button disabled={project.view_rights==0} >View</Button>
+                      <Button disabled={project.edit_rights==0} >Edit</Button> */}
+                      <div className="icon-display">
+                        <Popup trigger={<Button disabled={project.view_rights==0} ><FaEye/></Button>}  className="popupReact"  modal>
+                          {close => (
+                            <div>
+                              <GridItem xs={6} sm={6} md={12} key={project.project_id}>
+                                <Card >
+                                  <CardHeader color="primary">
+                                    <GridContainer>
+                                      <GridItem>
+                                        <h4>{project.project_title}</h4>
+                                      </GridItem>
+                                      <div className={classes.close}>
+                                        <a onClick={close}>&times;</a>
+                                      </div>   
+                                    </GridContainer>
+                                  </CardHeader><br/>
+                                  <CardFooter>
+                                    <p>Project Language</p>-<p>{project.project_language}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p>{project.project_person}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p>{project.project_description}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p>{project.project_department}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p>{project.project_status}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p className="projectPriority">{project.project_priority} Priority</p>
+                                  </CardFooter>
+                                </Card>
+                              </GridItem>
+                            </div>
+                          )}
+                        </Popup>
 
-                                    <div className="buttonalign">*/}
-                                            {/* <Popup trigger={<div><a className="bttn-design">Add comment</a></div>}  className="popupReact"  modal>
-                                                {close => (
-                                                    <div>
-                                                        <GridContainer>
-                                                            <GridItem xs={12} sm={12} md={12}>
-                                                                <form> 
-                                                                    <Card>
-                                                                        <CardHeader color="primary">
-                                                                            <GridContainer>
-                                                                            <GridItem>
-                                                                                <h4 className={classes.cardTitleWhite}>Create Task</h4>
-                                                                                <p className={classes.cardCategoryWhite}>Enter your new task details</p>
-                                                                            </GridItem>
-                                                                            <div className={classes.close}>
-                                                                                <a onClick={close}>&times;</a>
-                                                                            </div>
-                                                                            </GridContainer>
-                                                                        </CardHeader>
-                                                                        <CardBody>
-                                                                            
-                                                                        </CardBody>
-                                                                    </Card>
-                                                                </form>
-                                                            </GridItem>
-                                                        </GridContainer>
-                                                    </div>
-                                                )}
-                                            </Popup> */}
-                                        {/*</div>
+                        {/*Edit Project PopUp*/}
+                        <Popup trigger={<div> <button disabled={project.edit_rights==0} onClick={()=>getData(project.project_id)} className="user-icon"><FiEdit/></button> </div>}  className="popupReact"  modal >
+                          {close => (
+                            <div>
+                              
+                              <GridItem xs={12} sm={12} md={12} key={project.project_id}>
+                                <Card>
+                                  <CardHeader color="primary">
+                                    <h4>{project.project_title}</h4>
+                                      <div className={classes.close}>
+                                        <a onClick={close}>&times;</a>
+                                      </div>
+                                  </CardHeader>
+                                  <CardBody>
+                                      <GridContainer>
+                                        <GridItem>
+                                          <p>Project Language - {project.project_language}</p>
+                                          <p>Project Person - {project.project_person}</p>
+                                          <p>Project Description - {project.project_description}</p>
+                                          <p>Department - {project.project_department}</p>
+                                          <p>Project Status - {project.project_status}</p>
+                                        </GridItem>
+                                        <GridItem>
+                                          <p className="projectPriority">{project.project_priority} Priority</p>
+                                        </GridItem>
+                                      </GridContainer>
+                                  {/* </CardBody> */}
+
+                                  <GridContainer>
+                                    <GridItem>
+                                      <h5 className="projectPriority">Comments</h5>
+                                    </GridItem>
+                                  </GridContainer>
+                                  <GridContainer>
+                                    <GridItem xs={12} sm={12} md={12} >
+                                      <form>
+                                        {/* <textarea
+                                          className="form-control signup-input"
+                                          type="text"
+                                          value={message}
+                                          onChange={(e) => {
+                                            setmessage(e.target.value);
+                                          }}
+                                        ></textarea> */}
+    <RichTextEditor placeholder={"Write your comment"}
+                                          // value={message}
+                                          // onChange={(e) => {
+                                          //   setmessage(e.target.value);
+                                          // }}
+    />
+
+                                        <div onClick={()=> sendMessage(project.project_id)}>Save</div>
+
+                                        {/* <div onClick={() => sendMessage(project.project_id)}>Save</div> */}
+                                      </form>
+                                    </GridItem>
+                                  </GridContainer>
+
+                                  {comments.map((m)=>{
+                                    const Date = ((m.creation_time).substr(0,10).split("-",3));
+                                    const Time = ((m.creation_time).substr(11,16).split(":",3));
+                                    var dateP = m.creation_time;
+                                    var textArea = (m.comment).split(`\n`);
+                                    // console.log("textArea");
+                                    // console.log(textArea);
+                                    // if(textArea == ""){
+                                      // function Setcontent() {
+                                      //  }
+                                      return(
+                                        <span>
+                                          <GridContainer>
+                                            <GridItem>
+                                              <span>{m.username}</span>
+                                            </GridItem>
                                                 
-                                    </GridContainer>*/}
-                                    {/*<GridContainer>
-                                        <GridItem>
-                                            <p className="projectPriority">Task Priority : {task.task_priority}</p>
-                                        </GridItem>
-                                        
-                                        </GridContainer>*/}
-                                {/*</CardBody>*/}
+                                            <GridItem>
+                                            <span><p>{Date[2]}/{Date[1]}/{Date[0]}</p></span>
+                                            </GridItem>
+                                          </GridContainer>
 
-                                </div>
-                                </CardHeader>
-                            </Card>
-                        </form>
+                                          <GridContainer>
+                                            <GridItem>
+                                              <div>
+                                                <span id="editorOne">{m.comment}</span>
+                                              </div>
+                                            </GridItem>
+                                          </GridContainer>
+                                        </span>
+                                      )
+                                    // }else{
+                                    //   return(
+                                    //     <span>
+                                    //       <GridContainer>
+                                    //         <GridItem>
+                                    //           <span>{m.username}</span>
+                                    //         </GridItem>
+                                                
+                                    //         <GridItem>
+                                    //         <span><p>{Date[2]}/{Date[1]}/{Date[0]}</p></span>
+                                    //         </GridItem>
+                                    //       </GridContainer>
 
-                        
+                                    //       <GridContainer>
+                                    //         <GridItem>
+                                    //           <div>
+                                    //             <a href={m.comment} target="_blank" id="userComment">{m.comment}</a>
+                                    //             {/* <p>{Time[0]}:{Time[1]}:{Time[2]}</p> */}
+                                    //           </div>
+                                    //         </GridItem>
+                                    //       </GridContainer>
+                                    //     </span>
+                                    //   )
+                                    // }
+                                  })}
+                                  </CardBody>
 
-                    </GridItem>                  
-                )
-            })}
+                                </Card>
+                              </GridItem>
 
-            
+                            </div>
+                          )}
+                        </Popup>
+                      </div>
+                    </div>
+                  </CardHeader>
+                </Card>
+              </GridItem>
+            )
+          })
+        }
+          
         </GridContainer>
     </>
   );
