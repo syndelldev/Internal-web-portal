@@ -112,6 +112,22 @@ function ProjectModule( { project_details , User_name } ) {
   const [addStartDate, setStart_Date] = useState();
   const [addEndDate, setEnd_Date] = useState();
 
+  //today date
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var yyyy = today.getFullYear();
+
+  today = yyyy + '/' + mm + '/' + dd;
+  console.log(today);
+
+  //for On_track
+  const On_track = [];
+  console.log(On_track)
+
+  //for Off_track
+  const Off_track = [];
+  console.log(Off_track)
   
   const deleteProject = async(id) =>{
     console.log('delete');
@@ -562,12 +578,9 @@ useEffect(() =>{
     <GridContainer>
 
     {project_details.map((project)=>{
-      // console.log(project.project_person)
-      // console.log(cookies.name)
 
       const isInArray = project.project_person.includes(cookies.name);
       // console.log(isInArray); 
-
       if(isInArray==true){
         // console.log("True")
       }
@@ -579,12 +592,27 @@ useEffect(() =>{
       // if(status.project_status == project.project_status){
 
       var person = project.project_person.split(",");
-      // const name =[];
-      // for(i=0 ; i<person.length; i++){
-      //   console.log(person[i]);
-      //   var member = person[i].slice(0,2);
-      //   console.log(member);
-      // }
+      const MySQLDate  = project.project_deadline;
+      let date = MySQLDate.replace(/[-]/g, '/').substr(0,10);
+      console.log(date)
+
+      if(project.project_status=="running")
+      {
+        
+        if(date>today)
+        {
+          console.log("On track", project.project_id);
+          On_track.push(project.project_id);
+          console.log(On_track)
+        }
+        else
+        {
+          console.log("off track", project.project_id);
+
+          Off_track.push(project.project_id);
+          console.log(Off_track)
+        }
+      }
 
       return(
         <>
@@ -596,7 +624,12 @@ useEffect(() =>{
                 <div className="project-content">
                 <h4 className="projectTitle">{project.project_title}</h4>        
                 <div className="icon-display">
-                <span className={project.project_priority}>{project.project_priority}</span>
+                <span className={project.project_status}>
+                  {(project.project_status=="on hold") ? "On Hold" : "" }
+                  {(project.project_status=="completed") ? "Completed" : "" }
+                  {(project.project_status=="running") ? (date>today) ? "On track": "Off track" : "" }
+                </span>
+                {/* <span className={project.project_priority}>{project.project_priority}</span> */}
                 {person.map((project_person) => {
                   return(
                     <div className="chip">
