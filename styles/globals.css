@@ -161,7 +161,7 @@ button.MuiButtonBase-root.MuiButton-root.makeStyles-button-2276.makeStyles-prima
 h4.text {
   margin-bottom: 0em!important;
 }
-button.MuiButtonBase-root.MuiButton-root.makeStyles-button-117.makeStyles-primary-120.add_new_user.MuiButton-text {
+.add_new_user {
   /* vertical-align: !important; */
   float: right!important;
   padding: 0px !important;
@@ -176,6 +176,13 @@ button.MuiButtonBase-root.MuiButton-root.makeStyles-button-117.makeStyles-primar
 }
 .makeStyles-cardBody-134{
   padding: 9px 9px!important;
+}
+--------------------------- Sub task css -----------------------------------
+.taskToDo {
+  font-size: 20px;
+  padding: 15px;
+  border-radius: none;
+  font-weight: 800;
 }
 .bttn-design{
   font-weight: 600;
@@ -378,9 +385,49 @@ p.usersubtitle{
 .Task_todo{
   display: none;
 }
-table,tr,th,td
-{
-  border: 3px solid black;
+/* table,tr,th,td
+*/
+table.project-data {
+  width: 100%;
+}
+table.project-data th{
+  padding-left: 15px;
+    padding-right: 15px;
+    color: #000;
+    border: 1px solid #D3D3D3;
+    font-size: 15px;
+    font-weight: 400;
+  border: 1px solid #D3D3D3;
+  padding-bottom: 8px;
+  padding-top: 8px;
+}
+th.title {
+  border-left: none!important;
+}
+th.view-edit {
+  border-right: none!important;
+}
+td.status-data p {
+  text-align: center;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+th.status {
+  text-align: center;
+}
+td.assignee-data p {
+  /* background: rebeccapurple; */
+  padding-left: 10px;
+  padding-right: 10px;
+}
+td {
+  padding-top: 10px;
+}
+h4.projectTitle{
+  padding-left: 15px;
+  font-size: 20px;
+  font-weight: 400;
+  padding-right: 15px;
 }
 h3.on-track {
   background: #0096FF;
@@ -432,6 +479,7 @@ h3.on-hold{
  }
  
 .project-status .MuiGrid-grid-sm-6{
+  margin-right: 30px;
   max-width: 100%;
   flex-basis: 100%;
 }
