@@ -177,13 +177,24 @@ h4.text {
 .makeStyles-cardBody-134{
   padding: 9px 9px!important;
 }
---------------------------- Sub task css -----------------------------------
+/* ---sub task css---- */
 .taskToDo {
   font-size: 20px;
   padding: 15px;
-  border-radius: none;
+
   font-weight: 800;
 }
+.arrow {
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+}
+.down {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+
 .bttn-design{
   font-weight: 600;
   padding: 9px 20px;

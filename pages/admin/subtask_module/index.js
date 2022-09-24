@@ -639,7 +639,8 @@ const closeTaskCompleted = async(task) =>{
 <Card>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-          <div className="taskToDo" onClick={()=> { taskToDo("task_toDo") , closeTaskToDo("task_toDo") }}>Task to do</div>
+          <div className="taskToDo" onClick={()=> { taskToDo("task_toDo") , closeTaskToDo("task_toDo") }}><i class="arrow down"></i>Task to do </div>
+          
         </GridItem>
       </GridContainer>
 </Card>
