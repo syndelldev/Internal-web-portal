@@ -24,6 +24,7 @@ import { Button } from "@material-ui/core";
 import dynamic from "next/dynamic";
 import 'react-quill/dist/quill.snow.css';
 
+
 const ReactQuill = dynamic(import('react-quill'), { ssr: false })
 
 const styles = {
@@ -102,8 +103,6 @@ function Dashboard({project}) {
   const classes = useStyles();
   const router = useRouter();
 
-  const [value, onChange] = useState('10:00');
-  
   const [cookies, setCookie] = useCookies('');
   //console.log(cookies.Id);
 
@@ -121,9 +120,6 @@ function Dashboard({project}) {
   const [username, setusername] = useState('');
   const [message, setmessage] = useState('');
 
-  const [estimate, setestimate] = useState('');
-  const [spent, setspent] = useState('');
-
   const [comments, setcomments] = useState([]);
   console.log(comments);
   
@@ -140,10 +136,10 @@ function Dashboard({project}) {
   const sendMessage = async (project_id) => {
     // e.preventDefault();
     // alert(project_id)
-    console.log();
+    console.log("comm");
     console.log(textComment);
 
-    var addComment = await axios.post(`${server}/api/comment/addcomment`, {  username: cookies.name, message: message , project_id: project_id, estimate:estimate , spent:spent });
+    var addComment = await axios.post(`${server}/api/comment/addcomment`, {  username: cookies.name, message: message , project_id: project_id });
     console.log(addComment)
     console.log(cookies.name)
     // router.reload(`${server}/user/dashboard`);
@@ -205,6 +201,78 @@ function Dashboard({project}) {
     }
   
   }
+  // class Editor extends React.Component {
+  //   constructor(props) {
+  //     super(props);
+  //     this.state = { editorHtml: "" };
+  //     this.handleChange = this.handleChange.bind(this);
+  //     // console.log("text");      
+  //   }
+  
+  //   handleChange(html) {
+  //     this.setState({ editorHtml: html });
+  //     // console.log(html);
+  //     // setText(this.state.editorHtml);
+  //     console.log(this.state.editorHtml);
+  //   }
+  
+  //   render() {
+  //     return (
+  //       <div className="text-editor">
+  //         <ReactQuill
+  //           onChange={this.handleChange}
+  //           placeholder={this.props.placeholder}
+  //           modules={Editor.modules}
+  //           formats={Editor.formats}
+  //           // value={this.state.editorHtml}
+  //           theme={"snow"} // pass false to use minimal theme
+  //         />
+  //       </div>
+  //     );
+  //   }
+  // }
+  
+  // Editor.modules = {
+  //   toolbar: [
+  //     [{ 'header': [1, 2, 3, 4, 5, false] }],
+  //     [{ 'color': ["#fff", "#d0d1d2", "#000", "red" ,"green", "blue", "orange", "violet" ]}],
+  //     ['bold', 'italic', 'underline','strike', 'blockquote'],
+  //     [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+  //     ['link', 'image'],
+  //     ['clean'],
+  //   ],
+  //   handlers: {
+  //     // handlers object will be merged with default handlers object
+  //     'link': function(value) {
+  //       if (value) {
+  //         console.log("value");
+  //       }else{
+  //         console.log("no data");
+  //       }
+  //     }
+  //   }
+  //   // clipboard: {
+  //   //   matchVisual: false,
+  //   // }
+  // };
+  
+  
+  // Editor.formats = [
+  //   "header",
+  //   "font",
+  //   "size",
+  //   "bold",
+  //   "italic",
+  //   "underline",
+  //   "strike",
+  //   "blockquote",
+  //   "list",
+  //   "bullet",
+  //   "indent",
+  //   "link",
+  //   "image",
+  //   "color"
+  // ];
   
   return (
     <>
@@ -217,12 +285,231 @@ function Dashboard({project}) {
           )
         })}
       </div>
-      
+          <table>
+            <tr>
+              <th>Project Title</th>
+              <th>Project Priority</th>
+              <th>Project Status</th>
+              <th>Project Person</th>
+              <th>View & Edit</th>
+            </tr>
+            <tr>
+              <td>
+                {
+                  project.map((project)=>{
+                    return(
+                      <h4 className="projectTitle">{project.project_title}</h4>
+                    )
+                  })
+                }
+              </td>
+              <td>
+                {
+                  project.map((project)=>{
+                    return(
+                      <p className="projectPriority">{project.project_priority} Priority</p>
+                    )
+                  })
+                }
+              </td>
+              <td>
+                {
+                  project.map((project)=>{
+                    return(
+                      <p>{project.project_status}</p>
+                    )
+                  })
+                }
+              </td>
+              <td>
+                {
+                  project.map((project)=>{
+                    return(
+                      <p>{project.project_person}</p>
+                    )
+                  })
+                }
+              </td> 
+              <td>
+                {
+                  project.map((project)=>{
+                    return(
+                      <div className="icon-display">
+                        <Popup trigger={<Button disabled={project.view_rights==0} ><FaEye/></Button>}  className="popupReact"  modal>
+                          {close => (
+                            <div>
+                              <GridItem xs={6} sm={6} md={12} key={project.project_id}>
+                                <Card >
+                                  <CardHeader color="primary">
+                                    <GridContainer>
+                                      <GridItem>
+                                        <h4>{project.project_title}</h4>
+                                      </GridItem>
+                                      <div className={classes.close}>
+                                        <a onClick={close}>&times;</a>
+                                      </div>   
+                                    </GridContainer>
+                                  </CardHeader><br/>
+                                  <CardFooter>
+                                    <p>Project Language</p>-<p>{project.project_language}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p>{project.project_person}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p>{project.project_description}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p>{project.project_department}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p>{project.project_status}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p className="projectPriority">{project.project_priority} Priority</p>
+                                  </CardFooter>
+                                </Card>
+                              </GridItem>
+                            </div>
+                          )}
+                        </Popup>
+
+                        {/*Edit Project PopUp*/}
+                        <Popup trigger={<div> <button disabled={project.edit_rights==0} onClick={()=>getData(project.project_id)} className="user-icon"><FiEdit/></button> </div>}  className="popupReact"  modal >
+                          {close => (
+                            <div>
+                              
+                              <GridItem xs={12} sm={12} md={12} key={project.project_id}>
+                                <Card>
+                                  <CardHeader color="primary">
+                                    <h4>{project.project_title}</h4>
+                                      <div className={classes.close}>
+                                        <a onClick={close}>&times;</a>
+                                      </div>
+                                  </CardHeader>
+                                  <CardBody>
+                                      <GridContainer>
+                                        <GridItem>
+                                          <p>Project Language - {project.project_language}</p>
+                                          <p>Project Person - {project.project_person}</p>
+                                          <p>Project Description - {project.project_description}</p>
+                                          <p>Department - {project.project_department}</p>
+                                          <p>Project Status - {project.project_status}</p>
+                                        </GridItem>
+                                        <GridItem>
+                                          <p className="projectPriority">{project.project_priority} Priority</p>
+                                        </GridItem>
+                                      </GridContainer>
+                                  {/* </CardBody> */}
+
+                                  <GridContainer>
+                                    <GridItem>
+                                      <h5 className="projectPriority">Comments</h5>
+                                    </GridItem>
+                                  </GridContainer>
+                                  <GridContainer>
+                                    <GridItem xs={12} sm={12} md={12} >
+                                      <form>
+                                        {/* <textarea
+                                          className="form-control signup-input"
+                                          type="text"
+                                          value={message}
+                                          onChange={(e) => {
+                                            setmessage(e.target.value);
+                                          }}
+                                        ></textarea> */}
+    <RichTextEditor placeholder={"Write your comment"}
+                                          // value={message}
+                                          // onChange={(e) => {
+                                          //   setmessage(e.target.value);
+                                          // }}
+    />
+
+                                        <div onClick={()=> sendMessage(project.project_id)}>Save</div>
+
+                                        {/* <div onClick={() => sendMessage(project.project_id)}>Save</div> */}
+                                      </form>
+                                    </GridItem>
+                                  </GridContainer>
+
+                                  {comments.map((m)=>{
+                                    const Date = ((m.creation_time).substr(0,10).split("-",3));
+                                    const Time = ((m.creation_time).substr(11,16).split(":",3));
+                                    var dateP = m.creation_time;
+                                    var textArea = (m.comment).split(`\n`);
+                                    // console.log("textArea");
+                                    // console.log(textArea);
+                                    // if(textArea == ""){
+                                      // function Setcontent() {
+                                      //  }
+                                      return(
+                                        <span>
+                                          <GridContainer>
+                                            <GridItem>
+                                              <span>{m.username}</span>
+                                            </GridItem>
+                                                
+                                            <GridItem>
+                                            <span><p>{Date[2]}/{Date[1]}/{Date[0]}</p></span>
+                                            </GridItem>
+                                          </GridContainer>
+
+                                          <GridContainer>
+                                            <GridItem>
+                                              <div>
+                                                <span id="editorOne">{m.comment}</span>
+                                              </div>
+                                            </GridItem>
+                                          </GridContainer>
+                                        </span>
+                                      )
+                                    // }else{
+                                    //   return(
+                                    //     <span>
+                                    //       <GridContainer>
+                                    //         <GridItem>
+                                    //           <span>{m.username}</span>
+                                    //         </GridItem>
+                                                
+                                    //         <GridItem>
+                                    //         <span><p>{Date[2]}/{Date[1]}/{Date[0]}</p></span>
+                                    //         </GridItem>
+                                    //       </GridContainer>
+
+                                    //       <GridContainer>
+                                    //         <GridItem>
+                                    //           <div>
+                                    //             <a href={m.comment} target="_blank" id="userComment">{m.comment}</a>
+                                    //             {/* <p>{Time[0]}:{Time[1]}:{Time[2]}</p> */}
+                                    //           </div>
+                                    //         </GridItem>
+                                    //       </GridContainer>
+                                    //     </span>
+                                    //   )
+                                    // }
+                                  })}
+                                  </CardBody>
+
+                                </Card>
+                              </GridItem>
+
+                            </div>
+                          )}
+                        </Popup>
+                      </div>
+                    )
+                  })
+                }
+              </td>  
+            </tr>
+          </table>
+          
       <GridContainer>
        {
           project.map((project)=>{
             // const bDate = ((project.project_deadline).substr(0,10).split("-",3));
             return(
+              
               <GridItem xs={6} sm={6} md={4} key={project.project_id}>
                 <Card className="projects">
                   <CardHeader color="primary" className="project-block">
@@ -310,19 +597,9 @@ function Dashboard({project}) {
                                       <h5 className="projectPriority">Comments</h5>
                                     </GridItem>
                                   </GridContainer>
-                                  
                                   <GridContainer>
                                     <GridItem xs={12} sm={12} md={12} >
                                       <form>
-                                        <GridContainer>
-                                            <GridItem>
-                                                <label>Estimate Time</label>
-                                                <input type="text" value={estimate} onChange={(e)=>{setestimate(e.target.value)}} /><br/>
-                                                <label>Spent Time</label>
-                                                <input type="text" value={spent} onChange={(e)=>{setspent(e.target.value)}}/>
-                                            </GridItem>
-                                        </GridContainer>
-                                        
                                         {/* <textarea
                                           className="form-control signup-input"
                                           type="text"
@@ -331,12 +608,12 @@ function Dashboard({project}) {
                                             setmessage(e.target.value);
                                           }}
                                         ></textarea> */}
-                                        <RichTextEditor placeholder={"Write your comment"}
+    <RichTextEditor placeholder={"Write your comment"}
                                           // value={message}
                                           // onChange={(e) => {
                                           //   setmessage(e.target.value);
                                           // }}
-                                        />
+    />
 
                                         <div onClick={()=> sendMessage(project.project_id)}>Save</div>
 
@@ -344,12 +621,17 @@ function Dashboard({project}) {
                                       </form>
                                     </GridItem>
                                   </GridContainer>
-                                  
+
                                   {comments.map((m)=>{
                                     const Date = ((m.creation_time).substr(0,10).split("-",3));
                                     const Time = ((m.creation_time).substr(11,16).split(":",3));
                                     var dateP = m.creation_time;
                                     var textArea = (m.comment).split(`\n`);
+                                    // console.log("textArea");
+                                    // console.log(textArea);
+                                    // if(textArea == ""){
+                                      // function Setcontent() {
+                                      //  }
                                       return(
                                         <span>
                                           <GridContainer>
@@ -371,6 +653,30 @@ function Dashboard({project}) {
                                           </GridContainer>
                                         </span>
                                       )
+                                    // }else{
+                                    //   return(
+                                    //     <span>
+                                    //       <GridContainer>
+                                    //         <GridItem>
+                                    //           <span>{m.username}</span>
+                                    //         </GridItem>
+                                                
+                                    //         <GridItem>
+                                    //         <span><p>{Date[2]}/{Date[1]}/{Date[0]}</p></span>
+                                    //         </GridItem>
+                                    //       </GridContainer>
+
+                                    //       <GridContainer>
+                                    //         <GridItem>
+                                    //           <div>
+                                    //             <a href={m.comment} target="_blank" id="userComment">{m.comment}</a>
+                                    //             {/* <p>{Time[0]}:{Time[1]}:{Time[2]}</p> */}
+                                    //           </div>
+                                    //         </GridItem>
+                                    //       </GridContainer>
+                                    //     </span>
+                                    //   )
+                                    // }
                                   })}
                                   </CardBody>
 
