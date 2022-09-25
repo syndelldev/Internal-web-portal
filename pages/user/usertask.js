@@ -142,7 +142,7 @@ function Dashboard({task}) {
   //for Time Declration
 
   const [Time, setTime] = useState([]);
-  // console.log(Time)
+
   const getTime = async (task_id) =>{
     var timedata = await axios.post(`${server}/api/comment/task_time`, { task_id: task_id });
     setTime(timedata.data[0])
@@ -161,7 +161,7 @@ function Dashboard({task}) {
   }
   // const [estimate, setestimate] = useState('');
   // const [spent, setspent] = useState('');
-
+  
 
   // const task_time = async (task_id)=>{
   //   // e.preventDefault();
@@ -327,10 +327,15 @@ function Dashboard({task}) {
                                   
                                   <GridContainer>
                                     <GridItem xs={12} sm={12} md={12} >
+                                      {Time.length==0 ? (
+                                        console.log("data not found")
+                                      ):(
+                                        console.log("data availble")
+                                      )}
                                       <form>
                                         <GridContainer>
                                           <GridItem>
-                                            <input value={task.task_id}/>
+                                            <input value={task.task_id} type="hidden"/>
                                             <label>Estimate Time</label>
                                             <input type="text" name="estimate_time" value={userdata.estimate_time} onChange={handleChange}/><br/>
                                             <label>Spent Time</label>
