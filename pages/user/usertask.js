@@ -142,16 +142,21 @@ function Dashboard({task}) {
   //for Time Declration
 
   const [Time, setTime] = useState([]);
-
+  console.log(Time)
+  
+  const [TimeData,setTimeData] = useState([])
+  
   const getTime = async (task_id) =>{
     var timedata = await axios.post(`${server}/api/comment/task_time`, { task_id: task_id });
     setTime(timedata.data[0])
+    setTimeData(timedata.data)
   }
+  console.log(TimeData)
   const [userdata, setuserdata] = useState({
     estimate_time:"",
     spent: ""
   });
-  console.log(Time)
+  
   useEffect(()=>{
     setuserdata(Time);
   },[Time])
@@ -159,15 +164,15 @@ function Dashboard({task}) {
   const handleChange = ({ target: { name, value } }) =>{
     setuserdata({ ...userdata, [name]: value });
   }
-  // const [estimate, setestimate] = useState('');
-  // const [spent, setspent] = useState('');
+  const [estimate, setestimate] = useState('');
+  const [spent, setspent] = useState('');
   
 
-  // const task_time = async (task_id)=>{
-  //   // e.preventDefault();
-  //   var addTime = await axios.post(`${server}/api/comment/task_time`, { task_id:task_id, username: cookies.name, estimate:estimate , spent:spent });
-  //   console.log(addTime.data)
-  // }
+  const insert_time = async (task_id)=>{
+    // e.preventDefault();
+    var addTime = await axios.post(`${server}/api/comment/addtasktime`, { task_id:task_id, username: cookies.name, estimate:estimate , spent:spent });
+    console.log(addTime.data)
+  }
   
 
 
@@ -206,12 +211,7 @@ function Dashboard({task}) {
     }
   
     rteChange = (content, delta, source, editor) => {
-      // console.log(editor.getHTML()); // rich text
-      // console.log(content);
-      // console.log(delta.ops[1]);
-      // console.log(source);
-      // console.log(editor.getText()); // plain text
-      // console.log(editor.getLength()); // number of characters
+      
     }
   
     render() {
@@ -327,23 +327,38 @@ function Dashboard({task}) {
                                   
                                   <GridContainer>
                                     <GridItem xs={12} sm={12} md={12} >
-                                      {Time.length==0 ? (
-                                        console.log("data not found")
+                                      {TimeData.length==0?(
+                                        <>
+                                          <form>
+                                            <GridContainer>
+                                              <GridItem>
+                                                <input value={task.task_id} type="hidden"/>
+                                                <label>Estimate Time</label>
+                                                <input type="text" value={estimate} onChange={(e)=>setestimate(e.target.value)}/><br/>
+                                                <label>Spent Time</label>
+                                                <input type="text" value={spent} onChange={(e)=>setspent(e.target.value)} />
+                                              </GridItem>
+                                              <button type="submit" onClick={()=>insert_time(task.task_id)}>submit</button>
+                                            </GridContainer>
+                                          </form>
+                                        </>
                                       ):(
-                                        console.log("data availble")
+                                        <>
+                                          <form>
+                                            <GridContainer>
+                                              <GridItem>
+                                                <input value={task.task_id} type="hidden"/>
+                                                <label>Estimate Time</label>
+                                                <input type="text" name="estimate_time" value={userdata.estimate_time} onChange={handleChange}/><br/>
+                                                <label>Spent Time</label>
+                                                <input type="text" name="spent_time" value={userdata.spent_time} onChange={handleChange}/>
+                                              </GridItem>
+                                              <button type="submit">submit</button>
+                                            </GridContainer>
+                                          </form>
+                                        </>
                                       )}
-                                      <form>
-                                        <GridContainer>
-                                          <GridItem>
-                                            <input value={task.task_id} type="hidden"/>
-                                            <label>Estimate Time</label>
-                                            <input type="text" name="estimate_time" value={userdata.estimate_time} onChange={handleChange}/><br/>
-                                            <label>Spent Time</label>
-                                            <input type="text" name="spent_time" value={userdata.spent_time} onChange={handleChange}/>
-                                          </GridItem>
-                                          <button type="submit">submit</button>
-                                        </GridContainer>
-                                      </form>
+                                      
                                       <form>
                                         {/* <textarea
                                           className="form-control signup-input"
