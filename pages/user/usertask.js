@@ -84,20 +84,21 @@ const styles = {
 
 export async function getServerSideProps(context){
   //console.log(context.req.cookies);
-  const res = await fetch(`${server}/api/user_dashboard`, {
+  const res = await fetch(`${server}/api/user_dashboard/subtask_person`, {
     headers: {
       'Access-Control-Allow-Credentials': true,
       Cookie: context.req.headers.cookie
     },
   })
-  const project = await res.json()
-  //console.log(project)
+  const task = await res.json()
+  //console.log(task)
 
-  return { props: {project}, }
+  return { props: {task}, }
 }
 
-function Dashboard({project}) {
-  // console.log(project)
+function Dashboard({task}) {
+  // console.log(task)
+  
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   const router = useRouter();
@@ -116,38 +117,59 @@ function Dashboard({project}) {
         //console.log(res)
       })    
   },[])
-  // console.log(users)
 
   const [username, setusername] = useState('');
   const [message, setmessage] = useState('');
 
-  const [estimate, setestimate] = useState('');
-  const [spent, setspent] = useState('');
-
+  //for comments Declration
   const [comments, setcomments] = useState([]);
-  console.log(comments);
   
-  const getData = async (project_id)=>{
-
-    // alert(project_id)
-    var comment = await axios.post(`${server}/api/comment/comment`, { project_id: project_id });
-    // console.log(comment.data)
+  const getData = async (task_id)=>{
+    var comment = await axios.post(`${server}/api/comment/comment`, { task_id: task_id });
     setcomments(comment.data)
-    // console.log(comments)
   }
   
-
-  const sendMessage = async (project_id) => {
-    // e.preventDefault();
-    // alert(project_id)
-    console.log();
+  const sendMessage = async (task_id) => {
+    console.log(task_id);
     console.log(textComment);
 
-    var addComment = await axios.post(`${server}/api/comment/addcomment`, {  username: cookies.name, message: message , project_id: project_id, estimate:estimate , spent:spent });
+    var addComment = await axios.post(`${server}/api/comment/addcomment`, {  username: cookies.name, message: message , task_id: task_id, estimate:estimate , spent:spent });
     console.log(addComment)
     console.log(cookies.name)
     // router.reload(`${server}/user/dashboard`);
   }
+
+  //for Time Declration
+
+  const [Time, setTime] = useState([]);
+  // console.log(Time)
+  const getTime = async (task_id) =>{
+    var timedata = await axios.post(`${server}/api/comment/task_time`, { task_id: task_id });
+    setTime(timedata.data[0])
+  }
+  const [userdata, setuserdata] = useState({
+    estimate_time:"",
+    spent: ""
+  });
+  console.log(Time)
+  useEffect(()=>{
+    setuserdata(Time);
+  },[Time])
+  console.log("userdata",userdata)
+  const handleChange = ({ target: { name, value } }) =>{
+    setuserdata({ ...userdata, [name]: value });
+  }
+  // const [estimate, setestimate] = useState('');
+  // const [spent, setspent] = useState('');
+
+
+  // const task_time = async (task_id)=>{
+  //   // e.preventDefault();
+  //   var addTime = await axios.post(`${server}/api/comment/task_time`, { task_id:task_id, username: cookies.name, estimate:estimate , spent:spent });
+  //   console.log(addTime.data)
+  // }
+  
+
 
   const [textComment, setText] = useState([]);
 
@@ -220,33 +242,25 @@ function Dashboard({project}) {
       
       <GridContainer>
        {
-          project.map((project)=>{
-            // const bDate = ((project.project_deadline).substr(0,10).split("-",3));
+          task.map((task)=>{
             return(
-              <GridItem xs={6} sm={6} md={4} key={project.project_id}>
+              <GridItem xs={6} sm={6} md={4} key={task.task_id}>
                 <Card className="projects">
                   <CardHeader color="primary" className="project-block">
-                  {/*<img className="image" src={`${server}/reactlogo.png`} />*/}
                   <div className="project-content">
-                    <h4 className="projectTitle">{project.project_title}</h4>
-                  
-                  {/*<CardFooter>
-                    <p className="projectLanguage">{project.project_language}</p>
-            <p className="projectPriority">*/}
+                    <h4 className="projectTitle">{task.task_title}</h4>
                       
                       {/*View Project PopUp*/}
-                      {/* <Button disabled={project.view_rights==0} >View</Button>
-                      <Button disabled={project.edit_rights==0} >Edit</Button> */}
                       <div className="icon-display">
-                        <Popup trigger={<Button disabled={project.view_rights==0} ><FaEye/></Button>}  className="popupReact"  modal>
+                        <Popup trigger={<Button disabled={task.view_rights==0} ><FaEye/></Button>}  className="popupReact"  modal>
                           {close => (
                             <div>
-                              <GridItem xs={6} sm={6} md={12} key={project.project_id}>
+                              <GridItem xs={6} sm={6} md={12} key={task.task_id}>
                                 <Card >
                                   <CardHeader color="primary">
                                     <GridContainer>
                                       <GridItem>
-                                        <h4>{project.project_title}</h4>
+                                        <h4>{task.task_title}</h4>
                                       </GridItem>
                                       <div className={classes.close}>
                                         <a onClick={close}>&times;</a>
@@ -254,22 +268,22 @@ function Dashboard({project}) {
                                     </GridContainer>
                                   </CardHeader><br/>
                                   <CardFooter>
-                                    <p>Project Language</p>-<p>{project.project_language}</p>
+                                    <p>Project Language</p>-<p>{task.task_language}</p>
                                   </CardFooter>
                                   <CardFooter>
-                                    <p>{project.project_person}</p>
+                                    <p>{task.task_person}</p>
                                   </CardFooter>
                                   <CardFooter>
-                                    <p>{project.project_description}</p>
+                                    <p>{task.task_description}</p>
                                   </CardFooter>
                                   <CardFooter>
-                                    <p>{project.project_department}</p>
+                                    <p>{task.task_department}</p>
                                   </CardFooter>
                                   <CardFooter>
-                                    <p>{project.project_status}</p>
+                                    <p>{task.task_status}</p>
                                   </CardFooter>
                                   <CardFooter>
-                                    <p className="projectPriority">{project.project_priority} Priority</p>
+                                    <p className="projectPriority">{task.task_priority} Priority</p>
                                   </CardFooter>
                                 </Card>
                               </GridItem>
@@ -278,14 +292,14 @@ function Dashboard({project}) {
                         </Popup>
 
                         {/*Edit Project PopUp*/}
-                        <Popup trigger={<div> <button disabled={project.edit_rights==0} onClick={()=>getData(project.project_id)} className="user-icon"><FiEdit/></button> </div>}  className="popupReact"  modal >
+                        <Popup trigger={<div> <button disabled={task.edit_rights==0} onClick={()=>{getData(task.task_id);getTime(task.task_id)}} className="user-icon"><FiEdit/></button> </div>}  className="popupReact"  modal >
                           {close => (
                             <div>
                               
-                              <GridItem xs={12} sm={12} md={12} key={project.project_id}>
+                              <GridItem xs={12} sm={12} md={12} key={task.project_id}>
                                 <Card>
                                   <CardHeader color="primary">
-                                    <h4>{project.project_title}</h4>
+                                    <h4>{task.task_title}</h4>
                                       <div className={classes.close}>
                                         <a onClick={close}>&times;</a>
                                       </div>
@@ -293,14 +307,14 @@ function Dashboard({project}) {
                                   <CardBody>
                                       <GridContainer>
                                         <GridItem>
-                                          <p>Project Language - {project.project_language}</p>
-                                          <p>Project Person - {project.project_person}</p>
-                                          <p>Project Description - {project.project_description}</p>
-                                          <p>Department - {project.project_department}</p>
-                                          <p>Project Status - {project.project_status}</p>
+                                          <p>Task Language - {task.task_language}</p>
+                                          <p>Task Person - {task.task_person}</p>
+                                          <p>Task Description - {task.task_description}</p>
+                                          <p>Department - {task.task_department}</p>
+                                          <p>Task Status - {task.task_status}</p>
                                         </GridItem>
                                         <GridItem>
-                                          <p className="projectPriority">{project.project_priority} Priority</p>
+                                          <p className="projectPriority">{task.task_priority} Priority</p>
                                         </GridItem>
                                       </GridContainer>
                                   {/* </CardBody> */}
@@ -315,14 +329,17 @@ function Dashboard({project}) {
                                     <GridItem xs={12} sm={12} md={12} >
                                       <form>
                                         <GridContainer>
-                                            <GridItem>
-                                                <label>Estimate Time</label>
-                                                <input type="text" value={estimate} onChange={(e)=>{setestimate(e.target.value)}} /><br/>
-                                                <label>Spent Time</label>
-                                                <input type="text" value={spent} onChange={(e)=>{setspent(e.target.value)}}/>
-                                            </GridItem>
+                                          <GridItem>
+                                            <input value={task.task_id}/>
+                                            <label>Estimate Time</label>
+                                            <input type="text" name="estimate_time" value={userdata.estimate_time} onChange={handleChange}/><br/>
+                                            <label>Spent Time</label>
+                                            <input type="text" name="spent_time" value={userdata.spent_time} onChange={handleChange}/>
+                                          </GridItem>
+                                          <button type="submit">submit</button>
                                         </GridContainer>
-                                        
+                                      </form>
+                                      <form>
                                         {/* <textarea
                                           className="form-control signup-input"
                                           type="text"
@@ -338,7 +355,7 @@ function Dashboard({project}) {
                                           // }}
                                         />
 
-                                        <div onClick={()=> sendMessage(project.project_id)}>Save</div>
+                                        <div onClick={()=> sendMessage(task.task_id)}>Save</div>
 
                                         {/* <div onClick={() => sendMessage(project.project_id)}>Save</div> */}
                                       </form>
