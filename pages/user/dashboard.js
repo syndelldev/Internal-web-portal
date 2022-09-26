@@ -85,7 +85,7 @@ export async function getServerSideProps(context){
   })
   const project_hold = await hold.json();
 
-  const running = await fetch(`${server}/api/subtask/project_status/project_completed`,{
+  const running = await fetch(`${server}/api/subtask/project_status/project_running`,{
     headers: {
       'Access-Control-Allow-Credentials': true,
       Cookie: context.req.headers.cookie
@@ -117,8 +117,8 @@ export async function getServerSideProps(context){
 }
 
 function Dashboard( { project_hold, project_completed, project_running, all_task } ) {
-  console.log(project_hold);
-  console.log(project_completed);
+  // console.log(project_hold);
+  // console.log(project_completed);
   console.log(project_running);
   // console.log("all_task",all_task)
 
@@ -152,10 +152,10 @@ function Dashboard( { project_hold, project_completed, project_running, all_task
   // console.log(today);
 
   const On_track = [];
-  console.log(On_track)
+  console.log("On_track",On_track)
 
   const Off_track = [];
-  console.log(Off_track)
+  console.log("Off_track",Off_track)
 
   return (
     <>
@@ -174,16 +174,19 @@ function Dashboard( { project_hold, project_completed, project_running, all_task
       {project_running.map((status)=>{
         const MySQLDate  = status.project_deadline;
         let date = MySQLDate.replace(/[-]/g, '/').substr(0,10);
-        console.log("date");
+        // console.log(date);
+        // console.log(status.project_id)
 
         if(date>today)
         {
           console.count("On track")
           On_track.push(status.project_id); 
+          console.log(status.project_id)
         }
         else{
           console.count("off track")
           Off_track.push(status.project_id);
+          console.log(status.project_id)
         }
       })}
 
@@ -214,37 +217,9 @@ function Dashboard( { project_hold, project_completed, project_running, all_task
             </div>
           </GridItem>
         </GridContainer>
-      </div> 
-      <div> 
-         <GridContainer>
-          <GridItem xs={12} sm={6} md={6}>
-            <h3 className="on-hold">My Projects Priorities
-            {project_hold.map((project)=>{
-              return(
-                <>
-                  <p>{project.project_title}-{project.project_priority}</p>
-                </>
-              )
-            })}
-            {project_completed.map((project)=>{
-              return(
-                <>
-                  <p>{project.project_title}-{project.project_priority}</p>
-                </>
-              )
-            })}
-            {project_running.map((project)=>{
-              return(
-                <>
-                  <p>{project.project_title}-{project.project_priority}</p>
-                </>
-              )
-            })}
-            </h3>
-          </GridItem>
-        </GridContainer> 
       </div>
-       <div>
+       
+      <div>
         <GridContainer>
           <GridItem xs={12} sm={6} md={6}>
             <h3 className="on-hold">My Task Priorities
