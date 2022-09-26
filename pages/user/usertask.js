@@ -322,65 +322,33 @@ function Dashboard({task}) {
           <table className="project-data">
             <tr className="project-data-title">
               <th colspan="2" className="title">Task name </th>
-           
               <th>Priority</th>
               <th colspan="2" className="status">Status</th>
               <th colspan="2" className="assignee">Assignee</th>
               <th colspan="4"className="view-edit">View & Edit</th>
             </tr>
-            <tr className="project-data-details">
-              <td colspan="2">
-                {
-                  task.map((task)=>{
-                    return(
-                      <h4 className="projectTitle">{task.task_title}</h4>
-                    )
-                  })
-                }
-              </td>
-              <td className="priority-data">
-                {
-                  task.map((task)=>{
-                    return(
-                      <p className="projectPriority">{task.task_priority}</p>
-                    )
-                  })
-                }
-              </td>
-              <td className="status-data">
-                {
-                  task.map((task)=>{
-                    return(
-                      <p>{task.task_status}</p>
-                    )
-                  })
-                }
-              </td>
-              <td colspan="4" className="assignee-data">
-                {
-                  task.map((task)=>{
-                    // var person = task.task_person.split(",");
-                    // console.log(person)
-                    return(
-                      <>
-                        {/* {person.map((person)=>{
-                          return( */}
-                            <div className="chip">
-                              <span >{task.task_person}</span>
-                            </div>
-                          {/* )
-                        })} */}
-                      </>
-                    )
-                  })
-                }
-              </td>  
-              <td>
-                {
-                  task.map((task)=>{
-                    return(
-                      <div className="icon-display">
-                        {/* <Popup trigger={<Button disabled={project.view_rights==0} ><FaEye/></Button>}  className="popupReact"  modal>
+
+            {task.map((task)=>{
+              var person = task.task_person.split(",");
+              return(
+                <tr className="project-data-details">
+                  <td colspan="2"><h4 className="projectTitle">{task.task_title}</h4></td>
+                  <td className="priority-data"><p className="projectPriority">{task.task_priority}</p></td>
+                  <td className="status-data"><p>{task.task_status}</p></td>
+                  <td colspan="4" className="assignee-data">
+                    {person.map((task_person) => {
+                      return(
+                        <div className="chip">
+                          <span>{task_person}</span>
+                        </div>
+                        )
+                      })
+                    }
+                  </td>
+                  <td>
+                    <div className="icon-display">
+                      {/*view Popup start*/}
+                      {/* <Popup trigger={<Button disabled={project.view_rights==0} ><FaEye/></Button>}  className="popupReact"  modal>
                           {close => (
                             <div>
                               <GridItem xs={6} sm={6} md={12} key={project.project_id}>
@@ -418,8 +386,8 @@ function Dashboard({task}) {
                             </div>
                           )}
                         </Popup> */}
-
-                        {/*Edit Project PopUp*/}
+                        {/*view popup end*/}
+                        {/*Edit popup Start*/}
                         <Popup trigger={<div> <button disabled={task.edit_rights==0} onClick={()=>{getData(task.task_id);getTime(task.task_id)}} className="user-icon"><FiEdit/></button> </div>}  className="popupReact"  modal >
                           {close => (
                             <div>
@@ -494,12 +462,12 @@ function Dashboard({task}) {
                                             setmessage(e.target.value);
                                           }}
                                         ></textarea> */}
-    <RichTextEditor placeholder={"Write your comment"}
+                                        <RichTextEditor placeholder={"Write your comment"}
                                           // value={message}
                                           // onChange={(e) => {
                                           //   setmessage(e.target.value);
                                           // }}
-    />
+                                        />
 
                                         <div onClick={()=> sendMessage(task.task_id)}>Save</div>
 
@@ -572,12 +540,13 @@ function Dashboard({task}) {
                             </div>
                           )}
                         </Popup>
-                      </div>
-                    )
-                  })
-                }
-              </td>  
-            </tr>
+                        {/*Edit popup end*/}
+                    </div>
+                  </td>
+                </tr>
+              )
+            })}
+            
           </table>
           
  

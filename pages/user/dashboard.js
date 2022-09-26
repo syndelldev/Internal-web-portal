@@ -69,20 +69,39 @@ const styles = {
 export async function getServerSideProps(context){
   // console.log(context.req.cookies);
 
-  const res = await fetch(`${server}/api/project`);
-  const project_details = await res.json();
-
-  const response = await fetch(`${server}/api/admin`)
-  const User_name = await response.json();
-
-  const hold = await fetch(`${server}/api/project/project_status/project_hold`)
-  const project_hold = await hold.json();
-
-  const completed = await fetch(`${server}/api/project/project_status/project_completed`)
+  const completed = await fetch(`${server}/api/subtask/project_status/project_completed`,{
+    headers: {
+      'Access-Control-Allow-Credentials': true,
+      Cookie: context.req.headers.cookie
+    },
+  })
   const project_completed = await completed.json();
 
-  const running = await fetch(`${server}/api/project/project_status/project_running`)
+  const hold = await fetch(`${server}/api/subtask/project_status/project_hold`,{
+    headers: {
+      'Access-Control-Allow-Credentials': true,
+      Cookie: context.req.headers.cookie
+    },
+  })
+  const project_hold = await hold.json();
+
+  const running = await fetch(`${server}/api/subtask/project_status/project_running`,{
+    headers: {
+      'Access-Control-Allow-Credentials': true,
+      Cookie: context.req.headers.cookie
+    },
+  })
   const project_running = await running.json();
+
+
+  // const hold = await fetch(`${server}/api/project/project_status/project_hold`)
+  // const project_hold = await hold.json();
+
+  // const completed = await fetch(`${server}/api/project/project_status/project_completed`)
+  // const project_completed = await completed.json();
+
+  // const running = await fetch(`${server}/api/project/project_status/project_running`)
+  // const project_running = await running.json();
 
   const alltask = await fetch(`${server}/api/user_dashboard/subtask_person`,{
     headers: {
@@ -100,8 +119,8 @@ export async function getServerSideProps(context){
 function Dashboard( { project_hold, project_completed, project_running, all_task } ) {
   // console.log(project_hold);
   // console.log(project_completed);
-  // console.log(project_running);
-  console.log("all_task",all_task)
+  console.log(project_running);
+  // console.log("all_task",all_task)
 
   const useStyles = makeStyles(styles);
   const classes = useStyles();
@@ -133,10 +152,10 @@ function Dashboard( { project_hold, project_completed, project_running, all_task
   // console.log(today);
 
   const On_track = [];
-  console.log(On_track)
+  console.log("On_track",On_track)
 
   const Off_track = [];
-  console.log(Off_track)
+  console.log("Off_track",Off_track)
 
   return (
     <>
@@ -155,16 +174,19 @@ function Dashboard( { project_hold, project_completed, project_running, all_task
       {project_running.map((status)=>{
         const MySQLDate  = status.project_deadline;
         let date = MySQLDate.replace(/[-]/g, '/').substr(0,10);
-        console.log("date");
+        // console.log(date);
+        // console.log(status.project_id)
 
         if(date>today)
         {
           console.count("On track")
           On_track.push(status.project_id); 
+          console.log(status.project_id)
         }
         else{
           console.count("off track")
           Off_track.push(status.project_id);
+          console.log(status.project_id)
         }
       })}
 
@@ -195,37 +217,9 @@ function Dashboard( { project_hold, project_completed, project_running, all_task
             </div>
           </GridItem>
         </GridContainer>
-      </div> 
-      <div> 
-         <GridContainer>
-          <GridItem xs={12} sm={6} md={6}>
-            <h3 className="on-hold">My Projects Priorities
-            {project_hold.map((project)=>{
-              return(
-                <>
-                  <p>{project.project_title}-{project.project_priority}</p>
-                </>
-              )
-            })}
-            {project_completed.map((project)=>{
-              return(
-                <>
-                  <p>{project.project_title}-{project.project_priority}</p>
-                </>
-              )
-            })}
-            {project_running.map((project)=>{
-              return(
-                <>
-                  <p>{project.project_title}-{project.project_priority}</p>
-                </>
-              )
-            })}
-            </h3>
-          </GridItem>
-        </GridContainer> 
       </div>
-       <div>
+       
+      <div>
         <GridContainer>
           <GridItem xs={12} sm={6} md={6}>
             <h3 className="on-hold">My Task Priorities
