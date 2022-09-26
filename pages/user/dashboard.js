@@ -69,7 +69,7 @@ const styles = {
 export async function getServerSideProps(context){
   // console.log(context.req.cookies);
 
-  const completed = await fetch(`${server}/api/subtask/project_status/project_completed`,{
+  const completed = await fetch(`${server}/api/user/project_status/project_completed`,{
     headers: {
       'Access-Control-Allow-Credentials': true,
       Cookie: context.req.headers.cookie
@@ -77,7 +77,7 @@ export async function getServerSideProps(context){
   })
   const project_completed = await completed.json();
 
-  const hold = await fetch(`${server}/api/subtask/project_status/project_hold`,{
+  const hold = await fetch(`${server}/api/user/project_status/project_hold`,{
     headers: {
       'Access-Control-Allow-Credentials': true,
       Cookie: context.req.headers.cookie
@@ -85,7 +85,7 @@ export async function getServerSideProps(context){
   })
   const project_hold = await hold.json();
 
-  const running = await fetch(`${server}/api/subtask/project_status/project_running`,{
+  const running = await fetch(`${server}/api/user/project_status/project_running`,{
     headers: {
       'Access-Control-Allow-Credentials': true,
       Cookie: context.req.headers.cookie
@@ -93,15 +93,29 @@ export async function getServerSideProps(context){
   })
   const project_running = await running.json();
 
+  const high = await fetch(`${server}/api/user/project_priority/high_priority`,{
+    headers: {
+      'Access-Control-Allow-Credentials': true,
+      Cookie: context.req.headers.cookie
+    },
+  })
+  const high_priority = await high.json();
 
-  // const hold = await fetch(`${server}/api/project/project_status/project_hold`)
-  // const project_hold = await hold.json();
+  const low = await fetch(`${server}/api/user/project_priority/low_priority`,{
+    headers: {
+      'Access-Control-Allow-Credentials': true,
+      Cookie: context.req.headers.cookie
+    },
+  })
+  const low_priority = await low.json();
 
-  // const completed = await fetch(`${server}/api/project/project_status/project_completed`)
-  // const project_completed = await completed.json();
-
-  // const running = await fetch(`${server}/api/project/project_status/project_running`)
-  // const project_running = await running.json();
+  const medium = await fetch(`${server}/api/user/project_priority/medium_priority`,{
+    headers: {
+      'Access-Control-Allow-Credentials': true,
+      Cookie: context.req.headers.cookie
+    },
+  })
+  const medium_priority = await medium.json();
 
   const alltask = await fetch(`${server}/api/user_dashboard/subtask_person`,{
     headers: {
@@ -113,13 +127,13 @@ export async function getServerSideProps(context){
 
   // console.log(all_status);
 
-  return{ props: { project_hold, project_completed, project_running, all_task } }
+  return{ props: { project_hold, project_completed, project_running, high_priority, medium_priority, low_priority,  all_task } }
 }
 
-function Dashboard( { project_hold, project_completed, project_running, all_task } ) {
+function Dashboard( { project_hold, project_completed, project_running, high_priority, medium_priority, low_priority, all_task } ) {
   // console.log(project_hold);
   // console.log(project_completed);
-  console.log(project_running);
+  // console.log(project_running);
   // console.log("all_task",all_task)
 
   const useStyles = makeStyles(styles);
@@ -174,8 +188,6 @@ function Dashboard( { project_hold, project_completed, project_running, all_task
       {project_running.map((status)=>{
         const MySQLDate  = status.project_deadline;
         let date = MySQLDate.replace(/[-]/g, '/').substr(0,10);
-        // console.log(date);
-        // console.log(status.project_id)
 
         if(date>today)
         {
@@ -218,12 +230,32 @@ function Dashboard( { project_hold, project_completed, project_running, all_task
           </GridItem>
         </GridContainer>
       </div>
-       
+
       <div>
         <GridContainer>
           <GridItem xs={12} sm={6} md={6}>
             <h3 className="on-hold">My Task Priorities
-            {all_task.map((task)=>{
+            {high_priority.map((task)=>{
+              return(
+                <>
+                <div>
+                  {/* <p>project_name - {task.project_name}</p> */}
+                  <p>{task.task_title}-{task.task_priority}</p>
+                </div>
+                </>
+              )
+            })}
+            {medium_priority.map((task)=>{
+              return(
+                <>
+                <div>
+                  {/* <p>project_name - {task.project_name}</p> */}
+                  <p>{task.task_title}-{task.task_priority}</p>
+                </div>
+                </>
+              )
+            })}
+            {low_priority.map((task)=>{
               return(
                 <>
                 <div>
