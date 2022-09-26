@@ -166,20 +166,20 @@ function Dashboard( { project_hold, project_completed, project_running } ) {
         if(date>today)
         {
           console.count("On track")
-          console.log(status.project_id);
+          // console.log(status.project_id);
 
           
           On_track.push(status.project_id);
-          console.log(On_track)
+          // console.log(On_track)
           
           
         }
         else{
           console.count("off track")
-          console.log(status.project_id);
+          // console.log(status.project_id);
 
           Off_track.push(status.project_id);
-          console.log(Off_track)
+          // console.log(Off_track)
 
         }
         
