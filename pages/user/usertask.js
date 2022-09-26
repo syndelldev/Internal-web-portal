@@ -24,6 +24,7 @@ import { Button } from "@material-ui/core";
 import dynamic from "next/dynamic";
 import 'react-quill/dist/quill.snow.css';
 
+
 const ReactQuill = dynamic(import('react-quill'), { ssr: false })
 
 const styles = {
@@ -103,8 +104,6 @@ function Dashboard({task}) {
   const classes = useStyles();
   const router = useRouter();
 
-  const [value, onChange] = useState('10:00');
-  
   const [cookies, setCookie] = useCookies('');
   //console.log(cookies.Id);
 
@@ -232,6 +231,78 @@ function Dashboard({task}) {
     }
   
   }
+  // class Editor extends React.Component {
+  //   constructor(props) {
+  //     super(props);
+  //     this.state = { editorHtml: "" };
+  //     this.handleChange = this.handleChange.bind(this);
+  //     // console.log("text");      
+  //   }
+  
+  //   handleChange(html) {
+  //     this.setState({ editorHtml: html });
+  //     // console.log(html);
+  //     // setText(this.state.editorHtml);
+  //     console.log(this.state.editorHtml);
+  //   }
+  
+  //   render() {
+  //     return (
+  //       <div className="text-editor">
+  //         <ReactQuill
+  //           onChange={this.handleChange}
+  //           placeholder={this.props.placeholder}
+  //           modules={Editor.modules}
+  //           formats={Editor.formats}
+  //           // value={this.state.editorHtml}
+  //           theme={"snow"} // pass false to use minimal theme
+  //         />
+  //       </div>
+  //     );
+  //   }
+  // }
+  
+  // Editor.modules = {
+  //   toolbar: [
+  //     [{ 'header': [1, 2, 3, 4, 5, false] }],
+  //     [{ 'color': ["#fff", "#d0d1d2", "#000", "red" ,"green", "blue", "orange", "violet" ]}],
+  //     ['bold', 'italic', 'underline','strike', 'blockquote'],
+  //     [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+  //     ['link', 'image'],
+  //     ['clean'],
+  //   ],
+  //   handlers: {
+  //     // handlers object will be merged with default handlers object
+  //     'link': function(value) {
+  //       if (value) {
+  //         console.log("value");
+  //       }else{
+  //         console.log("no data");
+  //       }
+  //     }
+  //   }
+  //   // clipboard: {
+  //   //   matchVisual: false,
+  //   // }
+  // };
+  
+  
+  // Editor.formats = [
+  //   "header",
+  //   "font",
+  //   "size",
+  //   "bold",
+  //   "italic",
+  //   "underline",
+  //   "strike",
+  //   "blockquote",
+  //   "list",
+  //   "bullet",
+  //   "indent",
+  //   "link",
+  //   "image",
+  //   "color"
+  // ];
   
   return (
     <>
@@ -294,7 +365,7 @@ function Dashboard({task}) {
                               </GridItem>
                             </div>
                           )}
-                        </Popup>
+                        </Popup> 
 
                         {/*Edit Project PopUp*/}
                         <Popup trigger={<div> <button disabled={task.edit_rights==0} onClick={()=>{getData(task.task_id);getTime(task.task_id)}} className="user-icon"><FiEdit/></button> </div>}  className="popupReact"  modal >
@@ -329,7 +400,6 @@ function Dashboard({task}) {
                                       <h5 className="projectPriority">Comments</h5>
                                     </GridItem>
                                   </GridContainer>
-                                  
                                   <GridContainer>
                                     <GridItem xs={12} sm={12} md={12} >
                                       {TimeData.length==0?(
@@ -373,12 +443,12 @@ function Dashboard({task}) {
                                             setmessage(e.target.value);
                                           }}
                                         ></textarea> */}
-                                        <RichTextEditor placeholder={"Write your comment"}
+    <RichTextEditor placeholder={"Write your comment"}
                                           // value={message}
                                           // onChange={(e) => {
                                           //   setmessage(e.target.value);
                                           // }}
-                                        />
+    />
 
                                         <div onClick={()=> sendMessage(task.task_id)}>Save</div>
 
@@ -386,12 +456,17 @@ function Dashboard({task}) {
                                       </form>
                                     </GridItem>
                                   </GridContainer>
-                                  
+
                                   {comments.map((m)=>{
                                     const Date = ((m.creation_time).substr(0,10).split("-",3));
                                     const Time = ((m.creation_time).substr(11,16).split(":",3));
                                     var dateP = m.creation_time;
                                     var textArea = (m.comment).split(`\n`);
+                                    // console.log("textArea");
+                                    // console.log(textArea);
+                                    // if(textArea == ""){
+                                      // function Setcontent() {
+                                      //  }
                                       return(
                                         <span>
                                           <GridContainer>
@@ -413,6 +488,30 @@ function Dashboard({task}) {
                                           </GridContainer>
                                         </span>
                                       )
+                                    // }else{
+                                    //   return(
+                                    //     <span>
+                                    //       <GridContainer>
+                                    //         <GridItem>
+                                    //           <span>{m.username}</span>
+                                    //         </GridItem>
+                                                
+                                    //         <GridItem>
+                                    //         <span><p>{Date[2]}/{Date[1]}/{Date[0]}</p></span>
+                                    //         </GridItem>
+                                    //       </GridContainer>
+
+                                    //       <GridContainer>
+                                    //         <GridItem>
+                                    //           <div>
+                                    //             <a href={m.comment} target="_blank" id="userComment">{m.comment}</a>
+                                    //             {/* <p>{Time[0]}:{Time[1]}:{Time[2]}</p> */}
+                                    //           </div>
+                                    //         </GridItem>
+                                    //       </GridContainer>
+                                    //     </span>
+                                    //   )
+                                    // }
                                   })}
                                   </CardBody>
 
@@ -423,15 +522,14 @@ function Dashboard({task}) {
                           )}
                         </Popup>
                       </div>
-                    </div>
-                  </CardHeader>
-                </Card>
-              </GridItem>
-            )
-          })
-        }
+                    )
+                  })
+                }
+              </td>  
+            </tr>
+          </table>
           
-        </GridContainer>
+ 
     </>
   );
 }

@@ -613,7 +613,7 @@ return(
     <GridItem xs={12} sm={6} md={9}>
 
   <form>
-    <Card className= "projects">
+    <Card className="projects">
       <CardHeader color="primary" className="project-block">
 
         {/* <img src={`${server}/reactlogo.png`} className={classes.img}/> */}

@@ -67,14 +67,14 @@ img.completed,img.on.hold,img.running {
   color: #fff;
   font-size: 30px;
   font-weight: 700;
-  background:darkgreen;
+  background:#554994;
 }
 .on.hold{
   border-radius: 25px;
   color: #fff;
   font-size: 30px;
   font-weight: 700;
-  background: yellow;
+  background: #F675A8;
 }
 .running{
   border-radius: 25px;
@@ -97,14 +97,12 @@ h4.project_status {
 }
 .projects{
   margin-bottom: 10px!important;
-  margin-top: 10px!important;
   background:transparent!important;
   box-shadow: none!important;
 }
 .project-content{
   justify-content: space-between;
   display: flex!important;
-  align-items: center;
 }
 .project-block {
   border-left: 5px solid #ADD8E6;
@@ -163,8 +161,8 @@ button.MuiButtonBase-root.MuiButton-root.makeStyles-button-2276.makeStyles-prima
 h4.text {
   margin-bottom: 0em!important;
 }
-button.MuiButtonBase-root.MuiButton-root.makeStyles-button-117.makeStyles-primary-120.add_new_user.MuiButton-text {
-  vertical-align: !important;
+.add_new_user {
+  /* vertical-align: !important; */
   float: right!important;
   padding: 0px !important;
 }
@@ -179,6 +177,24 @@ button.MuiButtonBase-root.MuiButton-root.makeStyles-button-117.makeStyles-primar
 .makeStyles-cardBody-134{
   padding: 9px 9px!important;
 }
+/* ---sub task css---- */
+.taskToDo {
+  font-size: 20px;
+  padding: 15px;
+
+  font-weight: 800;
+}
+.arrow {
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+}
+.down {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+
 .bttn-design{
   font-weight: 600;
   padding: 9px 20px;
@@ -195,7 +211,6 @@ button.MuiButtonBase-root.MuiButton-root.makeStyles-button-117.makeStyles-primar
   color: #000;
   display: flex;
   cursor: pointer;
-  
 }
 .icon-width{
   margin-right: 20px;
@@ -223,8 +238,6 @@ button.MuiButtonBase-root.MuiButton-root.makeStyles-button-117.makeStyles-primar
 .text ,.projectTitle{
   color: black;
   font-weight: bold;
-  margin-bottom: 0;
-  height: max-content;
 }
 .popup-align
 {/*
@@ -240,8 +253,7 @@ button.MuiButtonBase-root.MuiButton-root.makeStyles-button-117.makeStyles-primar
     transform: translateX(100%);
 }
 .project-block {
-  /*padding-bottom: 4px!important;*/
-  margin-top: 0 !important;
+  padding-bottom: 4px!important;
 }
 .MuiGrid-item .MuiGrid-grid-md-9 {
   margin-bottom: 0px!important;
@@ -255,11 +267,9 @@ button.MuiButtonBase-root.MuiButton-root.makeStyles-button-117.makeStyles-primar
 }
 
 .icon-edit-delete{
-  /*display: flex;
+  display: flex;
   align-items: center;
-  margin-left: auto;*/
-  padding-top: 10px;
-  padding-bottom: 10px;
+  margin-left: auto;
 }
 .makeStyles-grid-340{
   width: 100%!important;
@@ -270,8 +280,7 @@ button.MuiButtonBase-root.MuiButton-root.makeStyles-button-117.makeStyles-primar
   padding: 10px!important;
   font-weight: 500!important;
   background: #eee5ff!important;
-  color: #000!important;
-  margin-bottom: 0 !important;
+  color: #000!important;;
 }
 .multiSelectContainer li:hover{
   font-weight: 500!important;
@@ -318,7 +327,7 @@ img.image {
     flex-basis:50% !important;
     }
 }
-@media only screen (min-width: 960px) {
+@media only screen and (min-width: 960px) {
   h4.projectTitle{
 font-size: 17px!important;
   }}
@@ -369,7 +378,6 @@ p.usersubtitle{
   border-radius: 5px;
   padding: 10px;
   margin-right: 5px;
-  height: max-content;
 }
 .Medium
 {
@@ -377,7 +385,6 @@ p.usersubtitle{
   border-radius: 5px;
   padding: 10px;
   margin-right: 5px;
-  height: max-content;
 }
 .Low
 {
@@ -385,15 +392,111 @@ p.usersubtitle{
   border-radius: 5px;
   padding: 10px;
   margin-right: 5px;
-  height: max-content;
 }
-.add_new_user.makeStyles-primary-120:hover
-{
-  background-color: unset !important;
-  box-shadow: unset;
+.Task_todo{
+  display: none;
 }
-.add_new_user.makeStyles-primary-117:hover
-{
-  background-color: unset !important;
-  box-shadow: unset;
+/* table,tr,th,td
+*/
+table.project-data {
+  width: 100%;
+}
+table.project-data th{
+  padding-left: 15px;
+    padding-right: 15px;
+    color: #000;
+    border: 1px solid #D3D3D3;
+    font-size: 15px;
+    font-weight: 400;
+  border: 1px solid #D3D3D3;
+  padding-bottom: 8px;
+  padding-top: 8px;
+}
+th.title {
+  border-left: none!important;
+}
+th.view-edit {
+  border-right: none!important;
+}
+td.status-data p {
+  text-align: center;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+th.status {
+  text-align: center;
+}
+td.assignee-data p {
+  /* background: rebeccapurple; */
+  padding-left: 10px;
+  padding-right: 10px;
+}
+td {
+  padding-top: 10px;
+}
+h4.projectTitle{
+  padding-left: 15px;
+  font-size: 20px;
+  font-weight: 400;
+  padding-right: 15px;
+}
+h3.on-track {
+  background: #0096FF;
+  padding: 50px;
+  border-radius: 30px;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
+}
+h3.off-track{
+  background: #FF0000;
+  padding: 50px;
+  border-radius: 30px;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
+}
+h3.completed-project{
+  background: #34BE82;
+  padding: 50px;
+  border-radius: 30px;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
+}
+h3.on-hold{
+  background:#FFD800;
+  padding: 50px;
+  border-radius: 30px;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
+}
+.project-status{
+  justify-content: space-around;
+  display: flex;
+}
+@media only screen and (max-width: 1279px) and (min-width: 1024px){
+  .project-status{
+    justify-content: normal;
+    display: grid!important;
+}
+}
+@media only screen and (max-width: 1023px) and (min-width: 768px){ 
+  .project-status{
+    justify-content: normal;
+    display: grid!important;
+}
+ }
+ 
+.project-status .MuiGrid-grid-sm-6{
+  margin-right: 30px;
+  max-width: 100%;
+  flex-basis: 100%;
+}
+@media only screen and (max-width: 767px) {
+  .project-status{
+    justify-content: normal;
+    display: grid!important;
+}
 }
