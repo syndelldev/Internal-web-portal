@@ -69,20 +69,39 @@ const styles = {
 export async function getServerSideProps(context){
   // console.log(context.req.cookies);
 
-  const res = await fetch(`${server}/api/project`);
-  const project_details = await res.json();
-
-  const response = await fetch(`${server}/api/admin`)
-  const User_name = await response.json();
-
-  const hold = await fetch(`${server}/api/project/project_status/project_hold`)
-  const project_hold = await hold.json();
-
-  const completed = await fetch(`${server}/api/project/project_status/project_completed`)
+  const completed = await fetch(`${server}/api/subtask/project_status/project_completed`,{
+    headers: {
+      'Access-Control-Allow-Credentials': true,
+      Cookie: context.req.headers.cookie
+    },
+  })
   const project_completed = await completed.json();
 
-  const running = await fetch(`${server}/api/project/project_status/project_running`)
+  const hold = await fetch(`${server}/api/subtask/project_status/project_hold`,{
+    headers: {
+      'Access-Control-Allow-Credentials': true,
+      Cookie: context.req.headers.cookie
+    },
+  })
+  const project_hold = await hold.json();
+
+  const running = await fetch(`${server}/api/subtask/project_status/project_completed`,{
+    headers: {
+      'Access-Control-Allow-Credentials': true,
+      Cookie: context.req.headers.cookie
+    },
+  })
   const project_running = await running.json();
+
+
+  // const hold = await fetch(`${server}/api/project/project_status/project_hold`)
+  // const project_hold = await hold.json();
+
+  // const completed = await fetch(`${server}/api/project/project_status/project_completed`)
+  // const project_completed = await completed.json();
+
+  // const running = await fetch(`${server}/api/project/project_status/project_running`)
+  // const project_running = await running.json();
 
   const alltask = await fetch(`${server}/api/user_dashboard/subtask_person`,{
     headers: {
@@ -98,10 +117,10 @@ export async function getServerSideProps(context){
 }
 
 function Dashboard( { project_hold, project_completed, project_running, all_task } ) {
-  // console.log(project_hold);
-  // console.log(project_completed);
-  // console.log(project_running);
-  console.log("all_task",all_task)
+  console.log(project_hold);
+  console.log(project_completed);
+  console.log(project_running);
+  // console.log("all_task",all_task)
 
   const useStyles = makeStyles(styles);
   const classes = useStyles();
