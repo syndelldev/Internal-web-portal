@@ -334,7 +334,7 @@ function Dashboard({task}) {
                                     <GridItem xs={12} sm={12} md={12} >
                                       {TimeData.length==0?(
                                         <>
-                                          <form>
+                                          <form onSubmit={()=>insert_time(task.task_id)}>
                                             <GridContainer>
                                               <GridItem>
                                                 <input value={task.task_id} type="hidden"/>
@@ -343,13 +343,13 @@ function Dashboard({task}) {
                                                 <label>Spent Time</label>
                                                 <input type="text" value={spent} onChange={(e)=>setspent(e.target.value)} />
                                               </GridItem>
-                                              <button type="submit" onClick={()=>insert_time(task.task_id)}>submit</button>
+                                              {/* <button type="submit" onClick={()=>insert_time(task.task_id)}>submit</button> */}
                                             </GridContainer>
                                           </form>
                                         </>
                                       ):(
                                         <>
-                                          <form onSubmit={update_tasktime}>
+                                          <form onSubmit={()=>update_tasktime(task.task_id)}>
                                             <GridContainer>
                                               <GridItem>
                                                 <input value={task.task_id} type="hidden"/>
@@ -358,7 +358,7 @@ function Dashboard({task}) {
                                                 <label>Spent Time</label>
                                                 <input type="text" name="spent_time" value={userdata.spent_time} onChange={handleChange}/>
                                               </GridItem>
-                                              <button type="submit" onClick={()=>update_tasktime(task.task_id)}>submit</button>
+                                              {/* <button type="submit" onClick={()=>update_tasktime(task.task_id)}>submit</button> */}
                                             </GridContainer>
                                           </form>
                                         </>
