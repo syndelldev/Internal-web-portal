@@ -333,8 +333,8 @@ function Dashboard({task}) {
               return(
                 <tr className="project-data-details">
                   <td colspan="2"><h4 className="projectTitle">{task.task_title}</h4></td>
-                  <td className="priority-data"><p className="projectPriority">{task.task_priority}</p></td>
-                  <td className="status-data"><p>{task.task_status}</p></td>
+                  <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
+                  <td className="status-data"><p className={task.task_status}>{task.task_status}</p></td>
                   <td colspan="4" className="assignee-data">
                     {person.map((task_person) => {
                       return(

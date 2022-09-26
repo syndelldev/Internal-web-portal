@@ -240,7 +240,7 @@ function Dashboard( { project_hold, project_completed, project_running, high_pri
                 <>
                 <div>
                   {/* <p>project_name - {task.project_name}</p> */}
-                  <p>{task.task_title}-{task.task_priority}</p>
+                  <p>{task.task_title}-<span className={task.task_priority}>{task.task_priority}</span></p>
                 </div>
                 </>
               )
@@ -250,7 +250,7 @@ function Dashboard( { project_hold, project_completed, project_running, high_pri
                 <>
                 <div>
                   {/* <p>project_name - {task.project_name}</p> */}
-                  <p>{task.task_title}-{task.task_priority}</p>
+                  <p>{task.task_title}-<span className={task.task_priority}>{task.task_priority}</span></p>
                 </div>
                 </>
               )
@@ -260,7 +260,7 @@ function Dashboard( { project_hold, project_completed, project_running, high_pri
                 <>
                 <div>
                   {/* <p>project_name - {task.project_name}</p> */}
-                  <p>{task.task_title}-{task.task_priority}</p>
+                  <p>{task.task_title}-<span className={task.task_priority}>{task.task_priority}</span></p>
                 </div>
                 </>
               )
