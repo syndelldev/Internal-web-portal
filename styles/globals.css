@@ -63,24 +63,24 @@ img.completed,img.on.hold,img.running {
   width: 100px;
 }
 .completed {
-  border-radius: 25px;
+  border-radius: 5px;
   color: #fff;
-  font-size: 30px;
-  font-weight: 700;
+  /*font-size: 30px;*/
+  font-weight: 500;
   background:#554994;
 }
 .on.hold{
-  border-radius: 25px;
+  border-radius: 5px;
   color: #fff;
-  font-size: 30px;
-  font-weight: 700;
+  /*font-size: 30px;*/
+  font-weight: 500;
   background: #F675A8;
 }
 .running{
-  border-radius: 25px;
+  border-radius: 5px;
   color: #fff;
-  font-size: 30px;
-  font-weight: 700;
+  /*font-size: 30px;*/
+  font-weight: 500;
   background: #F29393;
 }
 h6.completed,h6.on.hold,h6.running{
@@ -377,22 +377,31 @@ p.usersubtitle{
 {
   background-color: red;
   border-radius: 5px;
-  padding: 10px;
+  padding: 3px 10px 3px 10px;
   margin-right: 5px;
+  margin-left: 5px;
+  color: white;
+  font-weight: 500;
 }
 .Medium
 {
   background-color: yellow;
   border-radius: 5px;
-  padding: 10px;
+  padding: 3px 10px 3px 10px;
   margin-right: 5px;
+  margin-left: 5px;
+  color: white;
+  font-weight: 500;
 }
 .Low
 {
   background-color: green;
   border-radius: 5px;
-  padding: 10px;
+  padding: 3px 10px 3px 10px;
   margin-right: 5px;
+  margin-left: 5px;
+  color: white;
+  font-weight: 500;
 }
 .Task_todo{
   display: none;
