@@ -24,6 +24,7 @@ import { Button } from "@material-ui/core";
 import dynamic from "next/dynamic";
 import 'react-quill/dist/quill.snow.css';
 
+
 const ReactQuill = dynamic(import('react-quill'), { ssr: false })
 
 const styles = {
@@ -102,8 +103,6 @@ function Dashboard({project}) {
   const classes = useStyles();
   const router = useRouter();
 
-  const [value, onChange] = useState('10:00');
-  
   const [cookies, setCookie] = useCookies('');
   //console.log(cookies.Id);
 
@@ -202,6 +201,78 @@ function Dashboard({project}) {
     }
   
   }
+  // class Editor extends React.Component {
+  //   constructor(props) {
+  //     super(props);
+  //     this.state = { editorHtml: "" };
+  //     this.handleChange = this.handleChange.bind(this);
+  //     // console.log("text");      
+  //   }
+  
+  //   handleChange(html) {
+  //     this.setState({ editorHtml: html });
+  //     // console.log(html);
+  //     // setText(this.state.editorHtml);
+  //     console.log(this.state.editorHtml);
+  //   }
+  
+  //   render() {
+  //     return (
+  //       <div className="text-editor">
+  //         <ReactQuill
+  //           onChange={this.handleChange}
+  //           placeholder={this.props.placeholder}
+  //           modules={Editor.modules}
+  //           formats={Editor.formats}
+  //           // value={this.state.editorHtml}
+  //           theme={"snow"} // pass false to use minimal theme
+  //         />
+  //       </div>
+  //     );
+  //   }
+  // }
+  
+  // Editor.modules = {
+  //   toolbar: [
+  //     [{ 'header': [1, 2, 3, 4, 5, false] }],
+  //     [{ 'color': ["#fff", "#d0d1d2", "#000", "red" ,"green", "blue", "orange", "violet" ]}],
+  //     ['bold', 'italic', 'underline','strike', 'blockquote'],
+  //     [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+  //     ['link', 'image'],
+  //     ['clean'],
+  //   ],
+  //   handlers: {
+  //     // handlers object will be merged with default handlers object
+  //     'link': function(value) {
+  //       if (value) {
+  //         console.log("value");
+  //       }else{
+  //         console.log("no data");
+  //       }
+  //     }
+  //   }
+  //   // clipboard: {
+  //   //   matchVisual: false,
+  //   // }
+  // };
+  
+  
+  // Editor.formats = [
+  //   "header",
+  //   "font",
+  //   "size",
+  //   "bold",
+  //   "italic",
+  //   "underline",
+  //   "strike",
+  //   "blockquote",
+  //   "list",
+  //   "bullet",
+  //   "indent",
+  //   "link",
+  //   "image",
+  //   "color"
+  // ];
   
   return (
     <>
@@ -214,28 +285,58 @@ function Dashboard({project}) {
           )
         })}
       </div>
-      
-      <GridContainer>
-       {
-          project.map((project)=>{
-            // const bDate = ((project.project_deadline).substr(0,10).split("-",3));
-            return(
-              <GridItem xs={6} sm={6} md={4} key={project.project_id}>
-                <Card className="projects">
-                  <CardHeader color="primary" className="project-block">
-                  {/*<img className="image" src={`${server}/reactlogo.png`} />*/}
-                  <div className="project-content">
-                    <h4 className="projectTitle">{project.project_title}</h4>
-                  
-                  {/*<CardFooter>
-                    <p className="projectLanguage">{project.project_language}</p>
-            <p className="projectPriority">*/}
-                      
-                      {/*View Project PopUp*/}
-                      {/* <Button disabled={project.view_rights==0} >View</Button>
-                      <Button disabled={project.edit_rights==0} >Edit</Button> */}
+          <table className="project-data">
+            <tr className="project-data-title">
+              <th colspan="2" className="title">Task name </th>
+           
+              <th>Priority</th>
+              <th colspan="2" className="status">Status</th>
+              <th colspan="2" className="assignee">Assignee</th>
+              <th colspan="4"className="view-edit">View & Edit</th>
+            </tr>
+            <tr className="project-data-details">
+              <td colspan="2">
+                {
+                  project.map((project)=>{
+                    return(
+                      <h4 className="projectTitle">{project.project_title}</h4>
+                    )
+                  })
+                }
+              </td>
+              <td className="priority-data">
+                {
+                  project.map((project)=>{
+                    return(
+                      <p className="projectPriority">{project.project_priority}</p>
+                    )
+                  })
+                }
+              </td>
+              <td className="status-data">
+                {
+                  project.map((project)=>{
+                    return(
+                      <p>{project.project_status}</p>
+                    )
+                  })
+                }
+              </td>
+              <td colspan="4" className="assignee-data">
+                {
+                  project.map((project)=>{
+                    return(
+                      <p>{project.project_person}</p>
+                    )
+                  })
+                }
+              </td> 
+              <td>
+                {
+                  project.map((project)=>{
+                    return(
                       <div className="icon-display">
-                        <Popup trigger={<Button disabled={project.view_rights==0} ><FaEye/></Button>}  className="popupReact"  modal>
+                        {/* <Popup trigger={<Button disabled={project.view_rights==0} ><FaEye/></Button>}  className="popupReact"  modal>
                           {close => (
                             <div>
                               <GridItem xs={6} sm={6} md={12} key={project.project_id}>
@@ -272,7 +373,7 @@ function Dashboard({project}) {
                               </GridItem>
                             </div>
                           )}
-                        </Popup>
+                        </Popup> */}
 
                         {/*Edit Project PopUp*/}
                         <Popup trigger={<div> <button disabled={project.edit_rights==0} onClick={()=>getData(project.project_id)} className="user-icon"><FiEdit/></button> </div>}  className="popupReact"  modal >
@@ -307,19 +408,9 @@ function Dashboard({project}) {
                                       <h5 className="projectPriority">Comments</h5>
                                     </GridItem>
                                   </GridContainer>
-                                  
                                   <GridContainer>
                                     <GridItem xs={12} sm={12} md={12} >
                                       <form>
-                                        <GridContainer>
-                                            <GridItem>
-                                                <label>Estimate Time</label>
-                                                <input type="text" /><br/>
-                                                <label>Spent Time</label>
-                                                <input type="text" />
-                                            </GridItem>
-                                        </GridContainer>
-                                        
                                         {/* <textarea
                                           className="form-control signup-input"
                                           type="text"
@@ -328,12 +419,12 @@ function Dashboard({project}) {
                                             setmessage(e.target.value);
                                           }}
                                         ></textarea> */}
-                                        <RichTextEditor placeholder={"Write your comment"}
+    <RichTextEditor placeholder={"Write your comment"}
                                           // value={message}
                                           // onChange={(e) => {
                                           //   setmessage(e.target.value);
                                           // }}
-                                        />
+    />
 
                                         <div onClick={()=> sendMessage(project.project_id)}>Save</div>
 
@@ -341,12 +432,17 @@ function Dashboard({project}) {
                                       </form>
                                     </GridItem>
                                   </GridContainer>
-                                  
+
                                   {comments.map((m)=>{
                                     const Date = ((m.creation_time).substr(0,10).split("-",3));
                                     const Time = ((m.creation_time).substr(11,16).split(":",3));
                                     var dateP = m.creation_time;
                                     var textArea = (m.comment).split(`\n`);
+                                    // console.log("textArea");
+                                    // console.log(textArea);
+                                    // if(textArea == ""){
+                                      // function Setcontent() {
+                                      //  }
                                       return(
                                         <span>
                                           <GridContainer>
@@ -368,6 +464,30 @@ function Dashboard({project}) {
                                           </GridContainer>
                                         </span>
                                       )
+                                    // }else{
+                                    //   return(
+                                    //     <span>
+                                    //       <GridContainer>
+                                    //         <GridItem>
+                                    //           <span>{m.username}</span>
+                                    //         </GridItem>
+                                                
+                                    //         <GridItem>
+                                    //         <span><p>{Date[2]}/{Date[1]}/{Date[0]}</p></span>
+                                    //         </GridItem>
+                                    //       </GridContainer>
+
+                                    //       <GridContainer>
+                                    //         <GridItem>
+                                    //           <div>
+                                    //             <a href={m.comment} target="_blank" id="userComment">{m.comment}</a>
+                                    //             {/* <p>{Time[0]}:{Time[1]}:{Time[2]}</p> */}
+                                    //           </div>
+                                    //         </GridItem>
+                                    //       </GridContainer>
+                                    //     </span>
+                                    //   )
+                                    // }
                                   })}
                                   </CardBody>
 
@@ -378,15 +498,14 @@ function Dashboard({project}) {
                           )}
                         </Popup>
                       </div>
-                    </div>
-                  </CardHeader>
-                </Card>
-              </GridItem>
-            )
-          })
-        }
+                    )
+                  })
+                }
+              </td>  
+            </tr>
+          </table>
           
-        </GridContainer>
+ 
     </>
   );
 }
