@@ -1,29 +1,15 @@
-import React, { useEffect, useState , useRef } from "react";
-// layout for this page
-import User from "layouts/User.js";
+import React, { useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from 'next/router';
-// core components
+import { makeStyles } from "@material-ui/core/styles";
+import User from "layouts/User.js";
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
-
-import Card from "components/Card/Card.js";
-import CardHeader from "components/Card/CardHeader.js";
-import CardFooter from "components/Card/CardFooter.js";
-import CardBody from "components/Card/CardBody.js";
-
-import { useForm } from 'react-hook-form';
-import Popup from "reactjs-popup";
-import axios from "axios";
 import { server } from 'config';
-import { FiEdit } from "react-icons/fi";
-import { FaEye } from 'react-icons/fa';
-import { makeStyles } from "@material-ui/core/styles";
 // import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
-import { useCookies } from 'react-cookie';
-import { Button } from "@material-ui/core";
-import dynamic from "next/dynamic";
 
-const ReactQuill = dynamic(import('react-quill'), { ssr: false })
+import { useCookies } from 'react-cookie';
+import axios from "axios";
 
 const styles = {
   cardCategoryWhite: {
@@ -80,26 +66,46 @@ const styles = {
   },
 };
 
-
 export async function getServerSideProps(context){
-  //console.log(context.req.cookies);
-  const res = await fetch(`${server}/api/user_dashboard`, {
+  // console.log(context.req.cookies);
+
+  const res = await fetch(`${server}/api/project`);
+  const project_details = await res.json();
+
+  const response = await fetch(`${server}/api/admin`)
+  const User_name = await response.json();
+
+  const hold = await fetch(`${server}/api/project/project_status/project_hold`)
+  const project_hold = await hold.json();
+
+  const completed = await fetch(`${server}/api/project/project_status/project_completed`)
+  const project_completed = await completed.json();
+
+  const running = await fetch(`${server}/api/project/project_status/project_running`)
+  const project_running = await running.json();
+
+  const alltask = await fetch(`${server}/api/user_dashboard/subtask_person`,{
     headers: {
       'Access-Control-Allow-Credentials': true,
       Cookie: context.req.headers.cookie
     },
   })
-  const project = await res.json()
-  //console.log(project)
+  const all_task = await alltask.json();
 
-  return { props: {project}, }
+  // console.log(all_status);
+
+  return{ props: { project_hold, project_completed, project_running, all_task } }
 }
 
-function Dashboard({project}) {
-  // console.log(project)
+function Dashboard( { project_hold, project_completed, project_running, all_task } ) {
+  // console.log(project_hold);
+  // console.log(project_completed);
+  // console.log(project_running);
+  console.log("all_task",all_task)
+
   const useStyles = makeStyles(styles);
   const classes = useStyles();
-  const router = useRouter();
+
 
   const [cookies, setCookie] = useCookies('');
   //console.log(cookies.Id);
@@ -115,181 +121,26 @@ function Dashboard({project}) {
   },[])
   // console.log(users)
 
-  const [username, setusername] = useState('');
-  const [message, setmessage] = useState('');
-
-  const [comments, setcomments] = useState([]);
-  console.log(comments);
-  
-  const getData = async (project_id)=>{
-
-    // alert(project_id)
-    var comment = await axios.post(`${server}/api/comment/comment`, { project_id: project_id });
-    // console.log(comment.data)
-    setcomments(comment.data)
-    // console.log(comments)
-  }
+  const [trackdate,settrackdate] = useState("")
   
 
-  const sendMessage = async (project_id) => {
-    // e.preventDefault();
-    // alert(project_id)
-    console.log("comm");
-    console.log(textComment);
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var yyyy = today.getFullYear();
 
-    var addComment = await axios.post(`${server}/api/comment/addcomment`, {  username: cookies.name, message: message , project_id: project_id });
-    console.log(addComment)
-    console.log(cookies.name)
-    // router.reload(`${server}/user/dashboard`);
-  }
+  today = yyyy + '/' + mm + '/' + dd;
+  // console.log(today);
 
-  const [textComment, setText] = useState([]);
-  const [value, setValue] = useState({
-    comment: '',
-  });
-  const handleChange = ({ target: { name, value } }) =>{
-    console.log("name");
-    console.log([name]);
-  
-    setUpdate({ ...value, [name]: value });
-  }
+  const On_track = [];
+  console.log(On_track)
 
+  const Off_track = [];
+  console.log(Off_track)
 
-  class RichTextEditor extends React.Component {
-
-    constructor(props) {
-      super(props);
-  
-      this.modules = {
-        toolbar: [
-            [{ 'font': [] }],
-            [{ 'size': ['small', false, 'large', 'huge'] }],
-            ['bold', 'italic', 'underline'],
-            [{'list': 'ordered'}, {'list': 'bullet'}],
-            [{ 'align': [] }],
-            [{ 'color': [] }, { 'background': [] }],
-            ['clean']
-          ]
-      };
-  
-      this.formats = [
-          'font',
-          'size',
-          'bold', 'italic', 'underline',
-          'list', 'bullet',
-          'align',
-          'color', 'background'
-        ];
-  
-      //   this.state = {
-      //   comments: ''
-      // }
-  
-      this.rteChange = this.rteChange.bind(this);
-    }
-  
-    rteChange = (content, delta, source, editor) => {
-      // console.log(editor.getHTML()); // rich text
-      // console.log(content);
-      // console.log(delta.ops[1]);
-      // console.log(source);
-      // console.log(editor.getText()); // plain text
-      // console.log(editor.getLength()); // number of characters
-    }
-  
-    render() {
-        return (
-          <div>
-              <ReactQuill theme="snow"  
-              modules={this.modules}
-              formats={this.formats} 
-              onChange={setValue}
-              value={value}
-              // value={this.state.comments || ''}
-              />
-              {console.log("123")}
-              {/* {setText(this.state.comments)} */}
-          </div>
-        );
-    }
-  
-  }
-  // class Editor extends React.Component {
-  //   constructor(props) {
-  //     super(props);
-  //     this.state = { editorHtml: "" };
-  //     this.handleChange = this.handleChange.bind(this);
-  //     // console.log("text");      
-  //   }
-  
-  //   handleChange(html) {
-  //     this.setState({ editorHtml: html });
-  //     // console.log(html);
-  //     // setText(this.state.editorHtml);
-  //     console.log(this.state.editorHtml);
-  //   }
-  
-  //   render() {
-  //     return (
-  //       <div className="text-editor">
-  //         <ReactQuill
-  //           onChange={this.handleChange}
-  //           placeholder={this.props.placeholder}
-  //           modules={Editor.modules}
-  //           formats={Editor.formats}
-  //           // value={this.state.editorHtml}
-  //           theme={"snow"} // pass false to use minimal theme
-  //         />
-  //       </div>
-  //     );
-  //   }
-  // }
-  
-  // Editor.modules = {
-  //   toolbar: [
-  //     [{ 'header': [1, 2, 3, 4, 5, false] }],
-  //     [{ 'color': ["#fff", "#d0d1d2", "#000", "red" ,"green", "blue", "orange", "violet" ]}],
-  //     ['bold', 'italic', 'underline','strike', 'blockquote'],
-  //     [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
-  //     ['link', 'image'],
-  //     ['clean'],
-  //   ],
-  //   handlers: {
-  //     // handlers object will be merged with default handlers object
-  //     'link': function(value) {
-  //       if (value) {
-  //         console.log("value");
-  //       }else{
-  //         console.log("no data");
-  //       }
-  //     }
-  //   }
-  //   // clipboard: {
-  //   //   matchVisual: false,
-  //   // }
-  // };
-  
-  
-  // Editor.formats = [
-  //   "header",
-  //   "font",
-  //   "size",
-  //   "bold",
-  //   "italic",
-  //   "underline",
-  //   "strike",
-  //   "blockquote",
-  //   "list",
-  //   "bullet",
-  //   "indent",
-  //   "link",
-  //   "image",
-  //   "color"
-  // ];
-  
   return (
     <>
-      <div>
+    <div>
         {users.map((user)=>{
           return(
             <div key={user.id}>
@@ -298,201 +149,328 @@ function Dashboard({project}) {
           )
         })}
       </div>
-      <GridContainer>
-       {
-          project.map((project)=>{
-            // const bDate = ((project.project_deadline).substr(0,10).split("-",3));
-            return(
-              <GridItem xs={6} sm={6} md={4} key={project.project_id}>
-                <Card className="projects">
-                  <CardHeader color="primary" className="project-block">
-                  {/*<img className="image" src={`${server}/reactlogo.png`} />*/}
-                  <div className="project-content">
-                    <h4 className="projectTitle">{project.project_title}</h4>
-                  
-                  {/*<CardFooter>
-                    <p className="projectLanguage">{project.project_language}</p>
-            <p className="projectPriority">*/}
-                      
-                      {/*View Project PopUp*/}
-                      {/* <Button disabled={project.view_rights==0} >View</Button>
-                      <Button disabled={project.edit_rights==0} >Edit</Button> */}
-                      <div className="icon-display">
-                        <Popup trigger={<Button disabled={project.view_rights==0} ><FaEye/></Button>}  className="popupReact"  modal>
-                          {close => (
-                            <div>
-                              <GridItem xs={6} sm={6} md={12} key={project.project_id}>
-                                <Card >
-                                  <CardHeader color="primary">
-                                    <GridContainer>
-                                      <GridItem>
-                                        <h4>{project.project_title}</h4>
-                                      </GridItem>
-                                      <div className={classes.close}>
-                                        <a onClick={close}>&times;</a>
-                                      </div>   
-                                    </GridContainer>
-                                  </CardHeader><br/>
-                                  <CardFooter>
-                                    <p>Project Language</p>-<p>{project.project_language}</p>
-                                  </CardFooter>
-                                  <CardFooter>
-                                    <p>{project.project_person}</p>
-                                  </CardFooter>
-                                  <CardFooter>
-                                    <p>{project.project_description}</p>
-                                  </CardFooter>
-                                  <CardFooter>
-                                    <p>{project.project_department}</p>
-                                  </CardFooter>
-                                  <CardFooter>
-                                    <p>{project.project_status}</p>
-                                  </CardFooter>
-                                  <CardFooter>
-                                    <p className="projectPriority">{project.project_priority} Priority</p>
-                                  </CardFooter>
-                                </Card>
-                              </GridItem>
-                            </div>
-                          )}
-                        </Popup>
+    <h4 className="project_status">Projects</h4>
 
-                        {/*Edit Project PopUp*/}
-                        <Popup trigger={<div> <button disabled={project.edit_rights==0} onClick={()=>getData(project.project_id)} className="user-icon"><FiEdit/></button> </div>}  className="popupReact"  modal >
-                          {close => (
-                            <div>
-                              
-                              <GridItem xs={12} sm={12} md={12} key={project.project_id}>
-                                <Card>
-                                  <CardHeader color="primary">
-                                    <h4>{project.project_title}</h4>
-                                      <div className={classes.close}>
-                                        <a onClick={close}>&times;</a>
-                                      </div>
-                                  </CardHeader>
-                                  <CardBody>
-                                      <GridContainer>
-                                        <GridItem>
-                                          <p>Project Language - {project.project_language}</p>
-                                          <p>Project Person - {project.project_person}</p>
-                                          <p>Project Description - {project.project_description}</p>
-                                          <p>Department - {project.project_department}</p>
-                                          <p>Project Status - {project.project_status}</p>
-                                        </GridItem>
-                                        <GridItem>
-                                          <p className="projectPriority">{project.project_priority} Priority</p>
-                                        </GridItem>
-                                      </GridContainer>
-                                  {/* </CardBody> */}
+    <GridContainer>
+      {project_running.map((status)=>{
+        const MySQLDate  = status.project_deadline;
+        let date = MySQLDate.replace(/[-]/g, '/').substr(0,10);
+        console.log("date");
 
-                                  <GridContainer>
-                                    <GridItem>
-                                      <h5 className="projectPriority">Comments</h5>
-                                    </GridItem>
-                                  </GridContainer>
-                                  <GridContainer>
-                                    <GridItem xs={12} sm={12} md={12} >
-                                      <form>
-                                        {/* <textarea
-                                          className="form-control signup-input"
-                                          type="text"
-                                          value={message}
-                                          onChange={(e) => {
-                                            setmessage(e.target.value);
-                                          }}
-                                        ></textarea> */}
-    <RichTextEditor placeholder={"Write your comment"}
-                                          // value={message}
-                                          // onChange={(e) => {
-                                          //   setmessage(e.target.value);
-                                          // }}
-    />
-
-                                        <div onClick={()=> sendMessage(project.project_id)}>Save</div>
-
-                                        {/* <div onClick={() => sendMessage(project.project_id)}>Save</div> */}
-                                      </form>
-                                    </GridItem>
-                                  </GridContainer>
-
-                                  {comments.map((m)=>{
-                                    const Date = ((m.creation_time).substr(0,10).split("-",3));
-                                    const Time = ((m.creation_time).substr(11,16).split(":",3));
-                                    var dateP = m.creation_time;
-                                    var textArea = (m.comment).split(`\n`);
-                                    // console.log("textArea");
-                                    // console.log(textArea);
-                                    // if(textArea == ""){
-                                      // function Setcontent() {
-                                      //  }
-                                      return(
-                                        <span>
-                                          <GridContainer>
-                                            <GridItem>
-                                              <span>{m.username}</span>
-                                            </GridItem>
-                                                
-                                            <GridItem>
-                                            <span><p>{Date[2]}/{Date[1]}/{Date[0]}</p></span>
-                                            </GridItem>
-                                          </GridContainer>
-
-                                          <GridContainer>
-                                            <GridItem>
-                                              <div>
-                                                <span id="editorOne">{m.comment}</span>
-                                              </div>
-                                            </GridItem>
-                                          </GridContainer>
-                                        </span>
-                                      )
-                                    // }else{
-                                    //   return(
-                                    //     <span>
-                                    //       <GridContainer>
-                                    //         <GridItem>
-                                    //           <span>{m.username}</span>
-                                    //         </GridItem>
-                                                
-                                    //         <GridItem>
-                                    //         <span><p>{Date[2]}/{Date[1]}/{Date[0]}</p></span>
-                                    //         </GridItem>
-                                    //       </GridContainer>
-
-                                    //       <GridContainer>
-                                    //         <GridItem>
-                                    //           <div>
-                                    //             <a href={m.comment} target="_blank" id="userComment">{m.comment}</a>
-                                    //             {/* <p>{Time[0]}:{Time[1]}:{Time[2]}</p> */}
-                                    //           </div>
-                                    //         </GridItem>
-                                    //       </GridContainer>
-                                    //     </span>
-                                    //   )
-                                    // }
-                                  })}
-                                  </CardBody>
-
-                                </Card>
-                              </GridItem>
-
-                            </div>
-                          )}
-                        </Popup>
-                      </div>
-                    </div>
-                  </CardHeader>
-                </Card>
-              </GridItem>
-            )
-          })
+        if(date>today)
+        {
+          console.count("On track")
+          On_track.push(status.project_id); 
         }
-          
+        else{
+          console.count("off track")
+          Off_track.push(status.project_id);
+        }
+      })}
+
+      </GridContainer>
+      <div className="project-status">
+        <GridContainer>
+          <GridItem xs={12} sm={6} md={4} >
+            <h3 className="on-track">On Track Project - {On_track.length}</h3>
+          </GridItem>
         </GridContainer>
+
+        <GridContainer>
+          <GridItem xs={12} sm={6} md={4} >
+            <h3 className="off-track">Off Track Project - {Off_track.length}</h3>
+          </GridItem>
+        </GridContainer>
+
+        <GridContainer>
+          <GridItem xs={12} sm={6} md={4} >
+            <h3 className="completed-project">Completed Project - {project_completed.length}</h3>
+          </GridItem>
+        </GridContainer>
+
+        <GridContainer>
+          <GridItem xs={12} sm={6} md={4}>
+            <div>
+              <h3 className="on-hold">On Hold Project - {project_hold.length}</h3>
+            </div>
+          </GridItem>
+        </GridContainer>
+      </div> 
+      <div> 
+         <GridContainer>
+          <GridItem xs={12} sm={6} md={6}>
+            <h3 className="on-hold">My Projects Priorities
+            {project_hold.map((project)=>{
+              return(
+                <>
+                  <p>{project.project_title}-{project.project_priority}</p>
+                </>
+              )
+            })}
+            {project_completed.map((project)=>{
+              return(
+                <>
+                  <p>{project.project_title}-{project.project_priority}</p>
+                </>
+              )
+            })}
+            {project_running.map((project)=>{
+              return(
+                <>
+                  <p>{project.project_title}-{project.project_priority}</p>
+                </>
+              )
+            })}
+            </h3>
+          </GridItem>
+        </GridContainer> 
+      </div>
+       <div>
+        <GridContainer>
+          <GridItem xs={12} sm={6} md={6}>
+            <h3 className="on-hold">My Task Priorities
+            {all_task.map((task)=>{
+              return(
+                <>
+                <div>
+                  {/* <p>project_name - {task.project_name}</p> */}
+                  <p>{task.task_title}-{task.task_priority}</p>
+                </div>
+                </>
+              )
+            })}
+            </h3>
+          </GridItem>
+        </GridContainer>
+      </div>
+
     </>
   );
+
 }
 
 Dashboard.layout = User;
 
 export default Dashboard;
+
+
+
+
+
+
+
+      {/*<GridContainer>
+        <GridItem xs={12} sm={6} md={3}>
+          <Card>
+            <CardHeader color="warning" stats icon>
+              <CardIcon color="warning">
+                <Icon>content_copy</Icon>
+              </CardIcon>
+              <p className={classes.cardCategory}>Used Space</p>
+              <h3 className={classes.cardTitle}>
+                49/50 <small>GB</small>
+              </h3>
+            </CardHeader>
+            <CardFooter stats>
+              <div className={classes.stats}>
+                <Danger>
+                  <Warning />
+                </Danger>
+                <a href="#pablo" onClick={(e) => e.preventDefault()}>
+                  Get more space
+                </a>
+              </div>
+            </CardFooter>
+          </Card>
+        </GridItem>
+        <GridItem xs={12} sm={6} md={3}>
+          <Card>
+            <CardHeader color="dark" stats icon>
+              <CardIcon color="dark">
+                <Store />
+              </CardIcon>
+              <p className={classes.cardCategory}>Revenue</p>
+              <h3 className={classes.cardTitle}>$34,245</h3>
+            </CardHeader>
+            <CardFooter stats>
+              <div className={classes.stats}>
+                <DateRange />
+                Last 24 Hours
+              </div>
+            </CardFooter>
+          </Card>
+        </GridItem>
+        <GridItem xs={12} sm={6} md={3}>
+          <Card>
+            <CardHeader color="danger" stats icon>
+              <CardIcon color="danger">
+                <Icon>info_outline</Icon>
+              </CardIcon>
+              <p className={classes.cardCategory}>Fixed Issues</p>
+              <h3 className={classes.cardTitle}>75</h3>
+            </CardHeader>
+            <CardFooter stats>
+              <div className={classes.stats}>
+                <LocalOffer />
+                Tracked from Github
+              </div>
+            </CardFooter>
+          </Card>
+        </GridItem>
+        <GridItem xs={12} sm={6} md={3}>
+          <Card>
+            <CardHeader color="info" stats icon>
+              <CardIcon color="info">
+                <Accessibility />
+              </CardIcon>
+              <p className={classes.cardCategory}>Followers</p>
+              <h3 className={classes.cardTitle}>+245</h3>
+            </CardHeader>
+            <CardFooter stats>
+              <div className={classes.stats}>
+                <Update />
+                Just Updated
+              </div>
+            </CardFooter>
+          </Card>
+        </GridItem>
+      </GridContainer>
+      <GridContainer>
+        <GridItem xs={12} sm={12} md={4}>
+          <Card chart>
+            <CardHeader color="success">
+              <ChartistGraph
+                className="ct-chart"
+                data={dailySalesChart.data}
+                type="Line"
+                options={dailySalesChart.options}
+                listener={dailySalesChart.animation}
+              />
+            </CardHeader>
+            <CardBody>
+              <h4 className={classes.cardTitle}>Daily Sales</h4>
+              <p className={classes.cardCategory}>
+                <span className={classes.successText}>
+                  <ArrowUpward className={classes.upArrowCardCategory} /> 55%
+                </span>{" "}
+                increase in today sales.
+              </p>
+            </CardBody>
+            <CardFooter chart>
+              <div className={classes.stats}>
+                <AccessTime /> updated 4 minutes ago
+              </div>
+            </CardFooter>
+          </Card>
+        </GridItem>
+        <GridItem xs={12} sm={12} md={4}>
+          <Card chart>
+            <CardHeader color="warning">
+              <ChartistGraph
+                className="ct-chart"
+                data={emailsSubscriptionChart.data}
+                type="Bar"
+                options={emailsSubscriptionChart.options}
+                responsiveOptions={emailsSubscriptionChart.responsiveOptions}
+                listener={emailsSubscriptionChart.animation}
+              />
+            </CardHeader>
+            <CardBody>
+              <h4 className={classes.cardTitle}>Email Subscriptions</h4>
+              <p className={classes.cardCategory}>Last Campaign Performance</p>
+            </CardBody>
+            <CardFooter chart>
+              <div className={classes.stats}>
+                <AccessTime /> campaign sent 2 days ago
+              </div>
+            </CardFooter>
+          </Card>
+        </GridItem>
+        <GridItem xs={12} sm={12} md={4}>
+          <Card chart>
+            <CardHeader color="dark">
+              <ChartistGraph
+                className="ct-chart"
+                data={completedTasksChart.data}
+                type="Line"
+                options={completedTasksChart.options}
+                listener={completedTasksChart.animation}
+              />
+            </CardHeader>
+            <CardBody>
+              <h4 className={classes.cardTitle}>Completed Tasks</h4>
+              <p className={classes.cardCategory}>Last Campaign Performance</p>
+            </CardBody>
+            <CardFooter chart>
+              <div className={classes.stats}>
+                <AccessTime /> campaign sent 2 days ago
+              </div>
+            </CardFooter>
+          </Card>
+        </GridItem>
+      </GridContainer>
+      <GridContainer>
+        <GridItem xs={12} sm={12} md={6}>
+          <CustomTabs
+            title="Tasks:"
+            headerColor="dark"
+            tabs={[
+              {
+                tabName: "Bugs",
+                tabIcon: BugReport,
+                tabContent: (
+                  <Tasks
+                    checkedIndexes={[0, 3]}
+                    tasksIndexes={[0, 1, 2, 3]}
+                    tasks={bugs}
+                  />
+                ),
+              },
+              {
+                tabName: "Website",
+                tabIcon: Code,
+                tabContent: (
+                  <Tasks
+                    checkedIndexes={[0]}
+                    tasksIndexes={[0, 1]}
+                    tasks={website}
+                  />
+                ),
+              },
+              {
+                tabName: "Server",
+                tabIcon: Cloud,
+                tabContent: (
+                  <Tasks
+                    checkedIndexes={[1]}
+                    tasksIndexes={[0, 1, 2]}
+                    tasks={server}
+                  />
+                ),
+              },
+            ]}
+          />
+        </GridItem>
+        <GridItem xs={12} sm={12} md={6}>
+          <Card>
+            <CardHeader color="warning">
+              <h4 className={classes.cardTitleWhite}>Employees Stats</h4>
+              <p className={classes.cardCategoryWhite}>
+                New employees on 15th September, 2016
+              </p>
+            </CardHeader>
+            <CardBody>
+              <Table
+                tableHeaderColor="warning"
+                tableHead={["ID", "Name", "Salary", "Country"]}
+                tableData={[
+                  ["1", "Dakota Rice", "$36,738", "Niger"],
+                  ["2", "Minerva Hooper", "$23,789", "Curaçao"],
+                  ["3", "Sage Rodriguez", "$56,142", "Netherlands"],
+                  ["4", "Philip Chaney", "$38,735", "Korea, South"],
+                ]}
+              />
+            </CardBody>
+          </Card>
+        </GridItem>
+      </GridContainer>*/}

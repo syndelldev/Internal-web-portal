@@ -85,20 +85,20 @@ const styles = {
 
 export async function getServerSideProps(context){
   //console.log(context.req.cookies);
-  const res = await fetch(`${server}/api/user_dashboard/subtask_person`, {
+  const res = await fetch(`${server}/api/user_dashboard`, {
     headers: {
       'Access-Control-Allow-Credentials': true,
       Cookie: context.req.headers.cookie
     },
   })
-  const task = await res.json()
-  //console.log(task)
+  const project = await res.json()
+  //console.log(project)
 
-  return { props: {task}, }
+  return { props: {project}, }
 }
 
-function Dashboard({task}) {
-  // console.log(task)
+function Projects({project}) {
+  // console.log(project)
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   const router = useRouter();
@@ -120,63 +120,29 @@ function Dashboard({task}) {
   const [username, setusername] = useState('');
   const [message, setmessage] = useState('');
 
-  //for comments Declration
   const [comments, setcomments] = useState([]);
+  console.log(comments);
   
-  const getData = async (task_id)=>{
-    var comment = await axios.post(`${server}/api/comment/comment`, { task_id: task_id });
+  const getData = async (project_id)=>{
+
+    // alert(project_id)
+    var comment = await axios.post(`${server}/api/comment/comment`, { project_id: project_id });
+    // console.log(comment.data)
     setcomments(comment.data)
+    // console.log(comments)
   }
   
-  const sendMessage = async (task_id) => {
-    console.log(task_id);
+
+  const sendMessage = async (project_id) => {
+    // e.preventDefault();
+    // alert(project_id)
+    console.log("comm");
     console.log(textComment);
 
-    var addComment = await axios.post(`${server}/api/comment/addcomment`, {  username: cookies.name, message: message , task_id: task_id, estimate:estimate , spent:spent });
+    var addComment = await axios.post(`${server}/api/comment/addcomment`, {  username: cookies.name, message: message , project_id: project_id });
     console.log(addComment)
     console.log(cookies.name)
     // router.reload(`${server}/user/dashboard`);
-  }
-
-  //for Time Declration
-
-  const [Time, setTime] = useState([]);
-  console.log(Time)
-  
-  const [TimeData,setTimeData] = useState([])
-  
-  const getTime = async (task_id) =>{
-    var timedata = await axios.post(`${server}/api/comment/task_time`, { task_id: task_id });
-    setTime(timedata.data[0])
-    setTimeData(timedata.data)
-  }
-  console.log(TimeData)
-  const [userdata, setuserdata] = useState({
-    estimate_time:"",
-    spent_time: ""
-  });
-  
-  useEffect(()=>{
-    setuserdata(Time);
-  },[Time])
-  console.log("userdata",userdata)
-  const handleChange = ({ target: { name, value } }) =>{
-    setuserdata({ ...userdata, [name]: value });
-  }
-  const [estimate, setestimate] = useState('');
-  const [spent, setspent] = useState('');
-  
-
-  const insert_time = async (task_id)=>{
-    // e.preventDefault();
-    var addTime = await axios.post(`${server}/api/comment/addtasktime`, { task_id:task_id, username: cookies.name, estimate:estimate , spent:spent });
-    console.log(addTime.data)
-  }
-  
-  const update_tasktime = async (task_id)=>{
-    // e.preventDefault();
-    var updateTime = await axios.put(`${server}/api/comment/update_tasktime`, { task_id:task_id, username: cookies.name, estimate:userdata.estimate_time , spent:userdata.spent_time });
-    console.log(updateTime)
   }
 
   const [textComment, setText] = useState([]);
@@ -310,15 +276,6 @@ function Dashboard({task}) {
   
   return (
     <>
-      <div>
-        {users.map((user)=>{
-          return(
-            <div key={user.id}>
-              <h1>Welcome {user.username} </h1>
-            </div>
-          )
-        })}
-      </div>
           <table className="project-data">
             <tr className="project-data-title">
               <th colspan="2" className="title">Task name </th>
@@ -328,56 +285,228 @@ function Dashboard({task}) {
               <th colspan="2" className="assignee">Assignee</th>
               <th colspan="4"className="view-edit">View & Edit</th>
             </tr>
-            <tr className="project-data-details">
-              <td colspan="2">
+            
+            {
+              project.map((project)=>{
+                var person = project.project_person.split(",");
+                return(
+                  <>
+                  <tr className="project-data-details">
+                    <td colspan="2"><h4 className="projectTitle">{project.project_title}</h4></td>
+                    <td className="priority-data"><p className="projectPriority">{project.project_priority}</p></td>
+                    <td className="status-data"><p>{project.project_status}</p></td>
+                    <td colspan="4" className="assignee-data">
+                      {person.map((project_person) => {
+                          return(
+                            <div className="chip">
+                              <span>{project_person}</span>
+                            </div>
+                          )
+                        })
+                      }
+                    </td>
+                    <td>
+                      <div className="icon-display">
+                        {/* View Pop Up For View */}
+                        {/* <Popup trigger={<Button disabled={project.view_rights==0} ><FaEye/></Button>}  className="popupReact"  modal>
+                          {close => (
+                            <div>
+                              <GridItem xs={6} sm={6} md={12} key={project.project_id}>
+                                <Card >
+                                  <CardHeader color="primary">
+                                    <GridContainer>
+                                      <GridItem>
+                                        <h4>{project.project_title}</h4>
+                                      </GridItem>
+                                      <div className={classes.close}>
+                                        <a onClick={close}>&times;</a>
+                                      </div>   
+                                    </GridContainer>
+                                  </CardHeader><br/>
+                                  <CardFooter>
+                                    <p>Project Language</p>-<p>{project.project_language}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p>{project.project_person}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p>{project.project_description}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p>{project.project_department}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p>{project.project_status}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p className="projectPriority">{project.project_priority} Priority</p>
+                                  </CardFooter>
+                                </Card>
+                              </GridItem>
+                            </div>
+                          )}
+                        </Popup>  */}
+                        {/*Edit Project PopUp*/}
+                        <Popup trigger={<div> <button disabled={project.edit_rights==0} onClick={()=>getData(project.project_id)} className="user-icon"><FiEdit/></button> </div>}  className="popupReact"  modal >
+                          {close => (
+                            <div>
+                              
+                              <GridItem xs={12} sm={12} md={12} key={project.project_id}>
+                                <Card>
+                                  <CardHeader color="primary">
+                                    <h4>{project.project_title}</h4>
+                                      <div className={classes.close}>
+                                        <a onClick={close}>&times;</a>
+                                      </div>
+                                  </CardHeader>
+                                  <CardBody>
+                                      <GridContainer>
+                                        <GridItem>
+                                          <p>Project Language - {project.project_language}</p>
+                                          <p>Project Person - {project.project_person}</p>
+                                          <p>Project Description - {project.project_description}</p>
+                                          <p>Department - {project.project_department}</p>
+                                          <p>Project Status - {project.project_status}</p>
+                                        </GridItem>
+                                        <GridItem>
+                                          <p className="projectPriority">{project.project_priority} Priority</p>
+                                        </GridItem>
+                                      </GridContainer>
+                                  {/* </CardBody> */}
+
+                                  <GridContainer>
+                                    <GridItem>
+                                      <h5 className="projectPriority">Comments</h5>
+                                    </GridItem>
+                                  </GridContainer>
+                                  <GridContainer>
+                                    <GridItem xs={12} sm={12} md={12} >
+                                      <form>
+                                        {/* <textarea
+                                          className="form-control signup-input"
+                                          type="text"
+                                          value={message}
+                                          onChange={(e) => {
+                                            setmessage(e.target.value);
+                                          }}
+                                        ></textarea> */}
+                                        <RichTextEditor placeholder={"Write your comment"}
+                                          // value={message}
+                                          // onChange={(e) => {
+                                          //   setmessage(e.target.value);
+                                          // }}
+                                        />
+
+                                        <div onClick={()=> sendMessage(project.project_id)}>Save</div>
+
+                                        {/* <div onClick={() => sendMessage(project.project_id)}>Save</div> */}
+                                      </form>
+                                    </GridItem>
+                                  </GridContainer>
+
+                                  {comments.map((m)=>{
+                                    const Date = ((m.creation_time).substr(0,10).split("-",3));
+                                    const Time = ((m.creation_time).substr(11,16).split(":",3));
+                                    var dateP = m.creation_time;
+                                    var textArea = (m.comment).split(`\n`);
+                                    // console.log("textArea");
+                                    // console.log(textArea);
+                                    // if(textArea == ""){
+                                      // function Setcontent() {
+                                      //  }
+                                      return(
+                                        <span>
+                                          <GridContainer>
+                                            <GridItem>
+                                              <span>{m.username}</span>
+                                            </GridItem>
+                                                
+                                            <GridItem>
+                                            <span><p>{Date[2]}/{Date[1]}/{Date[0]}</p></span>
+                                            </GridItem>
+                                          </GridContainer>
+
+                                          <GridContainer>
+                                            <GridItem>
+                                              <div>
+                                                <span id="editorOne">{m.comment}</span>
+                                              </div>
+                                            </GridItem>
+                                          </GridContainer>
+                                        </span>
+                                      )
+                                  })}
+                                  </CardBody>
+
+                                </Card>
+                              </GridItem>
+
+                            </div>
+                          )}
+                        </Popup>
+                      </div>
+                    </td>
+                    </tr>
+                  </>
+                )
+              })
+            }
+            
+            {/* <tr className="project-data-details"> */}
+              {/* <td colspan="2">
                 {
-                  task.map((task)=>{
+                  project.map((project)=>{
+                    var person = project.project_person.split(",");
                     return(
-                      <h4 className="projectTitle">{task.task_title}</h4>
+                      <>
+                      <div>
+                        <h4 className="projectTitle">{project.project_title}</h4>
+                      </div>  
+                      </>
                     )
                   })
                 }
               </td>
               <td className="priority-data">
                 {
-                  task.map((task)=>{
+                  project.map((project)=>{
                     return(
-                      <p className="projectPriority">{task.task_priority}</p>
+                      <p className="projectPriority">{project.project_priority}</p>
                     )
                   })
                 }
               </td>
               <td className="status-data">
                 {
-                  task.map((task)=>{
+                  project.map((project)=>{
                     return(
-                      <p>{task.task_status}</p>
+                      <p>{project.project_status}</p>
                     )
                   })
                 }
               </td>
               <td colspan="4" className="assignee-data">
                 {
-                  task.map((task)=>{
-                    // var person = task.task_person.split(",");
-                    // console.log(person)
+                  project.map((project)=>{
+                    var person = project.project_person.split(",");
                     return(
                       <>
-                        {/* {person.map((person)=>{
-                          return( */}
+                        {person.map((project_person) => {
+                          return(
                             <div className="chip">
-                              <span >{task.task_person}</span>
+                              <span>{project_person}</span>
                             </div>
-                          {/* )
-                        })} */}
+                          )
+                        })
+                      }
                       </>
                     )
                   })
                 }
-              </td>  
-              <td>
+              </td>  */}
+              {/* <td>
                 {
-                  task.map((task)=>{
+                  project.map((project)=>{
                     return(
                       <div className="icon-display">
                         {/* <Popup trigger={<Button disabled={project.view_rights==0} ><FaEye/></Button>}  className="popupReact"  modal>
@@ -417,17 +546,17 @@ function Dashboard({task}) {
                               </GridItem>
                             </div>
                           )}
-                        </Popup> */}
+                        </Popup> *
 
-                        {/*Edit Project PopUp*/}
-                        <Popup trigger={<div> <button disabled={task.edit_rights==0} onClick={()=>{getData(task.task_id);getTime(task.task_id)}} className="user-icon"><FiEdit/></button> </div>}  className="popupReact"  modal >
+                        
+                        <Popup trigger={<div> <button disabled={project.edit_rights==0} onClick={()=>getData(project.project_id)} className="user-icon"><FiEdit/></button> </div>}  className="popupReact"  modal >
                           {close => (
                             <div>
                               
-                              <GridItem xs={12} sm={12} md={12} key={task.task_id}>
+                              <GridItem xs={12} sm={12} md={12} key={project.project_id}>
                                 <Card>
                                   <CardHeader color="primary">
-                                    <h4>{task.task_title}</h4>
+                                    <h4>{project.project_title}</h4>
                                       <div className={classes.close}>
                                         <a onClick={close}>&times;</a>
                                       </div>
@@ -435,17 +564,17 @@ function Dashboard({task}) {
                                   <CardBody>
                                       <GridContainer>
                                         <GridItem>
-                                          <p>Task Language - {task.task_language}</p>
-                                          <p>Task Person - {task.task_person}</p>
-                                          <p>Task Description - {task.task_description}</p>
-                                          <p>Department - {task.task_department}</p>
-                                          <p>Task Status - {task.task_status}</p>
+                                          <p>Project Language - {project.project_language}</p>
+                                          <p>Project Person - {project.project_person}</p>
+                                          <p>Project Description - {project.project_description}</p>
+                                          <p>Department - {project.project_department}</p>
+                                          <p>Project Status - {project.project_status}</p>
                                         </GridItem>
                                         <GridItem>
-                                          <p className="projectPriority">{task.task_priority} Priority</p>
+                                          <p className="projectPriority">{project.project_priority} Priority</p>
                                         </GridItem>
                                       </GridContainer>
-                                  {/* </CardBody> */}
+                                 
 
                                   <GridContainer>
                                     <GridItem>
@@ -454,46 +583,15 @@ function Dashboard({task}) {
                                   </GridContainer>
                                   <GridContainer>
                                     <GridItem xs={12} sm={12} md={12} >
-                                      {TimeData.length==0?(
-                                          <>
-                                            <form>
-                                              <GridContainer>
-                                                <GridItem>
-                                                  <input value={task.task_id} type="hidden"/>
-                                                  <label>Estimate Time</label>
-                                                  <input type="text" value={estimate} onChange={(e)=>setestimate(e.target.value)}/><br/>
-                                                  <label>Spent Time</label>
-                                                  <input type="text" value={spent} onChange={(e)=>setspent(e.target.value)} />
-                                                </GridItem>
-                                                <button type="submit" onClick={()=>insert_time(task.task_id)}>submit</button>
-                                              </GridContainer>
-                                            </form>
-                                          </>
-                                        ):(
-                                          <>
-                                            <form onSubmit={update_tasktime}>
-                                              <GridContainer>
-                                                <GridItem>
-                                                  <input value={task.task_id} type="hidden"/>
-                                                  <label>Estimate Time</label>
-                                                  <input type="text" name="estimate_time" value={userdata.estimate_time} onChange={handleChange}/><br/>
-                                                  <label>Spent Time</label>
-                                                  <input type="text" name="spent_time" value={userdata.spent_time} onChange={handleChange}/>
-                                                </GridItem>
-                                                <button type="submit" onClick={()=>update_tasktime(task.task_id)}>submit</button>
-                                              </GridContainer>
-                                            </form>
-                                          </>
-                                        )}
                                       <form>
-                                        {/* <textarea
+                                         <textarea
                                           className="form-control signup-input"
                                           type="text"
                                           value={message}
                                           onChange={(e) => {
                                             setmessage(e.target.value);
                                           }}
-                                        ></textarea> */}
+                                        ></textarea> 
     <RichTextEditor placeholder={"Write your comment"}
                                           // value={message}
                                           // onChange={(e) => {
@@ -501,9 +599,8 @@ function Dashboard({task}) {
                                           // }}
     />
 
-                                        <div onClick={()=> sendMessage(task.task_id)}>Save</div>
+                                        <div onClick={()=> sendMessage(project.project_id)}>Save</div>
 
-                                        {/* <div onClick={() => sendMessage(task.task_id)}>Save</div> */}
                                       </form>
                                     </GridItem>
                                   </GridContainer>
@@ -556,7 +653,7 @@ function Dashboard({task}) {
                                     //         <GridItem>
                                     //           <div>
                                     //             <a href={m.comment} target="_blank" id="userComment">{m.comment}</a>
-                                    //             {/* <p>{Time[0]}:{Time[1]}:{Time[2]}</p> */}
+                                    //            
                                     //           </div>
                                     //         </GridItem>
                                     //       </GridContainer>
@@ -576,8 +673,8 @@ function Dashboard({task}) {
                     )
                   })
                 }
-              </td>  
-            </tr>
+              </td>   */}
+            {/* </tr> */}
           </table>
           
  
@@ -585,6 +682,6 @@ function Dashboard({task}) {
   );
 }
 
-Dashboard.layout = User;
+Projects.layout = User;
 
-export default Dashboard;
+export default Projects;

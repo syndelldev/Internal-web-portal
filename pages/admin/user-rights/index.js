@@ -185,7 +185,7 @@ function UserRights({UserList,ModuleList}){
                                                         <TableCell>{data.project_title}-{data.project_id}</TableCell>  
                                                           
                                                         <TableCell>
-                                                            <input type="checkbox" name="view_rights" value={data.view_rights} onChange={viewCheckbox} defaultChecked={data.view_rights==1} onClick={()=>view_rights(data.project_id)}/>
+                                                            <input type="checkbox" name="view_rights" disabled={data.edit_rights==1} value={data.view_rights} onChange={viewCheckbox} defaultChecked={data.view_rights==1} onClick={()=>view_rights(data.project_id)}/>
                                                         </TableCell>
 
                                                         <TableCell>
