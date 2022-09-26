@@ -154,7 +154,7 @@ function Dashboard({task}) {
   console.log(TimeData)
   const [userdata, setuserdata] = useState({
     estimate_time:"",
-    spent: ""
+    spent_time: ""
   });
   
   useEffect(()=>{
@@ -174,6 +174,11 @@ function Dashboard({task}) {
     console.log(addTime.data)
   }
   
+  const update_tasktime = async (task_id)=>{
+    // e.preventDefault();
+    var updateTime = await axios.put(`${server}/api/comment/update_tasktime`, { task_id:task_id, username: cookies.name, estimate:userdata.estimate_time , spent:userdata.spent_time });
+    console.log(updateTime)
+  }
 
 
   const [textComment, setText] = useState([]);
@@ -344,7 +349,7 @@ function Dashboard({task}) {
                                         </>
                                       ):(
                                         <>
-                                          <form>
+                                          <form onSubmit={update_tasktime}>
                                             <GridContainer>
                                               <GridItem>
                                                 <input value={task.task_id} type="hidden"/>
@@ -353,7 +358,7 @@ function Dashboard({task}) {
                                                 <label>Spent Time</label>
                                                 <input type="text" name="spent_time" value={userdata.spent_time} onChange={handleChange}/>
                                               </GridItem>
-                                              <button type="submit">submit</button>
+                                              <button type="submit" onClick={()=>update_tasktime(task.task_id)}>submit</button>
                                             </GridContainer>
                                           </form>
                                         </>

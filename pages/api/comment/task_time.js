@@ -7,34 +7,25 @@ export default async function handler(req, res) {
         let person=await executeQuery( " SELECT * FROM `tbl_task_time` where `task_id`=? ", [req.body.task_id] );
         res.status(200).json(person);
 
-        if(person == "")
-        {
-            console.log("null")
-        }
-        else{
-            console.log("not null")
-        }
-        if(person != "")
-        {
-            console.log("exist")
-            try{
-                let person=await executeQuery( " UPDATE `tbl_task_time` SET `username`=?,`estimate_time`=?,`spent_time`=? WHERE  `task_id`=?" , [req.body.task_id, req.body.username, req.body.estimate, req.body.spent] );
-                res.status(200).json(person);
-            }
-            catch(err){
-                console.log(err)
-            }
-        }
+        // if(person == "")
+        // {
+        //     console.log("null")
+        // }
         // else{
-        //     console.log("not exist")
+        //     console.log("not null")
+        // }
+        // if(person != "")
+        // {
+        //     console.log("exist")
         //     try{
-        //         let person=await executeQuery( " INSERT INTO `tbl_task_time`( `task_id`, `username`, `estimate_time`, `spent_time`) VALUES (?,?,?,?) " , [req.body.task_id, req.body.username, req.body.estimate, req.body.spent] );
+        //         let person=await executeQuery( " UPDATE `tbl_task_time` SET `username`=?,`estimate_time`=?,`spent_time`=? WHERE  `task_id`=?" , [req.body.task_id, req.body.username, req.body.estimate, req.body.spent] );
         //         res.status(200).json(person);
         //     }
         //     catch(err){
         //         console.log(err)
         //     }
         // }
+        
         
     }
     catch(err){
