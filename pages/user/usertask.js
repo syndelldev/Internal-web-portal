@@ -99,7 +99,6 @@ export async function getServerSideProps(context){
 
 function Dashboard({task}) {
   // console.log(task)
-  
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   const router = useRouter();
@@ -116,6 +115,7 @@ function Dashboard({task}) {
         //console.log(res)
       })    
   },[])
+  // console.log(users)
 
   const [username, setusername] = useState('');
   const [message, setmessage] = useState('');
@@ -179,7 +179,6 @@ function Dashboard({task}) {
     console.log(updateTime)
   }
 
-
   const [textComment, setText] = useState([]);
 
   class RichTextEditor extends React.Component {
@@ -215,7 +214,12 @@ function Dashboard({task}) {
     }
   
     rteChange = (content, delta, source, editor) => {
-      
+      // console.log(editor.getHTML()); // rich text
+      // console.log(content);
+      // console.log(delta.ops[1]);
+      // console.log(source);
+      // console.log(editor.getText()); // plain text
+      // console.log(editor.getLength()); // number of characters
     }
   
     render() {
@@ -315,28 +319,66 @@ function Dashboard({task}) {
           )
         })}
       </div>
-      
-      <GridContainer>
-       {
-          task.map((task)=>{
-            return(
-              <GridItem xs={6} sm={6} md={4} key={task.task_id}>
-                <Card className="projects">
-                  <CardHeader color="primary" className="project-block">
-                  <div className="project-content">
-                    <h4 className="projectTitle">{task.task_title}</h4>
-                      
-                      {/*View Project PopUp*/}
+          <table className="project-data">
+            <tr className="project-data-title">
+              <th colspan="2" className="title">Task name </th>
+           
+              <th>Priority</th>
+              <th colspan="2" className="status">Status</th>
+              <th colspan="2" className="assignee">Assignee</th>
+              <th colspan="4"className="view-edit">View & Edit</th>
+            </tr>
+            <tr className="project-data-details">
+              <td colspan="2">
+                {
+                  task.map((task)=>{
+                    return(
+                      <h4 className="projectTitle">{task.task_title}</h4>
+                    )
+                  })
+                }
+              </td>
+              <td className="priority-data">
+                {
+                  task.map((task)=>{
+                    return(
+                      <p className="projectPriority">{task.task_priority}</p>
+                    )
+                  })
+                }
+              </td>
+              <td className="status-data">
+                {
+                  task.map((task)=>{
+                    return(
+                      <p>{task.task_status}</p>
+                    )
+                  })
+                }
+              </td>
+              <td colspan="4" className="assignee-data">
+                {
+                  task.map((task)=>{
+                    return(
+                      <p>{task.task_person}</p>
+                    )
+                  })
+                }
+              </td> 
+              <td>
+                {
+                  task.map((task)=>{
+                    return(
                       <div className="icon-display">
-                        <Popup trigger={<Button disabled={task.view_rights==0} ><FaEye/></Button>}  className="popupReact"  modal>
+                        {/* <Popup trigger={<Button disabled={project.view_rights==0} ><FaEye/></Button>}  className="popupReact"  modal>
                           {close => (
                             <div>
-                              <GridItem xs={6} sm={6} md={12} key={task.task_id}>
+                              <GridItem xs={6} sm={6} md={12} key={project.project_id}>
                                 <Card >
                                   <CardHeader color="primary">
                                     <GridContainer>
                                       <GridItem>
-                                        <h4>{task.task_title}</h4>
+                                        <h4>{project.project_title}</h4>
                                       </GridItem>
                                       <div className={classes.close}>
                                         <a onClick={close}>&times;</a>
@@ -344,35 +386,35 @@ function Dashboard({task}) {
                                     </GridContainer>
                                   </CardHeader><br/>
                                   <CardFooter>
-                                    <p>Project Language</p>-<p>{task.task_language}</p>
+                                    <p>Project Language</p>-<p>{project.project_language}</p>
                                   </CardFooter>
                                   <CardFooter>
-                                    <p>{task.task_person}</p>
+                                    <p>{project.project_person}</p>
                                   </CardFooter>
                                   <CardFooter>
-                                    <p>{task.task_description}</p>
+                                    <p>{project.project_description}</p>
                                   </CardFooter>
                                   <CardFooter>
-                                    <p>{task.task_department}</p>
+                                    <p>{project.project_department}</p>
                                   </CardFooter>
                                   <CardFooter>
-                                    <p>{task.task_status}</p>
+                                    <p>{project.project_status}</p>
                                   </CardFooter>
                                   <CardFooter>
-                                    <p className="projectPriority">{task.task_priority} Priority</p>
+                                    <p className="projectPriority">{project.project_priority} Priority</p>
                                   </CardFooter>
                                 </Card>
                               </GridItem>
                             </div>
                           )}
-                        </Popup> 
+                        </Popup> */}
 
                         {/*Edit Project PopUp*/}
                         <Popup trigger={<div> <button disabled={task.edit_rights==0} onClick={()=>{getData(task.task_id);getTime(task.task_id)}} className="user-icon"><FiEdit/></button> </div>}  className="popupReact"  modal >
                           {close => (
                             <div>
                               
-                              <GridItem xs={12} sm={12} md={12} key={task.project_id}>
+                              <GridItem xs={12} sm={12} md={12} key={task.task_id}>
                                 <Card>
                                   <CardHeader color="primary">
                                     <h4>{task.task_title}</h4>
@@ -403,37 +445,36 @@ function Dashboard({task}) {
                                   <GridContainer>
                                     <GridItem xs={12} sm={12} md={12} >
                                       {TimeData.length==0?(
-                                        <>
-                                          <form onSubmit={()=>insert_time(task.task_id)}>
-                                            <GridContainer>
-                                              <GridItem>
-                                                <input value={task.task_id} type="hidden"/>
-                                                <label>Estimate Time</label>
-                                                <input type="text" value={estimate} onChange={(e)=>setestimate(e.target.value)}/><br/>
-                                                <label>Spent Time</label>
-                                                <input type="text" value={spent} onChange={(e)=>setspent(e.target.value)} />
-                                              </GridItem>
-                                              {/* <button type="submit" onClick={()=>insert_time(task.task_id)}>submit</button> */}
-                                            </GridContainer>
-                                          </form>
-                                        </>
-                                      ):(
-                                        <>
-                                          <form onSubmit={()=>update_tasktime(task.task_id)}>
-                                            <GridContainer>
-                                              <GridItem>
-                                                <input value={task.task_id} type="hidden"/>
-                                                <label>Estimate Time</label>
-                                                <input type="text" name="estimate_time" value={userdata.estimate_time} onChange={handleChange}/><br/>
-                                                <label>Spent Time</label>
-                                                <input type="text" name="spent_time" value={userdata.spent_time} onChange={handleChange}/>
-                                              </GridItem>
-                                              {/* <button type="submit" onClick={()=>update_tasktime(task.task_id)}>submit</button> */}
-                                            </GridContainer>
-                                          </form>
-                                        </>
-                                      )}
-                                      
+                                          <>
+                                            <form>
+                                              <GridContainer>
+                                                <GridItem>
+                                                  <input value={task.task_id} type="hidden"/>
+                                                  <label>Estimate Time</label>
+                                                  <input type="text" value={estimate} onChange={(e)=>setestimate(e.target.value)}/><br/>
+                                                  <label>Spent Time</label>
+                                                  <input type="text" value={spent} onChange={(e)=>setspent(e.target.value)} />
+                                                </GridItem>
+                                                <button type="submit" onClick={()=>insert_time(task.task_id)}>submit</button>
+                                              </GridContainer>
+                                            </form>
+                                          </>
+                                        ):(
+                                          <>
+                                            <form onSubmit={update_tasktime}>
+                                              <GridContainer>
+                                                <GridItem>
+                                                  <input value={task.task_id} type="hidden"/>
+                                                  <label>Estimate Time</label>
+                                                  <input type="text" name="estimate_time" value={userdata.estimate_time} onChange={handleChange}/><br/>
+                                                  <label>Spent Time</label>
+                                                  <input type="text" name="spent_time" value={userdata.spent_time} onChange={handleChange}/>
+                                                </GridItem>
+                                                <button type="submit" onClick={()=>update_tasktime(task.task_id)}>submit</button>
+                                              </GridContainer>
+                                            </form>
+                                          </>
+                                        )}
                                       <form>
                                         {/* <textarea
                                           className="form-control signup-input"
@@ -452,7 +493,7 @@ function Dashboard({task}) {
 
                                         <div onClick={()=> sendMessage(task.task_id)}>Save</div>
 
-                                        {/* <div onClick={() => sendMessage(project.project_id)}>Save</div> */}
+                                        {/* <div onClick={() => sendMessage(task.task_id)}>Save</div> */}
                                       </form>
                                     </GridItem>
                                   </GridContainer>

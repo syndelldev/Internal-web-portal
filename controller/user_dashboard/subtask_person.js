@@ -1,7 +1,8 @@
 import { executeQuery } from "../../config/db";
 
 const TaskPerson = async (req,res) =>{
-    console.log(req.cookies);
+    // console.log("req");
+    // console.log(req.cookies);
     
     try{
         let person=await executeQuery( ` SELECT * FROM tbl_subtask WHERE task_person LIKE ? `, [`%${req.cookies.name}%`] );
