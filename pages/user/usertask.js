@@ -429,11 +429,27 @@ function Dashboard({task}) {
                                                 <GridItem>
                                                   <input value={task.task_id} type="hidden"/>
                                                   <label>Estimate Time</label>
-                                                  <input type="text" value={estimate} onChange={(e)=>setestimate(e.target.value)}/><br/>
+                                                  <input type="text" 
+                                                    value={estimate} 
+                                                    onChange={(e)=>setestimate(e.target.value)}
+                                                    onKeyPress={(event)=>{
+                                                      if (event.key === "Enter"){
+                                                        insert_time(task.task_id);
+                                                      }
+                                                    }}
+                                                  /><br/>
                                                   <label>Spent Time</label>
-                                                  <input type="text" value={spent} onChange={(e)=>setspent(e.target.value)} />
+                                                  <input type="text" 
+                                                    value={spent} 
+                                                    onChange={(e)=>setspent(e.target.value)} 
+                                                    onKeyPress={(event)=>{
+                                                      if (event.key === "Enter"){
+                                                        insert_time(task.task_id);
+                                                      }
+                                                    }}
+                                                  />
                                                 </GridItem>
-                                                <button type="submit" onClick={()=>insert_time(task.task_id)}>submit</button>
+                                                {/* <button type="submit" onClick={()=>insert_time(task.task_id)}>submit</button> */}
                                               </GridContainer>
                                             </form>
                                           </>
@@ -444,11 +460,27 @@ function Dashboard({task}) {
                                                 <GridItem>
                                                   <input value={task.task_id} type="hidden"/>
                                                   <label>Estimate Time</label>
-                                                  <input type="text" name="estimate_time" value={userdata.estimate_time} onChange={handleChange}/><br/>
+                                                  <input type="text" name="estimate_time" 
+                                                    value={userdata.estimate_time} 
+                                                    onChange={handleChange}
+                                                    onKeyPress={(event)=>{
+                                                      if (event.key === "Enter"){
+                                                        update_tasktime(task.task_id);
+                                                      }
+                                                    }}
+                                                  /><br/>
                                                   <label>Spent Time</label>
-                                                  <input type="text" name="spent_time" value={userdata.spent_time} onChange={handleChange}/>
+                                                  <input type="text" name="spent_time" 
+                                                    value={userdata.spent_time} 
+                                                    onChange={handleChange}
+                                                    onKeyPress={(event)=>{
+                                                      if (event.key === "Enter"){
+                                                        update_tasktime(task.task_id);
+                                                      }
+                                                    }}
+                                                  />
                                                 </GridItem>
-                                                <button type="submit" onClick={()=>update_tasktime(task.task_id)}>submit</button>
+                                                {/* <button type="submit" onClick={()=>update_tasktime(task.task_id)}>submit</button> */}
                                               </GridContainer>
                                             </form>
                                           </>
@@ -467,7 +499,7 @@ function Dashboard({task}) {
                                           // onChange={(e) => {
                                           //   setmessage(e.target.value);
                                           // }}
-                                        />
+                                         />
 
                                         <div onClick={()=> sendMessage(task.task_id)}>Save</div>
 
