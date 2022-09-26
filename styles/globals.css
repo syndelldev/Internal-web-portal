@@ -276,6 +276,7 @@ h4.text {
   margin: 0px 0px !important;
 }
 .chip{
+  display: inherit;
   border-radius: 30px!important;
   padding: 10px!important;
   font-weight: 500!important;
@@ -499,4 +500,15 @@ h3.on-hold{
     justify-content: normal;
     display: grid!important;
 }
+}
+h3.my-task-priorities {
+  
+  border: 2px solid #d3d3d3;
+  padding: 20px;
+  font-size: 20px;
+  border-radius: 30px;
+}
+h2.title-my-task {
+  font-size: 30px;
+  font-weight: 600;
 }

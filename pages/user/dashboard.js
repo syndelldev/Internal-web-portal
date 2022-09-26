@@ -234,7 +234,7 @@ function Dashboard( { project_hold, project_completed, project_running, high_pri
       <div>
         <GridContainer>
           <GridItem xs={12} sm={6} md={6}>
-            <h3 className="on-hold">My Task Priorities
+            <h3 className="my-task-priorities"><h2 className="title-my-task">My Task Priorities</h2>
             {high_priority.map((task)=>{
               return(
                 <>
