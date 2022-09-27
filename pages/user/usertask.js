@@ -172,13 +172,6 @@ function Dashboard({task}) {
     setTimeData(timedata.data)
   }
 
-  // const [getTaskTime,setgetTaskTime] = useState([])
-  // useEffect(async()=>{
-  //   var timedata = await axios.get(`${server}/api/comment/get_tasktime`);
-  //   setgetTaskTime(timedata.data)
-  // },[getTaskTime])
-  // console.log(getTaskTime)
-
   console.log(TimeData)
   const [userdata, setuserdata] = useState({
     estimate_time:"",
@@ -208,7 +201,7 @@ function Dashboard({task}) {
     console.log(updateTime)
   }
 
-  //
+  //For Accordin
   const [expanded, setExpanded] = useState(false);
   const handleChangePanel = panel => (event, isExpanded) => {
     console.log(panel)
