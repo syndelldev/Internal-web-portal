@@ -149,70 +149,53 @@ function Projects({project}) {
   }
   
 
-  const sendMessage = async (project_id) => {
-    // e.preventDefault();
-    // alert(project_id)
-    console.log("comm");
-    console.log(textComment);
+  // const sendMessage = async (project_id) => {
+  //   console.log("comm");
+  //   console.log(value);
 
-    var addComment = await axios.post(`${server}/api/comment/addcomment`, {  username: cookies.name, message: message , project_id: project_id });
-    console.log(addComment)
-    console.log(cookies.name)
-    // router.reload(`${server}/user/dashboard`);
-  }
+  //   var addComment = await axios.post(`${server}/api/comment/addcomment`, {  username: cookies.name, message: message , project_id: project_id });
+  //   console.log(addComment)
+  //   console.log(cookies.name)
+  //   // router.reload(`${server}/user/dashboard`);
+  // }
 
-  const [textComment, setText] = useState([]);
+  // const [ value, setValue ] = useState("");
+  //   const modules = {
+  //     toolbar: [
+  //       [{ 'font': [] }],
+  //       [{ 'size': ['small', false, 'large', 'huge'] }],
+  //       ['bold', 'italic', 'underline'],
+  //       [{'list': 'ordered'}, {'list': 'bullet'}],
+  //       [{ 'align': [] }],
+  //       [{ 'color': [] }, { 'background': [] }],
+  //       ['clean'],
+  //       ['link', 'image', 'video']
+  //     ]
+  //   }
 
-  class RichTextEditor extends React.Component {
-    constructor(props) {
-      super(props);
-  
-      this.modules = {
-        toolbar: [
-            [{ 'font': [] }],
-            [{ 'size': ['small', false, 'large', 'huge'] }],
-            ['bold', 'italic', 'underline'],
-            [{'list': 'ordered'}, {'list': 'bullet'}],
-            [{ 'align': [] }],
-            [{ 'color': [] }, { 'background': [] }],
-            ['clean']
-          ]
-      };
-  
-      this.formats = [
-          'font',
-          'size',
-          'bold', 'italic', 'underline',
-          'list', 'bullet',
-          'align',
-          'color', 'background'
-        ];
-  
-        this.state = {
-        comments: ''
-      }
-  
-      this.rteChange = this.rteChange.bind(this);
-    }
-  
-    rteChange = (content, delta, source, editor) => {
+  //   const [commentEdit, setEditComment] = useState();
 
-    }
-  
-    render() {
-        return (
-          <div>
-            <ReactQuill theme="snow"  modules={this.modules}
-              formats={this.formats} onChange={this.rteChange}
-              value={this.state.comments || ''}/>
-              {console.log("123")}
-              {setText(this.state.comments)}
-          </div>
-        );
-    }
-  
-  }
-  
+  //   const editComment = async( id ) =>{
+  //     console.log("id");
+  //     console.log(id);
+
+  //     var commentId = await axios.post(`${server}/api/comment/comment_id`, { comment_id: id, user: cookies.name });
+  //     console.log(commentId.data[0]);
+
+  //     if(commentId.data != ""){
+  //       setEditComment(commentId.data[0].comment);
+  //       console.log(commentEdit);
+  //   }
+  //   }
+    
+  //   const updateComment = async(id, comment) =>{
+  //     console.log(comment);
+  //     console.log(id);
+  //     var comment = await axios.post(`${server}/api/comment/updateComment`, { comment_id: id, user: cookies.name, comment:comment });
+  //     router.reload(`${server}/user/usertask`);
+  //   }
+
+    
   return (
     <>
           <table className="project-data">
@@ -268,47 +251,6 @@ function Projects({project}) {
                     </td>
                     <td>
                       <div className="icon-display">
-                        {/* View Pop Up For View */}
-                        {/* <Popup trigger={<Button disabled={project.view_rights==0} ><FaEye/></Button>}  className="popupReact"  modal>
-                          {close => (
-                            <div>
-                              <GridItem xs={6} sm={6} md={12} key={project.project_id}>
-                                <Card >
-                                  <CardHeader color="primary">
-                                    <GridContainer>
-                                      <GridItem>
-                                        <h4>{project.project_title}</h4>
-                                      </GridItem>
-                                      <div className={classes.close}>
-                                        <a onClick={close}>&times;</a>
-                                      </div>   
-                                    </GridContainer>
-                                  </CardHeader><br/>
-                                  <CardFooter>
-                                    <p>Project Language</p>-<p>{project.project_language}</p>
-                                  </CardFooter>
-                                  <CardFooter>
-                                    <p>{project.project_person}</p>
-                                  </CardFooter>
-                                  <CardFooter>
-                                    <p>{project.project_description}</p>
-                                  </CardFooter>
-                                  <CardFooter>
-                                    <p>{project.project_department}</p>
-                                  </CardFooter>
-                                  <CardFooter>
-                                    <p>{project.project_status}</p>
-                                  </CardFooter>
-                                  <CardFooter>
-                                    <p className="projectPriority">{project.project_priority} Priority</p>
-                                  </CardFooter>
-                                </Card>
-                              </GridItem>
-                            </div>
-                          )}
-                        </Popup>  */}
-                        {/*View Project PopUp End*/}
-                        {/*Edit Project PopUp Start*/}
                         <Popup trigger={<div> <button disabled={project.edit_rights==0} onClick={()=>getData(project.project_id)} className="user-icon"><FiEdit/></button> </div>}  className="popupReact"  modal >
                           {close => (
                             <div>
@@ -343,22 +285,9 @@ function Projects({project}) {
                                   <GridContainer>
                                     <GridItem xs={12} sm={12} md={12} >
                                       <form>
-                                        {/* <textarea
-                                          className="form-control signup-input"
-                                          type="text"
-                                          value={message}
-                                          onChange={(e) => {
-                                            setmessage(e.target.value);
-                                          }}
-                                        ></textarea> */}
-                                        <RichTextEditor placeholder={"Write your comment"}
-                                          // value={message}
-                                          // onChange={(e) => {
-                                          //   setmessage(e.target.value);
-                                          // }}
-                                        />
 
-                                        <div onClick={()=> sendMessage(project.project_id)}>Save</div>
+                                        {/* <ReactQuill modules={modules} theme="snow" onChange={setValue} />
+                                        <div onClick={()=> sendMessage(project.project_id)}>Save</div> */}
 
                                         {/* <div onClick={() => sendMessage(project.project_id)}>Save</div> */}
                                       </form>
