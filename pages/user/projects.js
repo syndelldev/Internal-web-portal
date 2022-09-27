@@ -292,8 +292,8 @@ function Projects({project}) {
                   <>
                   <tr className="project-data-details">
                     <td colspan="2"><h4 className="projectTitle">{project.project_title}</h4></td>
-                    <td className="priority-data"><p className="projectPriority">{project.project_priority}</p></td>
-                    <td className="status-data"><p>{project.project_status}</p></td>
+                    <td className="priority-data"><p className={project.project_priority}>{project.project_priority}</p></td>
+                    <td className="status-data"><p className={project.project_status}>{project.project_status}</p></td>
                     <td colspan="4" className="assignee-data">
                       {person.map((project_person) => {
                           return(

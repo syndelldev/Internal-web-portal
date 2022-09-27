@@ -117,7 +117,7 @@ export default function home()
 
                     if(! toast.isActive(toastId.current)) 
                     {
-                        toastId.current = toast.success('Login Successful! 🎉', {
+                        toastId.current = toast.success('Login Successfully! 🎉', {
                             position: "top-right",
                             autoClose:1000,
                             onClose: () => router.push("/superuser/dashboard")
