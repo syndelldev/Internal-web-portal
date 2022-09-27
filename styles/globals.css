@@ -569,3 +569,6 @@ img.gif-image {
 h2.title-user-project {
   font-weight: 500;
 }
+td.status-data {
+  text-align: center;
+}
