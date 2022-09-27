@@ -62,13 +62,17 @@ function UserRights({UserList,ModuleList}){
     // console.log(module)
 
     const [users, setusers] = useState([])
-    const getData = () => {
-        axios.post(`${server}/api/rights/${user}`, {userid:user,moduleid:module})
-        .then((res)=>{
-            setusers(res.data)
-        })
-    }
-    // console.log(users)
+    useEffect(()=>{
+        // const getData = () => {
+            axios.post(`${server}/api/rights/${user}`, {userid:user,moduleid:module})
+            .then((res)=>{
+                setusers(res.data)
+            })
+        // }
+        // getData();
+        console.log(users)
+    },[users])
+   
     
     const [viewcheckbox,setviewcheckbox] = useState(0)
     const viewCheckbox = (e) =>{
@@ -83,16 +87,18 @@ function UserRights({UserList,ModuleList}){
             setviewcheckbox(1)
         }
     }
-    console.log(viewcheckbox)
-
+    // console.log(viewcheckbox)
+    
+    const [rightsList, setrightsList] = useState([])
     const view_rights = (project_id) =>{
-        // console.log(project_id)
+        console.log("view_rights",project_id)
 
         let data = axios.put(`${server}/api/rights/project/${project_id}`, {userid:user, moduleid:module, projectid:project_id, view:viewcheckbox})
-        .then((responce)=>{
-            setrightsList(responce.data)
-        })  
-        // console.log(rightsList)
+        console.log(data)
+        // .then((responce)=>{
+        //     setrightsList(responce.data)
+        //     // users(setrightsList)
+        // }) 
     }
 
     const [editcheckbox,seteditcheckbox] = useState(0)
@@ -110,14 +116,12 @@ function UserRights({UserList,ModuleList}){
             seteditcheckbox(0)
         }
     }
+    
     const edit_rights = (project_id) =>{
         // console.log(project_id)
 
-        let data = axios.put(`${server}/api/rights/project/${project_id}`, {userid:user, moduleid:module, projectid:project_id, edit:editcheckbox})
-        .then((responce)=>{
-            setrightsList(responce.data)
-        })  
-        // console.log(rightsList)
+        let data = axios.put(`${server}/api/rights/project/${project_id}`, {userid:user, moduleid:module, projectid:project_id, edit:editcheckbox}) 
+        console.log(data)
     }
 
     return(
@@ -137,7 +141,7 @@ function UserRights({UserList,ModuleList}){
                                             UserList.map((users)=>{
                                                 return(
                                                     <>
-                                                        <option key={users.id} value={users.id}>{users.username}</option> 
+                                                        <option key={users.id} value={users.id} >{users.username}</option> 
                                                     </>      
                                                 )
                                             })
@@ -163,7 +167,7 @@ function UserRights({UserList,ModuleList}){
                                 <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                             </GridItem> 
                         </GridContainer><br/>
-                        <Button color="primary" onClick={getData} type="submit">Submit</Button><br/><br/>
+                        {/* <Button color="primary" onClick={getData} type="submit">Submit</Button><br/><br/> */}
 
                             <div className={classes.tableResponsive}>
                                 <Table className={classes.table}>
@@ -185,11 +189,22 @@ function UserRights({UserList,ModuleList}){
                                                         <TableCell>{data.project_title}-{data.project_id}</TableCell>  
                                                           
                                                         <TableCell>
-                                                            <input type="checkbox" name="view_rights" disabled={data.edit_rights==1} value={data.view_rights} onChange={viewCheckbox} defaultChecked={data.view_rights==1} onClick={()=>view_rights(data.project_id)}/>
+                                                            <input type="checkbox" name="view_rights" 
+                                                                disabled={data.edit_rights==1} 
+                                                                value={data.view_rights} 
+                                                                onChange={viewCheckbox} 
+                                                                defaultChecked={data.view_rights==1} 
+                                                                onClick={()=>view_rights(data.project_id)}
+                                                            />
                                                         </TableCell>
 
                                                         <TableCell>
-                                                            <input type="checkbox" name="edit_rights" value={data.edit_rights} onChange={editCheckbox} defaultChecked={data.edit_rights==1} onClick={()=>edit_rights(data.project_id)} /> 
+                                                            <input type="checkbox" name="edit_rights" 
+                                                                value={data.edit_rights} 
+                                                                onChange={editCheckbox} 
+                                                                defaultChecked={data.edit_rights==1} 
+                                                                onClick={()=>edit_rights(data.project_id)} 
+                                                            /> 
                                                         </TableCell>
                                                                             
                                                     </TableRow>   

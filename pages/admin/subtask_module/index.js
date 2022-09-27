@@ -930,7 +930,7 @@ return(
 <Card>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-          <div className="taskHold" onClick={()=> { taskOnHold("taskOn_hold") , closeTaskOnHold("taskOn_hold") }}>Task on hold</div>
+          <div className="taskOn_hold" onClick={()=> { taskOnHold("taskOn_hold") , closeTaskOnHold("taskOn_hold") }}>Task on hold</div>
         </GridItem>
       </GridContainer>
 </Card>
