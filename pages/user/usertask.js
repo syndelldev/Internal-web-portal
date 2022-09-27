@@ -32,6 +32,11 @@ import Typography from "@material-ui/core/Typography";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 
 const ReactQuill = dynamic(import('react-quill'), { ssr: false })
+// import ReactQuill, { Quill } from "react-quill";
+
+// #1 import quill-image-uploader
+// import ImageUploader from "quill-image-uploader";
+
 
 const styles = {
   cardCategoryWhite: {
@@ -119,7 +124,6 @@ function Dashboard({task}) {
     console.log(isExpanded)
     setExpanded(isExpanded ? panel : false);
   };
-  
   //Date Declration
   const On_track = [];
   console.log("On_track",On_track)
@@ -208,7 +212,8 @@ function Dashboard({task}) {
 
   const [ value, setValue ] = useState("");
     const modules = {
-      toolbar: [
+      toolbar: {
+        container: [
         [{ 'font': [] }],
         [{ 'size': ['small', false, 'large', 'huge'] }],
         ['bold', 'italic', 'underline'],
@@ -217,7 +222,11 @@ function Dashboard({task}) {
         [{ 'color': [] }, { 'background': [] }],
         ['clean'],
         ['link', 'image', 'video']
-      ]
+      ],
+      handlers: {
+          // image: imageHandler,
+      }
+     }
     }
 
     const [commentEdit, setEditComment] = useState();
@@ -242,7 +251,6 @@ function Dashboard({task}) {
       router.reload(`${server}/user/usertask`);
     }
     const [commentTimeM, setTimeM] = useState();
-
   
   return (
     <>
@@ -250,8 +258,7 @@ function Dashboard({task}) {
         {users.map((user)=>{
           return(
             <div key={user.id}>
-              <h2 className="title-user-project">My Tasks</h2>
-              {/* <h1>Welcome {user.username} </h1> */}
+              <h1>Welcome {user.username} </h1>
             </div>
           )
         })}
@@ -289,7 +296,7 @@ function Dashboard({task}) {
                     <span>
                       {(task.task_status=="taskOn_hold") ? "On Hold" : "" }
                       {(task.task_status=="task_completed") ? "Completed" : "" }
-                      {(task.task_status=="task_toDo") ? "Assigned" : "" }
+                      {(task.task_status=="task_toDo") ? "To Do Task" : "" }
                       {(task.task_status=="task_Running") ? (date>today) ? "On track": "Off track" : "" }
                     </span>
                   </td>
@@ -397,13 +404,12 @@ function Dashboard({task}) {
                                                 </GridItem>
                                               </GridContainer>
 
-                                              <ReactQuill modules={modules} theme="snow" onChange={setValue} />
-
                                             </form>
                                           </>
                                         )}
                                       <form>
 
+                                      <ReactQuill modules={modules} theme="snow" onChange={setValue} />
                                         <div onClick={()=> sendMessage(task.task_id)}>Save</div>
 
                                       </form>
@@ -414,7 +420,6 @@ function Dashboard({task}) {
                                     const Date = ((m.creation_time).substr(0,10).split("-",3));
                                     const Time = ((m.creation_time).substr(11,16).split(":",2));
                                     var dateP = m.creation_time;
-                                    var textArea = (m.comment).split(`\n`);
 
                                       return(
                                         <span>
@@ -481,6 +486,7 @@ function Dashboard({task}) {
                         </Popup>
                     </div>
                   </td>
+                  
                   <td>
                   <Accordion 
                     style={{ width: 250 }} 
@@ -519,6 +525,7 @@ function Dashboard({task}) {
                       </Typography>
                     </AccordionDetails>
                   </Accordion>
+
                   </td>
                 </tr>
               )
