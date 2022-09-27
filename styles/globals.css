@@ -525,13 +525,27 @@ h3.my-task-priorities {
   border: 2px solid #d3d3d3;
   padding: 20px;
   font-size: 20px;
-  border-radius: 30px;
+  border-radius: 10px;
+}
+div.Task-list {
+  padding-top: 10px;
 }
 h2.title-my-task {
+  width: 50%;
+  border-bottom: 2px solid #00155c; 
   font-size: 30px;
   font-weight: 600;
 }
-
+p.task-high,p.task-medium,p.task-low{
+  font-size: 20px;
+    font-weight: 400;
+}
+h1.user-welcome {
+  padding-bottom: 60px;
+  font-size: 40px;
+  text-align: center;
+  font-family: sans-serif;
+}
 .user
 {
   display: flex;
