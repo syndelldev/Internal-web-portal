@@ -24,7 +24,6 @@ import { Button } from "@material-ui/core";
 import dynamic from "next/dynamic";
 import 'react-quill/dist/quill.snow.css';
 
-
 const ReactQuill = dynamic(import('react-quill'), { ssr: false })
 
 const styles = {
@@ -251,9 +250,12 @@ function Dashboard({task}) {
     }
   
   }
+  //Accordin
   
+
   return (
     <>
+
       <div>
         {users.map((user)=>{
           return(
@@ -263,6 +265,7 @@ function Dashboard({task}) {
           )
         })}
       </div>
+
           <table className="project-data">
             <tr className="project-data-title">
               <th colspan="2" className="title">Task name </th>
@@ -290,6 +293,9 @@ function Dashboard({task}) {
                 console.log(task.task_id)
               }
               return(
+
+       
+
                 <tr className="project-data-details">
                   <td colspan="2"><h4 className="projectTitle">{task.task_title}</h4></td>
                   <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
@@ -470,8 +476,6 @@ function Dashboard({task}) {
                                          />
 
                                         <div onClick={()=> sendMessage(task.task_id)}>Save</div>
-
-                                        {/* <div onClick={() => sendMessage(task.task_id)}>Save</div> */}
                                       </form>
                                     </GridItem>
                                   </GridContainer>
@@ -481,11 +485,6 @@ function Dashboard({task}) {
                                     const Time = ((m.creation_time).substr(11,16).split(":",3));
                                     var dateP = m.creation_time;
                                     var textArea = (m.comment).split(`\n`);
-                                    // console.log("textArea");
-                                    // console.log(textArea);
-                                    // if(textArea == ""){
-                                      // function Setcontent() {
-                                      //  }
                                       return(
                                         <span>
                                           <GridContainer>
@@ -507,30 +506,6 @@ function Dashboard({task}) {
                                           </GridContainer>
                                         </span>
                                       )
-                                    // }else{
-                                    //   return(
-                                    //     <span>
-                                    //       <GridContainer>
-                                    //         <GridItem>
-                                    //           <span>{m.username}</span>
-                                    //         </GridItem>
-                                                
-                                    //         <GridItem>
-                                    //         <span><p>{Date[2]}/{Date[1]}/{Date[0]}</p></span>
-                                    //         </GridItem>
-                                    //       </GridContainer>
-
-                                    //       <GridContainer>
-                                    //         <GridItem>
-                                    //           <div>
-                                    //             <a href={m.comment} target="_blank" id="userComment">{m.comment}</a>
-                                    //             {/* <p>{Time[0]}:{Time[1]}:{Time[2]}</p> */}
-                                    //           </div>
-                                    //         </GridItem>
-                                    //       </GridContainer>
-                                    //     </span>
-                                    //   )
-                                    // }
                                   })}
                                   </CardBody>
 
@@ -543,10 +518,85 @@ function Dashboard({task}) {
                         {/*Edit popup end*/}
                     </div>
                   </td>
-                </tr>
+                  <td>
+                  <Accordion style={{ width: 200 }}>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" onClick={()=>{getData(task.task_id);getTime(task.task_id)}} >
+                      <Typography style={{ fontWeight: 10,}}>
+                        Add Time
+                      </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Typography>
+                        {TimeData.length==0?(
+                          <>
+                                                                        <form>
+                                              <GridContainer>
+                                                <GridItem>
+                                                  <input value={task.task_id} type="hidden"/>
+                                                  <label>Estimate Time</label>
+                                                  <input type="text" 
+                                                    value={estimate} 
+                                                    onChange={(e)=>setestimate(e.target.value)}
+                                                    onKeyPress={(event)=>{
+                                                      if (event.key === "Enter"){
+                                                        insert_time(task.task_id);
+                                                      }
+                                                    }}
+                                                  /><br/>
+                                                  <label>Spent Time</label>
+                                                  <input type="text" 
+                                                    value={spent} 
+                                                    onChange={(e)=>setspent(e.target.value)} 
+                                                    onKeyPress={(event)=>{
+                                                      if (event.key === "Enter"){
+                                                        insert_time(task.task_id);
+                                                      }
+                                                    }}
+                                                  />
+                                                </GridItem>
+                                                {/* <button type="submit" onClick={()=>insert_time(task.task_id)}>submit</button> */}
+                                              </GridContainer>
+                                            </form>
+                          </>
+                        ):(
+                          <>
+                            <form onSubmit={update_tasktime}>
+                                              <GridContainer>
+                                                <GridItem>
+                                                  <input value={task.task_id} type="hidden"/>
+                                                  <label>Estimate Time</label>
+                                                  <input type="text" name="estimate_time" 
+                                                    value={userdata.estimate_time} 
+                                                    onChange={handleChange}
+                                                    onKeyPress={(event)=>{
+                                                      if (event.key === "Enter"){
+                                                        update_tasktime(task.task_id);
+                                                      }
+                                                    }}
+                                                  /><br/>
+                                                  <label>Spent Time</label>
+                                                  <input type="text" name="spent_time" 
+                                                    value={userdata.spent_time} 
+                                                    onChange={handleChange}
+                                                    onKeyPress={(event)=>{
+                                                      if (event.key === "Enter"){
+                                                        update_tasktime(task.task_id);
+                                                      }
+                                                    }}
+                                                  />
+                                                </GridItem>
+                                                {/* <button type="submit" onClick={()=>update_tasktime(task.task_id)}>submit</button> */}
+                                              </GridContainer>
+                                            </form>
+                          </>
+                        )}
+                      </Typography>
+                    </AccordionDetails>
+                  </Accordion>
+                  </td>
+                </tr> 
               )
             })}
-            
           </table>
           
  
