@@ -113,6 +113,15 @@ function Dashboard({task}) {
   const Off_track = [];
   console.log("Off_track",Off_track)
 
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var yyyy = today.getFullYear();
+
+  today = yyyy + '/' + mm + '/' + dd;
+  console.log(today);
+
+  //API fetch
   const [users, setusers] = useState([])
 
   useEffect(async()=>{
@@ -242,14 +251,6 @@ function Dashboard({task}) {
     }
   
   }
-
-  var today = new Date();
-  var dd = String(today.getDate()).padStart(2, '0');
-  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-  var yyyy = today.getFullYear();
-
-  today = yyyy + '/' + mm + '/' + dd;
-  console.log(today);
   
   return (
     <>
