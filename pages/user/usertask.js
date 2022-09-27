@@ -24,6 +24,12 @@ import { Button } from "@material-ui/core";
 import dynamic from "next/dynamic";
 import 'react-quill/dist/quill.snow.css';
 
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import Typography from "@material-ui/core/Typography";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+
 const ReactQuill = dynamic(import('react-quill'), { ssr: false })
 
 const styles = {
@@ -107,10 +113,10 @@ function Dashboard({task}) {
 
   //Date Declration
   const On_track = [];
-  console.log("On_track",On_track)
+  // console.log("On_track",On_track)
 
   const Off_track = [];
-  console.log("Off_track",Off_track)
+  // console.log("Off_track",Off_track)
 
   var today = new Date();
   var dd = String(today.getDate()).padStart(2, '0');
@@ -118,7 +124,7 @@ function Dashboard({task}) {
   var yyyy = today.getFullYear();
 
   today = yyyy + '/' + mm + '/' + dd;
-  console.log(today);
+  // console.log(today);
 
   //API fetch
   const [users, setusers] = useState([])
@@ -165,6 +171,14 @@ function Dashboard({task}) {
     setTime(timedata.data[0])
     setTimeData(timedata.data)
   }
+
+  // const [getTaskTime,setgetTaskTime] = useState([])
+  // useEffect(async()=>{
+  //   var timedata = await axios.get(`${server}/api/comment/get_tasktime`);
+  //   setgetTaskTime(timedata.data)
+  // },[getTaskTime])
+  // console.log(getTaskTime)
+
   console.log(TimeData)
   const [userdata, setuserdata] = useState({
     estimate_time:"",
@@ -193,6 +207,15 @@ function Dashboard({task}) {
     var updateTime = await axios.put(`${server}/api/comment/update_tasktime`, { task_id:task_id, username: cookies.name, estimate:userdata.estimate_time , spent:userdata.spent_time });
     console.log(updateTime)
   }
+
+  //
+  const [expanded, setExpanded] = useState(false);
+  const handleChangePanel = panel => (event, isExpanded) => {
+    console.log(panel)
+    console.log(isExpanded)
+    setExpanded(isExpanded ? panel : false);
+  };
+
 
   const [textComment, setText] = useState([]);
 
@@ -229,12 +252,7 @@ function Dashboard({task}) {
     }
   
     rteChange = (content, delta, source, editor) => {
-      // console.log(editor.getHTML()); // rich text
-      // console.log(content);
-      // console.log(delta.ops[1]);
-      // console.log(source);
-      // console.log(editor.getText()); // plain text
-      // console.log(editor.getLength()); // number of characters
+     
     }
   
     render() {
@@ -249,9 +267,7 @@ function Dashboard({task}) {
         );
     }
   
-  }
-  //Accordin
-  
+  }  
 
   return (
     <>
@@ -280,17 +296,15 @@ function Dashboard({task}) {
               //For Date
               const MySQLDate  = task.task_deadline;
               let date = MySQLDate.replace(/[-]/g, '/').substr(0,10);
-              console.log(date)
+              // console.log(date)
               if(date>today)
               {
-                console.count("On track")
                 On_track.push(task.task_id); 
-                console.log(task.task_id)
+                // console.log(task.task_id)
               }
               else{
-                console.count("off track")
                 Off_track.push(task.task_id);
-                console.log(task.task_id)
+                // console.log(task.task_id)
               }
               return(
 
@@ -519,8 +533,13 @@ function Dashboard({task}) {
                     </div>
                   </td>
                   <td>
-                  <Accordion style={{ width: 200 }}>
-                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" onClick={()=>{getData(task.task_id);getTime(task.task_id)}} >
+                  <Accordion 
+                    style={{ width: 250 }} 
+                    onClick={()=>{getTime(task.task_id)}} 
+                    expanded={expanded === task.task_id}
+                    onChange={handleChangePanel(task.task_id)}
+                  >
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" >
                       <Typography style={{ fontWeight: 10,}}>
                         Add Time
                       </Typography>
@@ -529,77 +548,36 @@ function Dashboard({task}) {
                       <Typography>
                         {TimeData.length==0?(
                           <>
-                                                                        <form>
-                                              <GridContainer>
-                                                <GridItem>
-                                                  <input value={task.task_id} type="hidden"/>
-                                                  <label>Estimate Time</label>
-                                                  <input type="text" 
-                                                    value={estimate} 
-                                                    onChange={(e)=>setestimate(e.target.value)}
-                                                    onKeyPress={(event)=>{
-                                                      if (event.key === "Enter"){
-                                                        insert_time(task.task_id);
-                                                      }
-                                                    }}
-                                                  /><br/>
-                                                  <label>Spent Time</label>
-                                                  <input type="text" 
-                                                    value={spent} 
-                                                    onChange={(e)=>setspent(e.target.value)} 
-                                                    onKeyPress={(event)=>{
-                                                      if (event.key === "Enter"){
-                                                        insert_time(task.task_id);
-                                                      }
-                                                    }}
-                                                  />
-                                                </GridItem>
-                                                {/* <button type="submit" onClick={()=>insert_time(task.task_id)}>submit</button> */}
-                                              </GridContainer>
-                                            </form>
+                            <GridContainer>
+                              <GridItem>
+                                <input value={task.task_id} type="hidden"/>
+                                <p>Estimate Time - {estimate}</p>
+                                <p>Spent Time - {spent}</p>
+                              </GridItem>
+                            </GridContainer>
                           </>
                         ):(
                           <>
-                            <form onSubmit={update_tasktime}>
-                                              <GridContainer>
-                                                <GridItem>
-                                                  <input value={task.task_id} type="hidden"/>
-                                                  <label>Estimate Time</label>
-                                                  <input type="text" name="estimate_time" 
-                                                    value={userdata.estimate_time} 
-                                                    onChange={handleChange}
-                                                    onKeyPress={(event)=>{
-                                                      if (event.key === "Enter"){
-                                                        update_tasktime(task.task_id);
-                                                      }
-                                                    }}
-                                                  /><br/>
-                                                  <label>Spent Time</label>
-                                                  <input type="text" name="spent_time" 
-                                                    value={userdata.spent_time} 
-                                                    onChange={handleChange}
-                                                    onKeyPress={(event)=>{
-                                                      if (event.key === "Enter"){
-                                                        update_tasktime(task.task_id);
-                                                      }
-                                                    }}
-                                                  />
-                                                </GridItem>
-                                                {/* <button type="submit" onClick={()=>update_tasktime(task.task_id)}>submit</button> */}
-                                              </GridContainer>
-                                            </form>
+                            <GridContainer>
+                              <GridItem>
+                                <input value={task.task_id} type="hidden"/>
+                                <p>Estimate Time - {userdata.estimate_time}</p>
+                                <p>Spent Time - {userdata.spent_time} </p>
+                              </GridItem>
+                            </GridContainer>
                           </>
                         )}
                       </Typography>
                     </AccordionDetails>
                   </Accordion>
+
+                  
+
                   </td>
                 </tr> 
               )
             })}
           </table>
-          
- 
     </>
   );
 }
