@@ -26,6 +26,11 @@ import 'react-quill/dist/quill.snow.css';
 import "react-quill/dist/quill.bubble.css";
 
 const ReactQuill = dynamic(import('react-quill'), { ssr: false })
+// import ReactQuill, { Quill } from "react-quill";
+
+// #1 import quill-image-uploader
+// import ImageUploader from "quill-image-uploader";
+
 
 const styles = {
   cardCategoryWhite: {
@@ -194,7 +199,8 @@ function Dashboard({task}) {
 
   const [ value, setValue ] = useState("");
     const modules = {
-      toolbar: [
+      toolbar: {
+        container: [
         [{ 'font': [] }],
         [{ 'size': ['small', false, 'large', 'huge'] }],
         ['bold', 'italic', 'underline'],
@@ -203,7 +209,11 @@ function Dashboard({task}) {
         [{ 'color': [] }, { 'background': [] }],
         ['clean'],
         ['link', 'image', 'video']
-      ]
+      ],
+      handlers: {
+          // image: imageHandler,
+      }
+     }
     }
 
     const [commentEdit, setEditComment] = useState();
@@ -228,7 +238,6 @@ function Dashboard({task}) {
       router.reload(`${server}/user/usertask`);
     }
     const [commentTimeM, setTimeM] = useState();
-
   
   return (
     <>
@@ -399,7 +408,6 @@ function Dashboard({task}) {
                                     const Date = ((m.creation_time).substr(0,10).split("-",3));
                                     const Time = ((m.creation_time).substr(11,16).split(":",2));
                                     var dateP = m.creation_time;
-                                    var textArea = (m.comment).split(`\n`);
 
                                       return(
                                         <span>
