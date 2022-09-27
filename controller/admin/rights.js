@@ -23,13 +23,12 @@ const modules = async (req,res) =>{
 const ModuleById = async (req,res) => {
     let id = req.query.id;
     // console.log(id)
-    console.log(req.body)
+    // console.log(req.body)
     
     try{
-        let rightsId=await executeQuery(` SELECT * FROM tbl_rights LEFT JOIN tbl_project ON tbl_project.project_id=tbl_rights.project_id WHERE tbl_rights.user_id=?`, [req.body.userid] );/*WHERE tbl_rights.user_id=${id}*/
-        // let rightsId=await executeQuery(" SELECT * FROM tbl_project_rights RIGHT JOIN tbl_rights ON tbl_project_rights.project_id=tbl_rights.project_id INNER JOIN tbl_project ON tbl_project.project_id=tbl_rights.project_id WHERE tbl_project_rights.user_id LIKE ? AND tbl_rights.user_id=?", [`%${req.body.userid}%`,req.body.userid] );
+        let rightsId=await executeQuery(` SELECT * FROM tbl_rights LEFT JOIN tbl_project ON tbl_project.project_id=tbl_rights.project_id WHERE tbl_rights.user_id=?`, [req.body.userid] );
         res.status(200).json(rightsId);
-        //console.log(rightsId)
+        // console.log(rightsId)
     }
     catch(err){
         res.status(500).json(err);
@@ -40,7 +39,7 @@ const ProjectById = async (req,res) =>{
     // console.log(req.body)
 
     var check_condition = await executeQuery(" SELECT * FROM `tbl_rights` WHERE user_id=? AND module_id=? AND project_id=? ", [req.body.userid, req.body.moduleid, req.body.projectid] );
-    // console.log(check_condition)
+    console.log(check_condition)
 
     if(req.body.view==0 || req.body.view==1)
     {

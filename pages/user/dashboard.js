@@ -5,31 +5,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import User from "layouts/User.js";
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
-import Table from "components/Table/Table.js";
-import Tasks from "components/Tasks/Tasks.js";
-import CustomTabs from "components/CustomTabs/CustomTabs.js";
-import Danger from "components/Typography/Danger.js";
-import Button from "components/CustomButtons/Button.js";
-import Card from "components/Card/Card.js";
-import CardHeader from "components/Card/CardHeader.js";
-import CardIcon from "components/Card/CardIcon.js";
-import CardBody from "components/Card/CardBody.js";
-import CardFooter from "components/Card/CardFooter.js";
-import { IoMdArrowDropdown } from "react-icons/io";
-import { useForm  } from 'react-hook-form';
-import { bugs, website } from "variables/general.js";
 import { server } from 'config';
 // import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
-import Popup from "reactjs-popup";
-import DatePicker from "react-datepicker";
-import Multiselect from "multiselect-react-dropdown";
-import {
-  dailySalesChart,
-  emailsSubscriptionChart,
-  completedTasksChart,
-} from "variables/charts.js";
-import { FiEdit } from "react-icons/fi";
-import { MdDelete } from 'react-icons/md';
+
+import { useCookies } from 'react-cookie';
+import axios from "axios";
 
 const styles = {
   cardCategoryWhite: {
@@ -86,39 +66,93 @@ const styles = {
   },
 };
 
-export async function getServerSideProps(){
-  const res = await fetch(`${server}/api/project`);
-  const project_details = await res.json();
-  // console.log(project_details);
+export async function getServerSideProps(context){
+  // console.log(context.req.cookies);
 
-  const response = await fetch(`${server}/api/admin`)
-  const User_name = await response.json();
-  // console.log(User_name);
-
-  const hold = await fetch(`${server}/api/project/project_status/project_hold`)
-  const project_hold = await hold.json();
-
-  const completed = await fetch(`${server}/api/project/project_status/project_completed`)
+  const completed = await fetch(`${server}/api/user/project_status/project_completed`,{
+    headers: {
+      'Access-Control-Allow-Credentials': true,
+      Cookie: context.req.headers.cookie
+    },
+  })
   const project_completed = await completed.json();
 
-  const running = await fetch(`${server}/api/project/project_status/project_running`)
+  const hold = await fetch(`${server}/api/user/project_status/project_hold`,{
+    headers: {
+      'Access-Control-Allow-Credentials': true,
+      Cookie: context.req.headers.cookie
+    },
+  })
+  const project_hold = await hold.json();
+
+  const running = await fetch(`${server}/api/user/project_status/project_running`,{
+    headers: {
+      'Access-Control-Allow-Credentials': true,
+      Cookie: context.req.headers.cookie
+    },
+  })
   const project_running = await running.json();
+
+  const high = await fetch(`${server}/api/user/project_priority/high_priority`,{
+    headers: {
+      'Access-Control-Allow-Credentials': true,
+      Cookie: context.req.headers.cookie
+    },
+  })
+  const high_priority = await high.json();
+
+  const low = await fetch(`${server}/api/user/project_priority/low_priority`,{
+    headers: {
+      'Access-Control-Allow-Credentials': true,
+      Cookie: context.req.headers.cookie
+    },
+  })
+  const low_priority = await low.json();
+
+  const medium = await fetch(`${server}/api/user/project_priority/medium_priority`,{
+    headers: {
+      'Access-Control-Allow-Credentials': true,
+      Cookie: context.req.headers.cookie
+    },
+  })
+  const medium_priority = await medium.json();
+
+  const alltask = await fetch(`${server}/api/user_dashboard/subtask_person`,{
+    headers: {
+      'Access-Control-Allow-Credentials': true,
+      Cookie: context.req.headers.cookie
+    },
+  })
+  const all_task = await alltask.json();
 
   // console.log(all_status);
 
-  return{ props: { project_hold, project_completed, project_running } }
+  return{ props: { project_hold, project_completed, project_running, high_priority, medium_priority, low_priority,  all_task } }
 }
 
-function Dashboard( { project_hold, project_completed, project_running } ) {
+function Dashboard( { project_hold, project_completed, project_running, high_priority, medium_priority, low_priority, all_task } ) {
   // console.log(project_hold);
   // console.log(project_completed);
-  console.log(project_running);
+  // console.log(project_running);
+  // console.log("all_task",all_task)
 
   const useStyles = makeStyles(styles);
   const classes = useStyles();
 
-  const [trackdate,settrackdate] = useState("")
-  
+
+  const [cookies, setCookie] = useCookies('');
+  //console.log(cookies.Id);
+
+  const [users, setusers] = useState([])
+
+  useEffect(async()=>{
+    axios.get(`${server}/api/admin/${cookies.Id}` )
+      .then((res)=>{
+        setusers(res.data)
+        //console.log(res)
+      })    
+  },[])
+  // console.log(users)  
 
   var today = new Date();
   var dd = String(today.getDate()).padStart(2, '0');
@@ -129,99 +163,112 @@ function Dashboard( { project_hold, project_completed, project_running } ) {
   // console.log(today);
 
   const On_track = [];
-  console.log(On_track)
+  console.log("On_track",On_track)
 
   const Off_track = [];
-  console.log(Off_track)
+  console.log("Off_track",Off_track)
 
   return (
     <>
-    
+    <div>
+        {users.map((user)=>{
+          return(
+            <div key={user.id}>
+              <h1>Welcome {user.username} </h1>
+            </div>
+          )
+        })}
+      </div>
     <h4 className="project_status">Projects</h4>
-    {/* <GridContainer>
-
-      {all_status.map((status) =>{
-      return(<>
-        <GridItem xs={12} sm={6} md={4}>
-
-          <div className={status.project_status}>
-            <h6 className={status.project_status}>{status.project_status}</h6>
-            <h3 className={status.project_status}><img src={`${server}/reactlogo.png`} className={status.project_status}/>{status.project_total}</h3>
-          </div> 
-        </GridItem>
-
-      </>)
-      })
-      }
-    </GridContainer> */}
 
     <GridContainer>
       {project_running.map((status)=>{
         const MySQLDate  = status.project_deadline;
         let date = MySQLDate.replace(/[-]/g, '/').substr(0,10);
-        console.log("date");
-        // console.log(trackdate);
-        // console.log(status.project_id);
 
         if(date>today)
         {
           console.count("On track")
-          console.log(status.project_id);
-
-          
-          On_track.push(status.project_id);
-          console.log(On_track)
-          
-          
+          On_track.push(status.project_id); 
+          console.log(status.project_id)
         }
         else{
           console.count("off track")
-          console.log(status.project_id);
-
           Off_track.push(status.project_id);
-          console.log(Off_track)
-
+          console.log(status.project_id)
         }
-        
-        // return(
-        //   <GridItem xs={12} sm={6} md={4}>
-        //     <div className={status.project_status}>
-        //       <h6>{status.project_status}</h6>
-        //       <h6>{date}</h6>
-        //       <h6>{today}</h6>
-        //     </div>
-        //   </GridItem>
-        // )
       })}
-    </GridContainer>
-<div className="project-status">
-    <GridContainer>
-          <GridItem xs={12} sm={6} md={4} >
-              <h3 className="on-track">On Track Project - {On_track.length}</h3>
-          </GridItem>
-    </GridContainer>
 
-    <GridContainer>
+      </GridContainer>
+      <div className="project-status">
+        <GridContainer>
           <GridItem xs={12} sm={6} md={4} >
-              <h3 className="off-track">Off Track Project - {Off_track.length}</h3>
+            <h3 className="on-track">On Track Project - {On_track.length}</h3>
           </GridItem>
-    </GridContainer>
+        </GridContainer>
 
-    <GridContainer>
+        <GridContainer>
           <GridItem xs={12} sm={6} md={4} >
-              <h3 className="completed-project">Completed Project - {project_completed.length}</h3>
+            <h3 className="off-track">Off Track Project - {Off_track.length}</h3>
           </GridItem>
-    </GridContainer>
+        </GridContainer>
 
-    <GridContainer>
+        <GridContainer>
+          <GridItem xs={12} sm={6} md={4} >
+            <h3 className="completed-project">Completed Project - {project_completed.length}</h3>
+          </GridItem>
+        </GridContainer>
+
+        <GridContainer>
           <GridItem xs={12} sm={6} md={4}>
             <div>
               <h3 className="on-hold">On Hold Project - {project_hold.length}</h3>
             </div>
           </GridItem>
-    </GridContainer>
-    </div>
-    </>);
+        </GridContainer>
+      </div>
+
+      <div>
+        <GridContainer>
+          <GridItem xs={12} sm={6} md={6}>
+            <h3 className="my-task-priorities"><h2 className="title-my-task">My Task Priorities</h2>
+            {high_priority.map((task)=>{
+              return(
+                <>
+                <div>
+                  {/* <p>project_name - {task.project_name}</p> */}
+                  <p>{task.task_title}-<span className={task.task_priority}>{task.task_priority}</span></p>
+                </div>
+                </>
+              )
+            })}
+            {medium_priority.map((task)=>{
+              return(
+                <>
+                <div>
+                  {/* <p>project_name - {task.project_name}</p> */}
+                  <p>{task.task_title}-<span className={task.task_priority}>{task.task_priority}</span></p>
+                </div>
+                </>
+              )
+            })}
+            {low_priority.map((task)=>{
+              return(
+                <>
+                <div>
+                  {/* <p>project_name - {task.project_name}</p> */}
+                  <p>{task.task_title}-<span className={task.task_priority}>{task.task_priority}</span></p>
+                </div>
+                </>
+              )
+            })}
+            </h3>
+          </GridItem>
+        </GridContainer>
+      </div>
+
+    </>
+  );
 
 }
 

@@ -263,12 +263,16 @@ export default function AdminNavbarLinks({useravtar}) {
               <Paper>
                 <ClickAwayListener onClickAway={handleCloseProfile}>
                   <MenuList role="menu" className="logout">
-                    {/*<MenuItem onClick={handleCloseProfile} className={classes.dropdownItem}>
-                      <a href="/user/userprofile">Profile({cookies.name})</a>
+                    {
+                    <MenuItem onClick={handleCloseProfile} className={classes.dropdownItem}>
+                      <a href="/user/userprofile">My Profile{/*cookies.name*/}</a>
                     </MenuItem>
+                    /*
                     <MenuItem onClick={handleCloseProfile} className={classes.dropdownItem}>
                       <a href="#">Settings</a>
-                    </MenuItem>*/}
+                    </MenuItem>
+                    */
+                    }
                     <Divider light />
                     <MenuItem /*onClick={handleCloseProfile}*/ onClick={logoutfunc} className={classes.dropdownItem}>
                       <a href="#">Logout</a>

@@ -63,24 +63,24 @@ img.completed,img.on.hold,img.running {
   width: 100px;
 }
 .completed {
-  border-radius: 25px;
+  border-radius: 5px;
   color: #fff;
-  font-size: 30px;
-  font-weight: 700;
+  /*font-size: 30px;*/
+  font-weight: 500;
   background:#554994;
 }
 .on.hold{
-  border-radius: 25px;
+  border-radius: 5px;
   color: #fff;
-  font-size: 30px;
-  font-weight: 700;
+  /*font-size: 30px;*/
+  font-weight: 500;
   background: #F675A8;
 }
 .running{
-  border-radius: 25px;
+  border-radius: 5px;
   color: #fff;
-  font-size: 30px;
-  font-weight: 700;
+  /*font-size: 30px;*/
+  font-weight: 500;
   background: #F29393;
 }
 h6.completed,h6.on.hold,h6.running{
@@ -276,6 +276,7 @@ h4.text {
   margin: 0px 0px !important;
 }
 .chip{
+  display: inherit;
   border-radius: 30px!important;
   padding: 10px!important;
   font-weight: 500!important;
@@ -369,29 +370,38 @@ p.usersubtitle{
 .user-icon
 {
   border: none;
-  background-color: white ;
+  /* background-color: white ; */
 }
 
 .High
 {
   background-color: red;
   border-radius: 5px;
-  padding: 10px;
+  padding: 3px 10px 3px 10px;
   margin-right: 5px;
+  margin-left: 5px;
+  color: white;
+  font-weight: 500;
 }
 .Medium
 {
   background-color: yellow;
   border-radius: 5px;
-  padding: 10px;
+  padding: 3px 10px 3px 10px;
   margin-right: 5px;
+  margin-left: 5px;
+  color: white;
+  font-weight: 500;
 }
 .Low
 {
   background-color: green;
   border-radius: 5px;
-  padding: 10px;
+  padding: 3px 10px 3px 10px;
   margin-right: 5px;
+  margin-left: 5px;
+  color: white;
+  font-weight: 500;
 }
 .Task_todo{
   display: none;
@@ -499,4 +509,15 @@ h3.on-hold{
     justify-content: normal;
     display: grid!important;
 }
+}
+h3.my-task-priorities {
+  
+  border: 2px solid #d3d3d3;
+  padding: 20px;
+  font-size: 20px;
+  border-radius: 30px;
+}
+h2.title-my-task {
+  font-size: 30px;
+  font-weight: 600;
 }
