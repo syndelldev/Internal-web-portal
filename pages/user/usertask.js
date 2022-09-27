@@ -409,7 +409,7 @@ function Dashboard({task}) {
                                             </GridItem>
                                                 
                                             <GridItem>
-                                            <span><p>{Date[2]}/{Date[1]}/{Date[0]} {Time[0]}:{Time[1]} {commentTimeM}</p></span>
+                                            <span><p>{Date[2]}/{Date[1]}/{Date[0]} {Time[0]}:{Time[1]} </p></span>
                                             </GridItem>
                                           </GridContainer>
 
