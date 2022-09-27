@@ -25,13 +25,6 @@ import dynamic from "next/dynamic";
 import 'react-quill/dist/quill.snow.css';
 import "react-quill/dist/quill.bubble.css";
 
-
-import ReactHtmlParser, {
-  processNodes,
-  convertNodeToElement,
-  htmlparser2
-} from "react-html-parser";
-
 const ReactQuill = dynamic(import('react-quill'), { ssr: false })
 
 const styles = {
@@ -91,7 +84,6 @@ const styles = {
 
 
 export async function getServerSideProps(context){
-  //console.log(context.req.cookies);
   const res = await fetch(`${server}/api/user_dashboard`, {
     headers: {
       'Access-Control-Allow-Credentials': true,
@@ -99,52 +91,36 @@ export async function getServerSideProps(context){
     },
   })
   const project = await res.json()
-  //console.log(project)
 
   return { props: {project}, }
 }
 
 function Dashboard({project}) {
-  // console.log(project)
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   const router = useRouter();
 
   const [cookies, setCookie] = useCookies('');
-  //console.log(cookies.Id);
-
   const [users, setusers] = useState([])
 
   useEffect(async()=>{
     axios.get(`${server}/api/admin/${cookies.Id}` )
       .then((res)=>{
         setusers(res.data)
-        //console.log(res)
       })    
   },[])
-  // console.log(users)
 
   const [comments, setcomments] = useState([]);
   
   const getData = async (project_id)=>{
 
-    // alert(project_id)
     var comment = await axios.post(`${server}/api/comment/comment`, { project_id: project_id });
-    // console.log(comment.data)
     setcomments(comment.data)
-    // console.log(comments)
   }
   
 
   const sendMessage = async (project_id) => {
-    // e.preventDefault();
-    // alert(project_id)
-    // console.log("comm");
-    // console.log(value);
-
     var addComment = await axios.post(`${server}/api/comment/addcomment`, {  username: cookies.name, message: value , project_id: project_id });
-    // console.log(addComment)
-    // console.log(cookies.name)
     router.reload(`${server}/user/usertask`);
   }
 
@@ -174,14 +150,7 @@ function Dashboard({project}) {
       if(commentId.data != ""){
         setEditComment(commentId.data[0].comment);
         console.log(commentEdit);
-        // var comment = await axios.post(`${server}/api/comment/comment`, { project_id: project_id });
     }
-      //   var comment = await axios.post(`${server}/api/comment/comment`, { project_id: project_id });
-      //   setModules(modules);
-      //   setTheme("snow");
-      //   setRead(false);
-      //   console.log(username);
-      //   console.log(cookies.name);
     }
     
     const updateComment = async(id, comment) =>{
@@ -317,11 +286,6 @@ function Dashboard({project}) {
                                           <GridContainer>
                                             <GridItem>
                                               <div>
-                                                {/* <span id="editorOne" className="class_Comment">{m.comment}</span> */}
-                                                {/* <ReactQuill modules={commentModules} theme="snow" />
-                                                <div className="showComments">
-                                                  {ReactHtmlParser(m.comment)}
-                                                </div> */}
 
                                                 <ReactQuill value={m.comment} theme="bubble" readOnly />
       <Popup
@@ -341,8 +305,6 @@ function Dashboard({project}) {
                                       <form>
 
                                         <ReactQuill modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
-                                        {/* {setEditComment(m.id)} */}
-                                        {/* <div onClick={()=> sendEditComment(project.project_id)}>Save</div> */}
 
                                       </form>
                                     </GridItem>
@@ -357,8 +319,6 @@ function Dashboard({project}) {
         )}
         
       </Popup>
-                                                
-                                                {/* <div onClick={()=>{ editComment( m.id, m.project_id, m.username, m.comment )} }>Edit</div> */}
                                               </div>
                                             </GridItem>
                                           </GridContainer>
