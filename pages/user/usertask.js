@@ -188,6 +188,7 @@ function Dashboard({project}) {
       console.log(comment);
       console.log(id);
       var comment = await axios.post(`${server}/api/comment/updateComment`, { comment_id: id, user: cookies.name, comment:comment });
+      router.reload(`${server}/user/usertask`);
     }
 
       
@@ -325,7 +326,8 @@ function Dashboard({project}) {
                                                 <ReactQuill value={m.comment} theme="bubble" readOnly />
       <Popup
         trigger={ <span><button onClick={()=>{ editComment(m.id)} } disabled={ m.username != cookies.name }>Edit</button></span> }
-        position="top left"
+        // position="top left"
+        modal
       >
         {close => (
                               <Card>
