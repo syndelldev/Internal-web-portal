@@ -215,7 +215,7 @@ function Projects({project}) {
   
   return (
     <>
-          <h2>My Project</h2>
+          <h2 className="title-user-project">My Project</h2>
           <table className="project-data">
             <tr className="project-data-title">
               <th colspan="2" className="title">Task name </th>

@@ -463,7 +463,7 @@ h4.projectTitle{
 h3.on-track {
   background: #0096FF;
   padding: 50px;
-  border-radius: 30px;
+  border-radius: 10px;
   color: #fff;
   font-size: 20px;
   font-weight: 600;
@@ -471,7 +471,7 @@ h3.on-track {
 h3.off-track{
   background: #FF0000;
   padding: 50px;
-  border-radius: 30px;
+  border-radius: 10px;
   color: #fff;
   font-size: 20px;
   font-weight: 600;
@@ -479,7 +479,7 @@ h3.off-track{
 h3.completed-project{
   background: #34BE82;
   padding: 50px;
-  border-radius: 30px;
+  border-radius: 10px;
   color: #fff;
   font-size: 20px;
   font-weight: 600;
@@ -487,7 +487,7 @@ h3.completed-project{
 h3.on-hold{
   background:#FFD800;
   padding: 50px;
-  border-radius: 30px;
+  border-radius: 10px;
   color: #fff;
   font-size: 20px;
   font-weight: 600;
@@ -556,4 +556,16 @@ h1.user-welcome {
 }
 .my-task .MuiGrid-root.makeStyles-grid-430.MuiGrid-item.MuiGrid-grid-xs-12.MuiGrid-grid-sm-6.MuiGrid-grid-md-6 {
   padding-top: 40px!important;
+}
+img.gif-image {
+  height: 50px;
+}
+.my-task .MuiGrid-grid-md-6 {
+  float: left;
+    margin-left: 3%;
+    position: inherit;
+    margin-top: 3%;
+}
+h2.title-user-project {
+  font-weight: 500;
 }
