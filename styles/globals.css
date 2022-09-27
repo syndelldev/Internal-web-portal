@@ -376,33 +376,42 @@ p.usersubtitle{
 
 .High
 {
+  min-width: 30%!important;
+  float: right;
   background-color: red;
   border-radius: 5px;
-  padding: 3px 15px 3px 15px;
+  padding: 5px 20px 5px 20px;
   margin-right: 5px;
   margin-left: 5px;
-  color: white;
+  color: #000;
   font-weight: 500;
+  text-align: center;
 }
 .Medium
 {
+  min-width: 30%!important;
+  text-align: center;
+  float: right;
   background-color: yellow;
   border-radius: 5px;
-  padding: 3px 15px 3px 15px;
+  padding: 5px 20px 5px 20px;
   margin-right: 5px;
   margin-left: 5px;
-  color: white;
+  color: #000;
   font-weight: 500;
 }
 .Low
 {
+  min-width: 30%!important;
+  float: right;
   background-color: green;
   border-radius: 5px;
-  padding: 3px 15px 3px 15px;
+  padding: 5px 20px 5px 20px;
   margin-right: 5px;
   margin-left: 5px;
-  color: white;
+  color: #000;
   font-weight: 500;
+  text-align: center;
 }
 .Task_todo{
   display: none;
@@ -512,7 +521,7 @@ h3.on-hold{
 }
 }
 h3.my-task-priorities {
-  
+  width: 80%;
   border: 2px solid #d3d3d3;
   padding: 20px;
   font-size: 20px;
@@ -530,4 +539,7 @@ h2.title-my-task {
 .user-editbtn
 {
   font-weight: bold;
+}
+.my-task .MuiGrid-root.makeStyles-grid-430.MuiGrid-item.MuiGrid-grid-xs-12.MuiGrid-grid-sm-6.MuiGrid-grid-md-6 {
+  padding-top: 40px!important;
 }
