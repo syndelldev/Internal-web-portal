@@ -227,6 +227,7 @@ function Dashboard({task}) {
       var comment = await axios.post(`${server}/api/comment/updateComment`, { comment_id: id, user: cookies.name, comment:comment });
       router.reload(`${server}/user/usertask`);
     }
+    const [commentTimeM, setTimeM] = useState();
 
   
   return (
@@ -396,9 +397,10 @@ function Dashboard({task}) {
 
                                   {comments.map((m)=>{
                                     const Date = ((m.creation_time).substr(0,10).split("-",3));
-                                    const Time = ((m.creation_time).substr(11,16).split(":",3));
+                                    const Time = ((m.creation_time).substr(11,16).split(":",2));
                                     var dateP = m.creation_time;
                                     var textArea = (m.comment).split(`\n`);
+
                                       return(
                                         <span>
                                           <GridContainer>
@@ -407,7 +409,7 @@ function Dashboard({task}) {
                                             </GridItem>
                                                 
                                             <GridItem>
-                                            <span><p>{Date[2]}/{Date[1]}/{Date[0]}</p></span>
+                                            <span><p>{Date[2]}/{Date[1]}/{Date[0]} {Time[0]}:{Time[1]} </p></span>
                                             </GridItem>
                                           </GridContainer>
 
