@@ -311,14 +311,15 @@ function Dashboard({task}) {
   return (
     <>
       <div>
-        {users.map((user)=>{
+        {/*users.map((user)=>{
           return(
             <div key={user.id}>
               <h1>Welcome {user.username} </h1>
             </div>
           )
-        })}
+        })*/}
       </div>
+          <h2>My Task</h2>
           <table className="project-data">
             <tr className="project-data-title">
               <th colspan="2" className="title">Task name </th>
@@ -394,7 +395,7 @@ function Dashboard({task}) {
                               
                               <GridItem xs={12} sm={12} md={12} key={task.task_id}>
                                 <Card>
-                                  <CardHeader color="primary">
+                                  <CardHeader color="primary" className="user">
                                     <h4>{task.task_title}</h4>
                                       <div className={classes.close}>
                                         <a onClick={close}>&times;</a>
@@ -403,14 +404,14 @@ function Dashboard({task}) {
                                   <CardBody>
                                       <GridContainer>
                                         <GridItem>
-                                          <p>Task Language - {task.task_language}</p>
-                                          <p>Task Person - {task.task_person}</p>
-                                          <p>Task Description - {task.task_description}</p>
-                                          <p>Department - {task.task_department}</p>
-                                          <p>Task Status - {task.task_status}</p>
+                                          <p><span class="user-editbtn">Task Language</span> - {task.task_language}</p>
+                                          <p><span class="user-editbtn">Task Person</span> - {task.task_person}</p>
+                                          <p><span class="user-editbtn">Task Description</span> - {task.task_description}</p>
+                                          <p><span class="user-editbtn">Department</span> - {task.task_department}</p>
+                                          <p><span class="user-editbtn">Task Status</span> - <span className={task.task_status}>{task.task_status}</span></p>
                                         </GridItem>
                                         <GridItem>
-                                          <p className="projectPriority">{task.task_priority} Priority</p>
+                                          <p className={task.task_priority}>{task.task_priority} Priority</p>
                                         </GridItem>
                                       </GridContainer>
                                   {/* </CardBody> */}
