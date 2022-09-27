@@ -63,13 +63,13 @@ function UserRights({UserList,ModuleList}){
 
     const [users, setusers] = useState([])
     useEffect(()=>{
-        const getData = () => {
+        // const getData = () => {
             axios.post(`${server}/api/rights/${user}`, {userid:user,moduleid:module})
             .then((res)=>{
                 setusers(res.data)
             })
-        }
-        getData();
+        // }
+        // getData();
         console.log(users)
     },[users])
    
@@ -89,14 +89,16 @@ function UserRights({UserList,ModuleList}){
     }
     // console.log(viewcheckbox)
     
+    const [rightsList, setrightsList] = useState([])
     const view_rights = (project_id) =>{
-        // console.log(project_id)
+        console.log("view_rights",project_id)
 
         let data = axios.put(`${server}/api/rights/project/${project_id}`, {userid:user, moduleid:module, projectid:project_id, view:viewcheckbox})
-        .then((responce)=>{
-            setrightsList(responce.data)
-        })  
-        // console.log(rightsList)
+        console.log(data)
+        // .then((responce)=>{
+        //     setrightsList(responce.data)
+        //     // users(setrightsList)
+        // }) 
     }
 
     const [editcheckbox,seteditcheckbox] = useState(0)
@@ -118,11 +120,8 @@ function UserRights({UserList,ModuleList}){
     const edit_rights = (project_id) =>{
         // console.log(project_id)
 
-        let data = axios.put(`${server}/api/rights/project/${project_id}`, {userid:user, moduleid:module, projectid:project_id, edit:editcheckbox})
-        .then((responce)=>{
-            setrightsList(responce.data)
-        })  
-        // console.log(rightsList)
+        let data = axios.put(`${server}/api/rights/project/${project_id}`, {userid:user, moduleid:module, projectid:project_id, edit:editcheckbox}) 
+        console.log(data)
     }
 
     return(
