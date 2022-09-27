@@ -23,7 +23,7 @@ import { useCookies } from 'react-cookie';
 import { Button } from "@material-ui/core";
 import dynamic from "next/dynamic";
 import 'react-quill/dist/quill.snow.css';
-
+import "react-quill/dist/quill.bubble.css";
 
 const ReactQuill = dynamic(import('react-quill'), { ssr: false })
 
@@ -146,12 +146,11 @@ function Dashboard({task}) {
   
   const sendMessage = async (task_id) => {
     console.log(task_id);
-    console.log(textComment);
 
-    var addComment = await axios.post(`${server}/api/comment/addcomment`, {  username: cookies.name, message: message , task_id: task_id, estimate:estimate , spent:spent });
+    var addComment = await axios.post(`${server}/api/comment/addcomment`, {  username: cookies.name, message: value , task_id: task_id, estimate:estimate , spent:spent });
     console.log(addComment)
     console.log(cookies.name)
-    // router.reload(`${server}/user/dashboard`);
+    router.reload(`${server}/user/usertask`);
   }
 
   //for Time Declration
@@ -184,73 +183,51 @@ function Dashboard({task}) {
   
 
   const insert_time = async (task_id)=>{
-    // e.preventDefault();
     var addTime = await axios.post(`${server}/api/comment/addtasktime`, { task_id:task_id, username: cookies.name, estimate:estimate , spent:spent });
     console.log(addTime.data)
   }
   
   const update_tasktime = async (task_id)=>{
-    // e.preventDefault();
     var updateTime = await axios.put(`${server}/api/comment/update_tasktime`, { task_id:task_id, username: cookies.name, estimate:userdata.estimate_time , spent:userdata.spent_time });
     console.log(updateTime)
   }
 
-  const [textComment, setText] = useState([]);
+  const [ value, setValue ] = useState("");
+    const modules = {
+      toolbar: [
+        [{ 'font': [] }],
+        [{ 'size': ['small', false, 'large', 'huge'] }],
+        ['bold', 'italic', 'underline'],
+        [{'list': 'ordered'}, {'list': 'bullet'}],
+        [{ 'align': [] }],
+        [{ 'color': [] }, { 'background': [] }],
+        ['clean'],
+        ['link', 'image', 'video']
+      ]
+    }
 
-  class RichTextEditor extends React.Component {
-    constructor(props) {
-      super(props);
-  
-      this.modules = {
-        toolbar: [
-            [{ 'font': [] }],
-            [{ 'size': ['small', false, 'large', 'huge'] }],
-            ['bold', 'italic', 'underline'],
-            [{'list': 'ordered'}, {'list': 'bullet'}],
-            [{ 'align': [] }],
-            [{ 'color': [] }, { 'background': [] }],
-            ['clean']
-          ]
-      };
-  
-      this.formats = [
-          'font',
-          'size',
-          'bold', 'italic', 'underline',
-          'list', 'bullet',
-          'align',
-          'color', 'background'
-        ];
-  
-        this.state = {
-        comments: ''
-      }
-  
-      this.rteChange = this.rteChange.bind(this);
+    const [commentEdit, setEditComment] = useState();
+
+    const editComment = async( id ) =>{
+      console.log("id");
+      console.log(id);
+
+      var commentId = await axios.post(`${server}/api/comment/comment_id`, { comment_id: id, user: cookies.name });
+      console.log(commentId.data[0]);
+
+      if(commentId.data != ""){
+        setEditComment(commentId.data[0].comment);
+        console.log(commentEdit);
     }
-  
-    rteChange = (content, delta, source, editor) => {
-      // console.log(editor.getHTML()); // rich text
-      // console.log(content);
-      // console.log(delta.ops[1]);
-      // console.log(source);
-      // console.log(editor.getText()); // plain text
-      // console.log(editor.getLength()); // number of characters
     }
-  
-    render() {
-        return (
-          <div>
-            <ReactQuill theme="snow"  modules={this.modules}
-              formats={this.formats} onChange={this.rteChange}
-              value={this.state.comments || ''}/>
-              {console.log("123")}
-              {setText(this.state.comments)}
-          </div>
-        );
+    
+    const updateComment = async(id, comment) =>{
+      console.log(comment);
+      console.log(id);
+      var comment = await axios.post(`${server}/api/comment/updateComment`, { comment_id: id, user: cookies.name, comment:comment });
+      router.reload(`${server}/user/usertask`);
     }
-  
-  }
+
   
   return (
     <>
@@ -274,7 +251,6 @@ function Dashboard({task}) {
 
             {task.map((task)=>{
               var person = task.task_person.split(",");
-              //For Date
               const MySQLDate  = task.task_deadline;
               let date = MySQLDate.replace(/[-]/g, '/').substr(0,10);
               console.log(date)
@@ -294,8 +270,6 @@ function Dashboard({task}) {
                   <td colspan="2"><h4 className="projectTitle">{task.task_title}</h4></td>
                   <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
                   <td className="status-data">
-                    {/* <p className={task.task_status}>{task.task_status}</p> */}
-                    {/* <p>{date}</p> */}
                     <span>
                       {(task.task_status=="taskOn_hold") ? "On Hold" : "" }
                       {(task.task_status=="task_completed") ? "Completed" : "" }
@@ -315,48 +289,7 @@ function Dashboard({task}) {
                   </td>
                   <td>
                     <div className="icon-display">
-                      {/*view Popup start*/}
-                      {/* <Popup trigger={<Button disabled={project.view_rights==0} ><FaEye/></Button>}  className="popupReact"  modal>
-                          {close => (
-                            <div>
-                              <GridItem xs={6} sm={6} md={12} key={project.project_id}>
-                                <Card >
-                                  <CardHeader color="primary">
-                                    <GridContainer>
-                                      <GridItem>
-                                        <h4>{project.project_title}</h4>
-                                      </GridItem>
-                                      <div className={classes.close}>
-                                        <a onClick={close}>&times;</a>
-                                      </div>   
-                                    </GridContainer>
-                                  </CardHeader><br/>
-                                  <CardFooter>
-                                    <p>Project Language</p>-<p>{project.project_language}</p>
-                                  </CardFooter>
-                                  <CardFooter>
-                                    <p>{project.project_person}</p>
-                                  </CardFooter>
-                                  <CardFooter>
-                                    <p>{project.project_description}</p>
-                                  </CardFooter>
-                                  <CardFooter>
-                                    <p>{project.project_department}</p>
-                                  </CardFooter>
-                                  <CardFooter>
-                                    <p>{project.project_status}</p>
-                                  </CardFooter>
-                                  <CardFooter>
-                                    <p className="projectPriority">{project.project_priority} Priority</p>
-                                  </CardFooter>
-                                </Card>
-                              </GridItem>
-                            </div>
-                          )}
-                        </Popup> */}
-                        {/*view popup end*/}
-                        {/*Edit popup Start*/}
-                        <Popup trigger={<div> <button disabled={task.edit_rights==0} onClick={()=>{getData(task.task_id);getTime(task.task_id)}} className="user-icon"><FiEdit/></button> </div>}  className="popupReact"  modal >
+                        <Popup trigger={<div> <button disabled={task.edit_rights==0} onClick={()=>{getData(task.task_id);getTime(task.task_id)}} className="user-icon"><FiEdit/></button> </div>}  className="popupReact"  modal nested >
                           {close => (
                             <div>
                               
@@ -381,7 +314,6 @@ function Dashboard({task}) {
                                           <p className="projectPriority">{task.task_priority} Priority</p>
                                         </GridItem>
                                       </GridContainer>
-                                  {/* </CardBody> */}
 
                                   <GridContainer>
                                     <GridItem>
@@ -417,7 +349,6 @@ function Dashboard({task}) {
                                                     }}
                                                   />
                                                 </GridItem>
-                                                {/* <button type="submit" onClick={()=>insert_time(task.task_id)}>submit</button> */}
                                               </GridContainer>
                                             </form>
                                           </>
@@ -448,30 +379,17 @@ function Dashboard({task}) {
                                                     }}
                                                   />
                                                 </GridItem>
-                                                {/* <button type="submit" onClick={()=>update_tasktime(task.task_id)}>submit</button> */}
                                               </GridContainer>
+
+                                              <ReactQuill modules={modules} theme="snow" onChange={setValue} />
+
                                             </form>
                                           </>
                                         )}
                                       <form>
-                                        {/* <textarea
-                                          className="form-control signup-input"
-                                          type="text"
-                                          value={message}
-                                          onChange={(e) => {
-                                            setmessage(e.target.value);
-                                          }}
-                                        ></textarea> */}
-                                        <RichTextEditor placeholder={"Write your comment"}
-                                          // value={message}
-                                          // onChange={(e) => {
-                                          //   setmessage(e.target.value);
-                                          // }}
-                                         />
 
                                         <div onClick={()=> sendMessage(task.task_id)}>Save</div>
 
-                                        {/* <div onClick={() => sendMessage(task.task_id)}>Save</div> */}
                                       </form>
                                     </GridItem>
                                   </GridContainer>
@@ -481,11 +399,6 @@ function Dashboard({task}) {
                                     const Time = ((m.creation_time).substr(11,16).split(":",3));
                                     var dateP = m.creation_time;
                                     var textArea = (m.comment).split(`\n`);
-                                    // console.log("textArea");
-                                    // console.log(textArea);
-                                    // if(textArea == ""){
-                                      // function Setcontent() {
-                                      //  }
                                       return(
                                         <span>
                                           <GridContainer>
@@ -501,36 +414,45 @@ function Dashboard({task}) {
                                           <GridContainer>
                                             <GridItem>
                                               <div>
-                                                <span id="editorOne">{m.comment}</span>
+
+                                              <ReactQuill value={m.comment} theme="bubble" readOnly />
+      <Popup
+        trigger={ <span><button onClick={()=>{ editComment(m.id)} } disabled={ m.username != cookies.name }>Edit</button></span> }
+        // position="top left"
+        modal
+      >
+        {close => (
+                              <Card>
+                                <CardBody>
+                                      <div className={classes.close}>
+                                        <a onClick={close}>&times;</a>
+                                      </div>
+
+                                  <GridContainer>
+                                    <GridItem xs={12} sm={12} md={12} >
+                                      <form>
+
+                                        <ReactQuill modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
+
+                                      </form>
+                                    </GridItem>
+                                  </GridContainer>
+
+                                  <CardFooter>
+                                      <Button color="primary" type="submit"  onClick={() => { updateComment(m.id, commentEdit) }}>Update</Button>
+                                      <Button className="button" onClick={() => { close(); }}> Cancel </Button>
+                                  </CardFooter>
+                                </CardBody>
+                              </Card>
+        )}
+        
+      </Popup>
+
                                               </div>
                                             </GridItem>
                                           </GridContainer>
                                         </span>
                                       )
-                                    // }else{
-                                    //   return(
-                                    //     <span>
-                                    //       <GridContainer>
-                                    //         <GridItem>
-                                    //           <span>{m.username}</span>
-                                    //         </GridItem>
-                                                
-                                    //         <GridItem>
-                                    //         <span><p>{Date[2]}/{Date[1]}/{Date[0]}</p></span>
-                                    //         </GridItem>
-                                    //       </GridContainer>
-
-                                    //       <GridContainer>
-                                    //         <GridItem>
-                                    //           <div>
-                                    //             <a href={m.comment} target="_blank" id="userComment">{m.comment}</a>
-                                    //             {/* <p>{Time[0]}:{Time[1]}:{Time[2]}</p> */}
-                                    //           </div>
-                                    //         </GridItem>
-                                    //       </GridContainer>
-                                    //     </span>
-                                    //   )
-                                    // }
                                   })}
                                   </CardBody>
 
@@ -540,7 +462,6 @@ function Dashboard({task}) {
                             </div>
                           )}
                         </Popup>
-                        {/*Edit popup end*/}
                     </div>
                   </td>
                 </tr>
