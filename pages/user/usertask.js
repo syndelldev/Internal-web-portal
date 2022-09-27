@@ -106,6 +106,13 @@ function Dashboard({task}) {
   const [cookies, setCookie] = useCookies('');
   //console.log(cookies.Id);
 
+  //Date Declration
+  const On_track = [];
+  console.log("On_track",On_track)
+
+  const Off_track = [];
+  console.log("Off_track",Off_track)
+
   const [users, setusers] = useState([])
 
   useEffect(async()=>{
@@ -235,78 +242,14 @@ function Dashboard({task}) {
     }
   
   }
-  // class Editor extends React.Component {
-  //   constructor(props) {
-  //     super(props);
-  //     this.state = { editorHtml: "" };
-  //     this.handleChange = this.handleChange.bind(this);
-  //     // console.log("text");      
-  //   }
-  
-  //   handleChange(html) {
-  //     this.setState({ editorHtml: html });
-  //     // console.log(html);
-  //     // setText(this.state.editorHtml);
-  //     console.log(this.state.editorHtml);
-  //   }
-  
-  //   render() {
-  //     return (
-  //       <div className="text-editor">
-  //         <ReactQuill
-  //           onChange={this.handleChange}
-  //           placeholder={this.props.placeholder}
-  //           modules={Editor.modules}
-  //           formats={Editor.formats}
-  //           // value={this.state.editorHtml}
-  //           theme={"snow"} // pass false to use minimal theme
-  //         />
-  //       </div>
-  //     );
-  //   }
-  // }
-  
-  // Editor.modules = {
-  //   toolbar: [
-  //     [{ 'header': [1, 2, 3, 4, 5, false] }],
-  //     [{ 'color': ["#fff", "#d0d1d2", "#000", "red" ,"green", "blue", "orange", "violet" ]}],
-  //     ['bold', 'italic', 'underline','strike', 'blockquote'],
-  //     [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
-  //     ['link', 'image'],
-  //     ['clean'],
-  //   ],
-  //   handlers: {
-  //     // handlers object will be merged with default handlers object
-  //     'link': function(value) {
-  //       if (value) {
-  //         console.log("value");
-  //       }else{
-  //         console.log("no data");
-  //       }
-  //     }
-  //   }
-  //   // clipboard: {
-  //   //   matchVisual: false,
-  //   // }
-  // };
-  
-  
-  // Editor.formats = [
-  //   "header",
-  //   "font",
-  //   "size",
-  //   "bold",
-  //   "italic",
-  //   "underline",
-  //   "strike",
-  //   "blockquote",
-  //   "list",
-  //   "bullet",
-  //   "indent",
-  //   "link",
-  //   "image",
-  //   "color"
-  // ];
+
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var yyyy = today.getFullYear();
+
+  today = yyyy + '/' + mm + '/' + dd;
+  console.log(today);
   
   return (
     <>
@@ -330,11 +273,35 @@ function Dashboard({task}) {
 
             {task.map((task)=>{
               var person = task.task_person.split(",");
+              //For Date
+              const MySQLDate  = task.task_deadline;
+              let date = MySQLDate.replace(/[-]/g, '/').substr(0,10);
+              console.log(date)
+              if(date>today)
+              {
+                console.count("On track")
+                On_track.push(task.task_id); 
+                console.log(task.task_id)
+              }
+              else{
+                console.count("off track")
+                Off_track.push(task.task_id);
+                console.log(task.task_id)
+              }
               return(
                 <tr className="project-data-details">
                   <td colspan="2"><h4 className="projectTitle">{task.task_title}</h4></td>
                   <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
-                  <td className="status-data"><p className={task.task_status}>{task.task_status}</p></td>
+                  <td className="status-data">
+                    {/* <p className={task.task_status}>{task.task_status}</p> */}
+                    {/* <p>{date}</p> */}
+                    <span>
+                      {(task.task_status=="taskOn_hold") ? "On Hold" : "" }
+                      {(task.task_status=="task_completed") ? "Completed" : "" }
+                      {(task.task_status=="task_toDo") ? "To Do Task" : "" }
+                      {(task.task_status=="task_Running") ? (date>today) ? "On track": "Off track" : "" }
+                    </span>
+                  </td>
                   <td colspan="4" className="assignee-data">
                     {person.map((task_person) => {
                       return(

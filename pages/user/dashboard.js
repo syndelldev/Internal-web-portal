@@ -152,10 +152,7 @@ function Dashboard( { project_hold, project_completed, project_running, high_pri
         //console.log(res)
       })    
   },[])
-  // console.log(users)
-
-  const [trackdate,settrackdate] = useState("")
-  
+  // console.log(users)  
 
   var today = new Date();
   var dd = String(today.getDate()).padStart(2, '0');
