@@ -25,6 +25,12 @@ import dynamic from "next/dynamic";
 import 'react-quill/dist/quill.snow.css';
 import "react-quill/dist/quill.bubble.css";
 
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import Typography from "@material-ui/core/Typography";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+
 const ReactQuill = dynamic(import('react-quill'), { ssr: false })
 
 const styles = {
@@ -106,6 +112,14 @@ function Dashboard({task}) {
   const [cookies, setCookie] = useCookies('');
   //console.log(cookies.Id);
 
+  //For Accordin
+  const [expanded, setExpanded] = useState(false);
+  const handleChangePanel = panel => (event, isExpanded) => {
+    console.log(panel)
+    console.log(isExpanded)
+    setExpanded(isExpanded ? panel : false);
+  };
+  
   //Date Declration
   const On_track = [];
   console.log("On_track",On_track)
@@ -466,6 +480,45 @@ function Dashboard({task}) {
                           )}
                         </Popup>
                     </div>
+                  </td>
+                  <td>
+                  <Accordion 
+                    style={{ width: 250 }} 
+                    onClick={()=>{getTime(task.task_id)}} 
+                    expanded={expanded === task.task_id}
+                    onChange={handleChangePanel(task.task_id)}
+                  >
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" >
+                      <Typography style={{ fontWeight: 10,}}>
+                        Add Time
+                      </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Typography>
+                        {TimeData.length==0?(
+                          <>
+                            <GridContainer>
+                              <GridItem>
+                                <input value={task.task_id} type="hidden"/>
+                                <p>Estimate Time - {estimate}</p>
+                                <p>Spent Time - {spent}</p>
+                              </GridItem>
+                            </GridContainer>
+                          </>
+                        ):(
+                          <>
+                            <GridContainer>
+                              <GridItem>
+                                <input value={task.task_id} type="hidden"/>
+                                <p>Estimate Time - {userdata.estimate_time}</p>
+                                <p>Spent Time - {userdata.spent_time} </p>
+                              </GridItem>
+                            </GridContainer>
+                          </>
+                        )}
+                      </Typography>
+                    </AccordionDetails>
+                  </Accordion>
                   </td>
                 </tr>
               )
