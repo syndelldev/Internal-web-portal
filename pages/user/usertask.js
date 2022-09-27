@@ -23,7 +23,14 @@ import { useCookies } from 'react-cookie';
 import { Button } from "@material-ui/core";
 import dynamic from "next/dynamic";
 import 'react-quill/dist/quill.snow.css';
+import "react-quill/dist/quill.bubble.css";
 
+
+import ReactHtmlParser, {
+  processNodes,
+  convertNodeToElement,
+  htmlparser2
+} from "react-html-parser";
 
 const ReactQuill = dynamic(import('react-quill'), { ssr: false })
 
@@ -132,8 +139,8 @@ function Dashboard({project}) {
   const sendMessage = async (project_id) => {
     // e.preventDefault();
     // alert(project_id)
-    console.log("comm");
-    console.log(value);
+    // console.log("comm");
+    // console.log(value);
 
     var addComment = await axios.post(`${server}/api/comment/addcomment`, {  username: cookies.name, message: value , project_id: project_id });
     // console.log(addComment)
@@ -151,11 +158,39 @@ function Dashboard({project}) {
         [{ 'align': [] }],
         [{ 'color': [] }, { 'background': [] }],
         ['clean'],
-        ['link', 'image']
+        ['link', 'image', 'video']
       ]
     }
-    console.log(value);
-  
+
+    const [commentEdit, setEditComment] = useState();
+
+    const editComment = async( id ) =>{
+      console.log("id");
+      console.log(id);
+
+      var commentId = await axios.post(`${server}/api/comment/comment_id`, { comment_id: id, user: cookies.name });
+      console.log(commentId.data[0]);
+
+      if(commentId.data != ""){
+        setEditComment(commentId.data[0].comment);
+        console.log(commentEdit);
+        // var comment = await axios.post(`${server}/api/comment/comment`, { project_id: project_id });
+    }
+      //   var comment = await axios.post(`${server}/api/comment/comment`, { project_id: project_id });
+      //   setModules(modules);
+      //   setTheme("snow");
+      //   setRead(false);
+      //   console.log(username);
+      //   console.log(cookies.name);
+    }
+    
+    const updateComment = async(id, comment) =>{
+      console.log(comment);
+      console.log(id);
+      var comment = await axios.post(`${server}/api/comment/updateComment`, { comment_id: id, user: cookies.name, comment:comment });
+    }
+
+      
   return (
     <>
       <div>
@@ -218,7 +253,7 @@ function Dashboard({project}) {
                   project.map((project)=>{
                     return(
                       <div className="icon-display">
-                        <Popup trigger={<div> <button disabled={project.edit_rights==0} onClick={()=>getData(project.project_id)} className="user-icon"><FiEdit/></button> </div>}  className="popupReact"  modal >
+                        <Popup trigger={<div> <button disabled={project.edit_rights==0} onClick={()=>getData(project.project_id)} className="user-icon"><FiEdit/></button> </div>}  className="popupReact"  modal nested >
                           {close => (
                             <div>
                               
@@ -253,8 +288,8 @@ function Dashboard({project}) {
                                   <GridContainer>
                                     <GridItem xs={12} sm={12} md={12} >
                                       <form>
-                                        
-                                        <ReactQuill modules={modules} theme="snow" onChange={setValue}/>
+
+                                        <ReactQuill modules={modules} theme="snow" onChange={setValue} />
                                         <div onClick={()=> sendMessage(project.project_id)}>Save</div>
 
                                       </form>
@@ -265,7 +300,7 @@ function Dashboard({project}) {
                                     const Date = ((m.creation_time).substr(0,10).split("-",3));
                                     const Time = ((m.creation_time).substr(11,16).split(":",3));
                                     var dateP = m.creation_time;
-                                    var textArea = (m.comment).split(`\n`);
+                                  
                                       return(
                                         <span>
                                           <GridContainer>
@@ -281,7 +316,47 @@ function Dashboard({project}) {
                                           <GridContainer>
                                             <GridItem>
                                               <div>
-                                                <span id="editorOne">{m.comment}</span>
+                                                {/* <span id="editorOne" className="class_Comment">{m.comment}</span> */}
+                                                {/* <ReactQuill modules={commentModules} theme="snow" />
+                                                <div className="showComments">
+                                                  {ReactHtmlParser(m.comment)}
+                                                </div> */}
+
+                                                <ReactQuill value={m.comment} theme="bubble" readOnly />
+      <Popup
+        trigger={ <span><button onClick={()=>{ editComment(m.id)} } disabled={ m.username != cookies.name }>Edit</button></span> }
+        position="top left"
+      >
+        {close => (
+                              <Card>
+                                <CardBody>
+                                      <div className={classes.close}>
+                                        <a onClick={close}>&times;</a>
+                                      </div>
+
+                                  <GridContainer>
+                                    <GridItem xs={12} sm={12} md={12} >
+                                      <form>
+
+                                        <ReactQuill modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
+                                        {/* {setEditComment(m.id)} */}
+                                        {/* <div onClick={()=> sendEditComment(project.project_id)}>Save</div> */}
+
+                                      </form>
+                                    </GridItem>
+                                  </GridContainer>
+
+                                  <CardFooter>
+                                      <Button color="primary" type="submit"  onClick={() => { updateComment(m.id, commentEdit) }}>Update</Button>
+                                      <Button className="button" onClick={() => { close(); }}> Cancel </Button>
+                                  </CardFooter>
+                                </CardBody>
+                              </Card>
+        )}
+        
+      </Popup>
+                                                
+                                                {/* <div onClick={()=>{ editComment( m.id, m.project_id, m.username, m.comment )} }>Edit</div> */}
                                               </div>
                                             </GridItem>
                                           </GridContainer>
