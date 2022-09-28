@@ -514,11 +514,14 @@ h3.on-hold{
   max-width: 100%;
   flex-basis: 100%;
 }
+/* Mobile css*/
+
 @media only screen and (max-width: 767px) {
   .project-status{
     justify-content: normal;
     display: grid!important;
 }
+
 }
 h3.my-task-priorities {
   width: 50%;
@@ -575,3 +578,13 @@ h2.title-user-project {
 td.status-data {
   text-align: center;
 }
+.makeStyles-cardHeader-380.makeStyles-primaryCardHeader-388 {
+  display: flex;
+}
+.Lang {
+  display: flex;
+}
+p.Task-lang {
+  font-weight: 600;
+}
+

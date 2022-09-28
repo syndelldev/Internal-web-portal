@@ -285,11 +285,11 @@ function Dashboard({task}) {
                   <td colspan="2"><h4 className="projectTitle">{task.task_title}</h4></td>
                   <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
                   <td className="status-data">
-                    <span>
+                    <span className="on-hold">
                       {(task.task_status=="taskOn_hold") ? "On Hold" : "" }
                       {(task.task_status=="task_completed") ? "Completed" : "" }
                       {(task.task_status=="task_toDo") ? "Assigned" : "" }
-                      {(task.task_status=="task_Running") ? (date>today) ? "On track": "Off track" : "" }
+                       {(task.task_status=="task_Running") ? (date>today) ? "On track": "Off track" : "" }
                     </span>
                   </td>
                   <td colspan="4" className="assignee-data">
@@ -318,7 +318,7 @@ function Dashboard({task}) {
                                   <CardBody>
                                       <GridContainer>
                                         <GridItem>
-                                          <p>Task Language - {task.task_language}</p>
+                                          <div className="Lang"><p className="Task-lang">Task Language </p>- <p className="task-lang-data">{task.task_language}</p></div>
                                           <p>Task Person - {task.task_person}</p>
                                           <p>Task Description - {task.task_description}</p>
                                           <p>Department - {task.task_department}</p>
