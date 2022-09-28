@@ -68,8 +68,7 @@ function Dashboard({project}) {
     // console.log(comment.data)
     setcomments(comment.data)
     console.log(comments)
-  }
-  
+  } 
 
   const sendMessage = async (project_id) => {
     // e.preventDefault();
