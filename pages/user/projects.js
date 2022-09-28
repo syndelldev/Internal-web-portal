@@ -167,7 +167,7 @@ function Projects({project}) {
   }
 
   const [commentEdit, setEditComment] = useState();
-  
+
     const editComment = async( id ) =>{
       console.log("id");
       console.log(id);
@@ -187,12 +187,12 @@ function Projects({project}) {
       console.log("update");
       console.log(comment);
       console.log(id);
-      var comment = await axios.post(`${server}/api/comment/updateComment`, { comment_id: id, user: cookies.name, comment:comment });
+      var comments = await axios.post(`${server}/api/comment/updateComment`, { comment_id: id, user: cookies.name, comment:comment });
       router.reload(`${server}/user/projects`);
     }
-
     console.log("set comment");
     console.log(commentEdit);
+
   return (
     <>
           <h2 className="title-user-project">My Project</h2>
@@ -249,7 +249,7 @@ function Projects({project}) {
                     </td>
                     <td>
                       <div className="icon-display">
-                        <Popup trigger={<div> <button disabled={project.edit_rights==0} onClick={()=>getData(project.project_id)} className="user-icon"><FiEdit/></button> </div>}  className="popupReact"  modal >
+                        <Popup trigger={<div> <button disabled={project.edit_rights==0} onClick={()=>getData(project.project_id)} className="user-icon"><FiEdit/></button> </div>}  className="popupReact"  modal nested >
                           {close => (
                             <div>
                               
