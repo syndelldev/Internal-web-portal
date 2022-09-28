@@ -508,6 +508,7 @@ function Dashboard({task}) {
                     <AccordionDetails>
                       <Typography>
                         <GridContainer>
+{/* display estimate time */}
                           <GridItem>
                             {TimeData.length==0?(
                               <>
@@ -531,7 +532,7 @@ function Dashboard({task}) {
                               </>
                             )}
                           </GridItem>
-
+{/* display comments in dropdown */}
                           <GridItem>
                             {dropdown_Comments.map((dComment)=>{
                               return(
