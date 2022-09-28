@@ -32,11 +32,6 @@ import Typography from "@material-ui/core/Typography";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 
 const ReactQuill = dynamic(import('react-quill'), { ssr: false })
-// import ReactQuill, { Quill } from "react-quill";
-
-// #1 import quill-image-uploader
-// import ImageUploader from "quill-image-uploader";
-
 
 const styles = {
   cardCategoryWhite: {
@@ -115,7 +110,6 @@ function Dashboard({task}) {
   const router = useRouter();
 
   const [cookies, setCookie] = useCookies('');
-  //console.log(cookies.Id);
 
   //For Accordin
   const [expanded, setExpanded] = useState(false);
@@ -124,12 +118,13 @@ function Dashboard({task}) {
     console.log(isExpanded)
     setExpanded(isExpanded ? panel : false);
   };
+
   //Date Declration
   const On_track = [];
-  console.log("On_track",On_track)
+  // console.log("On_track",On_track)
 
   const Off_track = [];
-  console.log("Off_track",Off_track)
+  // console.log("Off_track",Off_track)
 
   var today = new Date();
   var dd = String(today.getDate()).padStart(2, '0');
@@ -137,7 +132,7 @@ function Dashboard({task}) {
   var yyyy = today.getFullYear();
 
   today = yyyy + '/' + mm + '/' + dd;
-  console.log(today);
+  // console.log(today);
 
   //API fetch
   const [users, setusers] = useState([])
@@ -179,14 +174,15 @@ function Dashboard({task}) {
   const [TimeData,setTimeData] = useState([])
   
   const getTime = async (task_id) =>{
-    var timedata = await axios.post(`${server}/api/comment/task_time`, { task_id: task_id });
+    var timedata = await axios.post(`${server}/api/comment/task_time`, { task_id: task_id,user_id:cookies.Id, });
     setTime(timedata.data[0])
     setTimeData(timedata.data)
   }
   console.log(TimeData)
   const [userdata, setuserdata] = useState({
     estimate_time:"",
-    spent_time: ""
+    spent_time: "",
+    username:""
   });
   
   useEffect(()=>{
@@ -199,21 +195,21 @@ function Dashboard({task}) {
   const [estimate, setestimate] = useState('');
   const [spent, setspent] = useState('');
   
+  console.log("cookies.Id",cookies.Id)
 
   const insert_time = async (task_id)=>{
-    var addTime = await axios.post(`${server}/api/comment/addtasktime`, { task_id:task_id, username: cookies.name, estimate:estimate , spent:spent });
+    var addTime = await axios.post(`${server}/api/comment/addtasktime`, { task_id:task_id, user_id:cookies.Id, username: cookies.name, estimate:estimate , spent:spent });
     console.log(addTime.data)
   }
   
   const update_tasktime = async (task_id)=>{
-    var updateTime = await axios.put(`${server}/api/comment/update_tasktime`, { task_id:task_id, username: cookies.name, estimate:userdata.estimate_time , spent:userdata.spent_time });
+    var updateTime = await axios.put(`${server}/api/comment/update_tasktime`, { task_id:task_id, user_id:cookies.Id, estimate:userdata.estimate_time , spent:userdata.spent_time });
     console.log(updateTime)
   }
 
   const [ value, setValue ] = useState("");
     const modules = {
-      toolbar: {
-        container: [
+      toolbar: [
         [{ 'font': [] }],
         [{ 'size': ['small', false, 'large', 'huge'] }],
         ['bold', 'italic', 'underline'],
@@ -222,11 +218,7 @@ function Dashboard({task}) {
         [{ 'color': [] }, { 'background': [] }],
         ['clean'],
         ['link', 'image', 'video']
-      ],
-      handlers: {
-          // image: imageHandler,
-      }
-     }
+      ]
     }
 
     const [commentEdit, setEditComment] = useState();
@@ -235,7 +227,7 @@ function Dashboard({task}) {
       console.log("id");
       console.log(id);
 
-      var commentId = await axios.post(`${server}/api/comment/comment_id`, { comment_id: id, user: cookies.name });
+      var commentId = await axios.post(`${server}/api/comment/comment_id`, { comment_id: id, user: cookies.name, user_id:cookies.Id });
       console.log(commentId.data[0]);
 
       if(commentId.data != ""){
@@ -251,6 +243,7 @@ function Dashboard({task}) {
       router.reload(`${server}/user/usertask`);
     }
     const [commentTimeM, setTimeM] = useState();
+
   
   return (
     <>
@@ -258,7 +251,8 @@ function Dashboard({task}) {
         {users.map((user)=>{
           return(
             <div key={user.id}>
-              <h1>Welcome {user.username} </h1>
+              <h2 className="title-user-project">My Tasks</h2>
+              {/* <h1>Welcome {user.username} </h1> */}
             </div>
           )
         })}
@@ -276,17 +270,15 @@ function Dashboard({task}) {
               var person = task.task_person.split(",");
               const MySQLDate  = task.task_deadline;
               let date = MySQLDate.replace(/[-]/g, '/').substr(0,10);
-              console.log(date)
+              // console.log(date)
               if(date>today)
               {
-                console.count("On track")
                 On_track.push(task.task_id); 
-                console.log(task.task_id)
+                // console.log(task.task_id)
               }
               else{
-                console.count("off track")
                 Off_track.push(task.task_id);
-                console.log(task.task_id)
+                // console.log(task.task_id)
               }
               return(
                 <tr className="project-data-details">
@@ -296,7 +288,7 @@ function Dashboard({task}) {
                     <span>
                       {(task.task_status=="taskOn_hold") ? "On Hold" : "" }
                       {(task.task_status=="task_completed") ? "Completed" : "" }
-                      {(task.task_status=="task_toDo") ? "To Do Task" : "" }
+                      {(task.task_status=="task_toDo") ? "Assigned" : "" }
                       {(task.task_status=="task_Running") ? (date>today) ? "On track": "Off track" : "" }
                     </span>
                   </td>
@@ -315,7 +307,6 @@ function Dashboard({task}) {
                         <Popup trigger={<div> <button disabled={task.edit_rights==0} onClick={()=>{getData(task.task_id);getTime(task.task_id)}} className="user-icon"><FiEdit/></button> </div>}  className="popupReact"  modal nested >
                           {close => (
                             <div>
-                              
                               <GridItem xs={12} sm={12} md={12} key={task.task_id}>
                                 <Card>
                                   <CardHeader color="primary">
@@ -337,7 +328,6 @@ function Dashboard({task}) {
                                           <p className="projectPriority">{task.task_priority} Priority</p>
                                         </GridItem>
                                       </GridContainer>
-
                                   <GridContainer>
                                     <GridItem>
                                       <h5 className="projectPriority">Comments</h5>
@@ -404,14 +394,13 @@ function Dashboard({task}) {
                                                 </GridItem>
                                               </GridContainer>
 
+                                              <ReactQuill modules={modules} theme="snow" onChange={setValue} />
+
                                             </form>
                                           </>
                                         )}
                                       <form>
-
-                                      <ReactQuill modules={modules} theme="snow" onChange={setValue} />
                                         <div onClick={()=> sendMessage(task.task_id)}>Save</div>
-
                                       </form>
                                     </GridItem>
                                   </GridContainer>
@@ -420,6 +409,7 @@ function Dashboard({task}) {
                                     const Date = ((m.creation_time).substr(0,10).split("-",3));
                                     const Time = ((m.creation_time).substr(11,16).split(":",2));
                                     var dateP = m.creation_time;
+                                    var textArea = (m.comment).split(`\n`);
 
                                       return(
                                         <span>
@@ -438,38 +428,35 @@ function Dashboard({task}) {
                                               <div>
 
                                               <ReactQuill value={m.comment} theme="bubble" readOnly />
-      <Popup
-        trigger={ <span><button onClick={()=>{ editComment(m.id)} } disabled={ m.username != cookies.name }>Edit</button></span> }
-        // position="top left"
-        modal
-      >
-        {close => (
-                              <Card>
-                                <CardBody>
-                                      <div className={classes.close}>
-                                        <a onClick={close}>&times;</a>
-                                      </div>
+                                              <Popup
+                                                trigger={ <span><button onClick={()=>{ editComment(m.id)} } disabled={ m.username != cookies.name }>Edit</button></span> }
+                                                modal
+                                              >
+                                                {close => (
+                                                <Card>
+                                                  <CardBody>
+                                                        <div className={classes.close}>
+                                                          <a onClick={close}>&times;</a>
+                                                        </div>
 
-                                  <GridContainer>
-                                    <GridItem xs={12} sm={12} md={12} >
-                                      <form>
+                                                    <GridContainer>
+                                                      <GridItem xs={12} sm={12} md={12} >
+                                                        <form>
 
-                                        <ReactQuill modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
+                                                          <ReactQuill modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
 
-                                      </form>
-                                    </GridItem>
-                                  </GridContainer>
+                                                        </form>
+                                                      </GridItem>
+                                                    </GridContainer>
 
-                                  <CardFooter>
-                                      <Button color="primary" type="submit"  onClick={() => { updateComment(m.id, commentEdit) }}>Update</Button>
-                                      <Button className="button" onClick={() => { close(); }}> Cancel </Button>
-                                  </CardFooter>
-                                </CardBody>
-                              </Card>
-        )}
-        
-      </Popup>
-
+                                                    <CardFooter>
+                                                        <Button color="primary" type="submit"  onClick={() => { updateComment(m.id, commentEdit) }}>Update</Button>
+                                                        <Button className="button" onClick={() => { close(); }}> Cancel </Button>
+                                                    </CardFooter>
+                                                  </CardBody>
+                                                </Card>
+                                              )}
+                                              </Popup>
                                               </div>
                                             </GridItem>
                                           </GridContainer>
@@ -486,7 +473,6 @@ function Dashboard({task}) {
                         </Popup>
                     </div>
                   </td>
-                  
                   <td>
                   <Accordion 
                     style={{ width: 250 }} 
@@ -518,6 +504,7 @@ function Dashboard({task}) {
                                 <input value={task.task_id} type="hidden"/>
                                 <p>Estimate Time - {userdata.estimate_time}</p>
                                 <p>Spent Time - {userdata.spent_time} </p>
+                                <p>Username - {userdata.username}</p>
                               </GridItem>
                             </GridContainer>
                           </>
@@ -525,7 +512,6 @@ function Dashboard({task}) {
                       </Typography>
                     </AccordionDetails>
                   </Accordion>
-
                   </td>
                 </tr>
               )
