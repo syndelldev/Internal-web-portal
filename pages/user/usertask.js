@@ -258,7 +258,8 @@ function Dashboard({task}) {
         {users.map((user)=>{
           return(
             <div key={user.id}>
-              <h1>Welcome {user.username} </h1>
+              <h2 className="title-user-project">My Tasks</h2>
+              {/* <h1>Welcome {user.username} </h1> */}
             </div>
           )
         })}
@@ -296,7 +297,7 @@ function Dashboard({task}) {
                     <span>
                       {(task.task_status=="taskOn_hold") ? "On Hold" : "" }
                       {(task.task_status=="task_completed") ? "Completed" : "" }
-                      {(task.task_status=="task_toDo") ? "To Do Task" : "" }
+                      {(task.task_status=="task_toDo") ? "Assigend" : "" }
                       {(task.task_status=="task_Running") ? (date>today) ? "On track": "Off track" : "" }
                     </span>
                   </td>

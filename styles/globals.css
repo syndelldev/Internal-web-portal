@@ -521,7 +521,7 @@ h3.on-hold{
 }
 }
 h3.my-task-priorities {
-  width: 80%;
+  width: 5  0%;
   border: 2px solid #d3d3d3;
   padding: 20px;
   font-size: 20px;
@@ -569,6 +569,7 @@ img.gif-image {
     flex-basis: 100%;
 }
 h2.title-user-project {
+  padding-bottom: 50px;
   font-weight: 500;
 }
 td.status-data {
