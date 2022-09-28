@@ -6,7 +6,7 @@ export default async function handler(req, res) {
     if(req.method === 'PUT')
     {
         try{
-            let person=await executeQuery( " UPDATE `tbl_task_time` SET `username`=?,`estimate_time`=?,`spent_time`=? WHERE  `task_id`=?" , [ req.body.username, req.body.estimate, req.body.spent, req.body.task_id] );
+            let person=await executeQuery( " UPDATE `tbl_task_time` SET `estimate_time`=?,`spent_time`=? WHERE  `task_id`=? AND `user_id`=? " , [ req.body.estimate, req.body.spent, req.body.task_id, req.body.user_id] );
             res.status(200).json(person);
             console.log(person)
         }
