@@ -318,7 +318,7 @@ function Projects({project}) {
                                               <ReactQuill value={m.comment} theme="bubble" readOnly />
       <Popup
         trigger={ <span><button onClick={()=>{ editComment(m.id)} } disabled={ m.username != cookies.name }>Edit</button></span> }
-        // position="top left"
+        className="popupReact"
         modal
       >
         {close => (
