@@ -177,15 +177,15 @@ function Dashboard({task}) {
   
   const [TimeData,setTimeData] = useState([])
   
+  const [dropdown_Comments, setDropdownComments] = useState([]);
   const getTime = async (task_id) =>{
     var timedata = await axios.post(`${server}/api/comment/task_time`, { task_id: task_id });
     setTime(timedata.data[0])
     setTimeData(timedata.data)
 
-    const comment_Data = await axios.post(`${server}/api/comment/userComments`, { task_id: task_id, u_name: cookies.name });
-    // const data = await comment_Data.json();
+    const comment_Data = await axios.post(`${server}/api/comment/userComments`, { task_id: task_id });
     console.log("task id");
-    console.log(comment_Data.data);
+    setDropdownComments(comment_Data.data);
   }
   console.log(TimeData)
   const [userdata, setuserdata] = useState({
@@ -502,36 +502,60 @@ function Dashboard({task}) {
                   >
                     <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" >
                       <Typography style={{ fontWeight: 10,}}>
-                        Add Time
+                        Details
                       </Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                       <Typography>
-                        {TimeData.length==0?(
-                          <>
-                            <GridContainer>
-                              <GridItem>
-                                <input value={task.task_id} type="hidden"/>
-                                <p>Estimate Time - {estimate}</p>
-                                <p>Spent Time - {spent}</p>
-                              </GridItem>
-                            </GridContainer>
-                          </>
-                        ):(
-                          <>
-                            <GridContainer>
-                              <GridItem>
-                                <input value={task.task_id} type="hidden"/>
-                                <p>Estimate Time - {userdata.estimate_time}</p>
-                                <p>Spent Time - {userdata.spent_time} </p>
-                                <span>{}</span>
-                              </GridItem>
-                            </GridContainer>
-                          </>
-                        )}
+                        <GridContainer>
+                          <GridItem>
+                            {TimeData.length==0?(
+                              <>
+                                <GridContainer>
+                                  <GridItem>
+                                    <input value={task.task_id} type="hidden"/>
+                                    <p>Estimate Time - {estimate}</p>
+                                    <p>Spent Time - {spent}</p>
+                                  </GridItem>
+                                </GridContainer>
+                              </>
+                              ):(
+                              <>
+                                <GridContainer>
+                                  <GridItem>
+                                    <input value={task.task_id} type="hidden"/>
+                                    <p>Estimate Time - {userdata.estimate_time}</p>
+                                    <p>Spent Time - {userdata.spent_time} </p>
+                                  </GridItem>
+                                </GridContainer>
+                              </>
+                            )}
+                          </GridItem>
+
+                          <GridItem>
+                            {dropdown_Comments.map((dComment)=>{
+                              return(
+                                <span>
+                                  <GridContainer>
+                                    <GridItem>
+                                      <span>{dComment.username}</span>
+                                    </GridItem>
+                                    <GridItem>
+                                      <ReactQuill value={dComment.comment} theme="bubble" readOnly />
+                                    </GridItem>
+                                    <GridItem>
+                                      <span>{dComment.creation_time}</span>
+                                    </GridItem>
+                                  </GridContainer>
+                                </span>
+                              )
+                            })}
+                          </GridItem>
+                        </GridContainer>
                       </Typography>
                     </AccordionDetails>
                   </Accordion>
+
 
                   </td>
                 </tr>
