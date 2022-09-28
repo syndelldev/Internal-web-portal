@@ -280,7 +280,11 @@ function Projects({project}) {
 
                                   <GridContainer>
                                     <GridItem>
-                                      <h5 className="projectPriority">Comments</h5>
+                                      <form>
+                                        <h5 className="projectPriority">Comments</h5>
+                                        <ReactQuill modules={modules} theme="snow" onChange={setValue} />
+                                        <div onClick={()=> sendMessage(project.project_id)}>Save</div>
+                                      </form>
                                     </GridItem>
                                   </GridContainer>
                                   <GridContainer>
