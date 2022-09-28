@@ -398,8 +398,6 @@ const closeTaskCompleted = async(task) =>{
   }
 }
 
-
-
   return (
     <div>
     <div className="buttonalign">

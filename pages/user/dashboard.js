@@ -174,7 +174,7 @@ function Dashboard( { project_hold, project_completed, project_running, high_pri
         {users.map((user)=>{
           return(
             <div key={user.id}>
-              <h1>Welcome {user.username} </h1>
+              <h1 className="user-welcome">Welcome {user.username}  <img src={`${server}/smiley.gif`} alt="smiley" className="gif-image" /></h1>
             </div>
           )
         })}
@@ -228,7 +228,7 @@ function Dashboard( { project_hold, project_completed, project_running, high_pri
         </GridContainer>
       </div>
 
-      <div>
+      <div className="my-task">
         <GridContainer>
           <GridItem xs={12} sm={6} md={6}>
             <h3 className="my-task-priorities"><h2 className="title-my-task">My Task Priorities</h2>
@@ -237,7 +237,7 @@ function Dashboard( { project_hold, project_completed, project_running, high_pri
                 <>
                 <div>
                   {/* <p>project_name - {task.project_name}</p> */}
-                  <p>{task.task_title}-<span className={task.task_priority}>{task.task_priority}</span></p>
+                  <p className="task-high">{task.task_title}<span className={task.task_priority}>{task.task_priority}</span></p>
                 </div>
                 </>
               )
@@ -247,7 +247,7 @@ function Dashboard( { project_hold, project_completed, project_running, high_pri
                 <>
                 <div>
                   {/* <p>project_name - {task.project_name}</p> */}
-                  <p>{task.task_title}-<span className={task.task_priority}>{task.task_priority}</span></p>
+                  <p className="task-medium">{task.task_title}<span className={task.task_priority}>{task.task_priority}</span></p>
                 </div>
                 </>
               )
@@ -257,7 +257,7 @@ function Dashboard( { project_hold, project_completed, project_running, high_pri
                 <>
                 <div>
                   {/* <p>project_name - {task.project_name}</p> */}
-                  <p>{task.task_title}-<span className={task.task_priority}>{task.task_priority}</span></p>
+                  <p className="task-low">{task.task_title}<span className={task.task_priority}>{task.task_priority}</span></p>
                 </div>
                 </>
               )

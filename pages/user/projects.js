@@ -198,6 +198,7 @@ function Projects({project}) {
     
   return (
     <>
+          <h2 className="title-user-project">My Project</h2>
           <table className="project-data">
             <tr className="project-data-title">
               <th colspan="2" className="title">Task name </th>
@@ -257,7 +258,7 @@ function Projects({project}) {
                               
                               <GridItem xs={12} sm={12} md={12} key={project.project_id}>
                                 <Card>
-                                  <CardHeader color="primary">
+                                  <CardHeader color="primary" className="user">
                                     <h4>{project.project_title}</h4>
                                       <div className={classes.close}>
                                         <a onClick={close}>&times;</a>
@@ -266,14 +267,14 @@ function Projects({project}) {
                                   <CardBody>
                                       <GridContainer>
                                         <GridItem>
-                                          <p>Project Language - {project.project_language}</p>
-                                          <p>Project Person - {project.project_person}</p>
-                                          <p>Project Description - {project.project_description}</p>
-                                          <p>Department - {project.project_department}</p>
-                                          <p>Project Status - {project.project_status}</p>
+                                          <p><span class="user-editbtn">Project Language</span> - {project.project_language}</p>
+                                          <p><span class="user-editbtn">Project Person</span> - {project.project_person}</p>
+                                          <p><span class="user-editbtn">Project Description</span> - {project.project_description}</p>
+                                          <p><span class="user-editbtn">Department</span> - {project.project_department}</p>
+                                          <p><span class="user-editbtn">Project Status</span> - <span className={project.project_status}>{project.project_status}</span></p>
                                         </GridItem>
                                         <GridItem>
-                                          <p className="projectPriority">{project.project_priority} Priority</p>
+                                          <p className={project.project_priority}>{project.project_priority} Priority</p>
                                         </GridItem>
                                       </GridContainer>
 
