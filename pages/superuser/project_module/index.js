@@ -2,9 +2,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useRouter } from 'next/router';
 import { makeStyles } from "@material-ui/core/styles";
-// layout for this page
 import SuperUser from "layouts/SuperUser.js";
-
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import Table from "components/Table/Table.js";
@@ -95,15 +93,15 @@ const styles = {
 export async function getServerSideProps(){
   const res = await fetch(`${server}/api/project`);
   const project_details = await res.json();
-  
+  // console.log(project_details);
   const response = await fetch(`${server}/api/admin`)
   const User_name = await response.json();
 
   return{ props: {project_details, User_name} }
 }
 
-function ProjectModule( { project_details , User_name } ) {
-  // console.log(project_details);
+function Dashboard( { project_details , User_name } ) {
+
   const [cookies, setCookie] = useCookies(['name']);
 
   const useStyles = makeStyles(styles);
@@ -119,16 +117,16 @@ function ProjectModule( { project_details , User_name } ) {
   var yyyy = today.getFullYear();
 
   today = yyyy + '/' + mm + '/' + dd;
-  console.log(today);
+  // console.log(today);
 
   //for On_track
   const On_track = [];
-  console.log(On_track)
+  // console.log(On_track)
 
   //for Off_track
   const Off_track = [];
-  console.log(Off_track)
-  
+  // console.log(Off_track)
+
   const deleteProject = async(id) =>{
     console.log('delete');
     console.log(id);
@@ -158,8 +156,6 @@ function ProjectModule( { project_details , User_name } ) {
   const [ userID , setUserId] = useState();
 
   const userId = async(id) =>{
-    console.log("cookies");
-    console.log(id);
 
     const added_By = [];
     const user = await fetch(`${server}/api/user_dashboard/${id}`)
@@ -173,7 +169,7 @@ function ProjectModule( { project_details , User_name } ) {
   }
   const add_user = [];
   add_user.push(userID);
-  console.log(add_user);
+  console.log(userID)
 
   const projectId = async(id) =>{
     console.log('update project id');
@@ -218,6 +214,7 @@ function ProjectModule( { project_details , User_name } ) {
   for(var i=0; i<projectMember.length; i++){
     allSelectedMember.push({'label' :projectMember[i] , 'value' : projectMember[i]});
   }
+  console.log("projectMember", projectMember)
 
   const toastId = React.useRef(null);
   const updateProject = async() =>{
@@ -390,10 +387,10 @@ useEffect(() =>{
                             <option value=""  disabled selected>Select Your Department...</option>
                             <option value="HR">HR</option>
                             <option value="UI & UX">UI & UX</option>
-                            <option value="Web development">Web development</option>
-                            <option value="Content writer">Content writer</option>
-                            <option value="Project manager">Project manager</option>
-                            <option value="Mobile App developer">Mobile App developer</option>
+                            <option value="Web Developer">Web Developer</option>
+                            <option value="Content Writer">Content Writer</option>
+                            <option value="Project Manager">Project Manager</option>
+                            <option value="Mobile App Developer">Mobile App Developer</option>
                             <option value="SEO">SEO</option>
                           </select>
                           <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
@@ -478,8 +475,6 @@ useEffect(() =>{
                   
                     <GridItem xs={12} sm={12} md={6}>
                         <div className="form-group">
-                          {/*<input type="text" className="form-control signup-input" placeholder="Status" {...register('status',  { required: "Please enter your Status", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
-                          <div className="error-msg">{errors.status && <p>{errors.status.message}</p>}</div>*/}
                           <span>Project Status</span><span className="required">*</span>
                           <select name="Status" id="Status" className="form-control signup-input" {...register('project_status', {required:true ,message:'Please select atleast one option', })}>
                             <option value=""  disabled selected>Select Project Status</option>
@@ -549,7 +544,7 @@ useEffect(() =>{
         <a href={`${server}/superuser/project_module`}>All</a>
         <a href={`${server}/superuser/project_module/project_department/HR`}>HR</a>
         <a href={`${server}/superuser/project_module/project_department/UI & UX`}>UI & UX</a>
-        <a href={`${server}/superuser/project_module/project_department/Web development`}>Web Development</a>
+        <a href={`${server}/superuser/project_module/project_department/Web development`}>Web Developer</a>
         <a href={`${server}/superuser/project_module/project_department/Content writer`}>Content Writer</a>
         <a href={`${server}/superuser/project_module/project_department/Project manager`}>Project Manager</a>
         <a href={`${server}/superuser/project_module/project_department/Mobile App developer`}>Mobile App Developer</a>
@@ -579,65 +574,63 @@ useEffect(() =>{
 
     {project_details.map((project)=>{
 
-      const isInArray = project.project_person.includes(cookies.name);
-      // console.log(isInArray); 
-      if(isInArray==true){
-        // console.log("True")
-      }
-      else{
-        // console.log("false")
-      }
-      if(project.project_delete == "no"){
+if(project.project_delete == "no"){
 
-      // if(status.project_status == project.project_status){
+// if(status.project_status == project.project_status){
 
-      var person = project.project_person.split(",");
-      const MySQLDate  = project.project_deadline;
-      let date = MySQLDate.replace(/[-]/g, '/').substr(0,10);
-      console.log(date)
+  var person = project.project_person.split(",");
+ 
+  // console.log(project.project_status)
+  const MySQLDate  = project.project_deadline;
+  let date = MySQLDate.replace(/[-]/g, '/').substr(0,10);
+  // console.log(date)
 
-      if(project.project_status=="running")
-      {
+  if(project.project_status=="running")
+  {
+    
+    if(date>today)
+    {
+      On_track.push(project.project_id);
+    }
+    else
+    {
+      Off_track.push(project.project_id);
+    }
+  }
+  const isInArray = project.project_person.includes(cookies.name);
+  // console.log(isInArray); 
+  if(isInArray==true){
+    console.log("True")
+  }
+  else{
+    console.log("false")
+  }
+return(
+  <>
+    <GridItem xs={12} sm={6} md={9}>
+
+  <form>
+    <Card className="projects">
+      <CardHeader color="primary" className="project-block">
+
+        {/* <img src={`${server}/reactlogo.png`} className={classes.img}/> */}
+        <div className="project-content">
+        <h4 className="projectTitle">{project.project_title}</h4>
         
-        if(date>today)
-        {
-          console.log("On track", project.project_id);
-          On_track.push(project.project_id);
-          console.log(On_track)
-        }
-        else
-        {
-          console.log("off track", project.project_id);
-
-          Off_track.push(project.project_id);
-          console.log(Off_track)
-        }
-      }
-
-      return(
-        <>
-          <GridItem xs={12} sm={6} md={9}>
-            <form>
-            <Card className= "projects">
-              <CardHeader color="primary" className="project-block">
-                {/* <img src={`${server}/reactlogo.png`} className={classes.img}/> */}
-                <div className="project-content">
-                <h4 className="projectTitle">{project.project_title}</h4>        
-                <div className="icon-display">
-                <span className={project.project_priority}>{project.project_priority}</span>
-                <span className={project.project_status}>
-                  {(project.project_status=="on hold") ? "On Hold" : "" }
-                  {(project.project_status=="completed") ? "Completed" : "" }
-                  {(project.project_status=="running") ? (date>today) ? "On track": "Off track" : "" }
-                </span>
-                {/* <span className={project.project_priority}>{project.project_priority}</span> */}
-                {person.map((project_person) => {
-                  return(
-                    <div className="chip">
-                      <span>{project_person}</span>
-                    </div>
-                  )
-                })
+        <div className="icon-display">
+        <span className={project.project_priority}>{project.project_priority}</span>
+        <span className={project.project_status}>
+          {(project.project_status=="on hold") ? "On Hold" : "" }
+          {(project.project_status=="completed") ? "Completed" : "" }
+          {(project.project_status=="running") ? (date>today) ? "On track": "Off track" : "" }
+        </span>
+        {person.map((project_person) => {
+          return(
+            <div className="chip">
+              <span>{project_person}</span>
+            </div>
+          )
+        })
 
         }
         {/* <span className="project_person">{project.project_person}</span> */}
@@ -653,7 +646,7 @@ useEffect(() =>{
 
                   <GridContainer>
                     <GridItem>
-                      <h4 className={classes.cardTitleWhite}>Edit Project</h4>
+                      <h4 className={classes.cardTitleWhite}>Edit Project{project.project_created_date}</h4>
                       <p className={classes.cardCategoryWhite}>Update your project details</p>
                     </GridItem>
 
@@ -694,10 +687,10 @@ useEffect(() =>{
                                 <option value="HR">HR</option>
                                 <option value="UI & UX">UI & UX</option>
                                 <option value="Testing">Testing</option>
-                                <option value="Web development">Web development</option>
-                                <option value="Content writer">Content writer</option>
-                                <option value="Project manager">Project manager</option>
-                                <option value="Mobile App developer">Mobile App developer</option>
+                                <option value="Web development">Web Development</option>
+                                <option value="Content writer">Content Writer</option>
+                                <option value="Project manager">Project Manager</option>
+                                <option value="Mobile App developer">Mobile App Developer</option>
                                 <option value="SEO">SEO</option>
                               </select>
                               <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
@@ -792,8 +785,7 @@ useEffect(() =>{
 
                       <GridContainer>
                       <GridItem xs={12} sm={12} md={12}>
-                          <div className="form-group">
-                          
+                          <div className="form-group">     
                           <span>Project Members</span><span className="required">*</span>
                             <Multiselect
                               displayValue="value"
@@ -809,7 +801,7 @@ useEffect(() =>{
                           </div> 
                         </GridItem>
                       </GridContainer><br/>
-
+                              
                       <GridContainer>
                         <GridItem xs={12} sm={12} md={12}>
                           <div className="form-group">
@@ -837,7 +829,7 @@ useEffect(() =>{
               )}
               </Popup>
 
-                      <Popup trigger={<a><MdDelete/></a>} modal>
+                      <Popup trigger={<a className="icon-edit-delete"><MdDelete/></a>} modal>
                         {close => (
                           <div>
                           <Card>                            
@@ -890,5 +882,5 @@ useEffect(() =>{
   );
 }
 
-ProjectModule.layout = SuperUser;
-export default ProjectModule;
+Dashboard.layout = SuperUser;
+export default Dashboard;
