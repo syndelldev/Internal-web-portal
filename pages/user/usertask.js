@@ -296,7 +296,7 @@ function Dashboard({task}) {
                 // console.log(task.task_id)
               }
               return(
-                <tr className="project-data-details" style="background-color: white;">
+                <tr className="project-data-details">
                   <td colspan="2"><h4 className="projectTitle">{task.task_title}</h4></td>
                   <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
                   <td className="status-data">
