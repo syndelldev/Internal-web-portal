@@ -1,8 +1,7 @@
 import { executeQuery } from "../../../config/db";
 
 export default async function handler(req, res) {
-    // const { message } = req.body;
-    console.log(req.body)
+    console.log(req.body);
 
     try{
         let person=await executeQuery( " INSERT INTO `tbl_comment` ( `task_id`, `username`, `comment`, `creation_time`) VALUES (?,?,?,?) " , [ req.body.task_id, req.body.username, req.body.message, req.body.created_D ] );

@@ -31,12 +31,7 @@ import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 
-const ReactQuill = dynamic(import('react-quill'), { ssr: false })
-// import ReactQuill, { Quill } from "react-quill";
-
-// #1 import quill-image-uploader
-// import ImageUploader from "quill-image-uploader";
-
+const ReactQuill = dynamic(import('react-quill'), { ssr: false });
 
 const styles = {
   cardCategoryWhite: {
@@ -172,7 +167,7 @@ function Dashboard({task}) {
     var addComment = await axios.post(`${server}/api/comment/addcomment`, {  username: cookies.name, message: value , task_id: task_id, created_D: date });
     console.log(addComment)
     console.log(cookies.name)
-    // router.reload(`${server}/user/usertask`);
+    router.reload(`${server}/user/usertask`);
   }
 
   //for Time Declration
@@ -191,13 +186,6 @@ function Dashboard({task}) {
     // const data = await comment_Data.json();
     console.log("task id");
     console.log(comment_Data.data);
-
-    // const res = await fetch(`${server}/api/project/update_project`,{
-    //   method: "PUT",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({ project_id:uoption.project_id, project_person: allMember, project_status:uoption.project_status , project_department:uoption.project_department ,  project_title: uoption.project_title , project_description:uoption.project_description , project_language:uoption.project_language, project_comment:uoption.project_comment, project_priority:uoption.project_priority, project_start: startDate , project_deadline: endDate }),
-    // });
-
   }
   console.log(TimeData)
   const [userdata, setuserdata] = useState({
@@ -257,7 +245,7 @@ function Dashboard({task}) {
       if(commentId.data != ""){
         setEditComment(commentId.data[0].comment);
         console.log(commentEdit);
-    }
+      }
     }
     
     const updateComment = async(id, comment) =>{
