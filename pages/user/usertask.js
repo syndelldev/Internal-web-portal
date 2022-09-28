@@ -186,6 +186,18 @@ function Dashboard({task}) {
     var timedata = await axios.post(`${server}/api/comment/task_time`, { task_id: task_id });
     setTime(timedata.data[0])
     setTimeData(timedata.data)
+
+    const comment_Data = await axios.post(`${server}/api/comment/userComments`, { task_id: task_id, u_name: cookies.name });
+    // const data = await comment_Data.json();
+    console.log("task id");
+    console.log(comment_Data.data);
+
+    // const res = await fetch(`${server}/api/project/update_project`,{
+    //   method: "PUT",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify({ project_id:uoption.project_id, project_person: allMember, project_status:uoption.project_status , project_department:uoption.project_department ,  project_title: uoption.project_title , project_description:uoption.project_description , project_language:uoption.project_language, project_comment:uoption.project_comment, project_priority:uoption.project_priority, project_start: startDate , project_deadline: endDate }),
+    // });
+
   }
   console.log(TimeData)
   const [userdata, setuserdata] = useState({
@@ -249,8 +261,8 @@ function Dashboard({task}) {
     }
     
     const updateComment = async(id, comment) =>{
-      console.log(comment);
-      console.log(id);
+      // console.log(comment);
+      // console.log(id);
       var comment = await axios.post(`${server}/api/comment/updateComment`, { comment_id: id, user: cookies.name, comment:comment });
       router.reload(`${server}/user/usertask`);
     }
@@ -265,7 +277,7 @@ function Dashboard({task}) {
         {users.map((user)=>{
           return(
             <div key={user.id}>
-              <h1>Welcome {user.username} </h1>
+              <h1>My Tasks</h1>
             </div>
           )
         })}
@@ -283,17 +295,17 @@ function Dashboard({task}) {
               var person = task.task_person.split(",");
               const MySQLDate  = task.task_deadline;
               let date = MySQLDate.replace(/[-]/g, '/').substr(0,10);
-              console.log(date)
+              // console.log(date)
               if(date>today)
               {
-                console.count("On track")
+                // console.count("On track")
                 On_track.push(task.task_id); 
-                console.log(task.task_id)
+                // console.log(task.task_id)
               }
               else{
-                console.count("off track")
+                // console.count("off track")
                 Off_track.push(task.task_id);
-                console.log(task.task_id)
+                // console.log(task.task_id)
               }
               return(
                 <tr className="project-data-details">
@@ -495,7 +507,7 @@ function Dashboard({task}) {
                   
                   <td>
                   <Accordion 
-                    style={{ width: 250 }} 
+                    // style={{ width: 250 }} 
                     onClick={()=>{getTime(task.task_id)}} 
                     expanded={expanded === task.task_id}
                     onChange={handleChangePanel(task.task_id)}
@@ -524,6 +536,7 @@ function Dashboard({task}) {
                                 <input value={task.task_id} type="hidden"/>
                                 <p>Estimate Time - {userdata.estimate_time}</p>
                                 <p>Spent Time - {userdata.spent_time} </p>
+                                <span>{}</span>
                               </GridItem>
                             </GridContainer>
                           </>
