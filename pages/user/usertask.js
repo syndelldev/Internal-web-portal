@@ -335,6 +335,7 @@ function Dashboard({task}) {
                                   </GridContainer>
                                   <GridContainer>
                                     <GridItem xs={12} sm={12} md={12} >
+                                      {/*Time Modulule*/}
                                       {TimeData.length==0?(
                                           <>
                                             <form>
@@ -399,6 +400,7 @@ function Dashboard({task}) {
                                             </form>
                                           </>
                                         )}
+                                        {/*Time Modulule*/}
                                       <form>
                                         <div onClick={()=> sendMessage(task.task_id)}>Save</div>
                                       </form>
@@ -487,6 +489,7 @@ function Dashboard({task}) {
                     </AccordionSummary>
                     <AccordionDetails>
                       <Typography>
+                        {/*Time Modulule*/}
                         {TimeData.length==0?(
                           <>
                             <GridContainer>
@@ -509,6 +512,7 @@ function Dashboard({task}) {
                             </GridContainer>
                           </>
                         )}
+                        {/*Time Modulule*/}
                       </Typography>
                     </AccordionDetails>
                   </Accordion>
