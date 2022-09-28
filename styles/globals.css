@@ -565,6 +565,8 @@ img.gif-image {
     margin-left: 3%;
     position: inherit;
     margin-top: 3%;
+    max-width: 100%;
+    flex-basis: 100%;
 }
 h2.title-user-project {
   font-weight: 500;
