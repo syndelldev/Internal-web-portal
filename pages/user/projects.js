@@ -23,9 +23,10 @@ import { useCookies } from 'react-cookie';
 import { Button } from "@material-ui/core";
 import dynamic from "next/dynamic";
 import 'react-quill/dist/quill.snow.css';
+import "react-quill/dist/quill.bubble.css";
 
 
-const ReactQuill = dynamic(import('react-quill'), { ssr: false })
+const ReactQuill = dynamic(import('react-quill'), { ssr: false });
 
 const styles = {
   cardCategoryWhite: {
@@ -84,7 +85,6 @@ const styles = {
 
 
 export async function getServerSideProps(context){
-  //console.log(context.req.cookies);
   const res = await fetch(`${server}/api/user_dashboard`, {
     headers: {
       'Access-Control-Allow-Credentials': true,
@@ -108,10 +108,10 @@ function Projects({project}) {
 
     //Date Declration
     const On_track = [];
-    console.log("On_track",On_track)
+    // console.log("On_track",On_track)
   
     const Off_track = [];
-    console.log("Off_track",Off_track)
+    // console.log("Off_track",Off_track)
   
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
@@ -119,7 +119,7 @@ function Projects({project}) {
     var yyyy = today.getFullYear();
   
     today = yyyy + '/' + mm + '/' + dd;
-    console.log(today);
+    // console.log(today);
 
 
   const [users, setusers] = useState([])
@@ -133,69 +133,66 @@ function Projects({project}) {
   },[])
   // console.log(users)
 
-  const [username, setusername] = useState('');
-  const [message, setmessage] = useState('');
-
   const [comments, setcomments] = useState([]);
   console.log(comments);
   
   const getData = async (project_id)=>{
-
-    // alert(project_id)
-    var comment = await axios.post(`${server}/api/comment/comment`, { project_id: project_id });
-    // console.log(comment.data)
+    var comment = await axios.post(`${server}/api/comment/getProjectName`, { project_id: project_id });
     setcomments(comment.data)
-    // console.log(comments)
   }
   
+  const sendMessage = async (project_id) => {
+    const date = new Date().toLocaleString();
+    console.log("date");
+    console.log(date);
 
-  // const sendMessage = async (project_id) => {
-  //   console.log("comm");
-  //   console.log(value);
+    var addComment = await axios.post(`${server}/api/comment/addProjectComments`, {  username: cookies.name, message: value , project_id: project_id, created_D: date });
+    console.log(addComment)
+    console.log(cookies.name)
+    router.reload(`${server}/user/projects`);
+  }
 
-  //   var addComment = await axios.post(`${server}/api/comment/addcomment`, {  username: cookies.name, message: message , project_id: project_id });
-  //   console.log(addComment)
-  //   console.log(cookies.name)
-  //   // router.reload(`${server}/user/dashboard`);
-  // }
+  const [ value, setValue ] = useState("");
+  const modules = {
+    toolbar: [
+      [{ 'font': [] }],
+      [{ 'size': ['small', false, 'large', 'huge'] }],
+      ['bold', 'italic', 'underline'],
+      [{'list': 'ordered'}, {'list': 'bullet'}],
+      [{ 'align': [] }],
+      [{ 'color': [] }, { 'background': [] }],
+      ['clean'],
+      ['link', 'image', 'video']
+    ]
+  }
 
-  // const [ value, setValue ] = useState("");
-  //   const modules = {
-  //     toolbar: [
-  //       [{ 'font': [] }],
-  //       [{ 'size': ['small', false, 'large', 'huge'] }],
-  //       ['bold', 'italic', 'underline'],
-  //       [{'list': 'ordered'}, {'list': 'bullet'}],
-  //       [{ 'align': [] }],
-  //       [{ 'color': [] }, { 'background': [] }],
-  //       ['clean'],
-  //       ['link', 'image', 'video']
-  //     ]
-  //   }
+  const [commentEdit, setEditComment] = useState();
 
-  //   const [commentEdit, setEditComment] = useState();
+    const editComment = async( id ) =>{
+      console.log("id");
+      console.log(id);
 
-  //   const editComment = async( id ) =>{
-  //     console.log("id");
-  //     console.log(id);
+      var commentId = await axios.post(`${server}/api/comment/comment_id`, { comment_id: id, user: cookies.name });
+      console.log(commentId.data[0]);
 
-  //     var commentId = await axios.post(`${server}/api/comment/comment_id`, { comment_id: id, user: cookies.name });
-  //     console.log(commentId.data[0]);
-
-  //     if(commentId.data != ""){
-  //       setEditComment(commentId.data[0].comment);
-  //       console.log(commentEdit);
-  //   }
-  //   }
+      if(commentId.data != ""){
+        setEditComment(commentId.data[0].comment);
+        console.log("edit");
+        console.log(commentEdit);
+        console.log(commentId.data[0].comment);
+      }
+    }
     
-  //   const updateComment = async(id, comment) =>{
-  //     console.log(comment);
-  //     console.log(id);
-  //     var comment = await axios.post(`${server}/api/comment/updateComment`, { comment_id: id, user: cookies.name, comment:comment });
-  //     router.reload(`${server}/user/usertask`);
-  //   }
+    const updateComment = async(id, comment) =>{
+      console.log("update");
+      console.log(comment);
+      console.log(id);
+      var comments = await axios.post(`${server}/api/comment/updateComment`, { comment_id: id, user: cookies.name, comment:comment });
+      router.reload(`${server}/user/projects`);
+    }
+    console.log("set comment");
+    console.log(commentEdit);
 
-    
   return (
     <>
           <h2 className="title-user-project">My Project</h2>
@@ -214,17 +211,17 @@ function Projects({project}) {
                 //For Date
                 const MySQLDate  = project.project_deadline;
                 let date = MySQLDate.replace(/[-]/g, '/').substr(0,10);
-                console.log(date)
+                // console.log(date)
                 if(date>today)
                 {
                   console.count("On track")
                   On_track.push(project.project_id); 
-                  console.log(project.project_id)
+                  // console.log(project.project_id)
                 }
                 else{
-                  console.count("off track")
+                  // console.count("off track")
                   Off_track.push(project.project_id);
-                  console.log(project.project_id)
+                  // console.log(project.project_id)
                 }
 
                 return(
@@ -252,7 +249,7 @@ function Projects({project}) {
                     </td>
                     <td>
                       <div className="icon-display">
-                        <Popup trigger={<div> <button disabled={project.edit_rights==0} onClick={()=>getData(project.project_id)} className="user-icon"><FiEdit/></button> </div>}  className="popupReact"  modal >
+                        <Popup trigger={<div> <button disabled={project.edit_rights==0} onClick={()=>getData(project.project_id)} className="user-icon"><FiEdit/></button> </div>}  className="popupReact"  modal nested >
                           {close => (
                             <div>
                               
@@ -280,7 +277,11 @@ function Projects({project}) {
 
                                   <GridContainer>
                                     <GridItem>
-                                      <h5 className="projectPriority">Comments</h5>
+                                      <form>
+                                        <h5 className="projectPriority">Comments</h5>
+                                        <ReactQuill modules={modules} theme="snow" onChange={setValue} />
+                                        <div onClick={()=> sendMessage(project.project_id)}>Save</div>
+                                      </form>
                                     </GridItem>
                                   </GridContainer>
                                   <GridContainer>
@@ -296,15 +297,8 @@ function Projects({project}) {
                                   </GridContainer>
 
                                   {comments.map((m)=>{
-                                    const Date = ((m.creation_time).substr(0,10).split("-",3));
-                                    const Time = ((m.creation_time).substr(11,16).split(":",3));
-                                    var dateP = m.creation_time;
-                                    var textArea = (m.comment).split(`\n`);
-                                    // console.log("textArea");
-                                    // console.log(textArea);
-                                    // if(textArea == ""){
-                                      // function Setcontent() {
-                                      //  }
+                                    // console.log("comments");
+                                    // console.log(comments);
                                       return(
                                         <span>
                                           <GridContainer>
@@ -313,17 +307,50 @@ function Projects({project}) {
                                             </GridItem>
                                                 
                                             <GridItem>
-                                            <span><p>{Date[2]}/{Date[1]}/{Date[0]}</p></span>
+                                            <span><p>{m.creation_time}</p></span>
                                             </GridItem>
                                           </GridContainer>
 
                                           <GridContainer>
                                             <GridItem>
                                               <div>
-                                                <span id="editorOne">{m.comment}</span>
+
+                                              <ReactQuill value={m.comment} theme="bubble" readOnly />
+      <Popup
+        trigger={ <span><button onClick={()=>{ editComment(m.id)} } disabled={ m.username != cookies.name }>Edit</button></span> }
+        className="popupReact"
+        modal
+      >
+        {close => (
+                              <Card>
+                                <CardBody>
+                                      <div className={classes.close}>
+                                        <a onClick={close}>&times;</a>
+                                      </div>
+
+                                  <GridContainer>
+                                    <GridItem xs={12} sm={12} md={12} >
+                                      <form>
+                                        <ReactQuill modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
+                                      </form>
+                                    </GridItem>
+                                  </GridContainer>
+
+                                  <CardFooter>
+                                      <Button color="primary" type="submit"  onClick={() => { updateComment(m.id, commentEdit) }}>Update</Button>
+                                      <Button className="button" onClick={() => { close(); }}> Cancel </Button>
+                                  </CardFooter>
+                                </CardBody>
+                              </Card>
+        )}
+        
+      </Popup>
+
                                               </div>
                                             </GridItem>
                                           </GridContainer>
+
+
                                         </span>
                                       )
                                   })}
