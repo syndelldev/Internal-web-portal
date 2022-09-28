@@ -149,51 +149,51 @@ function Projects({project}) {
   }
   
 
-  // const sendMessage = async (project_id) => {
-  //   console.log("comm");
-  //   console.log(value);
+  const sendMessage = async (project_id) => {
+    console.log("comm");
+    console.log(value);
 
-  //   var addComment = await axios.post(`${server}/api/comment/addcomment`, {  username: cookies.name, message: message , project_id: project_id });
-  //   console.log(addComment)
-  //   console.log(cookies.name)
-  //   // router.reload(`${server}/user/dashboard`);
-  // }
+    var addComment = await axios.post(`${server}/api/comment/addcomment`, {  username: cookies.name, message: message , project_id: project_id });
+    console.log(addComment)
+    console.log(cookies.name)
+    // router.reload(`${server}/user/dashboard`);
+  }
 
-  // const [ value, setValue ] = useState("");
-  //   const modules = {
-  //     toolbar: [
-  //       [{ 'font': [] }],
-  //       [{ 'size': ['small', false, 'large', 'huge'] }],
-  //       ['bold', 'italic', 'underline'],
-  //       [{'list': 'ordered'}, {'list': 'bullet'}],
-  //       [{ 'align': [] }],
-  //       [{ 'color': [] }, { 'background': [] }],
-  //       ['clean'],
-  //       ['link', 'image', 'video']
-  //     ]
-  //   }
+  const [ value, setValue ] = useState("");
+    const modules = {
+      toolbar: [
+        [{ 'font': [] }],
+        [{ 'size': ['small', false, 'large', 'huge'] }],
+        ['bold', 'italic', 'underline'],
+        [{'list': 'ordered'}, {'list': 'bullet'}],
+        [{ 'align': [] }],
+        [{ 'color': [] }, { 'background': [] }],
+        ['clean'],
+        ['link', 'image', 'video']
+      ]
+    }
 
-  //   const [commentEdit, setEditComment] = useState();
+    const [commentEdit, setEditComment] = useState();
 
-  //   const editComment = async( id ) =>{
-  //     console.log("id");
-  //     console.log(id);
+    const editComment = async( id ) =>{
+      console.log("id");
+      console.log(id);
 
-  //     var commentId = await axios.post(`${server}/api/comment/comment_id`, { comment_id: id, user: cookies.name });
-  //     console.log(commentId.data[0]);
+      var commentId = await axios.post(`${server}/api/comment/comment_id`, { comment_id: id, user: cookies.name });
+      console.log(commentId.data[0]);
 
-  //     if(commentId.data != ""){
-  //       setEditComment(commentId.data[0].comment);
-  //       console.log(commentEdit);
-  //   }
-  //   }
+      if(commentId.data != ""){
+        setEditComment(commentId.data[0].comment);
+        console.log(commentEdit);
+    }
+    }
     
-  //   const updateComment = async(id, comment) =>{
-  //     console.log(comment);
-  //     console.log(id);
-  //     var comment = await axios.post(`${server}/api/comment/updateComment`, { comment_id: id, user: cookies.name, comment:comment });
-  //     router.reload(`${server}/user/usertask`);
-  //   }
+    const updateComment = async(id, comment) =>{
+      console.log(comment);
+      console.log(id);
+      var comment = await axios.post(`${server}/api/comment/updateComment`, { comment_id: id, user: cookies.name, comment:comment });
+      router.reload(`${server}/user/usertask`);
+    }
 
     
   return (
