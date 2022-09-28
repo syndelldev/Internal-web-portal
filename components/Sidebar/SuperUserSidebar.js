@@ -132,14 +132,14 @@ export default function Sidebar(props) {
                     <svg className="MuiSvgIcon-root makeStyles-itemIcon-17" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
                       <path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"></path>
                     </svg>
-                    <div className="MuiListItemText-root makeStyles-itemText-19">Projects</div>
+                    <div className="MuiListItemText-root makeStyles-itemText-19">Add Projects</div>
                     <span className="MuiTouchRipple-root"></span>
                   </div>
                 </a>
                 <a className=" makeStyles-item-15" href="/superuser/subtask_module">
                   <div className="MuiButtonBase-root MuiListItem-root makeStyles-itemLink-16undefined MuiListItem-gutters MuiListItem-button" tabIndex="0" role="button" aria-disabled="false">
                     <span className="material-icons MuiIcon-root makeStyles-itemIcon-17  makeStyles-whiteFont-21" aria-hidden="true">content_paste</span>
-                    <div className="MuiListItemText-root makeStyles-itemText-19">Sub Tasks</div>
+                    <div className="MuiListItemText-root makeStyles-itemText-19">Add Tasks</div>
                     <span className="MuiTouchRipple-root"></span>
                   </div>
                 </a>
