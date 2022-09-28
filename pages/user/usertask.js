@@ -352,6 +352,7 @@ function Dashboard({task}) {
                                   </GridContainer>
                                   <GridContainer>
                                     <GridItem xs={12} sm={12} md={12} >
+                                      {/*Time Modulule*/}
                                       {TimeData.length==0?(
                                           <>
                                             <form>
@@ -414,6 +415,7 @@ function Dashboard({task}) {
                                             </form>
                                           </>
                                         )}
+                                        {/*Time Modulule*/}
                                       <form>
 
                                       <ReactQuill modules={modules} theme="snow" onChange={setValue} />
@@ -507,52 +509,30 @@ function Dashboard({task}) {
                     </AccordionSummary>
                     <AccordionDetails>
                       <Typography>
-                        <GridContainer>
-{/* display estimate time */}
-                          <GridItem>
-                            {TimeData.length==0?(
-                              <>
-                                <GridContainer>
-                                  <GridItem>
-                                    <input value={task.task_id} type="hidden"/>
-                                    <p>Estimate Time - {estimate}</p>
-                                    <p>Spent Time - {spent}</p>
-                                  </GridItem>
-                                </GridContainer>
-                              </>
-                              ):(
-                              <>
-                                <GridContainer>
-                                  <GridItem>
-                                    <input value={task.task_id} type="hidden"/>
-                                    <p>Estimate Time - {userdata.estimate_time}</p>
-                                    <p>Spent Time - {userdata.spent_time} </p>
-                                  </GridItem>
-                                </GridContainer>
-                              </>
-                            )}
-                          </GridItem>
-{/* display comments in dropdown */}
-                          <GridItem>
-                            {dropdown_Comments.map((dComment)=>{
-                              return(
-                                <span>
-                                  <GridContainer>
-                                    <GridItem>
-                                      <span>{dComment.username}</span>
-                                    </GridItem>
-                                    <GridItem>
-                                      <ReactQuill value={dComment.comment} theme="bubble" readOnly />
-                                    </GridItem>
-                                    <GridItem>
-                                      <span>{dComment.creation_time}</span>
-                                    </GridItem>
-                                  </GridContainer>
-                                </span>
-                              )
-                            })}
-                          </GridItem>
-                        </GridContainer>
+                        {/*Time Modulule*/}
+                        {TimeData.length==0?(
+                          <>
+                            <GridContainer>
+                              <GridItem>
+                                <input value={task.task_id} type="hidden"/>
+                                <p>Estimate Time - {estimate}</p>
+                                <p>Spent Time - {spent}</p>
+                              </GridItem>
+                            </GridContainer>
+                          </>
+                        ):(
+                          <>
+                            <GridContainer>
+                              <GridItem>
+                                <input value={task.task_id} type="hidden"/>
+                                <p>Estimate Time - {userdata.estimate_time}</p>
+                                <p>Spent Time - {userdata.spent_time} </p>
+                                <p>Username - {userdata.username}</p>
+                              </GridItem>
+                            </GridContainer>
+                          </>
+                        )}
+                        {/*Time Modulule*/}
                       </Typography>
                     </AccordionDetails>
                   </Accordion>
