@@ -5,31 +5,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import Admin from "layouts/Admin.js";
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
-import Table from "components/Table/Table.js";
-import Tasks from "components/Tasks/Tasks.js";
-import CustomTabs from "components/CustomTabs/CustomTabs.js";
-import Danger from "components/Typography/Danger.js";
-import Button from "components/CustomButtons/Button.js";
-import Card from "components/Card/Card.js";
-import CardHeader from "components/Card/CardHeader.js";
-import CardIcon from "components/Card/CardIcon.js";
-import CardBody from "components/Card/CardBody.js";
-import CardFooter from "components/Card/CardFooter.js";
-import { IoMdArrowDropdown } from "react-icons/io";
-import { useForm  } from 'react-hook-form';
-import { bugs, website } from "variables/general.js";
 import { server } from 'config';
 // import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
-import Popup from "reactjs-popup";
-import DatePicker from "react-datepicker";
-import Multiselect from "multiselect-react-dropdown";
-import {
-  dailySalesChart,
-  emailsSubscriptionChart,
-  completedTasksChart,
-} from "variables/charts.js";
-import { FiEdit } from "react-icons/fi";
-import { MdDelete } from 'react-icons/md';
 
 const styles = {
   cardCategoryWhite: {
