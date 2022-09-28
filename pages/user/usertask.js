@@ -163,12 +163,16 @@ function Dashboard({task}) {
   }
   
   const sendMessage = async (task_id) => {
-    console.log(task_id);
+    // console.log(task_id);
+    const date = new Date().toLocaleString();
+    console.log("date");
+    console.log(date);
 
-    var addComment = await axios.post(`${server}/api/comment/addcomment`, {  username: cookies.name, message: value , task_id: task_id, estimate:estimate , spent:spent });
+    // var addComment = await axios.post(`${server}/api/comment/addcomment`, {  username: cookies.name, message: value , task_id: task_id, estimate:estimate , spent:spent, created_D: date });
+    var addComment = await axios.post(`${server}/api/comment/addcomment`, {  username: cookies.name, message: value , task_id: task_id, created_D: date });
     console.log(addComment)
     console.log(cookies.name)
-    router.reload(`${server}/user/usertask`);
+    // router.reload(`${server}/user/usertask`);
   }
 
   //for Time Declration
@@ -251,7 +255,10 @@ function Dashboard({task}) {
       router.reload(`${server}/user/usertask`);
     }
     const [commentTimeM, setTimeM] = useState();
+    console.log("display date");
+    // console.log(new Date().toLocaleString());
   
+
   return (
     <>
       <div>
@@ -419,7 +426,6 @@ function Dashboard({task}) {
                                   {comments.map((m)=>{
                                     const Date = ((m.creation_time).substr(0,10).split("-",3));
                                     const Time = ((m.creation_time).substr(11,16).split(":",2));
-                                    var dateP = m.creation_time;
 
                                       return(
                                         <span>
@@ -429,7 +435,7 @@ function Dashboard({task}) {
                                             </GridItem>
                                                 
                                             <GridItem>
-                                            <span><p>{Date[2]}/{Date[1]}/{Date[0]} {Time[0]}:{Time[1]} </p></span>
+                                            <span><p>{m.creation_time} </p></span>
                                             </GridItem>
                                           </GridContainer>
 
