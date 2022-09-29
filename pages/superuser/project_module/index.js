@@ -35,6 +35,17 @@ import { FiEdit } from "react-icons/fi";
 import { MdDelete } from 'react-icons/md';
 import { useCookies } from 'react-cookie';
 import axios from "axios";
+import dynamic from "next/dynamic";
+import 'react-quill/dist/quill.snow.css';
+import "react-quill/dist/quill.bubble.css";
+
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import Typography from "@material-ui/core/Typography";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+
+const ReactQuill = dynamic(import('react-quill'), { ssr: false });
 
 
 const styles = {
@@ -119,19 +130,19 @@ function ProjectModule( { project_details , User_name } ) {
   var yyyy = today.getFullYear();
 
   today = yyyy + '/' + mm + '/' + dd;
-  console.log(today);
+  // console.log(today);
 
   //for On_track
   const On_track = [];
-  console.log(On_track)
+  // console.log(On_track)
 
   //for Off_track
   const Off_track = [];
-  console.log(Off_track)
+  // console.log(Off_track)
   
   const deleteProject = async(id) =>{
     console.log('delete');
-    console.log(id);
+    // console.log(id);
 
     const res = await fetch(`${server}/api/project/${id}`);
     router.push(`${server}/admin/project_module`);
@@ -175,9 +186,13 @@ function ProjectModule( { project_details , User_name } ) {
   add_user.push(userID);
   console.log(add_user);
 
+  const [comments, setcomments] = useState([]);
+
   const projectId = async(id) =>{
     console.log('update project id');
     console.log(id);
+    var comment = await axios.post(`${server}/api/comment/getProjectComment`, { project_id: id });
+    setcomments(comment.data)
 
     const response = await fetch(`${server}/api/project/update/${id}`)
     const update_data = await response.json();
@@ -327,6 +342,36 @@ useEffect(() =>{
   }
   u_data();
 },[]);
+
+const [ value, setCommentValue ] = useState("");
+const modules = {
+  toolbar: {
+    container: [
+    [{ 'font': [] }],
+    [{ 'size': ['small', false, 'large', 'huge'] }],
+    ['bold', 'italic', 'underline'],
+    [{'list': 'ordered'}, {'list': 'bullet'}],
+    [{ 'align': [] }],
+    [{ 'color': [] }, { 'background': [] }],
+    ['clean'],
+    ['link', 'image', 'video']
+  ],
+  handlers: {
+      // image: imageHandler,
+  }
+ }
+}
+
+const sendMessage = async (project_id) => {
+  const date = new Date().toLocaleString();
+  console.log("date");
+  console.log(date);
+
+  var addComment = await axios.post(`${server}/api/comment/addProjectComments`, {  username: cookies.name, message: value , project_id: project_id, created_D: date });
+  console.log(addComment)
+  console.log(cookies.name)
+  router.reload(`${server}/superuser/project_module`);
+}
 
 
   return (
@@ -518,8 +563,8 @@ useEffect(() =>{
                   <GridContainer>
                     <GridItem xs={12} sm={12} md={12}>
                       <div className="form-group">
-                      <span>Comments</span>
-                        <textarea className="form-control signup-input" placeholder="Comment" {...register('project_comment')} />
+                      <span>Attachment</span>
+                        <input type="file" className="form-control signup-input" placeholder="file" {...register('project_attachment')} />
                         <div className="error-msg">{errors.position && <span>{errors.position.message}</span>}</div>
                       </div> 
                     </GridItem>
@@ -809,16 +854,7 @@ useEffect(() =>{
                           </div> 
                         </GridItem>
                       </GridContainer><br/>
-
-                      <GridContainer>
-                        <GridItem xs={12} sm={12} md={12}>
-                          <div className="form-group">
-                          <span>Comments</span>
-                            <textarea className="form-control signup-input" name="project_comment" value={uoption.project_comment} onChange={handleChange} placeholder="Comment" />
-                          </div> 
-                        </GridItem>
-                      </GridContainer>
-                      
+                    
                     </CardBody>
 
                     <CardFooter>
@@ -826,6 +862,33 @@ useEffect(() =>{
                         <Button className="button" onClick={() => { close(); }}> Cancel </Button>
                     </CardFooter>
                     
+                    <CardBody>
+                      <GridContainer>
+                        <GridItem>
+                          <ReactQuill modules={modules} theme="snow" onChange={setCommentValue} />
+                          <div onClick={()=> sendMessage(project.project_id)}>Comment</div>
+                        </GridItem>
+                      </GridContainer>
+                    </CardBody>
+
+                    
+                    {comments.map((superuserComment)=>{
+                      return(
+                        <span>
+                          <GridContainer>
+                            <GridItem>
+                              <span>{superuserComment.username}</span><p>Comments</p>
+                            </GridItem>
+                          </GridContainer>
+                        </span>
+                      )
+                    })
+
+                    }
+                    
+
+
+
                   </Card>
               </form>
               </GridItem>
