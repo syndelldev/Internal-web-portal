@@ -569,3 +569,8 @@ button.addproject{
   width: 95%!important;
   margin-left: auto;
 }
+.task_title{
+  padding: 20px;
+  font-size: 18px;
+  cursor: pointer;
+}

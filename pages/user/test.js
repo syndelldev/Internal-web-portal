@@ -112,6 +112,13 @@ function Dashboard({task}) {
   const [cookies, setCookie] = useCookies('');
   //console.log(cookies.Id);
 
+  //For Accordin
+  const [expanded, setExpanded] = useState(false);
+  const handleChangePanel = panel => (event, isExpanded) => {
+    console.log(panel)
+    console.log(isExpanded)
+    setExpanded(isExpanded ? panel : false);
+  };
   //Date Declration
   const On_track = [];
   console.log("On_track",On_track)
@@ -305,23 +312,6 @@ function Dashboard({task}) {
     }
     }
 
-    const [onhold_title, setonhold_title] = useState(false);
-    const [todo_title, settodo_title] = useState(false);
-    const [running_title, setrunning_title] = useState(false);
-    const [completed_title, setcompleted_title] = useState(false);
-    
-    const [active, setActive] = useState();
-    const onToggle = (task_id) => {
-      alert(task_id)
-      // setActive(task_id === active ? null : task_id);
-    };
-
-    const [openKey, setOpenKey] = useState()
-    const handleToggle = key => {
-      setOpenKey(openKey !== key ? key : null)
-    }
-
-
   return (
     <>
       <div>
@@ -333,28 +323,17 @@ function Dashboard({task}) {
           )
         })}
       </div>
-      
       <div>
         {/*TaskToDo task Start*/}
         <Card>
           <GridContainer>
             <GridItem xs={12} sm={12} md={12}>
-            <div onClick={()=> { taskToDo("task_toDo") , closeTaskToDo("task_toDo") , settodo_title(!todo_title) }} className="task_title" >Task to do </div>
+            <div onClick={()=> { taskToDo("task_toDo") , closeTaskToDo("task_toDo") }}>Task to do </div>
             </GridItem>
           </GridContainer>
         </Card>
-        {todo_title ? (
-          <>
-            <table className="project-data" >
-              <tr className="project-data-title">
-                <th colspan="2" className="title">Task name </th>
-                <th>Priority</th>
-                <th colspan="2" className="status">Status</th>
-                <th colspan="2" className="assignee">Assignee</th>
-                <th colspan="4"className="view-edit">View & Edit</th>
-              </tr>
-              {task.map((task)=>{
-              if(task.task_status == taskTodo){
+        {task.map((task)=>{
+            if(task.task_status == taskTodo){
               var person = task.task_person.split(",");
               const MySQLDate  = task.task_deadline;
               let date = MySQLDate.replace(/[-]/g, '/').substr(0,10);
@@ -366,31 +345,29 @@ function Dashboard({task}) {
               else{
                 Off_track.push(task.task_id);
               }
-              return(  
-                  <tr key={task.task_id} >
-                    <td colspan="2"><h4 className="projectTitle">{task.task_title}</h4></td>
-                    <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
-                    <td className="status-data">
-                      <span>
-                        {(task.task_status=="taskOn_hold") ? "On Hold" : "" }
-                        {(task.task_status=="task_completed") ? "Completed" : "" }
-                        {(task.task_status=="task_toDo") ? "To Do Task" : "" }
-                        {(task.task_status=="task_Running") ? (date>today) ? "On track": "Off track" : "" }
-                      </span>
-                    </td>
-                    <td colspan="4" className="assignee-data">
-                    {person.map((task_person) => {
-                      return(
-                        <div className="chip">
-                          <span>{task_person}</span>
-                        </div>
-                      )
-                      })
-                    }
-                    </td>
-                    <td>
-                      <div className="icon-display">
-                      <Popup trigger={<div> <a onClick={()=>{getData(task.task_id);getTime(task.task_id)}} className="user-icon"><FiEdit/></a> </div>}  className="popupReact"  modal nested >
+                return(
+                  <Accordion 
+                    color="primary" className="project-block"
+                    onClick={()=>{getTime(task.task_id)}} 
+                    expanded={expanded === task.task_id}
+                    onChange={handleChangePanel(task.task_id)}
+                  >
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" >
+                      <Typography style={{ fontWeight: 10,}}>
+                      <form>
+                        <div className="project-content">
+                          <h4 className="projectTitle">{task.task_title}</h4>
+                          <p className={task.task_priority}>{task.task_priority}</p>
+                          {person.map((task_person) => {
+                            return(
+                              <div className="chip">
+                                <span>{task_person}</span>
+                              </div>
+                              )
+                            })
+                          }
+                          <div className="icon-display">
+                            <Popup trigger={<div><a onClick={()=>{getData(task.task_id);getTime(task.task_id)}} className="user-icon"><FiEdit/></a> </div>}  className="popupReact"  modal nested >
                             {close => (
                               <div>
                               <GridItem xs={12} sm={12} md={12} key={task.task_id}>
@@ -552,36 +529,75 @@ function Dashboard({task}) {
                             </div>
                           )}
                         </Popup>
-
-                      </div>
-                    </td>
-                  </tr>
-              )}
-            })}
-            </table>
-          </>
-        ) : ("")}
+                          </div>
+                        </div>
+                        </form>
+                      </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Typography>
+                        {/*Time Modulule*/}
+                        {TimeData.length==0?(
+                          <>
+                            <GridContainer>
+                              <GridItem>
+                                <input value={task.task_id} type="hidden"/>
+                                <p>Estimate Time - {estimate}</p>
+                                <p>Spent Time - {spent}</p>
+                              </GridItem>
+                            </GridContainer>
+                          </>
+                        ):(
+                          <>
+                            <GridContainer>
+                              <GridItem>
+                                <input value={task.task_id} type="hidden"/>
+                                <p>Estimate Time - {userdata.estimate_time}</p>
+                                <p>Spent Time - {userdata.spent_time} </p>
+                                {/* <p>Username - {userdata.username}</p> */}
+                              </GridItem>
+                            </GridContainer>
+                          </>
+                        )}
+                        {/*Time Modulule*/}
+                        {/* display comments in dropdown */}
+                          <GridItem>
+                            {dropdown_Comments.map((dComment)=>{
+                              return(
+                                <span>
+                                  <GridContainer>
+                                    <GridItem>
+                                      <span>{dComment.username}</span>
+                                    </GridItem>
+                                    <GridItem>
+                                      <ReactQuill value={dComment.comment} theme="bubble" readOnly />
+                                    </GridItem>
+                                    <GridItem>
+                                      <span>{dComment.creation_time}</span>
+                                    </GridItem>
+                                  </GridContainer>
+                                </span>
+                              )
+                            })}
+                          </GridItem>
+                      </Typography>
+                    </AccordionDetails>
+                  </Accordion>   
+                )
+              }
+            })  
+          }
         {/*TaskToDo task End*/}
         {/*Running task Start*/}
         <Card>
           <GridContainer>
-            <GridItem xs={12} sm={12} md={12} >
-              <div onClick={()=> { taskRunning("task_Running") , closeTaskRunning("task_Running") ,setrunning_title(!running_title) }} className="task_title" >Task Running</div>
+            <GridItem xs={12} sm={12} md={12}>
+              <div onClick={()=> { taskRunning("task_Running") , closeTaskRunning("task_Running") }}>Task Running</div>
             </GridItem>
           </GridContainer>
         </Card>
-        {running_title ? (
-          <>
-            <table className="project-data" >
-              <tr className="project-data-title">
-                <th colspan="2" className="title">Task name </th>
-                <th>Priority</th>
-                <th colspan="2" className="status">Status</th>
-                <th colspan="2" className="assignee">Assignee</th>
-                <th colspan="4"className="view-edit">View & Edit</th>
-              </tr>
-              {task.map((task)=>{
-              if(task.task_status == TaskRunning){
+        {task.map((task)=>{
+            if(task.task_status == TaskRunning){
               var person = task.task_person.split(",");
               const MySQLDate  = task.task_deadline;
               let date = MySQLDate.replace(/[-]/g, '/').substr(0,10);
@@ -593,31 +609,29 @@ function Dashboard({task}) {
               else{
                 Off_track.push(task.task_id);
               }
-              return(  
-                  <tr key={task.task_id}>
-                    <td colspan="2"><h4 className="projectTitle">{task.task_title}</h4></td>
-                    <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
-                    <td className="status-data">
-                      <span>
-                        {(task.task_status=="taskOn_hold") ? "On Hold" : "" }
-                        {(task.task_status=="task_completed") ? "Completed" : "" }
-                        {(task.task_status=="task_toDo") ? "To Do Task" : "" }
-                        {(task.task_status=="task_Running") ? (date>today) ? "On track": "Off track" : "" }
-                      </span>
-                    </td>
-                    <td colspan="4" className="assignee-data">
-                    {person.map((task_person) => {
-                      return(
-                        <div className="chip">
-                          <span>{task_person}</span>
-                        </div>
-                      )
-                      })
-                    }
-                    </td>
-                    <td>
-                      <div className="icon-display">
-                      <Popup trigger={<div> <a onClick={()=>{getData(task.task_id);getTime(task.task_id)}} className="user-icon"><FiEdit/></a> </div>}  className="popupReact"  modal nested >
+                return(
+                  <Accordion 
+                    color="primary" className="project-block"
+                    onClick={()=>{getTime(task.task_id)}} 
+                    expanded={expanded === task.task_id}
+                    onChange={handleChangePanel(task.task_id)}
+                  >
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" >
+                      <Typography style={{ fontWeight: 10,}}>
+                      <form>
+                        <div className="project-content">
+                          <h4 className="projectTitle">{task.task_title}</h4>
+                          <p className={task.task_priority}>{task.task_priority}</p>
+                          {person.map((task_person) => {
+                            return(
+                              <div className="chip">
+                                <span>{task_person}</span>
+                              </div>
+                              )
+                            })
+                          }
+                          <div className="icon-display">
+                            <Popup trigger={<div> <a onClick={()=>{getData(task.task_id);getTime(task.task_id)}} className="user-icon"><FiEdit/></a> </div>}  className="popupReact"  modal nested >
                             {close => (
                               <div>
                               <GridItem xs={12} sm={12} md={12} key={task.task_id}>
@@ -779,35 +793,75 @@ function Dashboard({task}) {
                             </div>
                           )}
                         </Popup>
-                      </div>
-                    </td>
-                  </tr>
-              )}
-            })}
-            </table>
-          </>
-        ) : ("")}
+                          </div>
+                        </div>
+                        </form>
+                      </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Typography>
+                        {/*Time Modulule*/}
+                        {TimeData.length==0?(
+                          <>
+                            <GridContainer>
+                              <GridItem>
+                                <input value={task.task_id} type="hidden"/>
+                                <p>Estimate Time - {estimate}</p>
+                                <p>Spent Time - {spent}</p>
+                              </GridItem>
+                            </GridContainer>
+                          </>
+                        ):(
+                          <>
+                            <GridContainer>
+                              <GridItem>
+                                <input value={task.task_id} type="hidden"/>
+                                <p>Estimate Time - {userdata.estimate_time}</p>
+                                <p>Spent Time - {userdata.spent_time} </p>
+                                {/* <p>Username - {userdata.username}</p> */}
+                              </GridItem>
+                            </GridContainer>
+                          </>
+                        )}
+                        {/*Time Modulule*/}
+                        {/* display comments in dropdown */}
+                          <GridItem>
+                            {dropdown_Comments.map((dComment)=>{
+                              return(
+                                <span>
+                                  <GridContainer>
+                                    <GridItem>
+                                      <span>{dComment.username}</span>
+                                    </GridItem>
+                                    <GridItem>
+                                      <ReactQuill value={dComment.comment} theme="bubble" readOnly />
+                                    </GridItem>
+                                    <GridItem>
+                                      <span>{dComment.creation_time}</span>
+                                    </GridItem>
+                                  </GridContainer>
+                                </span>
+                              )
+                            })}
+                          </GridItem>
+                      </Typography>
+                    </AccordionDetails>
+                  </Accordion>   
+                )
+              }
+            })  
+          }
         {/*Running task End*/}
         {/*On Hold task Start*/}
         <Card>
           <GridContainer>
             <GridItem xs={12} sm={12} md={12}>
-            <div onClick={()=> { taskOnHold("taskOn_hold") , closeTaskOnHold("taskOn_hold") , setonhold_title(!onhold_title) }} className="task_title" >Task on hold</div>
+            <div onClick={()=> { taskOnHold("taskOn_hold") , closeTaskOnHold("taskOn_hold") }}>Task on hold</div>
             </GridItem>
           </GridContainer>
         </Card>
-        {onhold_title ? (
-          <>
-            <table className="project-data" >
-              <tr className="project-data-title">
-                <th colspan="2" className="title">Task name </th>
-                <th>Priority</th>
-                <th colspan="2" className="status">Status</th>
-                <th colspan="2" className="assignee">Assignee</th>
-                <th colspan="4"className="view-edit">View & Edit</th>
-              </tr>
-              {task.map((task)=>{
-              if(task.task_status == TaskOnHold){
+          {task.map((task)=>{
+            if(task.task_status == TaskOnHold){
               var person = task.task_person.split(",");
               const MySQLDate  = task.task_deadline;
               let date = MySQLDate.replace(/[-]/g, '/').substr(0,10);
@@ -819,31 +873,30 @@ function Dashboard({task}) {
               else{
                 Off_track.push(task.task_id);
               }
-              return(  
-                  <tr>
-                    <td colspan="2"><h4 className="projectTitle">{task.task_title}</h4></td>
-                    <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
-                    <td className="status-data">
-                      <span>
-                        {(task.task_status=="taskOn_hold") ? "On Hold" : "" }
-                        {(task.task_status=="task_completed") ? "Completed" : "" }
-                        {(task.task_status=="task_toDo") ? "To Do Task" : "" }
-                        {(task.task_status=="task_Running") ? (date>today) ? "On track": "Off track" : "" }
-                      </span>
-                    </td>
-                    <td colspan="4" className="assignee-data">
-                    {person.map((task_person) => {
-                      return(
-                        <div className="chip">
-                          <span>{task_person}</span>
-                        </div>
-                      )
-                      })
-                    }
-                    </td>
-                    <td>
-                      <div className="icon-display">
-                      <Popup trigger={<div> <a onClick={()=>{getData(task.task_id);getTime(task.task_id)}} className="user-icon"><FiEdit/></a> </div>}  className="popupReact"  modal nested >
+              // if(task.task_status == taskOn_hold){
+                return(
+                  <Accordion 
+                    color="primary" className="project-block"
+                    onClick={()=>{getTime(task.task_id)}} 
+                    expanded={expanded === task.task_id}
+                    onChange={handleChangePanel(task.task_id)}
+                  >
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" >
+                      <Typography style={{ fontWeight: 10,}}>
+                      <form>
+                        <div className="project-content">
+                          <h4 className="projectTitle">{task.task_title}</h4>
+                          <p className={task.task_priority}>{task.task_priority}</p>
+                          {person.map((task_person) => {
+                            return(
+                              <div className="chip">
+                                <span>{task_person}</span>
+                              </div>
+                              )
+                            })
+                          }
+                          <div className="icon-display">
+                            <Popup trigger={<div> <a onClick={()=>{getData(task.task_id);getTime(task.task_id)}} className="user-icon"><FiEdit/></a> </div>}  className="popupReact"  modal nested >
                             {close => (
                               <div>
                               <GridItem xs={12} sm={12} md={12} key={task.task_id}>
@@ -1005,36 +1058,75 @@ function Dashboard({task}) {
                             </div>
                           )}
                         </Popup>
-
-                      </div>
-                    </td>
-                  </tr>
-              )}
-            })}
-            </table>  
-            </>
-            ) : ("")}
+                          </div>
+                        </div>
+                        </form>
+                      </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Typography>
+                        {/*Time Modulule*/}
+                        {TimeData.length==0?(
+                          <>
+                            <GridContainer>
+                              <GridItem>
+                                <input value={task.task_id} type="hidden"/>
+                                <p>Estimate Time - {estimate}</p>
+                                <p>Spent Time - {spent}</p>
+                              </GridItem>
+                            </GridContainer>
+                          </>
+                        ):(
+                          <>
+                            <GridContainer>
+                              <GridItem>
+                                <input value={task.task_id} type="hidden"/>
+                                <p>Estimate Time - {userdata.estimate_time}</p>
+                                <p>Spent Time - {userdata.spent_time} </p>
+                                {/* <p>Username - {userdata.username}</p> */}
+                              </GridItem>
+                            </GridContainer>
+                          </>
+                        )}
+                        {/*Time Modulule*/}
+                        {/* display comments in dropdown */}
+                          <GridItem>
+                            {dropdown_Comments.map((dComment)=>{
+                              return(
+                                <span>
+                                  <GridContainer>
+                                    <GridItem>
+                                      <span>{dComment.username}</span>
+                                    </GridItem>
+                                    <GridItem>
+                                      <ReactQuill value={dComment.comment} theme="bubble" readOnly />
+                                    </GridItem>
+                                    <GridItem>
+                                      <span>{dComment.creation_time}</span>
+                                    </GridItem>
+                                  </GridContainer>
+                                </span>
+                              )
+                            })}
+                          </GridItem>
+                      </Typography>
+                    </AccordionDetails>
+                  </Accordion>   
+                )
+              }
+            })  
+          }
         {/*On Hold task End*/}
         {/*TaskCompleted task Start*/}
         <Card>
           <GridContainer>
             <GridItem xs={12} sm={12} md={12}>
-            <div onClick={()=> { taskCompleted("task_completed") , closeTaskCompleted("task_completed") , setcompleted_title(!completed_title)}} className="task_title" >Task completed</div>
+            <div onClick={()=> { taskCompleted("task_completed") , closeTaskCompleted("task_completed") }}>Task completed</div>
             </GridItem>
           </GridContainer>
         </Card>
-        {completed_title ? (
-          <>
-            <table className="project-data" >
-              <tr className="project-data-title">
-                <th colspan="2" className="title">Task name </th>
-                <th>Priority</th>
-                <th colspan="2" className="status">Status</th>
-                <th colspan="2" className="assignee">Assignee</th>
-                <th colspan="4"className="view-edit">View & Edit</th>
-              </tr>
-              {task.map((task)=>{
-              if(task.task_status == TaskCompleted){
+        {task.map((task)=>{
+            if(task.task_status == TaskCompleted){
               var person = task.task_person.split(",");
               const MySQLDate  = task.task_deadline;
               let date = MySQLDate.replace(/[-]/g, '/').substr(0,10);
@@ -1046,31 +1138,30 @@ function Dashboard({task}) {
               else{
                 Off_track.push(task.task_id);
               }
-              return(  
-                  <tr >
-                    <td colspan="2"><h4 className="projectTitle">{task.task_title}</h4></td>
-                    <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
-                    <td className="status-data">
-                      <span>
-                        {(task.task_status=="taskOn_hold") ? "On Hold" : "" }
-                        {(task.task_status=="task_completed") ? "Completed" : "" }
-                        {(task.task_status=="task_toDo") ? "To Do Task" : "" }
-                        {(task.task_status=="task_Running") ? (date>today) ? "On track": "Off track" : "" }
-                      </span>
-                    </td>
-                    <td colspan="4" className="assignee-data">
-                    {person.map((task_person) => {
-                      return(
-                        <div className="chip">
-                          <span>{task_person}</span>
-                        </div>
-                      )
-                      })
-                    }
-                    </td>
-                    <td>
-                      <div className="icon-display">
-                      <Popup trigger={<div> <a onClick={()=>{getData(task.task_id);getTime(task.task_id)}} className="user-icon"><FiEdit/></a> </div>}  className="popupReact"  modal nested >
+              // if(task.task_status == taskOn_hold){
+                return(
+                  <Accordion 
+                    color="primary" className="project-block"
+                    onClick={()=>{getTime(task.task_id)}} 
+                    expanded={expanded === task.task_id}
+                    onChange={handleChangePanel(task.task_id)}
+                  >
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" >
+                      <Typography style={{ fontWeight: 10,}}>
+                      <form>
+                        <div className="project-content">
+                          <h4 className="projectTitle">{task.task_title}</h4>
+                          <p className={task.task_priority}>{task.task_priority}</p>
+                          {person.map((task_person) => {
+                            return(
+                              <div className="chip">
+                                <span>{task_person}</span>
+                              </div>
+                              )
+                            })
+                          }
+                          <div className="icon-display">
+                            <Popup trigger={<div> <a onClick={()=>{getData(task.task_id);getTime(task.task_id)}} className="user-icon"><FiEdit/></a> </div>}  className="popupReact"  modal nested >
                             {close => (
                               <div>
                               <GridItem xs={12} sm={12} md={12} key={task.task_id}>
@@ -1232,15 +1323,64 @@ function Dashboard({task}) {
                             </div>
                           )}
                         </Popup>
-
-                      </div>
-                    </td>
-                  </tr>
-              )}
-            })}
-            </table>
-          </>
-        ) : ("")}
+                          </div>
+                        </div>
+                        </form>
+                      </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Typography>
+                        {/*Time Modulule*/}
+                        {TimeData.length==0?(
+                          <>
+                            <GridContainer>
+                              <GridItem>
+                                <input value={task.task_id} type="hidden"/>
+                                <p>Estimate Time - {estimate}</p>
+                                <p>Spent Time - {spent}</p>
+                              </GridItem>
+                            </GridContainer>
+                          </>
+                        ):(
+                          <>
+                            <GridContainer>
+                              <GridItem>
+                                <input value={task.task_id} type="hidden"/>
+                                <p>Estimate Time - {userdata.estimate_time}</p>
+                                <p>Spent Time - {userdata.spent_time} </p>
+                                {/* <p>Username - {userdata.username}</p> */}
+                              </GridItem>
+                            </GridContainer>
+                          </>
+                        )}
+                        {/*Time Modulule*/}
+                        {/* display comments in dropdown */}
+                          <GridItem>
+                            {dropdown_Comments.map((dComment)=>{
+                              return(
+                                <span>
+                                  <GridContainer>
+                                    <GridItem>
+                                      <span>{dComment.username}</span>
+                                    </GridItem>
+                                    <GridItem>
+                                      <ReactQuill value={dComment.comment} theme="bubble" readOnly />
+                                    </GridItem>
+                                    <GridItem>
+                                      <span>{dComment.creation_time}</span>
+                                    </GridItem>
+                                  </GridContainer>
+                                </span>
+                              )
+                            })}
+                          </GridItem>
+                      </Typography>
+                    </AccordionDetails>
+                  </Accordion>   
+                )
+              }
+            })  
+          }
         {/*TaskCompleted task Start*/}
       </div>
     </>
