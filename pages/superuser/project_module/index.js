@@ -890,7 +890,7 @@ const updateComment = async(id, comment) =>{
                       <GridContainer>
                         <GridItem>
                           <ReactQuill modules={modules} theme="snow" onChange={setCommentValue} />
-                          <div onClick={()=> sendMessage(project.project_id)}>Comment</div>
+                            <div onClick={()=> sendMessage(project.project_id)}>Comment</div>
                         </GridItem>
                       </GridContainer>
                     

@@ -49,7 +49,19 @@ import {
 import { FiEdit } from "react-icons/fi";
 import { MdDelete } from 'react-icons/md';
 import { ToastContainer, toast } from 'react-toastify';
+import { useCookies } from 'react-cookie';
+import axios from "axios";
+import dynamic from "next/dynamic";
+import 'react-quill/dist/quill.snow.css';
+import "react-quill/dist/quill.bubble.css";
 
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import Typography from "@material-ui/core/Typography";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+
+const ReactQuill = dynamic(import('react-quill'), { ssr: false });
 
 const styles = {
   cardCategoryWhite: {
@@ -123,7 +135,8 @@ export async function getServerSideProps(){
 function SubTask( { project_details , User_name , allTask } ) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
-  
+  const [cookies, setCookie] = useCookies(['name']);
+
   const deleteTask = async(id) =>{
     console.log('delete');
     console.log(id);
@@ -180,9 +193,13 @@ function SubTask( { project_details , User_name , allTask } ) {
 
   const [updateSelected, setUpdateSelected] = React.useState([]);
 
+  const [comments, setcomments] = useState([]);
+
   const projectId = async(id) =>{
     // console.log('update project id');
     // console.log(id);
+    var comment = await axios.post(`${server}/api/comment/userComments`, { task_id: id });
+    setcomments(comment.data)
 
     const response = await fetch(`${server}/api/subtask/${id}`)
     const update_data = await response.json();
@@ -207,7 +224,6 @@ function SubTask( { project_details , User_name , allTask } ) {
 
     const [p_selected, setProject] = useState([]);
     const [select_updateProject, setUpdateProject] = useState([]);
-
 
     const toastId = React.useRef(null);
     const updateProject = async() =>{
@@ -344,6 +360,61 @@ useEffect(() =>{
   }
   u_data();
 },[]);
+
+const [ u_Comment, setCommentValue ] = useState("");
+const modules = {
+  toolbar: {
+    container: [
+    [{ 'font': [] }],
+    [{ 'size': ['small', false, 'large', 'huge'] }],
+    ['bold', 'italic', 'underline'],
+    [{'list': 'ordered'}, {'list': 'bullet'}],
+    [{ 'align': [] }],
+    [{ 'color': [] }, { 'background': [] }],
+    ['clean'],
+    ['link', 'image', 'video']
+  ],
+  handlers: {
+      // image: imageHandler,
+  }
+ }
+}
+
+const sendMessage = async (task_id) => {
+  const date = new Date().toLocaleString();
+  console.log("date");
+  console.log(date);
+
+  var addComment = await axios.post(`${server}/api/comment/addcomment`, {  username: cookies.name, message: u_Comment, task_id: task_id, created_D: date });
+  console.log(addComment)
+  console.log(cookies.name)
+  router.reload(`${server}/superuser/project_module`);
+}
+
+console.log("project");
+console.log(u_Comment);
+
+const [commentEdit, setEditComment] = useState();
+
+const editComment = async( id ) =>{
+  console.log("id");
+  console.log(id);
+
+  var commentId = await axios.post(`${server}/api/comment/comment_id`, { comment_id: id, user: cookies.name });
+  console.log(commentId.data[0]);
+
+  if(commentId.data != ""){
+    setEditComment(commentId.data[0].comment);
+    console.log(commentEdit);
+  }
+}
+
+const updateComment = async(id, comment) =>{
+  // console.log(comment);
+  // console.log(id);
+  var comment = await axios.post(`${server}/api/comment/updateComment`, { comment_id: id, user: cookies.name, comment:comment });
+  router.reload(`${server}/user/usertask`);
+}
 
 
   return (
@@ -603,7 +674,7 @@ useEffect(() =>{
                 <div className="icon-display">
                 <GridItem>
                   <div className="icon-edit-delete">
-                    <Popup trigger={<div><a className="bttn-design1" onClick={()=> { projectId(task.task_id) }  }><FiEdit/></a></div>}  className="popupReact"  modal>
+                    <Popup trigger={<div><a className="bttn-design1" onClick={()=> { projectId(task.task_id) }  }><FiEdit/></a></div>}  className="popupReact" modal nested>
 
                     {close => (
                     <div>
@@ -760,16 +831,7 @@ useEffect(() =>{
                                 </div> 
                               </GridItem>
                             </GridContainer><br/>
-
-                            <GridContainer>
-                              <GridItem xs={12} sm={12} md={12}>
-                                <div className="form-group">
-                                <span>Comments</span>
-                                  <textarea className="form-control signup-input" placeholder="Comment" name="task_comment" value={uoption.task_comment} onChange={handleChange} />
-                                </div> 
-                              </GridItem>
-                            </GridContainer>
-                            
+                           
                           </CardBody>
 
                           <CardFooter>
@@ -777,6 +839,71 @@ useEffect(() =>{
                               <Button className="button" onClick={() => { close(); }}> Cancel </Button>
                           </CardFooter>
                           
+                          <CardBody>
+                      <GridContainer>
+                        <GridItem>
+                          <ReactQuill modules={modules} theme="snow" onChange={setCommentValue} />
+                            <div onClick={()=> sendMessage(task.task_id)}>Comment</div>
+                        </GridItem>
+                      </GridContainer>
+                    
+                    {comments.map((superuserComment)=>{
+                      return(
+                        <span>
+                          <GridContainer>
+                            <GridItem>
+                              <span>{superuserComment.username}</span>
+                            </GridItem>
+                          </GridContainer>
+
+                          <GridContainer>
+                                            <GridItem>
+                                              <div>
+
+                                              <ReactQuill value={superuserComment.comment} theme="bubble" readOnly />
+
+      <Popup trigger={ <span><button onClick={()=>{ editComment(superuserComment.id)} } disabled={ superuserComment.username != cookies.name }>Edit</button></span> }
+        className="popupReact"
+        modal
+      >
+        {close => (
+                              <Card>
+                                <CardBody>
+                                      <div className={classes.close}>
+                                        <a onClick={close}>&times;</a>
+                                      </div>
+
+                                  <GridContainer>
+                                    <GridItem xs={12} sm={12} md={12} >
+                                      <form>
+
+                                        <ReactQuill modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
+
+                                      </form>
+                                    </GridItem>
+                                  </GridContainer>
+
+                                  <CardFooter>
+                                      <Button color="primary" type="submit"  onClick={() => { updateComment(superuserComment.id, commentEdit) }}>Update</Button>
+                                      <Button className="button" onClick={() => { close(); }}> Cancel </Button>
+                                  </CardFooter>
+                                </CardBody>
+                              </Card>
+        )}
+        
+      </Popup>
+
+                                              </div>
+                                            </GridItem>
+                                          </GridContainer>
+
+                        </span>
+                      )
+                    })
+
+                    }
+                    </CardBody>
+
                         </Card>
                     </form>
                     </GridItem>
