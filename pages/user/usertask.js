@@ -178,8 +178,9 @@ function Dashboard({task}) {
   const [TimeData,setTimeData] = useState([])
   
   const [dropdown_Comments, setDropdownComments] = useState([]);
+
   const getTime = async (task_id) =>{
-    var timedata = await axios.post(`${server}/api/comment/task_time`, { task_id: task_id });
+    var timedata = await axios.post(`${server}/api/comment/task_time`, { task_id: task_id, user_id:cookies.Id });
     setTime(timedata.data[0])
     setTimeData(timedata.data)
 
@@ -205,12 +206,12 @@ function Dashboard({task}) {
   
 
   const insert_time = async (task_id)=>{
-    var addTime = await axios.post(`${server}/api/comment/addtasktime`, { task_id:task_id, username: cookies.name, estimate:estimate , spent:spent });
+    var addTime = await axios.post(`${server}/api/comment/addtasktime`, { task_id:task_id, user_id:cookies.Id, username: cookies.name, estimate:estimate , spent:spent });
     console.log(addTime.data)
   }
   
   const update_tasktime = async (task_id)=>{
-    var updateTime = await axios.put(`${server}/api/comment/update_tasktime`, { task_id:task_id, username: cookies.name, estimate:userdata.estimate_time , spent:userdata.spent_time });
+    var updateTime = await axios.put(`${server}/api/comment/update_tasktime`, { task_id:task_id, user_id:cookies.Id, estimate:userdata.estimate_time , spent:userdata.spent_time });
     console.log(updateTime)
   }
 
