@@ -212,7 +212,6 @@ function ProjectModule( { project_details , User_name } ) {
     setUpdate(udata);
     setStartDate(new Date(udata.project_start));
     setEndDate(new Date(udata.project_deadline));
-
     }
 
   const [selected, setSelected] = useState([userID]);
@@ -343,7 +342,7 @@ useEffect(() =>{
   u_data();
 },[]);
 
-const [ value, setCommentValue ] = useState("");
+const [ u_Comment, setCommentValue ] = useState("");
 const modules = {
   toolbar: {
     container: [
@@ -367,15 +366,40 @@ const sendMessage = async (project_id) => {
   console.log("date");
   console.log(date);
 
-  var addComment = await axios.post(`${server}/api/comment/addProjectComments`, {  username: cookies.name, message: value , project_id: project_id, created_D: date });
+  var addComment = await axios.post(`${server}/api/comment/addProjectComments`, {  username: cookies.name, message: u_Comment, project_id: project_id, created_D: date });
   console.log(addComment)
   console.log(cookies.name)
   router.reload(`${server}/superuser/project_module`);
 }
 
+console.log("project");
+console.log(u_Comment);
+
+const [commentEdit, setEditComment] = useState();
+
+const editComment = async( id ) =>{
+  console.log("id");
+  console.log(id);
+
+  var commentId = await axios.post(`${server}/api/comment/comment_id`, { comment_id: id, user: cookies.name });
+  console.log(commentId.data[0]);
+
+  if(commentId.data != ""){
+    setEditComment(commentId.data[0].comment);
+    console.log(commentEdit);
+  }
+}
+
+const updateComment = async(id, comment) =>{
+  // console.log(comment);
+  // console.log(id);
+  var comment = await axios.post(`${server}/api/comment/updateComment`, { comment_id: id, user: cookies.name, comment:comment });
+  router.reload(`${server}/user/usertask`);
+}
+
 
   return (
-    <>
+    <span>
   <div className="buttonalign">
     <GridContainer>
         <GridItem>
@@ -639,23 +663,23 @@ const sendMessage = async (project_id) => {
       var person = project.project_person.split(",");
       const MySQLDate  = project.project_deadline;
       let date = MySQLDate.replace(/[-]/g, '/').substr(0,10);
-      console.log(date)
+      // console.log(date)
 
       if(project.project_status=="running")
       {
         
         if(date>today)
         {
-          console.log("On track", project.project_id);
+          // console.log("On track", project.project_id);
           On_track.push(project.project_id);
-          console.log(On_track)
+          // console.log(On_track)
         }
         else
         {
-          console.log("off track", project.project_id);
+          // console.log("off track", project.project_id);
 
           Off_track.push(project.project_id);
-          console.log(Off_track)
+          // console.log(Off_track)
         }
       }
 
@@ -686,7 +710,7 @@ const sendMessage = async (project_id) => {
 
         }
         {/* <span className="project_person">{project.project_person}</span> */}
-          <Popup trigger={<Button className='icon-width' onClick={()=> { projectId(project.project_id) }} disabled={isInArray==false}><FiEdit/></Button>} className="popupReact" modal>
+          <Popup trigger={<span><div className='icon-width' onClick={()=> { projectId(project.project_id) }} ><FiEdit/></div></span>} className="popupReact" modal nested>
 
               {close => (
               <div className="popup-align">
@@ -698,7 +722,7 @@ const sendMessage = async (project_id) => {
 
                   <GridContainer>
                     <GridItem>
-                      <h4 className={classes.cardTitleWhite}>Edit Project</h4>
+                      <h4 className={classes.cardTitleWhite}>Edit Project{(project.project_id)}</h4>
                       <p className={classes.cardCategoryWhite}>Update your project details</p>
                     </GridItem>
 
@@ -869,23 +893,63 @@ const sendMessage = async (project_id) => {
                           <div onClick={()=> sendMessage(project.project_id)}>Comment</div>
                         </GridItem>
                       </GridContainer>
-                    </CardBody>
-
                     
                     {comments.map((superuserComment)=>{
                       return(
                         <span>
                           <GridContainer>
                             <GridItem>
-                              <span>{superuserComment.username}</span><p>Comments</p>
+                              <span>{superuserComment.username}</span>
                             </GridItem>
                           </GridContainer>
+
+                          <GridContainer>
+                                            <GridItem>
+                                              <div>
+
+                                              <ReactQuill value={superuserComment.comment} theme="bubble" readOnly />
+
+      <Popup trigger={ <span><button onClick={()=>{ editComment(superuserComment.id)} } disabled={ superuserComment.username != cookies.name }>Edit</button></span> }
+        className="popupReact"
+        modal
+      >
+        {close => (
+                              <Card>
+                                <CardBody>
+                                      <div className={classes.close}>
+                                        <a onClick={close}>&times;</a>
+                                      </div>
+
+                                  <GridContainer>
+                                    <GridItem xs={12} sm={12} md={12} >
+                                      <form>
+
+                                        <ReactQuill modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
+
+                                      </form>
+                                    </GridItem>
+                                  </GridContainer>
+
+                                  <CardFooter>
+                                      <Button color="primary" type="submit"  onClick={() => { updateComment(superuserComment.id, commentEdit) }}>Update</Button>
+                                      <Button className="button" onClick={() => { close(); }}> Cancel </Button>
+                                  </CardFooter>
+                                </CardBody>
+                              </Card>
+        )}
+        
+      </Popup>
+
+                                              </div>
+                                            </GridItem>
+                                          </GridContainer>
+
                         </span>
                       )
                     })
 
                     }
-                    
+                    </CardBody>
 
 
 
@@ -949,7 +1013,7 @@ const sendMessage = async (project_id) => {
 })
 }
     </GridContainer>
-    </>
+    </span>
   );
 }
 
