@@ -266,13 +266,15 @@ function Dashboard( { project_details , User_name } ) {
   const onSubmit = async (result) =>{
     
     console.log("result");
-    console.log(selected);
+    console.log(result.start.toDateString());
+    const p_start = result.start.toDateString();
+    const p_end = result.end.toDateString();
     
     if(result.project_title != ""){
       const res = await fetch(`${server}/api/project/addproject`,{
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body:JSON.stringify({project_person:selected,project_department:result.project_department,project_status:result.project_status , project_title:result.project_title, project_description:result.project_description, project_language:result.project_language, project_comment:result.project_comment, project_priority:result.project_priority, project_start: result.start , project_deadline: result.end , projectAdded_by: cookies }),
+        body:JSON.stringify({project_person:selected,project_department:result.project_department,project_status:result.project_status , project_title:result.project_title, project_description:result.project_description, project_language:result.project_language, project_comment:result.project_comment, project_priority:result.project_priority, project_start: p_start , project_deadline: p_end , projectAdded_by: cookies }),
       })
       const data=await res.json()
       
@@ -649,7 +651,7 @@ return(
 
                   <GridContainer>
                     <GridItem>
-                      <h4 className={classes.cardTitleWhite}>Edit Project{project.project_created_date}</h4>
+                      <h4 className={classes.cardTitleWhite}>Edit Project</h4>
                       <p className={classes.cardCategoryWhite}>Update your project details</p>
                     </GridItem>
 
