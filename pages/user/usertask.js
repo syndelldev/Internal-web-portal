@@ -528,12 +528,32 @@ function Dashboard({task}) {
                                 <input value={task.task_id} type="hidden"/>
                                 <p>Estimate Time - {userdata.estimate_time}</p>
                                 <p>Spent Time - {userdata.spent_time} </p>
-                                <p>Username - {userdata.username}</p>
+                                {/* <p>Username - {userdata.username}</p> */}
                               </GridItem>
                             </GridContainer>
                           </>
                         )}
                         {/*Time Modulule*/}
+                        {/* display comments in dropdown */}
+                          <GridItem>
+                            {dropdown_Comments.map((dComment)=>{
+                              return(
+                                <span>
+                                  <GridContainer>
+                                    <GridItem>
+                                      <span>{dComment.username}</span>
+                                    </GridItem>
+                                    <GridItem>
+                                      <ReactQuill value={dComment.comment} theme="bubble" readOnly />
+                                    </GridItem>
+                                    <GridItem>
+                                      <span>{dComment.creation_time}</span>
+                                    </GridItem>
+                                  </GridContainer>
+                                </span>
+                              )
+                            })}
+                          </GridItem>
                       </Typography>
                     </AccordionDetails>
                   </Accordion>
