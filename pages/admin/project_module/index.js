@@ -254,9 +254,7 @@ function Dashboard( { project_details , User_name } ) {
           onClose: () => router.push(`${server}/admin/project_module`)
           });
       }
-
       router.reload(`${server}/admin/project_module`);
-
   }
 }
 

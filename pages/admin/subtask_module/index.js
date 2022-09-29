@@ -279,10 +279,16 @@ function Dashboard( { project_details , User_name , allTask } ) {
 
     }else{
     
+    const p_start = result.start.toDateString();
+    const p_end = result.end.toDateString();
+    console.log("result");
+    console.log(result.start.toDateString());
+
+  
     const res = await fetch(`${server}/api/subtask/add_subtask`,{
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body:JSON.stringify({task_person:selected, project_name:p_selected, task_status:result.task_status , task_title:result.task_title, task_description:result.task_description, task_language:result.task_language, task_comment:result.task_comment, task_priority:result.task_priority, task_start: result.start , task_deadline: result.end }),
+      body:JSON.stringify({task_person:selected, project_name:p_selected, task_status:result.task_status , task_title:result.task_title, task_description:result.task_description, task_language:result.task_language, task_comment:result.task_comment, task_priority:result.task_priority, task_start: p_start , task_deadline: p_end }),
     })
     const data=await res.json()
 
@@ -1207,7 +1213,7 @@ return(
 
         </Card>
       </form>
-      <ToastContainer limit={1}/>
+      {/* <ToastContainer limit={1}/> */}
 
     </GridItem>
 
@@ -1499,7 +1505,7 @@ return(
 
         </Card>
       </form>
-      <ToastContainer limit={1}/>
+      {/* <ToastContainer limit={1}/> */}
 
     </GridItem>
 
@@ -1791,7 +1797,7 @@ return(
 
         </Card>
       </form>
-      <ToastContainer limit={1}/>
+      {/* <ToastContainer limit={1}/> */}
 
     </GridItem>
 
