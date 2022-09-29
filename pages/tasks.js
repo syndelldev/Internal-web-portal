@@ -665,7 +665,7 @@ const closeTaskCompleted = async(task) =>{
     <Card>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-          <div className="taskToDo" onClick={()=> { taskToDo("task_toDo") , closeTaskToDo("task_toDo") }}><i class="arrow down"></i>Task to do </div>
+          <div className="taskToDo" onClick={()=> { taskToDo("task_toDo") , closeTaskToDo("task_toDo") }}>Task to do </div>
           
         </GridItem>
       </GridContainer>
@@ -961,279 +961,271 @@ return(
       if(task.task_status == TaskOnHold){
         var person = task.task_person.split(",");
 
-    return(
+        return(
 
-    <GridItem xs={12} sm={6} md={9}>
-      <form>
-        <Card className= "projects">
-            <CardHeader color="primary" className="project-block">
-
-              {/* <img src={`${server}/reactlogo.png`} className={classes.img}/> */}
-              <div className="project-content">
-                <h4 className="projectTitle">{task.task_title}</h4>
-                <p className={classes.cardCategoryWhite}></p>
-
-                <div className="icon-display">
-
-                <span className={task.task_priority}>{task.task_priority}</span>
-                {person.map((project_person) => {
-                  return(
-                    <div className="chip">
-                      <span>{project_person}</span>
-                    </div>
-                  )
-                  })
-                }
-
-                <GridItem>
-                  <div className="icon-edit-delete">
-                    <Popup trigger={<div><a className="bttn-design1" onClick={()=> { projectId(task.task_id) }  }><FiEdit/></a></div>} className="popupReact" modal>
-
-                    {close => (
-                    <div>
-                    <GridContainer>
-                    <GridItem xs={12} sm={12} md={12}>
-                    <form onSubmit={handleSubmit(onSubmit)}>              
-                      <Card>
-                        <CardHeader color="primary">
-
-                        <GridContainer>
-                          <GridItem>
-                            <h4 className={classes.cardTitleWhite}>Edit Task</h4>
-                            <p className={classes.cardCategoryWhite}>Update your task details</p>
-                          </GridItem>
-
-                          {/* <GridItem> */}
-                            <div className={classes.close}>
-                              <a onClick={close}>&times;</a>
-                            </div>
-                          {/* </GridItem> */}
-                        </GridContainer>
-
-                        </CardHeader>
+            <GridItem xs={12} sm={6} md={9}>
+              <form>
+                <Card className= "projects">
+                    <CardHeader color="primary" className="project-block">
+            
+                      {/* <img src={`${server}/reactlogo.png`} className={classes.img}/> */}
+                      <div className="project-content">
+                        <h4 className="projectTitle">{task.task_title}</h4>
                         
-                          <CardBody>
-
+                        <div className="icon-display">
+            
+                        <span className={task.task_priority}>{task.task_priority}</span>
+                        {person.map((project_person) => {
+                          return(
+                            <div className="chip">
+                              <span>{project_person}</span>
+                            </div>
+                          )
+                          })
+                        }
+            
+                        <GridItem>
+                          <div className="icon-edit-delete">
+                            <Popup trigger={<div><a className="bttn-design1" onClick={()=> { projectId(task.task_id) }  }><FiEdit/></a></div>}  className="popupReact"  modal>
+            
+                            {close => (
+                            <div>
                             <GridContainer>
-                              <GridItem xs={12} sm={12} md={12}>                      
-                                <div className="form-group">
-                                  <span>Task Title</span><span className="required">*</span>
-                                  <input type="text" className="form-control signup-input" placeholder="Task Title" name="task_title" value={uoption.task_title} onChange={handleChange} />
-                                </div> 
-                              </GridItem>
-                            </GridContainer><br/>
-                              
-                            <GridContainer>
-                              <GridItem xs={12} sm={12} md={12}>
-                              <div className="form-group" name="project_name" onChange={handleChange} >
+                            <GridItem xs={12} sm={12} md={12}>
+                            <form onSubmit={handleSubmit(onSubmit)}>              
+                              <Card>
+                                <CardHeader color="primary">
+            
+                                <GridContainer>
+                                  <GridItem>
+                                    <h4 className={classes.cardTitleWhite}>Edit Task</h4>
+                                    <p className={classes.cardCategoryWhite}>Update your task details</p>
+                                  </GridItem>
+            
+                                  {/* <GridItem> */}
+                                    <div className={classes.close}>
+                                      <a onClick={close}>&times;</a>
+                                    </div>
+                                  {/* </GridItem> */}
+                                </GridContainer>
+            
+                                </CardHeader>
                                 
-                                <span>Select Project</span><span className="required">*</span>
-                                <Multiselect
-                                  displayValue="value"
-                                  options={project_list}
-                                  value={select_updateProject}
-                                  selectedValues={selectedProject}
-                                  singleSelect={true}
-                                  onChange={setUpdateProject}
-                                  onRemove={setUpdateProject}
-                                  onSelect={setUpdateProject}
-                                  placeholder="Project List"
-                                  showArrow={true}
-                                />
-                                
-                                </div> 
-                              </GridItem>
-                            </GridContainer><br/>
-
-                            <GridContainer>  
-                              <GridItem xs={12} sm={12} md={12}>
-                                <div className="form-group">
-                                <span>Task Description</span><span className="required">*</span>
-                                  <textarea className="form-control signup-input" placeholder="Task Description" name="task_description" value={uoption.task_description} onChange={handleChange} />
-                                </div> 
-                              </GridItem>
-                            </GridContainer><br/>
-
-                            <GridContainer>
-                              <GridItem xs={12} sm={12} md={12}>
-                              <div className="form-group">
-                                    <span>Task Status</span><span className="required">*</span>
-                                      <select name="task_status" id="Status" className="form-control signup-input" value={uoption.task_status} onChange={handleChange}>
-                                        <option value=""  disabled selected>Select Task Status</option>
-                                        <option value="task_toDo">Task to do</option>
-                                        <option value="taskOn_hold">Task On hold</option>
-                                        <option value="task_Running">Task Running</option>
-                                        <option value="task_completed">Task Completed</option>
-                                      </select>
-                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                                  </div> 
-                                </GridItem>
-                              </GridContainer><br/>
-
-
-                            <GridContainer>
-                              <GridItem xs={12} sm={12} md={6}>
-                                <div className="form-group">
-                                <span>Task Priority</span><span className="required">*</span>
-                                  <select id="priority" className="form-control signup-input" name="task_priority" value={uoption.task_priority} onChange={handleChange}  >
-                                    <option value=""  disabled selected>Select Task Priority</option>
-                                    <option value="High">High</option>
-                                    <option value="Medium">Medium</option>
-                                    <option value="Low">Low</option>
-                                  </select>
-                                  <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                                </div> 
-                              </GridItem>
-
-                              <GridItem xs={12} sm={12} md={6}>
-                                <div className="form-group">
-                                <span>Task Language</span><span className="required">*</span>
-                                  <select id="Task_created_by" className="form-control signup-input" name="task_language" value={uoption.task_language} onChange={handleChange} >
-                                    <option value="" disabled selected>Select Language</option>
-                                    <option value="Wordpress">Wordpress</option>
-                                    <option value="Shopify">Shopify</option>
-                                    <option value="ReactJS">ReactJS</option>
-                                    <option value="Laravel">Laravel</option>
-                                    <option value="Android">Android</option>
-                                    <option value="Bubble">Bubble</option>
-                                  </select>
-                                  <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                                </div> 
-                              </GridItem>
-                            </GridContainer><br/>
-
-                            <GridContainer>  
-                              <GridItem xs={12} sm={12} md={6}>
-                                <div className="form-group" onChange={handleChange} >
-                                <span>Task Start Date</span><span className="required">*</span>
-                                  <DatePicker
-                                    placeholderText="Start Date : dd/mm/yyyy"
-                                    isClearable
-                                    name="datetime"
-                                    className={"form-control"}
-                                    selected={startDate}
-                                    onChange={val => {
-                                      setStartDate(val);
-                                      setValue("start", val);
-                                    }}
-                                    dateFormat="dd-MM-yyyy"
-                                    minDate={new Date()}
-                                  />
-                                </div> 
-                              </GridItem>
-
-                              <GridItem xs={12} sm={12} md={6}>
-                                <div className="form-group" onChange={handleChange} >
-                                <span>Task End Date</span><span className="required">*</span>
-                                  <DatePicker
-                                    placeholderText="End Date : dd/mm/yyyy"
-                                    isClearable
-                                    name="datetime1"
-                                    className={"form-control"}
-                                    selected={endDate}
-                                    onChange={val => {
-                                      setEndDate(val);
-                                      setValue("end", val);
-                                    }}
-                                    dateFormat="dd-MM-yyyy"
-                                    minDate={startDate}
-                                  />
-                                </div> 
-                              </GridItem>
-                            </GridContainer><br/>
-
-                            <GridContainer>
-                              <GridItem xs={12} sm={12} md={12}>
-                                <div className="form-group">
-                                
-                                <span>Task Members</span><span className="required">*</span>
-                                <Multiselect
-                                displayValue="value"
-                                  options={uoptions}
-                                  value={updateSelected}
-                                  selectedValues={allSelectedMember}
-                                  onChange={setUpdateSelected}
-                                  onRemove={setUpdateSelected}
-                                  onSelect={setUpdateSelected}
-                                  placeholder="Select Task Members"
-                                  showArrow={true}
-                                />
-                                </div> 
-                              </GridItem>
-                            </GridContainer><br/>
-
-                            <GridContainer>
-                              <GridItem xs={12} sm={12} md={12}>
-                                <div className="form-group">
-                                <span>Comments</span>
-                                  <textarea className="form-control signup-input" placeholder="Comment" name="task_comment" value={uoption.task_comment} onChange={handleChange} />
-                                </div> 
-                              </GridItem>
-                            </GridContainer>
-                            
-                          </CardBody>
-
-                          <CardFooter>
-                              <Button color="primary" type="submit" onClick={()=> { updateProject(task.task_id); } }>Save</Button>
-                              <Button className="button" onClick={() => { close(); }}> Cancel </Button>
-                          </CardFooter>
-                          
-                        </Card>
-                    </form>
-                    </GridItem>
-                    </GridContainer>
-
-                    </div>
-
-                    )}
-                    </Popup>
-
-                    {/* <button onClick={()=>deleteTask(task.task_id)} className="project_delete_icon"><MdDelete/></button> */}
-
-
-                    <Popup trigger={<span><MdDelete/></span>} modal>
-                        {close => (
-                          <div>
-                          <Card>                            
-                            <GridContainer>
-                              <GridItem xs={12} sm={12} md={12}>
+                                  <CardBody>
+            
+                                    <GridContainer>
+                                      <GridItem xs={12} sm={12} md={12}>                      
+                                        <div className="form-group">
+                                          <span>Task Title</span><span className="required">*</span>
+                                          <input type="text" className="form-control signup-input" disabled={cookies.Role_id == "2"} placeholder="Task Title" name="task_title" value={uoption.task_title} onChange={handleChange} />
+                                        </div> 
+                                      </GridItem>
+                                    </GridContainer><br/>
+                                      
+                                    <GridContainer>
+                                      <GridItem xs={12} sm={12} md={12}>
+                                      <div className="form-group" name="project_name" onChange={handleChange} >
+                                        
+                                        <span>Select Project</span><span className="required">*</span>
+                                        <Multiselect
+                                          displayValue="value"
+                                          options={project_list}
+                                          value={select_updateProject}
+                                          selectedValues={selectedProject}
+                                          singleSelect={true}
+                                          onChange={setUpdateProject}
+                                          onRemove={setUpdateProject}
+                                          onSelect={setUpdateProject}
+                                          placeholder="Project List"
+                                          showArrow={true}
+                                          disable={cookies.Role_id == "2"}
+                                        />
+                                        </div> 
+                                      </GridItem>
+                                    </GridContainer><br/>
+            
+                                    <GridContainer>  
+                                      <GridItem xs={12} sm={12} md={12}>
+                                        <div className="form-group">
+                                        <span>Task Description</span><span className="required">*</span>
+                                          <textarea className="form-control signup-input" disabled={cookies.Role_id == "2"} placeholder="Task Description" name="task_description" value={uoption.task_description} onChange={handleChange} />
+                                        </div> 
+                                      </GridItem>
+                                    </GridContainer><br/>
+            
                                   <GridContainer>
-                                    <GridItem>
-                                      <div>
-                                        <CardBody>
-                                          <h4 className={classes.cardTitleWhite}>Are you sure you want to delete {task.task_title} task?</h4>
-                                        </CardBody>
-                                        <CardFooter>
-                                            <Button onClick={()=>deleteTask(task.task_id)}>Yes</Button>
-                                            <Button className="button" onClick={() => { close(); }}> No </Button>
-                                        </CardFooter>
-                                      </div>
-                                    </GridItem>
-                                      <div className={classes.close}>
-                                        <a onClick={close}>&times;</a>
-                                      </div>
-                                  </GridContainer>
-                              </GridItem>
+                                    <GridItem xs={12} sm={12} md={12}>
+                                    <div className="form-group">
+                                          <span>Task Status</span><span className="required">*</span>
+                                            <select name="task_status" id="Status" className="form-control signup-input" value={uoption.task_status} onChange={handleChange}>
+                                              <option value=""  disabled selected>Select Task Status</option>
+                                              <option value="task_toDo">Task to do</option>
+                                              <option value="taskOn_hold">Task On hold</option>
+                                              <option value="task_Running">Task Running</option>
+                                              <option value="task_completed">Task Completed</option>
+                                            </select>
+                                          <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                        </div> 
+                                      </GridItem>
+                                    </GridContainer><br/>
+            
+                                    <GridContainer>
+                                      <GridItem xs={12} sm={12} md={6}>
+                                        <div className="form-group">
+                                        <span>Task Priority</span><span className="required">*</span>
+                                          <select id="priority" className="form-control signup-input" disabled={cookies.Role_id == "2"} name="task_priority" value={uoption.task_priority} onChange={handleChange}  >
+                                            <option value=""  disabled selected>Select Task Priority</option>
+                                            <option value="High">High</option>
+                                            <option value="Medium">Medium</option>
+                                            <option value="Low">Low</option>
+                                          </select>
+                                          <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                        </div> 
+                                      </GridItem>
+            
+                                      <GridItem xs={12} sm={12} md={6}>
+                                        <div className="form-group">
+                                        <span>Task Language</span><span className="required">*</span>
+                                          <select id="Task_created_by" className="form-control signup-input" disabled={cookies.Role_id == "2"} name="task_language" value={uoption.task_language} onChange={handleChange} >
+                                            <option value="" disabled selected>Select Language</option>
+                                            <option value="Wordpress">Wordpress</option>
+                                            <option value="Shopify">Shopify</option>
+                                            <option value="ReactJS">ReactJS</option>
+                                            <option value="Laravel">Laravel</option>
+                                            <option value="Android">Android</option>
+                                            <option value="Bubble">Bubble</option>
+                                          </select>
+                                          <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                        </div> 
+                                      </GridItem>
+                                    </GridContainer><br/>
+            
+                                    <GridContainer>  
+                                      <GridItem xs={12} sm={12} md={6}>
+                                        <div className="form-group" onChange={handleChange} disabled={cookies.Role_id == "2"} >
+                                        <span>Task Start Date</span><span className="required">*</span>
+                                          <DatePicker
+                                            placeholderText="Start Date : dd/mm/yyyy"
+                                            isClearable
+                                            name="datetime"
+                                            className={"form-control"}
+                                            selected={startDate}
+                                            onChange={val => {
+                                              setStartDate(val);
+                                              setValue("start", val);
+                                            }}
+                                            dateFormat="dd-MM-yyyy"
+                                            minDate={new Date()}
+                                            disabled={cookies.Role_id == "2"}
+                                          />
+                                        </div> 
+                                      </GridItem>
+            
+                                      <GridItem xs={12} sm={12} md={6}>
+                                        <div className="form-group" onChange={handleChange} disabled={cookies.Role_id == "2"} >
+                                        <span>Task End Date</span><span className="required">*</span>
+                                          <DatePicker
+                                            placeholderText="End Date : dd/mm/yyyy"
+                                            isClearable
+                                            name="datetime1"
+                                            className={"form-control"}
+                                            selected={endDate}
+                                            onChange={val => {
+                                              setEndDate(val);
+                                              setValue("end", val);
+                                            }}
+                                            dateFormat="dd-MM-yyyy"
+                                            minDate={startDate}
+                                            disabled={cookies.Role_id == "2"}
+                                          />
+                                        </div> 
+                                      </GridItem>
+                                    </GridContainer><br/>
+            
+                                    <GridContainer>
+                                      <GridItem xs={12} sm={12} md={12}>
+                                        <div className="form-group">
+                                        
+                                        <span>Task Members</span><span className="required">*</span>
+                                        <Multiselect
+                                        displayValue="value"
+                                          options={uoptions}
+                                          value={updateSelected}
+                                          selectedValues={allSelectedMember}
+                                          onChange={setUpdateSelected}
+                                          onRemove={setUpdateSelected}
+                                          onSelect={setUpdateSelected}
+                                          placeholder="Select Task Members"
+                                          showArrow={true}
+                                          disable={cookies.Role_id == "2"}                              
+                                        />
+                                        </div> 
+                                      </GridItem>
+                                    </GridContainer><br/>
+                                   
+                                  </CardBody>
+            
+                                  <CardFooter>
+                                      <Button color="primary" type="submit" onClick={()=> { updateProject(task.task_id); } }  hidden={cookies.Role_id == "2"}>Save</Button>
+                                      <Button color="primary" type="submit" onClick={()=> { updateStatus(task.task_id); } }  hidden={cookies.Role_id != "2"}>Update</Button>
+                                      <Button className="button" onClick={() => { close(); }}> Cancel </Button>
+                                  </CardFooter>
+                                  
+                                </Card>
+                            </form>
+                            </GridItem>
                             </GridContainer>
-                          </Card>
-  
-                          </div>
-                        )}
-                      </Popup>
-
-                    </div>
-                  </GridItem>
-              
-              </div></div>
-            </CardHeader>
-
-        </Card>
-      </form>
-      {/* <ToastContainer limit={1}/> */}
-
-    </GridItem>
-
-        )   
+            
+                            </div>
+            
+                            )}
+                            </Popup>
+            
+                            {/* <button onClick={()=>deleteTask(task.task_id)} className="project_delete_icon"><MdDelete/></button> */}
+            
+                            <Popup trigger={<div hidden={cookies.Role_id == "2"}><MdDelete/></div>} modal >
+                                {close => (
+                                  <div>
+                                  <Card>                            
+                                    <GridContainer>
+                                      <GridItem xs={12} sm={12} md={12}>
+                                          <GridContainer>
+                                            <GridItem>
+                                              <div>
+                                                <CardBody>
+                                                  <h4 className={classes.cardTitleWhite}>Are you sure you want to delete {task.task_title} task?</h4>
+                                                </CardBody>
+                                                <CardFooter>
+                                                    <Button onClick={()=>deleteTask(task.task_id)}>Yes</Button>
+                                                    <Button className="button" onClick={() => { close(); }}> No </Button>
+                                                </CardFooter>
+                                              </div>
+                                            </GridItem>
+                                              <div className={classes.close}>
+                                                <a onClick={close}>&times;</a>
+                                              </div>
+                                          </GridContainer>
+                                      </GridItem>
+                                    </GridContainer>
+                                  </Card>
+            
+                                  </div>
+                                )}
+                              </Popup>
+            
+                            </div>
+                          </GridItem>
+                      
+                      </div></div>
+                    </CardHeader>
+            
+                </Card>
+              </form>
+              <ToastContainer limit={1}/>
+            
+            </GridItem>
+            
+                )   
                   }
               }
     })
@@ -1254,278 +1246,271 @@ return(
       if(task.task_status == TaskRunning){
         var person = task.task_person.split(",");
 
-    return(
+        return(
 
-    <GridItem xs={12} sm={6} md={9}>
-      <form>
-        <Card className= "projects">
-            <CardHeader color="primary" className="project-block">
-
-              {/* <img src={`${server}/reactlogo.png`} className={classes.img}/> */}
-              <div className="project-content">
-                <h4 className="projectTitle">{task.task_title}</h4>
-                <p className={classes.cardCategoryWhite}></p>
-
-                <div className="icon-display">
-
-                <span className={task.task_priority}>{task.task_priority}</span>
-                {person.map((project_person) => {
-                  return(
-                    <div className="chip">
-                      <span>{project_person}</span>
-                    </div>
-                  )
-                  })
-                }
-
-                <GridItem>
-                  <div className="icon-edit-delete">
-                    <Popup trigger={<div><a className="bttn-design1" onClick={()=> { projectId(task.task_id) }  }><FiEdit/></a></div>}  className="popupReact"  modal>
-
-                    {close => (
-                    <div>
-                    <GridContainer>
-                    <GridItem xs={12} sm={12} md={12}>
-                    <form onSubmit={handleSubmit(onSubmit)}>              
-                      <Card>
-                        <CardHeader color="primary">
-
-                        <GridContainer>
-                          <GridItem>
-                            <h4 className={classes.cardTitleWhite}>Edit Task</h4>
-                            <p className={classes.cardCategoryWhite}>Update your task details</p>
-                          </GridItem>
-
-                          {/* <GridItem> */}
-                            <div className={classes.close}>
-                              <a onClick={close}>&times;</a>
-                            </div>
-                          {/* </GridItem> */}
-                        </GridContainer>
-
-                        </CardHeader>
+            <GridItem xs={12} sm={6} md={9}>
+              <form>
+                <Card className= "projects">
+                    <CardHeader color="primary" className="project-block">
+            
+                      {/* <img src={`${server}/reactlogo.png`} className={classes.img}/> */}
+                      <div className="project-content">
+                        <h4 className="projectTitle">{task.task_title}</h4>
                         
-                          <CardBody>
-
+                        <div className="icon-display">
+            
+                        <span className={task.task_priority}>{task.task_priority}</span>
+                        {person.map((project_person) => {
+                          return(
+                            <div className="chip">
+                              <span>{project_person}</span>
+                            </div>
+                          )
+                          })
+                        }
+            
+                        <GridItem>
+                          <div className="icon-edit-delete">
+                            <Popup trigger={<div><a className="bttn-design1" onClick={()=> { projectId(task.task_id) }  }><FiEdit/></a></div>}  className="popupReact"  modal>
+            
+                            {close => (
+                            <div>
                             <GridContainer>
-                              <GridItem xs={12} sm={12} md={12}>                      
-                                <div className="form-group">
-                                  <span>Task Title</span><span className="required">*</span>
-                                  <input type="text" className="form-control signup-input" placeholder="Task Title" name="task_title" value={uoption.task_title} onChange={handleChange} />
-                                </div> 
-                              </GridItem>
-                            </GridContainer><br/>
-                              
-                            <GridContainer>
-                              <GridItem xs={12} sm={12} md={12}>
-                              <div className="form-group" name="project_name" onChange={handleChange} >
+                            <GridItem xs={12} sm={12} md={12}>
+                            <form onSubmit={handleSubmit(onSubmit)}>              
+                              <Card>
+                                <CardHeader color="primary">
+            
+                                <GridContainer>
+                                  <GridItem>
+                                    <h4 className={classes.cardTitleWhite}>Edit Task</h4>
+                                    <p className={classes.cardCategoryWhite}>Update your task details</p>
+                                  </GridItem>
+            
+                                  {/* <GridItem> */}
+                                    <div className={classes.close}>
+                                      <a onClick={close}>&times;</a>
+                                    </div>
+                                  {/* </GridItem> */}
+                                </GridContainer>
+            
+                                </CardHeader>
                                 
-                                <span>Select Project</span><span className="required">*</span>
-                                <Multiselect
-                                  displayValue="value"
-                                  options={project_list}
-                                  value={select_updateProject}
-                                  selectedValues={selectedProject}
-                                  singleSelect={true}
-                                  onChange={setUpdateProject}
-                                  onRemove={setUpdateProject}
-                                  onSelect={setUpdateProject}
-                                  placeholder="Project List"
-                                  showArrow={true}
-                                />
-                                
-                                </div> 
-                              </GridItem>
-                            </GridContainer><br/>
-
-                            <GridContainer>  
-                              <GridItem xs={12} sm={12} md={12}>
-                                <div className="form-group">
-                                <span>Task Description</span><span className="required">*</span>
-                                  <textarea className="form-control signup-input" placeholder="Task Description" name="task_description" value={uoption.task_description} onChange={handleChange} />
-                                </div> 
-                              </GridItem>
-                            </GridContainer><br/>
-
-                            <GridContainer>
-                              <GridItem xs={12} sm={12} md={12}>
-                              <div className="form-group">
-                                    <span>Task Status</span><span className="required">*</span>
-                                      <select name="task_status" id="Status" className="form-control signup-input" value={uoption.task_status} onChange={handleChange}>
-                                        <option value=""  disabled selected>Select Task Status</option>
-                                        <option value="task_toDo">Task to do</option>
-                                        <option value="taskOn_hold">Task On hold</option>
-                                        <option value="task_Running">Task Running</option>
-                                        <option value="task_completed">Task Completed</option>
-                                      </select>
-                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                                  </div> 
-                                </GridItem>
-                              </GridContainer><br/>
-
-                            <GridContainer>
-                              <GridItem xs={12} sm={12} md={6}>
-                                <div className="form-group">
-                                <span>Task Priority</span><span className="required">*</span>
-                                  <select id="priority" className="form-control signup-input" name="task_priority" value={uoption.task_priority} onChange={handleChange}  >
-                                    <option value=""  disabled selected>Select Task Priority</option>
-                                    <option value="High">High</option>
-                                    <option value="Medium">Medium</option>
-                                    <option value="Low">Low</option>
-                                  </select>
-                                  <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                                </div> 
-                              </GridItem>
-
-                              <GridItem xs={12} sm={12} md={6}>
-                                <div className="form-group">
-                                <span>Task Language</span><span className="required">*</span>
-                                  <select id="Task_created_by" className="form-control signup-input" name="task_language" value={uoption.task_language} onChange={handleChange} >
-                                    <option value="" disabled selected>Select Language</option>
-                                    <option value="Wordpress">Wordpress</option>
-                                    <option value="Shopify">Shopify</option>
-                                    <option value="ReactJS">ReactJS</option>
-                                    <option value="Laravel">Laravel</option>
-                                    <option value="Android">Android</option>
-                                    <option value="Bubble">Bubble</option>
-                                  </select>
-                                  <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                                </div> 
-                              </GridItem>
-                            </GridContainer><br/>
-
-                            <GridContainer>  
-                              <GridItem xs={12} sm={12} md={6}>
-                                <div className="form-group" onChange={handleChange} >
-                                <span>Task Start Date</span><span className="required">*</span>
-                                  <DatePicker
-                                    placeholderText="Start Date : dd/mm/yyyy"
-                                    isClearable
-                                    name="datetime"
-                                    className={"form-control"}
-                                    selected={startDate}
-                                    onChange={val => {
-                                      setStartDate(val);
-                                      setValue("start", val);
-                                    }}
-                                    dateFormat="dd-MM-yyyy"
-                                    minDate={new Date()}
-                                  />
-                                </div> 
-                              </GridItem>
-
-                              <GridItem xs={12} sm={12} md={6}>
-                                <div className="form-group" onChange={handleChange} >
-                                <span>Task End Date</span><span className="required">*</span>
-                                  <DatePicker
-                                    placeholderText="End Date : dd/mm/yyyy"
-                                    isClearable
-                                    name="datetime1"
-                                    className={"form-control"}
-                                    selected={endDate}
-                                    onChange={val => {
-                                      setEndDate(val);
-                                      setValue("end", val);
-                                    }}
-                                    dateFormat="dd-MM-yyyy"
-                                    minDate={startDate}
-                                  />
-                                </div> 
-                              </GridItem>
-                            </GridContainer><br/>
-
-                            <GridContainer>
-                              <GridItem xs={12} sm={12} md={12}>
-                                <div className="form-group">
-                                
-                                <span>Task Members</span><span className="required">*</span>
-                                <Multiselect
-                                displayValue="value"
-                                  options={uoptions}
-                                  value={updateSelected}
-                                  selectedValues={allSelectedMember}
-                                  onChange={setUpdateSelected}
-                                  onRemove={setUpdateSelected}
-                                  onSelect={setUpdateSelected}
-                                  placeholder="Select Task Members"
-                                  showArrow={true}
-                                />
-                                </div> 
-                              </GridItem>
-                            </GridContainer><br/>
-
-                            <GridContainer>
-                              <GridItem xs={12} sm={12} md={12}>
-                                <div className="form-group">
-                                <span>Comments</span>
-                                  <textarea className="form-control signup-input" placeholder="Comment" name="task_comment" value={uoption.task_comment} onChange={handleChange} />
-                                </div> 
-                              </GridItem>
-                            </GridContainer>
-                            
-                          </CardBody>
-
-                          <CardFooter>
-                              <Button color="primary" type="submit" onClick={()=> { updateProject(task.task_id); } }>Save</Button>
-                              <Button className="button" onClick={() => { close(); }}> Cancel </Button>
-                          </CardFooter>
-                          
-                        </Card>
-                    </form>
-                    </GridItem>
-                    </GridContainer>
-
-                    </div>
-
-                    )}
-                    </Popup>
-
-                    {/* <button onClick={()=>deleteTask(task.task_id)} className="project_delete_icon"><MdDelete/></button> */}
-
-
-                    <Popup trigger={<span><MdDelete/></span>} modal>
-                        {close => (
-                          <div>
-                          <Card>                            
-                            <GridContainer>
-                              <GridItem xs={12} sm={12} md={12}>
+                                  <CardBody>
+            
+                                    <GridContainer>
+                                      <GridItem xs={12} sm={12} md={12}>                      
+                                        <div className="form-group">
+                                          <span>Task Title</span><span className="required">*</span>
+                                          <input type="text" className="form-control signup-input" disabled={cookies.Role_id == "2"} placeholder="Task Title" name="task_title" value={uoption.task_title} onChange={handleChange} />
+                                        </div> 
+                                      </GridItem>
+                                    </GridContainer><br/>
+                                      
+                                    <GridContainer>
+                                      <GridItem xs={12} sm={12} md={12}>
+                                      <div className="form-group" name="project_name" onChange={handleChange} >
+                                        
+                                        <span>Select Project</span><span className="required">*</span>
+                                        <Multiselect
+                                          displayValue="value"
+                                          options={project_list}
+                                          value={select_updateProject}
+                                          selectedValues={selectedProject}
+                                          singleSelect={true}
+                                          onChange={setUpdateProject}
+                                          onRemove={setUpdateProject}
+                                          onSelect={setUpdateProject}
+                                          placeholder="Project List"
+                                          showArrow={true}
+                                          disable={cookies.Role_id == "2"}
+                                        />
+                                        </div> 
+                                      </GridItem>
+                                    </GridContainer><br/>
+            
+                                    <GridContainer>  
+                                      <GridItem xs={12} sm={12} md={12}>
+                                        <div className="form-group">
+                                        <span>Task Description</span><span className="required">*</span>
+                                          <textarea className="form-control signup-input" disabled={cookies.Role_id == "2"} placeholder="Task Description" name="task_description" value={uoption.task_description} onChange={handleChange} />
+                                        </div> 
+                                      </GridItem>
+                                    </GridContainer><br/>
+            
                                   <GridContainer>
-                                    <GridItem>
-                                      <div>
-                                        <CardBody>
-                                          <h4 className={classes.cardTitleWhite}>Are you sure you want to delete {task.task_title} task?</h4>
-                                        </CardBody>
-                                        <CardFooter>
-                                            <Button onClick={()=>deleteTask(task.task_id)}>Yes</Button>
-                                            <Button className="button" onClick={() => { close(); }}> No </Button>
-                                        </CardFooter>
-                                      </div>
-                                    </GridItem>
-                                      <div className={classes.close}>
-                                        <a onClick={close}>&times;</a>
-                                      </div>
-                                  </GridContainer>
-                              </GridItem>
+                                    <GridItem xs={12} sm={12} md={12}>
+                                    <div className="form-group">
+                                          <span>Task Status</span><span className="required">*</span>
+                                            <select name="task_status" id="Status" className="form-control signup-input" value={uoption.task_status} onChange={handleChange}>
+                                              <option value=""  disabled selected>Select Task Status</option>
+                                              <option value="task_toDo">Task to do</option>
+                                              <option value="taskOn_hold">Task On hold</option>
+                                              <option value="task_Running">Task Running</option>
+                                              <option value="task_completed">Task Completed</option>
+                                            </select>
+                                          <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                        </div> 
+                                      </GridItem>
+                                    </GridContainer><br/>
+            
+                                    <GridContainer>
+                                      <GridItem xs={12} sm={12} md={6}>
+                                        <div className="form-group">
+                                        <span>Task Priority</span><span className="required">*</span>
+                                          <select id="priority" className="form-control signup-input" disabled={cookies.Role_id == "2"} name="task_priority" value={uoption.task_priority} onChange={handleChange}  >
+                                            <option value=""  disabled selected>Select Task Priority</option>
+                                            <option value="High">High</option>
+                                            <option value="Medium">Medium</option>
+                                            <option value="Low">Low</option>
+                                          </select>
+                                          <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                        </div> 
+                                      </GridItem>
+            
+                                      <GridItem xs={12} sm={12} md={6}>
+                                        <div className="form-group">
+                                        <span>Task Language</span><span className="required">*</span>
+                                          <select id="Task_created_by" className="form-control signup-input" disabled={cookies.Role_id == "2"} name="task_language" value={uoption.task_language} onChange={handleChange} >
+                                            <option value="" disabled selected>Select Language</option>
+                                            <option value="Wordpress">Wordpress</option>
+                                            <option value="Shopify">Shopify</option>
+                                            <option value="ReactJS">ReactJS</option>
+                                            <option value="Laravel">Laravel</option>
+                                            <option value="Android">Android</option>
+                                            <option value="Bubble">Bubble</option>
+                                          </select>
+                                          <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                        </div> 
+                                      </GridItem>
+                                    </GridContainer><br/>
+            
+                                    <GridContainer>  
+                                      <GridItem xs={12} sm={12} md={6}>
+                                        <div className="form-group" onChange={handleChange} disabled={cookies.Role_id == "2"} >
+                                        <span>Task Start Date</span><span className="required">*</span>
+                                          <DatePicker
+                                            placeholderText="Start Date : dd/mm/yyyy"
+                                            isClearable
+                                            name="datetime"
+                                            className={"form-control"}
+                                            selected={startDate}
+                                            onChange={val => {
+                                              setStartDate(val);
+                                              setValue("start", val);
+                                            }}
+                                            dateFormat="dd-MM-yyyy"
+                                            minDate={new Date()}
+                                            disabled={cookies.Role_id == "2"}
+                                          />
+                                        </div> 
+                                      </GridItem>
+            
+                                      <GridItem xs={12} sm={12} md={6}>
+                                        <div className="form-group" onChange={handleChange} disabled={cookies.Role_id == "2"} >
+                                        <span>Task End Date</span><span className="required">*</span>
+                                          <DatePicker
+                                            placeholderText="End Date : dd/mm/yyyy"
+                                            isClearable
+                                            name="datetime1"
+                                            className={"form-control"}
+                                            selected={endDate}
+                                            onChange={val => {
+                                              setEndDate(val);
+                                              setValue("end", val);
+                                            }}
+                                            dateFormat="dd-MM-yyyy"
+                                            minDate={startDate}
+                                            disabled={cookies.Role_id == "2"}
+                                          />
+                                        </div> 
+                                      </GridItem>
+                                    </GridContainer><br/>
+            
+                                    <GridContainer>
+                                      <GridItem xs={12} sm={12} md={12}>
+                                        <div className="form-group">
+                                        
+                                        <span>Task Members</span><span className="required">*</span>
+                                        <Multiselect
+                                        displayValue="value"
+                                          options={uoptions}
+                                          value={updateSelected}
+                                          selectedValues={allSelectedMember}
+                                          onChange={setUpdateSelected}
+                                          onRemove={setUpdateSelected}
+                                          onSelect={setUpdateSelected}
+                                          placeholder="Select Task Members"
+                                          showArrow={true}
+                                          disable={cookies.Role_id == "2"}                              
+                                        />
+                                        </div> 
+                                      </GridItem>
+                                    </GridContainer><br/>
+                                   
+                                  </CardBody>
+            
+                                  <CardFooter>
+                                      <Button color="primary" type="submit" onClick={()=> { updateProject(task.task_id); } }  hidden={cookies.Role_id == "2"}>Save</Button>
+                                      <Button color="primary" type="submit" onClick={()=> { updateStatus(task.task_id); } }  hidden={cookies.Role_id != "2"}>Update</Button>
+                                      <Button className="button" onClick={() => { close(); }}> Cancel </Button>
+                                  </CardFooter>
+                                  
+                                </Card>
+                            </form>
+                            </GridItem>
                             </GridContainer>
-                          </Card>
-  
-                          </div>
-                        )}
-                      </Popup>
-
-                    </div>
-                  </GridItem>
-              
-              </div></div>
-            </CardHeader>
-
-        </Card>
-      </form>
-      {/* <ToastContainer limit={1}/> */}
-
-    </GridItem>
-
-        )   
+            
+                            </div>
+            
+                            )}
+                            </Popup>
+            
+                            {/* <button onClick={()=>deleteTask(task.task_id)} className="project_delete_icon"><MdDelete/></button> */}
+            
+                            <Popup trigger={<div hidden={cookies.Role_id == "2"}><MdDelete/></div>} modal >
+                                {close => (
+                                  <div>
+                                  <Card>                            
+                                    <GridContainer>
+                                      <GridItem xs={12} sm={12} md={12}>
+                                          <GridContainer>
+                                            <GridItem>
+                                              <div>
+                                                <CardBody>
+                                                  <h4 className={classes.cardTitleWhite}>Are you sure you want to delete {task.task_title} task?</h4>
+                                                </CardBody>
+                                                <CardFooter>
+                                                    <Button onClick={()=>deleteTask(task.task_id)}>Yes</Button>
+                                                    <Button className="button" onClick={() => { close(); }}> No </Button>
+                                                </CardFooter>
+                                              </div>
+                                            </GridItem>
+                                              <div className={classes.close}>
+                                                <a onClick={close}>&times;</a>
+                                              </div>
+                                          </GridContainer>
+                                      </GridItem>
+                                    </GridContainer>
+                                  </Card>
+            
+                                  </div>
+                                )}
+                              </Popup>
+            
+                            </div>
+                          </GridItem>
+                      
+                      </div></div>
+                    </CardHeader>
+            
+                </Card>
+              </form>
+              <ToastContainer limit={1}/>
+            
+            </GridItem>
+            
+                )
                   }
               }
     })
@@ -1546,278 +1531,271 @@ return(
       if(task.task_status == TaskCompleted){
         var person = task.task_person.split(",");
 
-    return(
+        return(
 
-    <GridItem xs={12} sm={6} md={9}>
-      <form>
-        <Card className= "projects">
-            <CardHeader color="primary" className="project-block">
-
-              {/* <img src={`${server}/reactlogo.png`} className={classes.img}/> */}
-              <div className="project-content">
-                <h4 className="projectTitle">{task.task_title}</h4>
-                <p className={classes.cardCategoryWhite}></p>
-
-                <div className="icon-display">
-
-                <span className={task.task_priority}>{task.task_priority}</span>
-                {person.map((project_person) => {
-                  return(
-                    <div className="chip">
-                      <span>{project_person}</span>
-                    </div>
-                  )
-                  })
-                }
-
-                <GridItem>
-                  <div className="icon-edit-delete">
-                    <Popup trigger={<div><a className="bttn-design1" onClick={()=> { projectId(task.task_id) }  }><FiEdit/></a></div>}  className="popupReact"  modal>
-
-                    {close => (
-                    <div>
-                    <GridContainer>
-                    <GridItem xs={12} sm={12} md={12}>
-                    <form onSubmit={handleSubmit(onSubmit)}>              
-                      <Card>
-                        <CardHeader color="primary">
-
-                        <GridContainer>
-                          <GridItem>
-                            <h4 className={classes.cardTitleWhite}>Edit Task</h4>
-                            <p className={classes.cardCategoryWhite}>Update your task details</p>
-                          </GridItem>
-
-                          {/* <GridItem> */}
-                            <div className={classes.close}>
-                              <a onClick={close}>&times;</a>
-                            </div>
-                          {/* </GridItem> */}
-                        </GridContainer>
-
-                        </CardHeader>
+            <GridItem xs={12} sm={6} md={9}>
+              <form>
+                <Card className= "projects">
+                    <CardHeader color="primary" className="project-block">
+            
+                      {/* <img src={`${server}/reactlogo.png`} className={classes.img}/> */}
+                      <div className="project-content">
+                        <h4 className="projectTitle">{task.task_title}</h4>
                         
-                          <CardBody>
-
+                        <div className="icon-display">
+            
+                        <span className={task.task_priority}>{task.task_priority}</span>
+                        {person.map((project_person) => {
+                          return(
+                            <div className="chip">
+                              <span>{project_person}</span>
+                            </div>
+                          )
+                          })
+                        }
+            
+                        <GridItem>
+                          <div className="icon-edit-delete">
+                            <Popup trigger={<div><a className="bttn-design1" onClick={()=> { projectId(task.task_id) }  }><FiEdit/></a></div>}  className="popupReact"  modal>
+            
+                            {close => (
+                            <div>
                             <GridContainer>
-                              <GridItem xs={12} sm={12} md={12}>                      
-                                <div className="form-group">
-                                  <span>Task Title</span><span className="required">*</span>
-                                  <input type="text" className="form-control signup-input" placeholder="Task Title" name="task_title" value={uoption.task_title} onChange={handleChange} />
-                                </div> 
-                              </GridItem>
-                            </GridContainer><br/>
-                              
-                            <GridContainer>
-                              <GridItem xs={12} sm={12} md={12}>
-                              <div className="form-group" name="project_name" onChange={handleChange} >
+                            <GridItem xs={12} sm={12} md={12}>
+                            <form onSubmit={handleSubmit(onSubmit)}>              
+                              <Card>
+                                <CardHeader color="primary">
+            
+                                <GridContainer>
+                                  <GridItem>
+                                    <h4 className={classes.cardTitleWhite}>Edit Task</h4>
+                                    <p className={classes.cardCategoryWhite}>Update your task details</p>
+                                  </GridItem>
+            
+                                  {/* <GridItem> */}
+                                    <div className={classes.close}>
+                                      <a onClick={close}>&times;</a>
+                                    </div>
+                                  {/* </GridItem> */}
+                                </GridContainer>
+            
+                                </CardHeader>
                                 
-                                <span>Select Project</span><span className="required">*</span>
-                                <Multiselect
-                                  displayValue="value"
-                                  options={project_list}
-                                  value={select_updateProject}
-                                  selectedValues={selectedProject}
-                                  singleSelect={true}
-                                  onChange={setUpdateProject}
-                                  onRemove={setUpdateProject}
-                                  onSelect={setUpdateProject}
-                                  placeholder="Project List"
-                                  showArrow={true}
-                                />
-                                
-                                </div> 
-                              </GridItem>
-                            </GridContainer><br/>
-
-                            <GridContainer>  
-                              <GridItem xs={12} sm={12} md={12}>
-                                <div className="form-group">
-                                <span>Task Description</span><span className="required">*</span>
-                                  <textarea className="form-control signup-input" placeholder="Task Description" name="task_description" value={uoption.task_description} onChange={handleChange} />
-                                </div> 
-                              </GridItem>
-                            </GridContainer><br/>
-
-                            <GridContainer>
-                              <GridItem xs={12} sm={12} md={12}>
-                              <div className="form-group">
-                                    <span>Task Status</span><span className="required">*</span>
-                                      <select name="task_status" id="Status" className="form-control signup-input" value={uoption.task_status} onChange={handleChange}>
-                                        <option value=""  disabled selected>Select Task Status</option>
-                                        <option value="task_toDo">Task to do</option>
-                                        <option value="taskOn_hold">Task On hold</option>
-                                        <option value="task_Running">Task Running</option>
-                                        <option value="task_completed">Task Completed</option>
-                                      </select>
-                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                                  </div> 
-                                </GridItem>
-                              </GridContainer><br/>
-
-                            <GridContainer>
-                              <GridItem xs={12} sm={12} md={6}>
-                                <div className="form-group">
-                                <span>Task Priority</span><span className="required">*</span>
-                                  <select id="priority" className="form-control signup-input" name="task_priority" value={uoption.task_priority} onChange={handleChange}  >
-                                    <option value=""  disabled selected>Select Task Priority</option>
-                                    <option value="High">High</option>
-                                    <option value="Medium">Medium</option>
-                                    <option value="Low">Low</option>
-                                  </select>
-                                  <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                                </div> 
-                              </GridItem>
-
-                              <GridItem xs={12} sm={12} md={6}>
-                                <div className="form-group">
-                                <span>Task Language</span><span className="required">*</span>
-                                  <select id="Task_created_by" className="form-control signup-input" name="task_language" value={uoption.task_language} onChange={handleChange} >
-                                    <option value="" disabled selected>Select Language</option>
-                                    <option value="Wordpress">Wordpress</option>
-                                    <option value="Shopify">Shopify</option>
-                                    <option value="ReactJS">ReactJS</option>
-                                    <option value="Laravel">Laravel</option>
-                                    <option value="Android">Android</option>
-                                    <option value="Bubble">Bubble</option>
-                                  </select>
-                                  <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                                </div> 
-                              </GridItem>
-                            </GridContainer><br/>
-
-                            <GridContainer>  
-                              <GridItem xs={12} sm={12} md={6}>
-                                <div className="form-group" onChange={handleChange} >
-                                <span>Task Start Date</span><span className="required">*</span>
-                                  <DatePicker
-                                    placeholderText="Start Date : dd/mm/yyyy"
-                                    isClearable
-                                    name="datetime"
-                                    className={"form-control"}
-                                    selected={startDate}
-                                    onChange={val => {
-                                      setStartDate(val);
-                                      setValue("start", val);
-                                    }}
-                                    dateFormat="dd-MM-yyyy"
-                                    minDate={new Date()}
-                                  />
-                                </div> 
-                              </GridItem>
-
-                              <GridItem xs={12} sm={12} md={6}>
-                                <div className="form-group" onChange={handleChange} >
-                                <span>Task End Date</span><span className="required">*</span>
-                                  <DatePicker
-                                    placeholderText="End Date : dd/mm/yyyy"
-                                    isClearable
-                                    name="datetime1"
-                                    className={"form-control"}
-                                    selected={endDate}
-                                    onChange={val => {
-                                      setEndDate(val);
-                                      setValue("end", val);
-                                    }}
-                                    dateFormat="dd-MM-yyyy"
-                                    minDate={startDate}
-                                  />
-                                </div> 
-                              </GridItem>
-                            </GridContainer><br/>
-
-                            <GridContainer>
-                              <GridItem xs={12} sm={12} md={12}>
-                                <div className="form-group">
-                                
-                                <span>Task Members</span><span className="required">*</span>
-                                <Multiselect
-                                displayValue="value"
-                                  options={uoptions}
-                                  value={updateSelected}
-                                  selectedValues={allSelectedMember}
-                                  onChange={setUpdateSelected}
-                                  onRemove={setUpdateSelected}
-                                  onSelect={setUpdateSelected}
-                                  placeholder="Select Task Members"
-                                  showArrow={true}
-                                />
-                                </div> 
-                              </GridItem>
-                            </GridContainer><br/>
-
-                            <GridContainer>
-                              <GridItem xs={12} sm={12} md={12}>
-                                <div className="form-group">
-                                <span>Comments</span>
-                                  <textarea className="form-control signup-input" placeholder="Comment" name="task_comment" value={uoption.task_comment} onChange={handleChange} />
-                                </div> 
-                              </GridItem>
-                            </GridContainer>
-                            
-                          </CardBody>
-
-                          <CardFooter>
-                              <Button color="primary" type="submit" onClick={()=> { updateProject(task.task_id); } }>Save</Button>
-                              <Button className="button" onClick={() => { close(); }}> Cancel </Button>
-                          </CardFooter>
-                          
-                        </Card>
-                    </form>
-                    </GridItem>
-                    </GridContainer>
-
-                    </div>
-
-                    )}
-                    </Popup>
-
-                    {/* <button onClick={()=>deleteTask(task.task_id)} className="project_delete_icon"><MdDelete/></button> */}
-
-
-                    <Popup trigger={<span><MdDelete/></span>} modal>
-                        {close => (
-                          <div>
-                          <Card>                            
-                            <GridContainer>
-                              <GridItem xs={12} sm={12} md={12}>
+                                  <CardBody>
+            
+                                    <GridContainer>
+                                      <GridItem xs={12} sm={12} md={12}>                      
+                                        <div className="form-group">
+                                          <span>Task Title</span><span className="required">*</span>
+                                          <input type="text" className="form-control signup-input" disabled={cookies.Role_id == "2"} placeholder="Task Title" name="task_title" value={uoption.task_title} onChange={handleChange} />
+                                        </div> 
+                                      </GridItem>
+                                    </GridContainer><br/>
+                                      
+                                    <GridContainer>
+                                      <GridItem xs={12} sm={12} md={12}>
+                                      <div className="form-group" name="project_name" onChange={handleChange} >
+                                        
+                                        <span>Select Project</span><span className="required">*</span>
+                                        <Multiselect
+                                          displayValue="value"
+                                          options={project_list}
+                                          value={select_updateProject}
+                                          selectedValues={selectedProject}
+                                          singleSelect={true}
+                                          onChange={setUpdateProject}
+                                          onRemove={setUpdateProject}
+                                          onSelect={setUpdateProject}
+                                          placeholder="Project List"
+                                          showArrow={true}
+                                          disable={cookies.Role_id == "2"}
+                                        />
+                                        </div> 
+                                      </GridItem>
+                                    </GridContainer><br/>
+            
+                                    <GridContainer>  
+                                      <GridItem xs={12} sm={12} md={12}>
+                                        <div className="form-group">
+                                        <span>Task Description</span><span className="required">*</span>
+                                          <textarea className="form-control signup-input" disabled={cookies.Role_id == "2"} placeholder="Task Description" name="task_description" value={uoption.task_description} onChange={handleChange} />
+                                        </div> 
+                                      </GridItem>
+                                    </GridContainer><br/>
+            
                                   <GridContainer>
-                                    <GridItem>
-                                      <div>
-                                        <CardBody>
-                                          <h4 className={classes.cardTitleWhite}>Are you sure you want to delete {task.task_title} task?</h4>
-                                        </CardBody>
-                                        <CardFooter>
-                                            <Button onClick={()=>deleteTask(task.task_id)}>Yes</Button>
-                                            <Button className="button" onClick={() => { close(); }}> No </Button>
-                                        </CardFooter>
-                                      </div>
-                                    </GridItem>
-                                      <div className={classes.close}>
-                                        <a onClick={close}>&times;</a>
-                                      </div>
-                                  </GridContainer>
-                              </GridItem>
+                                    <GridItem xs={12} sm={12} md={12}>
+                                    <div className="form-group">
+                                          <span>Task Status</span><span className="required">*</span>
+                                            <select name="task_status" id="Status" className="form-control signup-input" value={uoption.task_status} onChange={handleChange}>
+                                              <option value=""  disabled selected>Select Task Status</option>
+                                              <option value="task_toDo">Task to do</option>
+                                              <option value="taskOn_hold">Task On hold</option>
+                                              <option value="task_Running">Task Running</option>
+                                              <option value="task_completed">Task Completed</option>
+                                            </select>
+                                          <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                        </div> 
+                                      </GridItem>
+                                    </GridContainer><br/>
+            
+                                    <GridContainer>
+                                      <GridItem xs={12} sm={12} md={6}>
+                                        <div className="form-group">
+                                        <span>Task Priority</span><span className="required">*</span>
+                                          <select id="priority" className="form-control signup-input" disabled={cookies.Role_id == "2"} name="task_priority" value={uoption.task_priority} onChange={handleChange}  >
+                                            <option value=""  disabled selected>Select Task Priority</option>
+                                            <option value="High">High</option>
+                                            <option value="Medium">Medium</option>
+                                            <option value="Low">Low</option>
+                                          </select>
+                                          <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                        </div> 
+                                      </GridItem>
+            
+                                      <GridItem xs={12} sm={12} md={6}>
+                                        <div className="form-group">
+                                        <span>Task Language</span><span className="required">*</span>
+                                          <select id="Task_created_by" className="form-control signup-input" disabled={cookies.Role_id == "2"} name="task_language" value={uoption.task_language} onChange={handleChange} >
+                                            <option value="" disabled selected>Select Language</option>
+                                            <option value="Wordpress">Wordpress</option>
+                                            <option value="Shopify">Shopify</option>
+                                            <option value="ReactJS">ReactJS</option>
+                                            <option value="Laravel">Laravel</option>
+                                            <option value="Android">Android</option>
+                                            <option value="Bubble">Bubble</option>
+                                          </select>
+                                          <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                        </div> 
+                                      </GridItem>
+                                    </GridContainer><br/>
+            
+                                    <GridContainer>  
+                                      <GridItem xs={12} sm={12} md={6}>
+                                        <div className="form-group" onChange={handleChange} disabled={cookies.Role_id == "2"} >
+                                        <span>Task Start Date</span><span className="required">*</span>
+                                          <DatePicker
+                                            placeholderText="Start Date : dd/mm/yyyy"
+                                            isClearable
+                                            name="datetime"
+                                            className={"form-control"}
+                                            selected={startDate}
+                                            onChange={val => {
+                                              setStartDate(val);
+                                              setValue("start", val);
+                                            }}
+                                            dateFormat="dd-MM-yyyy"
+                                            minDate={new Date()}
+                                            disabled={cookies.Role_id == "2"}
+                                          />
+                                        </div> 
+                                      </GridItem>
+            
+                                      <GridItem xs={12} sm={12} md={6}>
+                                        <div className="form-group" onChange={handleChange} disabled={cookies.Role_id == "2"} >
+                                        <span>Task End Date</span><span className="required">*</span>
+                                          <DatePicker
+                                            placeholderText="End Date : dd/mm/yyyy"
+                                            isClearable
+                                            name="datetime1"
+                                            className={"form-control"}
+                                            selected={endDate}
+                                            onChange={val => {
+                                              setEndDate(val);
+                                              setValue("end", val);
+                                            }}
+                                            dateFormat="dd-MM-yyyy"
+                                            minDate={startDate}
+                                            disabled={cookies.Role_id == "2"}
+                                          />
+                                        </div> 
+                                      </GridItem>
+                                    </GridContainer><br/>
+            
+                                    <GridContainer>
+                                      <GridItem xs={12} sm={12} md={12}>
+                                        <div className="form-group">
+                                        
+                                        <span>Task Members</span><span className="required">*</span>
+                                        <Multiselect
+                                        displayValue="value"
+                                          options={uoptions}
+                                          value={updateSelected}
+                                          selectedValues={allSelectedMember}
+                                          onChange={setUpdateSelected}
+                                          onRemove={setUpdateSelected}
+                                          onSelect={setUpdateSelected}
+                                          placeholder="Select Task Members"
+                                          showArrow={true}
+                                          disable={cookies.Role_id == "2"}                              
+                                        />
+                                        </div> 
+                                      </GridItem>
+                                    </GridContainer><br/>
+                                   
+                                  </CardBody>
+            
+                                  <CardFooter>
+                                      <Button color="primary" type="submit" onClick={()=> { updateProject(task.task_id); } }  hidden={cookies.Role_id == "2"}>Save</Button>
+                                      <Button color="primary" type="submit" onClick={()=> { updateStatus(task.task_id); } }  hidden={cookies.Role_id != "2"}>Update</Button>
+                                      <Button className="button" onClick={() => { close(); }}> Cancel </Button>
+                                  </CardFooter>
+                                  
+                                </Card>
+                            </form>
+                            </GridItem>
                             </GridContainer>
-                          </Card>
-  
-                          </div>
-                        )}
-                      </Popup>
-
-                    </div>
-                  </GridItem>
-              
-              </div></div>
-            </CardHeader>
-
-        </Card>
-      </form>
-      {/* <ToastContainer limit={1}/> */}
-
-    </GridItem>
-
-        )   
+            
+                            </div>
+            
+                            )}
+                            </Popup>
+            
+                            {/* <button onClick={()=>deleteTask(task.task_id)} className="project_delete_icon"><MdDelete/></button> */}
+            
+                            <Popup trigger={<div hidden={cookies.Role_id == "2"}><MdDelete/></div>} modal >
+                                {close => (
+                                  <div>
+                                  <Card>                            
+                                    <GridContainer>
+                                      <GridItem xs={12} sm={12} md={12}>
+                                          <GridContainer>
+                                            <GridItem>
+                                              <div>
+                                                <CardBody>
+                                                  <h4 className={classes.cardTitleWhite}>Are you sure you want to delete {task.task_title} task?</h4>
+                                                </CardBody>
+                                                <CardFooter>
+                                                    <Button onClick={()=>deleteTask(task.task_id)}>Yes</Button>
+                                                    <Button className="button" onClick={() => { close(); }}> No </Button>
+                                                </CardFooter>
+                                              </div>
+                                            </GridItem>
+                                              <div className={classes.close}>
+                                                <a onClick={close}>&times;</a>
+                                              </div>
+                                          </GridContainer>
+                                      </GridItem>
+                                    </GridContainer>
+                                  </Card>
+            
+                                  </div>
+                                )}
+                              </Popup>
+            
+                            </div>
+                          </GridItem>
+                      
+                      </div></div>
+                    </CardHeader>
+            
+                </Card>
+              </form>
+              <ToastContainer limit={1}/>
+            
+            </GridItem>
+            
+                )   
                   }
               }
     })
