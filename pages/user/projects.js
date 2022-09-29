@@ -137,7 +137,7 @@ function Projects({project}) {
   console.log(comments);
   
   const getData = async (project_id)=>{
-    var comment = await axios.post(`${server}/api/comment/getProjectName`, { project_id: project_id });
+    var comment = await axios.post(`${server}/api/comment/getProjectComment`, { project_id: project_id });
     setcomments(comment.data)
   }
   
@@ -281,17 +281,6 @@ function Projects({project}) {
                                         <h5 className="projectPriority">Comments</h5>
                                         <ReactQuill modules={modules} theme="snow" onChange={setValue} />
                                         <div onClick={()=> sendMessage(project.project_id)}>Save</div>
-                                      </form>
-                                    </GridItem>
-                                  </GridContainer>
-                                  <GridContainer>
-                                    <GridItem xs={12} sm={12} md={12} >
-                                      <form>
-
-                                        {/* <ReactQuill modules={modules} theme="snow" onChange={setValue} />
-                                        <div onClick={()=> sendMessage(project.project_id)}>Save</div> */}
-
-                                        {/* <div onClick={() => sendMessage(project.project_id)}>Save</div> */}
                                       </form>
                                     </GridItem>
                                   </GridContainer>

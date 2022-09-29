@@ -2,7 +2,9 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useRouter } from 'next/router';
 import { makeStyles } from "@material-ui/core/styles";
+// layout for this page
 import SuperUser from "layouts/SuperUser.js";
+
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import Table from "components/Table/Table.js";
@@ -33,6 +35,17 @@ import { FiEdit } from "react-icons/fi";
 import { MdDelete } from 'react-icons/md';
 import { useCookies } from 'react-cookie';
 import axios from "axios";
+import dynamic from "next/dynamic";
+import 'react-quill/dist/quill.snow.css';
+import "react-quill/dist/quill.bubble.css";
+
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import Typography from "@material-ui/core/Typography";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+
+const ReactQuill = dynamic(import('react-quill'), { ssr: false });
 
 
 const styles = {
@@ -93,15 +106,15 @@ const styles = {
 export async function getServerSideProps(){
   const res = await fetch(`${server}/api/project`);
   const project_details = await res.json();
-  // console.log(project_details);
+  
   const response = await fetch(`${server}/api/admin`)
   const User_name = await response.json();
 
   return{ props: {project_details, User_name} }
 }
 
-function Dashboard( { project_details , User_name } ) {
-
+function ProjectModule( { project_details , User_name } ) {
+  // console.log(project_details);
   const [cookies, setCookie] = useCookies(['name']);
 
   const useStyles = makeStyles(styles);
@@ -126,10 +139,10 @@ function Dashboard( { project_details , User_name } ) {
   //for Off_track
   const Off_track = [];
   // console.log(Off_track)
-
+  
   const deleteProject = async(id) =>{
     console.log('delete');
-    console.log(id);
+    // console.log(id);
 
     const res = await fetch(`${server}/api/project/${id}`);
     router.push(`${server}/admin/project_module`);
@@ -156,6 +169,8 @@ function Dashboard( { project_details , User_name } ) {
   const [ userID , setUserId] = useState();
 
   const userId = async(id) =>{
+    console.log("cookies");
+    console.log(id);
 
     const added_By = [];
     const user = await fetch(`${server}/api/user_dashboard/${id}`)
@@ -169,11 +184,15 @@ function Dashboard( { project_details , User_name } ) {
   }
   const add_user = [];
   add_user.push(userID);
-  console.log(userID)
+  console.log(add_user);
+
+  const [comments, setcomments] = useState([]);
 
   const projectId = async(id) =>{
     console.log('update project id');
     console.log(id);
+    var comment = await axios.post(`${server}/api/comment/getProjectComment`, { project_id: id });
+    setcomments(comment.data)
 
     const response = await fetch(`${server}/api/project/update/${id}`)
     const update_data = await response.json();
@@ -193,7 +212,6 @@ function Dashboard( { project_details , User_name } ) {
     setUpdate(udata);
     setStartDate(new Date(udata.project_start));
     setEndDate(new Date(udata.project_deadline));
-
     }
 
   const [selected, setSelected] = useState([userID]);
@@ -214,7 +232,6 @@ function Dashboard( { project_details , User_name } ) {
   for(var i=0; i<projectMember.length; i++){
     allSelectedMember.push({'label' :projectMember[i] , 'value' : projectMember[i]});
   }
-  console.log("projectMember", projectMember)
 
   const toastId = React.useRef(null);
   const updateProject = async() =>{
@@ -325,9 +342,64 @@ useEffect(() =>{
   u_data();
 },[]);
 
+const [ u_Comment, setCommentValue ] = useState("");
+const modules = {
+  toolbar: {
+    container: [
+    [{ 'font': [] }],
+    [{ 'size': ['small', false, 'large', 'huge'] }],
+    ['bold', 'italic', 'underline'],
+    [{'list': 'ordered'}, {'list': 'bullet'}],
+    [{ 'align': [] }],
+    [{ 'color': [] }, { 'background': [] }],
+    ['clean'],
+    ['link', 'image', 'video']
+  ],
+  handlers: {
+      // image: imageHandler,
+  }
+ }
+}
+
+const sendMessage = async (project_id) => {
+  const date = new Date().toLocaleString();
+  console.log("date");
+  console.log(date);
+
+  var addComment = await axios.post(`${server}/api/comment/addProjectComments`, {  username: cookies.name, message: u_Comment, project_id: project_id, created_D: date });
+  console.log(addComment)
+  console.log(cookies.name)
+  router.reload(`${server}/superuser/project_module`);
+}
+
+console.log("project");
+console.log(u_Comment);
+
+const [commentEdit, setEditComment] = useState();
+
+const editComment = async( id ) =>{
+  console.log("id");
+  console.log(id);
+
+  var commentId = await axios.post(`${server}/api/comment/comment_id`, { comment_id: id, user: cookies.name });
+  console.log(commentId.data[0]);
+
+  if(commentId.data != ""){
+    setEditComment(commentId.data[0].comment);
+    console.log(commentEdit);
+  }
+}
+
+const updateComment = async(id, comment) =>{
+  // console.log(comment);
+  // console.log(id);
+  var comment = await axios.post(`${server}/api/comment/updateComment`, { comment_id: id, user: cookies.name, comment:comment });
+  router.reload(`${server}/user/usertask`);
+}
+
 
   return (
-    <>
+    <span>
   <div className="buttonalign">
     <GridContainer>
         <GridItem>
@@ -387,10 +459,10 @@ useEffect(() =>{
                             <option value=""  disabled selected>Select Your Department...</option>
                             <option value="HR">HR</option>
                             <option value="UI & UX">UI & UX</option>
-                            <option value="Web Developer">Web Developer</option>
-                            <option value="Content Writer">Content Writer</option>
-                            <option value="Project Manager">Project Manager</option>
-                            <option value="Mobile App Developer">Mobile App Developer</option>
+                            <option value="Web development">Web development</option>
+                            <option value="Content writer">Content writer</option>
+                            <option value="Project manager">Project manager</option>
+                            <option value="Mobile App developer">Mobile App developer</option>
                             <option value="SEO">SEO</option>
                           </select>
                           <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
@@ -475,6 +547,8 @@ useEffect(() =>{
                   
                     <GridItem xs={12} sm={12} md={6}>
                         <div className="form-group">
+                          {/*<input type="text" className="form-control signup-input" placeholder="Status" {...register('status',  { required: "Please enter your Status", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
+                          <div className="error-msg">{errors.status && <p>{errors.status.message}</p>}</div>*/}
                           <span>Project Status</span><span className="required">*</span>
                           <select name="Status" id="Status" className="form-control signup-input" {...register('project_status', {required:true ,message:'Please select atleast one option', })}>
                             <option value=""  disabled selected>Select Project Status</option>
@@ -513,8 +587,8 @@ useEffect(() =>{
                   <GridContainer>
                     <GridItem xs={12} sm={12} md={12}>
                       <div className="form-group">
-                      <span>Comments</span>
-                        <textarea className="form-control signup-input" placeholder="Comment" {...register('project_comment')} />
+                      <span>Attachment</span>
+                        <input type="file" className="form-control signup-input" placeholder="file" {...register('project_attachment')} />
                         <div className="error-msg">{errors.position && <span>{errors.position.message}</span>}</div>
                       </div> 
                     </GridItem>
@@ -544,7 +618,7 @@ useEffect(() =>{
         <a href={`${server}/superuser/project_module`}>All</a>
         <a href={`${server}/superuser/project_module/project_department/HR`}>HR</a>
         <a href={`${server}/superuser/project_module/project_department/UI & UX`}>UI & UX</a>
-        <a href={`${server}/superuser/project_module/project_department/Web development`}>Web Developer</a>
+        <a href={`${server}/superuser/project_module/project_department/Web development`}>Web Development</a>
         <a href={`${server}/superuser/project_module/project_department/Content writer`}>Content Writer</a>
         <a href={`${server}/superuser/project_module/project_department/Project manager`}>Project Manager</a>
         <a href={`${server}/superuser/project_module/project_department/Mobile App developer`}>Mobile App Developer</a>
@@ -574,67 +648,69 @@ useEffect(() =>{
 
     {project_details.map((project)=>{
 
-if(project.project_delete == "no"){
+      const isInArray = project.project_person.includes(cookies.name);
+      // console.log(isInArray); 
+      if(isInArray==true){
+        // console.log("True")
+      }
+      else{
+        // console.log("false")
+      }
+      if(project.project_delete == "no"){
 
-// if(status.project_status == project.project_status){
+      // if(status.project_status == project.project_status){
 
-  var person = project.project_person.split(",");
- 
-  // console.log(project.project_status)
-  const MySQLDate  = project.project_deadline;
-  let date = MySQLDate.replace(/[-]/g, '/').substr(0,10);
-  // console.log(date)
+      var person = project.project_person.split(",");
+      const MySQLDate  = project.project_deadline;
+      let date = MySQLDate.replace(/[-]/g, '/').substr(0,10);
+      // console.log(date)
 
-  if(project.project_status=="running")
-  {
-    
-    if(date>today)
-    {
-      On_track.push(project.project_id);
-    }
-    else
-    {
-      Off_track.push(project.project_id);
-    }
-  }
-  const isInArray = project.project_person.includes(cookies.name);
-  // console.log(isInArray); 
-  if(isInArray==true){
-    console.log("True")
-  }
-  else{
-    console.log("false")
-  }
-return(
-  <>
-    <GridItem xs={12} sm={6} md={9}>
-
-  <form>
-    <Card className="projects">
-      <CardHeader color="primary" className="project-block">
-
-        {/* <img src={`${server}/reactlogo.png`} className={classes.img}/> */}
-        <div className="project-content">
-        <h4 className="projectTitle">{project.project_title}</h4>
+      if(project.project_status=="running")
+      {
         
-        <div className="icon-display">
-        <span className={project.project_priority}>{project.project_priority}</span>
-        <span className={project.project_status}>
-          {(project.project_status=="on hold") ? "On Hold" : "" }
-          {(project.project_status=="completed") ? "Completed" : "" }
-          {(project.project_status=="running") ? (date>today) ? "On track": "Off track" : "" }
-        </span>
-        {person.map((project_person) => {
-          return(
-            <div className="chip">
-              <span>{project_person}</span>
-            </div>
-          )
-        })
+        if(date>today)
+        {
+          // console.log("On track", project.project_id);
+          On_track.push(project.project_id);
+          // console.log(On_track)
+        }
+        else
+        {
+          // console.log("off track", project.project_id);
+
+          Off_track.push(project.project_id);
+          // console.log(Off_track)
+        }
+      }
+
+      return(
+        <>
+          <GridItem xs={12} sm={6} md={9}>
+            <form>
+            <Card className= "projects">
+              <CardHeader color="primary" className="project-block">
+                {/* <img src={`${server}/reactlogo.png`} className={classes.img}/> */}
+                <div className="project-content">
+                <h4 className="projectTitle">{project.project_title}</h4>        
+                <div className="icon-display">
+                <span className={project.project_priority}>{project.project_priority}</span>
+                <span className={project.project_status}>
+                  {(project.project_status=="on hold") ? "On Hold" : "" }
+                  {(project.project_status=="completed") ? "Completed" : "" }
+                  {(project.project_status=="running") ? (date>today) ? "On track": "Off track" : "" }
+                </span>
+                {/* <span className={project.project_priority}>{project.project_priority}</span> */}
+                {person.map((project_person) => {
+                  return(
+                    <div className="chip">
+                      <span>{project_person}</span>
+                    </div>
+                  )
+                })
 
         }
         {/* <span className="project_person">{project.project_person}</span> */}
-          <Popup trigger={<Button className='icon-width' onClick={()=> { projectId(project.project_id) }} disabled={isInArray==false}><FiEdit/></Button>} className="popupReact" modal>
+          <Popup trigger={<span><div className='icon-width' onClick={()=> { projectId(project.project_id) }} ><FiEdit/></div></span>} className="popupReact" modal nested>
 
               {close => (
               <div className="popup-align">
@@ -646,7 +722,7 @@ return(
 
                   <GridContainer>
                     <GridItem>
-                      <h4 className={classes.cardTitleWhite}>Edit Project{project.project_created_date}</h4>
+                      <h4 className={classes.cardTitleWhite}>Edit Project{(project.project_id)}</h4>
                       <p className={classes.cardCategoryWhite}>Update your project details</p>
                     </GridItem>
 
@@ -687,10 +763,10 @@ return(
                                 <option value="HR">HR</option>
                                 <option value="UI & UX">UI & UX</option>
                                 <option value="Testing">Testing</option>
-                                <option value="Web development">Web Development</option>
-                                <option value="Content writer">Content Writer</option>
-                                <option value="Project manager">Project Manager</option>
-                                <option value="Mobile App developer">Mobile App Developer</option>
+                                <option value="Web development">Web development</option>
+                                <option value="Content writer">Content writer</option>
+                                <option value="Project manager">Project manager</option>
+                                <option value="Mobile App developer">Mobile App developer</option>
                                 <option value="SEO">SEO</option>
                               </select>
                               <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
@@ -785,7 +861,8 @@ return(
 
                       <GridContainer>
                       <GridItem xs={12} sm={12} md={12}>
-                          <div className="form-group">     
+                          <div className="form-group">
+                          
                           <span>Project Members</span><span className="required">*</span>
                             <Multiselect
                               displayValue="value"
@@ -801,16 +878,7 @@ return(
                           </div> 
                         </GridItem>
                       </GridContainer><br/>
-                              
-                      <GridContainer>
-                        <GridItem xs={12} sm={12} md={12}>
-                          <div className="form-group">
-                          <span>Comments</span>
-                            <textarea className="form-control signup-input" name="project_comment" value={uoption.project_comment} onChange={handleChange} placeholder="Comment" />
-                          </div> 
-                        </GridItem>
-                      </GridContainer>
-                      
+                    
                     </CardBody>
 
                     <CardFooter>
@@ -818,6 +886,73 @@ return(
                         <Button className="button" onClick={() => { close(); }}> Cancel </Button>
                     </CardFooter>
                     
+                    <CardBody>
+                      <GridContainer>
+                        <GridItem>
+                          <ReactQuill modules={modules} theme="snow" onChange={setCommentValue} />
+                            <div onClick={()=> sendMessage(project.project_id)}>Comment</div>
+                        </GridItem>
+                      </GridContainer>
+                    
+                    {comments.map((superuserComment)=>{
+                      return(
+                        <span>
+                          <GridContainer>
+                            <GridItem>
+                              <span>{superuserComment.username}</span>
+                            </GridItem>
+                          </GridContainer>
+
+                          <GridContainer>
+                                            <GridItem>
+                                              <div>
+
+                                              <ReactQuill value={superuserComment.comment} theme="bubble" readOnly />
+
+      <Popup trigger={ <span><button onClick={()=>{ editComment(superuserComment.id)} } disabled={ superuserComment.username != cookies.name }>Edit</button></span> }
+        className="popupReact"
+        modal
+      >
+        {close => (
+                              <Card>
+                                <CardBody>
+                                      <div className={classes.close}>
+                                        <a onClick={close}>&times;</a>
+                                      </div>
+
+                                  <GridContainer>
+                                    <GridItem xs={12} sm={12} md={12} >
+                                      <form>
+
+                                        <ReactQuill modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
+
+                                      </form>
+                                    </GridItem>
+                                  </GridContainer>
+
+                                  <CardFooter>
+                                      <Button color="primary" type="submit"  onClick={() => { updateComment(superuserComment.id, commentEdit) }}>Update</Button>
+                                      <Button className="button" onClick={() => { close(); }}> Cancel </Button>
+                                  </CardFooter>
+                                </CardBody>
+                              </Card>
+        )}
+        
+      </Popup>
+
+                                              </div>
+                                            </GridItem>
+                                          </GridContainer>
+
+                        </span>
+                      )
+                    })
+
+                    }
+                    </CardBody>
+
+
+
                   </Card>
               </form>
               </GridItem>
@@ -829,7 +964,7 @@ return(
               )}
               </Popup>
 
-                      <Popup trigger={<a className="icon-edit-delete"><MdDelete/></a>} modal>
+                      <Popup trigger={<a><MdDelete/></a>} modal>
                         {close => (
                           <div>
                           <Card>                            
@@ -878,9 +1013,9 @@ return(
 })
 }
     </GridContainer>
-    </>
+    </span>
   );
 }
 
-Dashboard.layout = SuperUser;
-export default Dashboard;
+ProjectModule.layout = SuperUser;
+export default ProjectModule;
