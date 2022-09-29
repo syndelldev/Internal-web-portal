@@ -262,7 +262,26 @@ const [cookies, setCookie] = useCookies(['name']);
     }
   }
 
-  const toastID = React.useRef(null);
+  const updateStatus = async() =>{
+
+    const res = await fetch(`${server}/api/subtask/update_taskStatus`,{
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ task_id:uoption.task_id, task_status:uoption.task_status }),
+    });
+    if(!toast.isActive(toastId.current)) {
+      toastId.current = toast.success('Status updated Successfully ! 🎉', {
+          position: "top-right",
+          autoClose:1000,
+          theme: "colored",
+          hideProgressBar: true,
+          onClose: () => router.push(`${server}/tasks`)
+        });
+      }
+      router.reload(`${server}/tasks`);
+}
+
+  
   const onSubmit = async (result) =>{
     
     console.log(result);
@@ -863,7 +882,8 @@ return(
                       </CardBody>
 
                       <CardFooter>
-                          <Button color="primary" type="submit" onClick={()=> { updateProject(task.task_id); } }  disabled={cookies.Role_id == "2"}>Save</Button>
+                          <Button color="primary" type="submit" onClick={()=> { updateProject(task.task_id); } }  hidden={cookies.Role_id == "2"}>Save</Button>
+                          <Button color="primary" type="submit" onClick={()=> { updateStatus(task.task_id); } }  hidden={cookies.Role_id != "2"}>Update</Button>
                           <Button className="button" onClick={() => { close(); }}> Cancel </Button>
                       </CardFooter>
                       
@@ -879,8 +899,7 @@ return(
 
                 {/* <button onClick={()=>deleteTask(task.task_id)} className="project_delete_icon"><MdDelete/></button> */}
 
-
-                <Popup trigger={<span><MdDelete/></span>} modal>
+                <Popup trigger={<div hidden={cookies.Role_id == "2"}><MdDelete/></div>} modal >
                     {close => (
                       <div>
                       <Card>                            
@@ -968,7 +987,7 @@ return(
 
                 <GridItem>
                   <div className="icon-edit-delete">
-                    <Popup trigger={<div><a className="bttn-design1" onClick={()=> { projectId(task.task_id) }  }><FiEdit/></a></div>}  className="popupReact"  modal>
+                    <Popup trigger={<div><a className="bttn-design1" onClick={()=> { projectId(task.task_id) }  }><FiEdit/></a></div>} className="popupReact" modal>
 
                     {close => (
                     <div>
