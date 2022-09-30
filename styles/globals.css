@@ -578,6 +578,8 @@ h2.title-user-project {
 td.status-data {
   text-align: center;
 }
+
+
 .makeStyles-cardHeader-380.makeStyles-primaryCardHeader-388 {
   display: flex;
 }
@@ -588,3 +590,6 @@ p.Task-lang {
   font-weight: 600;
 }
 
+.expand_dropdown{
+  background-color: transparent!important;
+}

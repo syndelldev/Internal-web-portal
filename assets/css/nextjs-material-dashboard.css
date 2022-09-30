@@ -573,7 +573,8 @@ button.addproject{
   float: right;
 }
 .task_title{
-  padding: 20px;
+  font-weight: 700;
+  padding: 10px;
   font-size: 18px;
   cursor: pointer;
 }
