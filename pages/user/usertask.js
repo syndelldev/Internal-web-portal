@@ -350,7 +350,6 @@ function Dashboard({task}) {
         </Card>
         {todo_title ? (
           <>
-         
             <table className="project-data" >
               <tr className="project-data-title">
                 <th colSpan="2" className="title">Task name </th>
@@ -613,7 +612,6 @@ function Dashboard({task}) {
               )}
             })}
             </table>
-            
           </>
         ) : ("")}
         {/*TaskToDo task End*/}
@@ -621,7 +619,7 @@ function Dashboard({task}) {
         <Card>
           <GridContainer>
             <GridItem xs={12} sm={12} md={12} >
-              <div onClick={()=> { taskRunning("task_Running") , closeTaskRunning("task_Running") ,setrunning_title(!running_title) }} className="task_title" >In Progress {taskTodo ? <FaArrowDown/>:<FaArrowUp/>} </div>
+              <div onClick={()=> { taskRunning("task_Running") , closeTaskRunning("task_Running") ,setrunning_title(!running_title) }} className="task_title" >Task Running {TaskRunning ? <FaArrowDown/>:<FaArrowUp/>} </div>
             </GridItem>
           </GridContainer>
         </Card>
@@ -894,7 +892,7 @@ function Dashboard({task}) {
         <Card>
           <GridContainer>
             <GridItem xs={12} sm={12} md={12}>
-            <div onClick={()=> { taskOnHold("taskOn_hold") , closeTaskOnHold("taskOn_hold") , setonhold_title(!onhold_title) }} className="task_title" > On hold {taskTodo ? <FaArrowDown/>:<FaArrowUp/>}</div>
+            <div onClick={()=> { taskOnHold("taskOn_hold") , closeTaskOnHold("taskOn_hold") , setonhold_title(!onhold_title) }} className="task_title" >Task on hold {TaskOnHold ? <FaArrowDown/>:<FaArrowUp/>}</div>
             </GridItem>
           </GridContainer>
         </Card>
@@ -1163,7 +1161,7 @@ function Dashboard({task}) {
         <Card>
           <GridContainer>
             <GridItem xs={12} sm={12} md={12}>
-            <div onClick={()=> { taskCompleted("task_completed") , closeTaskCompleted("task_completed") , setcompleted_title(!completed_title)}} className="task_title" >Task completed {taskTodo ? <FaArrowDown/>:<FaArrowUp/>} </div>
+            <div onClick={()=> { taskCompleted("task_completed") , closeTaskCompleted("task_completed") , setcompleted_title(!completed_title)}} className="task_title" >Task completed {TaskCompleted ? <FaArrowDown/>:<FaArrowUp/>} </div>
             </GridItem>
           </GridContainer>
         </Card>
