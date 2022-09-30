@@ -95,6 +95,9 @@ function UserById(data){
     const onSubmit = async (e) =>{
         e.preventDefault();
 
+        const hashedPassword = bcrypt.hashSync(userdata.password, 10)
+        console.log(hashedPassword)
+
         let data = await axios.put(`${server}/api/admin/${user.id}`, userdata);
         console.log(data)
         console.log(userdata)
