@@ -7,6 +7,8 @@ import { server } from 'config';
 //import Cookies from 'js-cookie';
 import { useCookies } from 'react-cookie';
 import { ToastContainer, toast } from 'react-toastify';
+import bcrypt from 'bcryptjs'
+
 
 export default function home()
 {
@@ -58,78 +60,79 @@ export default function home()
             var role = data[0].role
             console.log(role)
 
-            
-            if(dbpass == password)
-            {
-                if(role=='Admin'){
-                    setCookie('name', data[0].username, { path:'/' , sameSite:true, });
-                    setCookie('Email', data[0].email, { path:'/' , sameSite:true, });
-                    setCookie('Mobile_num', data[0].mobile_no, { path:'/' , sameSite:true, });
-                    setCookie('DOB', data[0].dob, { path:'/' , sameSite:true, });
-                    setCookie('Department', data[0].department, { path:'/' , sameSite:true, });
-                    setCookie('Position', data[0].position, { path:'/' , sameSite:true, });
-                    setCookie('Role', data[0].role, { path:'/' , sameSite:true, });
-                    setCookie('Position', data[0].position, { path:'/' , sameSite:true, });
-                    setCookie('Id', data[0].id, { path:'/' , sameSite:true, });
-                    setCookie('Avtar', data[0].avtar, { path:'/' , sameSite:true, });
-                    setCookie('Role_id', data[0].role_id, { path:'/' , sameSite:true, });
-
-                    if(! toast.isActive(toastId.current)) {
+            bcrypt.compare(password, dbpass, function(err, result) {
+                if(result){
+                    console.log("success");
+                    if(role=='Admin'){
+                        setCookie('name', data[0].username, { path:'/' , sameSite:true, });
+                        setCookie('Email', data[0].email, { path:'/' , sameSite:true, });
+                        setCookie('Mobile_num', data[0].mobile_no, { path:'/' , sameSite:true, });
+                        setCookie('DOB', data[0].dob, { path:'/' , sameSite:true, });
+                        setCookie('Department', data[0].department, { path:'/' , sameSite:true, });
+                        setCookie('Position', data[0].position, { path:'/' , sameSite:true, });
+                        setCookie('Role', data[0].role, { path:'/' , sameSite:true, });
+                        setCookie('Position', data[0].position, { path:'/' , sameSite:true, });
+                        setCookie('Id', data[0].id, { path:'/' , sameSite:true, });
+                        setCookie('Avtar', data[0].avtar, { path:'/' , sameSite:true, });
+                        setCookie('Role_id', data[0].role_id, { path:'/' , sameSite:true, });
+    
+                        if(! toast.isActive(toastId.current)) {
+                            toastId.current = toast.success('Login Successful! 🎉', {
+                                position: "top-right",
+                                autoClose:1000,
+                                onClose: () => router.push("/admin/dashboard")
+                                });
+                            }
+                        }
+                    else if(role=='User'){
+                        setCookie('name', data[0].username, { path:'/' , sameSite:true, });
+                        setCookie('Email', data[0].email, { path:'/' , sameSite:true, });
+                        setCookie('Mobile_num', data[0].mobile_no, { path:'/' , sameSite:true, });
+                        setCookie('DOB', data[0].dob, { path:'/' , sameSite:true, });
+                        setCookie('Department', data[0].department, { path:'/' , sameSite:true, });
+                        setCookie('Position', data[0].position, { path:'/' , sameSite:true, });
+                        setCookie('Role', data[0].role, { path:'/' , sameSite:true, });
+                        setCookie('Id', data[0].id, { path:'/' , sameSite:true, });
+                        setCookie('Avtar', data[0].avtar, { path:'/' , sameSite:true, });
+                        setCookie('Role_id', data[0].role_id, { path:'/' , sameSite:true, });
+    
+      
+                        if(! toast.isActive(toastId.current)) {
                         toastId.current = toast.success('Login Successful! 🎉', {
                             position: "top-right",
                             autoClose:1000,
-                            onClose: () => router.push("/admin/dashboard")
+                            onClose: () => router.push("/user/dashboard")
                             });
                         }
                     }
-                else if(role=='User'){
-                    setCookie('name', data[0].username, { path:'/' , sameSite:true, });
-                    setCookie('Email', data[0].email, { path:'/' , sameSite:true, });
-                    setCookie('Mobile_num', data[0].mobile_no, { path:'/' , sameSite:true, });
-                    setCookie('DOB', data[0].dob, { path:'/' , sameSite:true, });
-                    setCookie('Department', data[0].department, { path:'/' , sameSite:true, });
-                    setCookie('Position', data[0].position, { path:'/' , sameSite:true, });
-                    setCookie('Role', data[0].role, { path:'/' , sameSite:true, });
-                    setCookie('Id', data[0].id, { path:'/' , sameSite:true, });
-                    setCookie('Avtar', data[0].avtar, { path:'/' , sameSite:true, });
-                    setCookie('Role_id', data[0].role_id, { path:'/' , sameSite:true, });
-
-  
-                    if(! toast.isActive(toastId.current)) {
-                    toastId.current = toast.success('Login Successful! 🎉', {
-                        position: "top-right",
-                        autoClose:1000,
-                        onClose: () => router.push("/user/dashboard")
-                        });
+                    else if(role=='Super User'){
+                        setCookie('name', data[0].username, { path:'/' , sameSite:true, });
+                        setCookie('Email', data[0].email, { path:'/' , sameSite:true, });
+                        setCookie('Mobile_num', data[0].mobile_no, { path:'/' , sameSite:true, });
+                        setCookie('DOB', data[0].dob, { path:'/' , sameSite:true, });
+                        setCookie('Department', data[0].department, { path:'/' , sameSite:true, });
+                        setCookie('Position', data[0].position, { path:'/' , sameSite:true, });
+                        setCookie('Role', data[0].role, { path:'/' , sameSite:true, });
+                        setCookie('Id', data[0].id, { path:'/' , sameSite:true, });
+                        setCookie('Avtar', data[0].avtar, { path:'/' , sameSite:true, });
+                        setCookie('Role_id', data[0].role_id, { path:'/' , sameSite:true, });
+    
+                        if(! toast.isActive(toastId.current)) 
+                        {
+                            toastId.current = toast.success('Login Successfully! 🎉', {
+                                position: "top-right",
+                                autoClose:1000,
+                                onClose: () => router.push("/superuser/dashboard")
+                                });
+                            }
                     }
                 }
-                else if(role=='Super User'){
-                    setCookie('name', data[0].username, { path:'/' , sameSite:true, });
-                    setCookie('Email', data[0].email, { path:'/' , sameSite:true, });
-                    setCookie('Mobile_num', data[0].mobile_no, { path:'/' , sameSite:true, });
-                    setCookie('DOB', data[0].dob, { path:'/' , sameSite:true, });
-                    setCookie('Department', data[0].department, { path:'/' , sameSite:true, });
-                    setCookie('Position', data[0].position, { path:'/' , sameSite:true, });
-                    setCookie('Role', data[0].role, { path:'/' , sameSite:true, });
-                    setCookie('Id', data[0].id, { path:'/' , sameSite:true, });
-                    setCookie('Avtar', data[0].avtar, { path:'/' , sameSite:true, });
-                    setCookie('Role_id', data[0].role_id, { path:'/' , sameSite:true, });
-
-                    if(! toast.isActive(toastId.current)) 
-                    {
-                        toastId.current = toast.success('Login Successfully! 🎉', {
-                            position: "top-right",
-                            autoClose:1000,
-                            onClose: () => router.push("/superuser/dashboard")
-                            });
-                        }
+                else
+                {
+                    console.log('err');
+                    setpasswrong("Username and Password Not matched!")
                 }
-            }
-            else{
-                //alert("password wrong")
-                setpasswrong("Username and Password Not matched!")
-            }
-            
+            });     
         }
         else{
             //alert("Failed")
