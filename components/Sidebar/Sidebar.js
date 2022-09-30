@@ -27,11 +27,6 @@ export default function Sidebar(props) {
   const classes = useStyles();
   // get role from cookies
   const [cookies, setCookie] = useCookies(['name']);
-
-  console.log("all modules");
-  console.log("all modules");
-  console.log("all modules");
-  console.log(cookies.Role_id);
   // verifies if routeName is the one active (in browser input)
   function activeRoute(routeName) {
     return router.route.indexOf(routeName) > -1 ? true : false;
