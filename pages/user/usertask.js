@@ -345,6 +345,7 @@ function Dashboard({task}) {
         </Card>
         {todo_title ? (
           <>
+         
             <table className="project-data" >
               <tr className="project-data-title">
                 <th colspan="2" className="title">Task name </th>
@@ -559,6 +560,7 @@ function Dashboard({task}) {
               )}
             })}
             </table>
+            
           </>
         ) : ("")}
         {/*TaskToDo task End*/}
