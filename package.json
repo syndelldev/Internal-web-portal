@@ -27,6 +27,7 @@
     "@types/react-beautiful-dnd": "^13.1.2",
     "axios": "^0.27.2",
     "bcrypt": "^5.0.1",
+    "bcryptjs": "^2.4.3",
     "bootstrap": "^5.2.1",
     "caniuse-lite": "^1.0.30001393",
     "chartist": "^1.1.2",

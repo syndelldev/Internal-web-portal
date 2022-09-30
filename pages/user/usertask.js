@@ -16,7 +16,7 @@ import Popup from "reactjs-popup";
 import axios from "axios";
 import { server } from 'config';
 import { FiEdit } from "react-icons/fi";
-import { FaEye } from 'react-icons/fa';
+import { FaArrowDown,FaArrowUp } from 'react-icons/fa';
 import { makeStyles } from "@material-ui/core/styles";
 // import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 import { useCookies } from 'react-cookie';
@@ -25,11 +25,11 @@ import dynamic from "next/dynamic";
 import 'react-quill/dist/quill.snow.css';
 import "react-quill/dist/quill.bubble.css";
 
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Accordion from "@material-ui/core/Accordion";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import Typography from "@material-ui/core/Typography";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
+// import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+// import Accordion from "@material-ui/core/Accordion";
+// import AccordionDetails from "@material-ui/core/AccordionDetails";
+// import Typography from "@material-ui/core/Typography";
+// import AccordionSummary from "@material-ui/core/AccordionSummary";
 
 const ReactQuill = dynamic(import('react-quill'), { ssr: false });
 
@@ -114,10 +114,10 @@ function Dashboard({task}) {
 
   //Date Declration
   const On_track = [];
-  console.log("On_track",On_track)
+  // console.log("On_track",On_track)
 
   const Off_track = [];
-  console.log("Off_track",Off_track)
+  // console.log("Off_track",Off_track)
 
   var today = new Date();
   var dd = String(today.getDate()).padStart(2, '0');
@@ -125,7 +125,7 @@ function Dashboard({task}) {
   var yyyy = today.getFullYear();
 
   today = yyyy + '/' + mm + '/' + dd;
-  console.log(today);
+  // console.log(today);
 
   //API fetch
   const [users, setusers] = useState([])
@@ -249,7 +249,7 @@ function Dashboard({task}) {
       router.reload(`${server}/user/usertask`);
     }
     const [commentTimeM, setTimeM] = useState();
-    console.log("display date");
+    // console.log("display date");
     // console.log(new Date().toLocaleString());
   
     // to do task block open and close onclick
@@ -316,9 +316,13 @@ function Dashboard({task}) {
       // setActive(task_id === active ? null : task_id);
     };
 
-    const [openKey, setOpenKey] = useState()
-    const handleToggle = key => {
-      setOpenKey(openKey !== key ? key : null)
+    const [selected, setselected] = useState(null);
+    const toggle=(task_id)=>{
+      console.log(task_id)
+      if(selected==task_id){
+        return setselected(null)
+      }
+      setselected(task_id)
     }
 
 
@@ -336,10 +340,11 @@ function Dashboard({task}) {
       
       <div>
         {/*TaskToDo task Start*/}
-        <Card>
-          <GridContainer>
-            <GridItem xs={12} sm={12} md={12}>
-            <div onClick={()=> { taskToDo("task_toDo") , closeTaskToDo("task_toDo") , settodo_title(!todo_title) }} className="task_title" >Task to do </div>
+        <Card className="task_title_status">
+          <GridContainer >
+            <GridItem xs={12} sm={12} md={12} >
+            <div onClick={()=> { taskToDo("task_toDo") , closeTaskToDo("task_toDo") , settodo_title(!todo_title) }} className="task_title" >Task to do {taskTodo ? <FaArrowDown/>:<FaArrowUp/>} </div>
+            
             </GridItem>
           </GridContainer>
         </Card>
@@ -347,13 +352,13 @@ function Dashboard({task}) {
           <>
             <table className="project-data" >
               <tr className="project-data-title">
-                <th colspan="2" className="title">Task name </th>
+                <th colSpan="2" className="title">Task name </th>
                 <th>Priority</th>
-                <th colspan="2" className="status">Status</th>
-                <th colspan="2" className="assignee">Assignee</th>
-                <th colspan="4"className="view-edit">View & Edit</th>
+                <th colSpan="2" className="status">Status</th>
+                <th colSpan="2" className="assignee">Assignee</th>
+                <th colSpan="4"className="view-edit">View & Edit</th>
               </tr>
-              {task.map((task)=>{
+              {task.map((task,i)=>{
               if(task.task_status == taskTodo){
               var person = task.task_person.split(",");
               const MySQLDate  = task.task_deadline;
@@ -367,8 +372,9 @@ function Dashboard({task}) {
                 Off_track.push(task.task_id);
               }
               return(  
-                  <tr key={task.task_id} >
-                    <td colspan="2"><h4 className="projectTitle">{task.task_title}</h4></td>
+                <>
+                  <tr key={task.task_id} onClick={()=>{toggle(task.task_id);getData(task.task_id);getTime(task.task_id);}} className="expand_dropdown">
+                    <td colSpan="2"><h4 className="projectTitle">{task.task_title}</h4></td>
                     <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
                     <td className="status-data">
                       <span>
@@ -378,7 +384,7 @@ function Dashboard({task}) {
                         {(task.task_status=="task_Running") ? (date>today) ? "On track": "Off track" : "" }
                       </span>
                     </td>
-                    <td colspan="4" className="assignee-data">
+                    <td colSpan="4" className="assignee-data">
                     {person.map((task_person) => {
                       return(
                         <div className="chip">
@@ -555,7 +561,54 @@ function Dashboard({task}) {
 
                       </div>
                     </td>
+                    {/* <span>{selected==task.task_id ? '-' : '+'}</span> */}
                   </tr>
+                  <p className={selected==task.task_id ? 'content show':'content'}>
+                    {/*Time Modulule*/}
+                    <p>
+                    {TimeData.length==0?(
+                      <>
+                        <GridContainer>
+                          <GridItem>
+                            <input value={task.task_id} type="hidden"/>
+                            <p>Estimate Time - {estimate}</p>
+                            <p>Spent Time - {spent}</p>
+                          </GridItem>
+                        </GridContainer>
+                      </>
+                      ):(
+                      <>
+                        <GridContainer>
+                          <GridItem>
+                            <input value={task.task_id} type="hidden"/>
+                            <p>Estimate Time - {userdata.estimate_time}</p>
+                            <p>Spent Time - {userdata.spent_time} </p>
+                          </GridItem>
+                        </GridContainer>
+                      </>
+                      )}
+                    {/*Time Modulule*/}
+                      </p>
+                      <p>
+                      {/* display comments in dropdown */}
+                        {dropdown_Comments.map((dComment)=>{
+                          return(
+                            <span>
+                              <GridContainer>
+                                <GridItem>
+                                  <p>{dComment.username}</p>
+                                  <p><ReactQuill value={dComment.comment} theme="bubble" readOnly /></p>
+                                  <p>{dComment.creation_time}</p>
+                                </GridItem>
+                              </GridContainer>
+                            </span>
+                          )
+                        })}
+                      </p>
+                      {/* display comments in dropdown */}
+                  </p>
+                </>
+                
               )}
             })}
             </table>
@@ -566,7 +619,7 @@ function Dashboard({task}) {
         <Card>
           <GridContainer>
             <GridItem xs={12} sm={12} md={12} >
-              <div onClick={()=> { taskRunning("task_Running") , closeTaskRunning("task_Running") ,setrunning_title(!running_title) }} className="task_title" >Task Running</div>
+              <div onClick={()=> { taskRunning("task_Running") , closeTaskRunning("task_Running") ,setrunning_title(!running_title) }} className="task_title" >Task Running {taskTodo ? <FaArrowDown/>:<FaArrowUp/>} </div>
             </GridItem>
           </GridContainer>
         </Card>
@@ -574,11 +627,11 @@ function Dashboard({task}) {
           <>
             <table className="project-data" >
               <tr className="project-data-title">
-                <th colspan="2" className="title">Task name </th>
+                <th colSpan="2" className="title">Task name </th>
                 <th>Priority</th>
-                <th colspan="2" className="status">Status</th>
-                <th colspan="2" className="assignee">Assignee</th>
-                <th colspan="4"className="view-edit">View & Edit</th>
+                <th colSpan="2" className="status">Status</th>
+                <th colSpan="2" className="assignee">Assignee</th>
+                <th colSpan="4"className="view-edit">View & Edit</th>
               </tr>
               {task.map((task)=>{
               if(task.task_status == TaskRunning){
@@ -594,8 +647,9 @@ function Dashboard({task}) {
                 Off_track.push(task.task_id);
               }
               return(  
-                  <tr key={task.task_id}>
-                    <td colspan="2"><h4 className="projectTitle">{task.task_title}</h4></td>
+                <>
+                  <tr key={task.task_id} onClick={()=>{toggle(task.task_id);getData(task.task_id);getTime(task.task_id);}} className="expand_dropdown">
+                    <td colSpan="2"><h4 className="projectTitle">{task.task_title}</h4></td>
                     <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
                     <td className="status-data">
                       <span>
@@ -605,7 +659,7 @@ function Dashboard({task}) {
                         {(task.task_status=="task_Running") ? (date>today) ? "On track": "Off track" : "" }
                       </span>
                     </td>
-                    <td colspan="4" className="assignee-data">
+                    <td colSpan="4" className="assignee-data">
                     {person.map((task_person) => {
                       return(
                         <div className="chip">
@@ -781,7 +835,53 @@ function Dashboard({task}) {
                         </Popup>
                       </div>
                     </td>
+                    {/* <span>{selected==task.task_id ? '-' : '+'}</span> */}
                   </tr>
+                  <p className={selected==task.task_id ? 'content show':'content'}>
+                    {/*Time Modulule*/}
+                    <p>
+                    {TimeData.length==0?(
+                      <>
+                        <GridContainer>
+                          <GridItem>
+                            <input value={task.task_id} type="hidden"/>
+                            <p>Estimate Time - {estimate}</p>
+                            <p>Spent Time - {spent}</p>
+                          </GridItem>
+                        </GridContainer>
+                      </>
+                      ):(
+                      <>
+                        <GridContainer>
+                          <GridItem>
+                            <input value={task.task_id} type="hidden"/>
+                            <p>Estimate Time - {userdata.estimate_time}</p>
+                            <p>Spent Time - {userdata.spent_time} </p>
+                          </GridItem>
+                        </GridContainer>
+                      </>
+                      )}
+                    {/*Time Modulule*/}
+                      </p>
+                      <p>
+                      {/* display comments in dropdown */}
+                        {dropdown_Comments.map((dComment)=>{
+                          return(
+                            <span>
+                              <GridContainer>
+                                <GridItem>
+                                  <p>{dComment.username}</p>
+                                  <p><ReactQuill value={dComment.comment} theme="bubble" readOnly /></p>
+                                  <p>{dComment.creation_time}</p>
+                                </GridItem>
+                              </GridContainer>
+                            </span>
+                          )
+                        })}
+                      </p>
+                      {/* display comments in dropdown */}
+                  </p>
+                </>
               )}
             })}
             </table>
@@ -792,7 +892,7 @@ function Dashboard({task}) {
         <Card>
           <GridContainer>
             <GridItem xs={12} sm={12} md={12}>
-            <div onClick={()=> { taskOnHold("taskOn_hold") , closeTaskOnHold("taskOn_hold") , setonhold_title(!onhold_title) }} className="task_title" >Task on hold</div>
+            <div onClick={()=> { taskOnHold("taskOn_hold") , closeTaskOnHold("taskOn_hold") , setonhold_title(!onhold_title) }} className="task_title" >Task on hold {taskTodo ? <FaArrowDown/>:<FaArrowUp/>}</div>
             </GridItem>
           </GridContainer>
         </Card>
@@ -800,11 +900,11 @@ function Dashboard({task}) {
           <>
             <table className="project-data" >
               <tr className="project-data-title">
-                <th colspan="2" className="title">Task name </th>
+                <th colSpan="2" className="title">Task name </th>
                 <th>Priority</th>
-                <th colspan="2" className="status">Status</th>
-                <th colspan="2" className="assignee">Assignee</th>
-                <th colspan="4"className="view-edit">View & Edit</th>
+                <th colSpan="2" className="status">Status</th>
+                <th colSpan="2" className="assignee">Assignee</th>
+                <th colSpan="4"className="view-edit">View & Edit</th>
               </tr>
               {task.map((task)=>{
               if(task.task_status == TaskOnHold){
@@ -820,8 +920,9 @@ function Dashboard({task}) {
                 Off_track.push(task.task_id);
               }
               return(  
-                  <tr>
-                    <td colspan="2"><h4 className="projectTitle">{task.task_title}</h4></td>
+                <>
+                  <tr key={task.task_id} onClick={()=>{toggle(task.task_id);getData(task.task_id);getTime(task.task_id);}} className="expand_dropdown">
+                    <td colSpan="2"><h4 className="projectTitle">{task.task_title}</h4></td>
                     <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
                     <td className="status-data">
                       <span>
@@ -831,7 +932,7 @@ function Dashboard({task}) {
                         {(task.task_status=="task_Running") ? (date>today) ? "On track": "Off track" : "" }
                       </span>
                     </td>
-                    <td colspan="4" className="assignee-data">
+                    <td colSpan="4" className="assignee-data">
                     {person.map((task_person) => {
                       return(
                         <div className="chip">
@@ -1009,6 +1110,47 @@ function Dashboard({task}) {
                       </div>
                     </td>
                   </tr>
+                  <p className={selected==task.task_id ? 'content show':'content'}>
+                    {/*Time Modulule*/}
+                    <p>
+                    {TimeData.length==0?(
+                      <>
+                        <GridContainer>
+                          <GridItem>
+                            <input value={task.task_id} type="hidden"/>
+                            <p>Estimate Time - {estimate}</p>
+                            <p>Spent Time - {spent}</p>
+                          </GridItem>
+                        </GridContainer>
+                      </>
+                      ):(
+                      <>
+                        <GridContainer>
+                          <GridItem>
+                            <input value={task.task_id} type="hidden"/>
+                            <p>Estimate Time - {userdata.estimate_time}</p>
+                            <p>Spent Time - {userdata.spent_time} </p>
+                          </GridItem>
+                        </GridContainer>
+                      </>
+                      )}
+                    {/*Time Modulule*/}
+                      </p>
+                      <p>
+                      {/* display comments in dropdown */}
+                        {dropdown_Comments.map((dComment)=>{
+                          return(
+                            <div>
+                              <p>{dComment.username}</p>
+                              <p><ReactQuill value={dComment.comment} theme="bubble" readOnly /></p>
+                              <p>{dComment.creation_time}</p>
+                            </div>
+                          )
+                        })}
+                      </p>
+                      {/* display comments in dropdown */}
+                  </p>
+                </>
               )}
             })}
             </table>  
@@ -1019,7 +1161,7 @@ function Dashboard({task}) {
         <Card>
           <GridContainer>
             <GridItem xs={12} sm={12} md={12}>
-            <div onClick={()=> { taskCompleted("task_completed") , closeTaskCompleted("task_completed") , setcompleted_title(!completed_title)}} className="task_title" >Task completed</div>
+            <div onClick={()=> { taskCompleted("task_completed") , closeTaskCompleted("task_completed") , setcompleted_title(!completed_title)}} className="task_title" >Task completed {taskTodo ? <FaArrowDown/>:<FaArrowUp/>} </div>
             </GridItem>
           </GridContainer>
         </Card>
@@ -1027,11 +1169,11 @@ function Dashboard({task}) {
           <>
             <table className="project-data" >
               <tr className="project-data-title">
-                <th colspan="2" className="title">Task name </th>
+                <th colSpan="2" className="title">Task name </th>
                 <th>Priority</th>
-                <th colspan="2" className="status">Status</th>
-                <th colspan="2" className="assignee">Assignee</th>
-                <th colspan="4"className="view-edit">View & Edit</th>
+                <th colSpan="2" className="status">Status</th>
+                <th colSpan="2" className="assignee">Assignee</th>
+                <th colSpan="4"className="view-edit">View & Edit</th>
               </tr>
               {task.map((task)=>{
               if(task.task_status == TaskCompleted){
@@ -1046,9 +1188,10 @@ function Dashboard({task}) {
               else{
                 Off_track.push(task.task_id);
               }
-              return(  
-                  <tr >
-                    <td colspan="2"><h4 className="projectTitle">{task.task_title}</h4></td>
+              return( 
+                <> 
+                  <tr key={task.task_id} onClick={()=>{toggle(task.task_id);getData(task.task_id);getTime(task.task_id);}} className="expand_dropdown">
+                    <td colSpan="2"><h4 className="projectTitle">{task.task_title}</h4></td>
                     <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
                     <td className="status-data">
                       <span>
@@ -1058,7 +1201,7 @@ function Dashboard({task}) {
                         {(task.task_status=="task_Running") ? (date>today) ? "On track": "Off track" : "" }
                       </span>
                     </td>
-                    <td colspan="4" className="assignee-data">
+                    <td colSpan="4" className="assignee-data">
                     {person.map((task_person) => {
                       return(
                         <div className="chip">
@@ -1236,6 +1379,51 @@ function Dashboard({task}) {
                       </div>
                     </td>
                   </tr>
+                  <p className={selected==task.task_id ? 'content show':'content'}>
+                    {/*Time Modulule*/}
+                    <p>
+                    {TimeData.length==0?(
+                      <>
+                        <GridContainer>
+                          <GridItem>
+                            <input value={task.task_id} type="hidden"/>
+                            <p>Estimate Time - {estimate}</p>
+                            <p>Spent Time - {spent}</p>
+                          </GridItem>
+                        </GridContainer>
+                      </>
+                      ):(
+                      <>
+                        <GridContainer>
+                          <GridItem>
+                            <input value={task.task_id} type="hidden"/>
+                            <p>Estimate Time - {userdata.estimate_time}</p>
+                            <p>Spent Time - {userdata.spent_time} </p>
+                          </GridItem>
+                        </GridContainer>
+                      </>
+                      )}
+                    {/*Time Modulule*/}
+                      </p>
+                      <p>
+                      {/* display comments in dropdown */}
+                        {dropdown_Comments.map((dComment)=>{
+                          return(
+                            <span>
+                              <GridContainer>
+                                <GridItem>
+                                  <p>{dComment.username}</p>
+                                  <p><ReactQuill value={dComment.comment} theme="bubble" readOnly /></p>
+                                  <p>{dComment.creation_time}</p>
+                                </GridItem>
+                              </GridContainer>
+                            </span>
+                          )
+                        })}
+                      </p>
+                      {/* display comments in dropdown */}
+                  </p>
+                </>
               )}
             })}
             </table>

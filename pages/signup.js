@@ -6,13 +6,11 @@ import DatePicker from "react-datepicker";
 import { server } from 'config';
 import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input'
 import { ToastContainer, toast } from 'react-toastify';
+import bcrypt from 'bcryptjs'
 
 function SignIn(){
     const { register, watch, handleSubmit, formState: { errors }, setValue, control } = useForm({mode: "onBlur"}); 
     const router = useRouter();
-    
-    //const notify = () => toast("Wow so easy!");
-
 
     const [startDate, setStartDate] = useState();
     console.log(startDate)
@@ -29,25 +27,17 @@ function SignIn(){
     const password = useRef({});
     password.current = watch("password", "");
 
-    //For Avtar
-    const [img, setimg] = useState('avtar.png')
-    //console.log(img)
-    // const handler = (e) =>{
-    //     let avtarimg = e.target.files;
-    //     setimg(avtarimg);
-    //     //console.log(avtarimg)
-    // }
     
     //API call
     const onSubmit= async(result) =>{
-        //e.preventDefault();
-        //console.log(result);
-        //console.log(result.avtar[0].name)
+        console.log(result.password);
+        const hashedPassword = bcrypt.hashSync(result.password, 10)
+        console.log(hashedPassword)
 
         const res = await fetch(`${server}/api/admin/signin/`,{
             method: "POST",
             headers: { "Content-Type": "application/json",},
-            body:JSON.stringify({role_id:result.role_id, username:result.username, password:result.password, email:result.email, PhoneNum:result.PhoneNum, /*dob:startDate,*/ department:result.department, position:result.position, role:"User", status:"Active"}),
+            body:JSON.stringify({role_id:result.role_id, username:result.username, password:hashedPassword, email:result.email, PhoneNum:result.PhoneNum, /*dob:startDate,*/ department:result.department, position:result.position, role:"User", status:"Active"}),
         })
         const data=await res.json()
 

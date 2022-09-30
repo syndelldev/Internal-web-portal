@@ -193,6 +193,15 @@ function Projects({project}) {
     console.log("set comment");
     console.log(commentEdit);
 
+    const [selected, setselected] = useState(null);
+    const toggle=(task_id)=>{
+      console.log(task_id)
+      if(selected==task_id){
+        return setselected(null)
+      }
+      setselected(task_id)
+    }
+
   return (
     <>
           <h2 className="title-user-project">My Project</h2>
@@ -214,19 +223,15 @@ function Projects({project}) {
                 // console.log(date)
                 if(date>today)
                 {
-                  console.count("On track")
                   On_track.push(project.project_id); 
-                  // console.log(project.project_id)
                 }
                 else{
-                  // console.count("off track")
                   Off_track.push(project.project_id);
-                  // console.log(project.project_id)
                 }
 
                 return(
                   <>
-                  <tr className="project-data-details">
+                  <tr className="project-data-details expand_dropdown" onClick={()=>{toggle(project.project_id);}} >
                     <td colspan="2"><h4 className="projectTitle">{project.project_title}</h4></td>
                     <td className="priority-data"><p className={project.project_priority}>{project.project_priority}</p></td>
                     <td className="status-data">
@@ -314,43 +319,36 @@ function Projects({project}) {
                                           <GridContainer>
                                             <GridItem>
                                               <div>
-
                                               <ReactQuill value={m.comment} theme="bubble" readOnly />
-      <Popup
-        trigger={ <span><button onClick={()=>{ editComment(m.id)} } disabled={ m.username != cookies.name }>Edit</button></span> }
-        className="popupReact"
-        modal
-      >
-        {close => (
-                              <Card>
-                                <CardBody>
-                                      <div className={classes.close}>
-                                        <a onClick={close}>&times;</a>
-                                      </div>
-
-                                  <GridContainer>
-                                    <GridItem xs={12} sm={12} md={12} >
-                                      <form>
-                                        <ReactQuill modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
-                                      </form>
-                                    </GridItem>
-                                  </GridContainer>
-
-                                  <CardFooter>
-                                      <Button color="primary" type="submit"  onClick={() => { updateComment(m.id, commentEdit) }}>Update</Button>
-                                      <Button className="button" onClick={() => { close(); }}> Cancel </Button>
-                                  </CardFooter>
-                                </CardBody>
-                              </Card>
-        )}
-        
-      </Popup>
-
-                                              </div>
+                                              <Popup
+                                                trigger={ <span><button onClick={()=>{ editComment(m.id)} } disabled={ m.username != cookies.name }>Edit</button></span> }
+                                                className="popupReact"
+                                                modal
+                                              >
+                                                {close => (
+                                            <Card>
+                                              <CardBody>
+                                                    <div className={classes.close}>
+                                                      <a onClick={close}>&times;</a>
+                                                    </div>
+                                                    <GridContainer>
+                                                      <GridItem xs={12} sm={12} md={12} >
+                                                        <form>
+                                                          <ReactQuill modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
+                                                        </form>
+                                                      </GridItem>
+                                                    </GridContainer>
+                                                    <CardFooter>
+                                                        <Button color="primary" type="submit"  onClick={() => { updateComment(m.id, commentEdit) }}>Update</Button>
+                                                        <Button className="button" onClick={() => { close(); }}> Cancel </Button>
+                                                    </CardFooter>
+                                                  </CardBody>
+                                                </Card>
+                                              )}  
+                                            </Popup>
+                                            </div>
                                             </GridItem>
                                           </GridContainer>
-
-
                                         </span>
                                       )
                                   })}
@@ -364,6 +362,9 @@ function Projects({project}) {
                       </div>
                     </td>
                     </tr>
+                    {/* <p className={selected==project.project_id ? 'content show':'content'}>
+                                  lll
+                    </p> */}
                   </>
                 )
               })
