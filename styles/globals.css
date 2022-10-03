@@ -67,7 +67,7 @@ img.completed,img.on.hold,img.running {
   color: #fff;
   /*font-size: 30px;*/
   font-weight: 500;
-  background:#554994;
+  background:green;
   padding: 3px 15px 3px 15px;
 }
 .on.hold{
@@ -75,14 +75,14 @@ img.completed,img.on.hold,img.running {
   color: #fff;
   /*font-size: 30px;*/
   font-weight: 500;
-  background: #F675A8;
+  background: yellow;
 }
 .running{
   border-radius: 5px;
   color: #fff;
   /*font-size: 30px;*/
   font-weight: 500;
-  background: #F29393;
+  background: blue;
 }
 h6.completed,h6.on.hold,h6.running{
   padding-left: 30px;
