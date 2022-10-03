@@ -72,32 +72,32 @@ function ProfilePage({profile}){
         <>
         <GridContainer>
             <GridItem xs={12} sm={12} md={8}>      
-                <Card>
+                <Card className="profile-page mobile">
                     <CardHeader color="primary">
-                        <h4 className="text">Admin Profile</h4>
-                    </CardHeader><br/><br/>
+                        <h4 className="text">My Profile <img src={`${server}/user.png`} alt="smiley" className="user-image" /></h4>
+                    </CardHeader>
                     {profile.map((profile)=>{
                         return(
                             <CardBody>
-                                <div className={classes.typo}>
-                                    <div className={classes.note}>Username</div>
-                                    <h5>{profile.username}</h5>
+                                <div className="profiles">
+                                    <div className="profile-label">User name</div>
+                                    <h5 className="profile-data">{profile.username}</h5>
                                 </div>
-                                <div className={classes.typo}>
-                                    <div className={classes.note}>Position</div>
-                                    <h5>{profile.position}</h5>
+                                <div className="profiles">
+                                    <div className="profile-label">Position</div>
+                                    <h5 className="profile-data">{profile.position}</h5>
                                 </div>
-                                <div className={classes.typo}>
-                                    <div className={classes.note}>Department</div>
-                                    <h5>{profile.department}</h5>
+                                <div className="profiles">
+                                    <div className="profile-label">Department</div>
+                                    <h5 className="profile-data">{profile.department}</h5>
                                 </div>
-                                <div className={classes.typo}>
-                                    <div className={classes.note}>Email</div>
-                                    <h5>{profile.email}</h5>
+                                <div className="profiles">
+                                    <div className="profile-label">Email</div>
+                                    <h5 className="profile-data">{profile.email}</h5>
                                 </div>
-                                <div className={classes.typo}>
-                                    <div className={classes.note}>Mobile No.</div>
-                                    <h5>{profile.mobile_no}</h5>
+                                <div className="profiles">
+                                    <div className="profile-label">Mobile No.</div>
+                                    <h5 className="profile-data">{profile.mobile_no}</h5>
                                 </div>
                             </CardBody>
                         )

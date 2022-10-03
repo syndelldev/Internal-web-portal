@@ -599,10 +599,11 @@ function Dashboard( { project_details , User_name } ) {
     <GridContainer>
     
     {/***** Running Project start *****/}
+    <div className="Project-title">Projects</div>
     <Card className="task_title_status">
       <GridContainer >
         <GridItem xs={12} sm={12} md={12} >
-          <div onClick={()=> {  project_running("running") , closeOnHold("running") , setrunning_title(!running_title) }} className="task_title" > project Running {running_title ? <FaArrowDown/>:<FaArrowUp/>}  </div> 
+          <div onClick={()=> {  project_running("running") , closeOnHold("running") , setrunning_title(!running_title) }} className="task_title" > Project In progress {running_title ? <FaArrowDown/>:<FaArrowUp/>}  </div> 
         </GridItem>
       </GridContainer>
     </Card>
@@ -638,7 +639,7 @@ function Dashboard( { project_details , User_name } ) {
     <Card className="task_title_status">
       <GridContainer >
         <GridItem xs={12} sm={12} md={12} >
-          <div onClick={()=> {  project_OnHold("on hold") , closeTaskToDo("on hold") , setonhold_title(!onhold_title) }} className="task_title" > project On Hold {onhold_title ? <FaArrowDown/>:<FaArrowUp/>}  </div> 
+          <div onClick={()=> {  project_OnHold("on hold") , closeTaskToDo("on hold") , setonhold_title(!onhold_title) }} className="task_title" > Project On Hold {onhold_title ? <FaArrowDown/>:<FaArrowUp/>}  </div> 
         </GridItem>
       </GridContainer>
     </Card>
@@ -897,7 +898,7 @@ function Dashboard( { project_details , User_name } ) {
     <Card className="task_title_status">
       <GridContainer >
         <GridItem xs={12} sm={12} md={12} >
-          <div onClick={()=> {  project_Completed("completed") , closeCompleted("completed") , setcompleted_title(!completed_title) }} className="task_title" > project Completed {completed_title ? <FaArrowDown/>:<FaArrowUp/>}  </div> 
+          <div onClick={()=> {  project_Completed("completed") , closeCompleted("completed") , setcompleted_title(!completed_title) }} className="task_title" > Project Completed {completed_title ? <FaArrowDown/>:<FaArrowUp/>}  </div> 
         </GridItem>
       </GridContainer>
     </Card>
