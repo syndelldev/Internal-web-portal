@@ -496,16 +496,65 @@ const updateComment = async(id, comment) =>{
     const [running_title, setrunning_title] = useState(false);
     const [completed_title, setcompleted_title] = useState(false);
 
-    const [selected_Project, setselected_Project] = useState(null);
+    const [showTime, setshowTime] = useState(null);
     const toggle=(task_id)=>{
-      console.log(task_id)
-      if(selected_Project==task_id){
-        return setselected_Project(null)
+      // alert(task_id)
+      if(showTime==task_id){
+        return setshowTime(null)
       }
-      setselected_Project(task_id)
+      setshowTime(task_id)
     }
 
+  //for comments Declration  
+  const getData = async (task_id)=>{
+    var comment = await axios.post(`${server}/api/comment/comment`, { task_id: task_id });
+    setcomments(comment.data)
+  }
+
+   //for Time Declration
+
+   const [Time, setTime] = useState([]);
+   console.log(Time)
    
+   const [TimeData,setTimeData] = useState([])
+   const [dropdown_Comments, setDropdownComments] = useState([]);
+
+    const getTime = async (task_id) =>{
+    var timedata = await axios.post(`${server}/api/comment/task_time`, { task_id: task_id, user_id:cookies.Id });
+    setTime(timedata.data[0])
+    setTimeData(timedata.data)
+
+    const comment_Data = await axios.post(`${server}/api/comment/userComments`, { task_id: task_id });
+    console.log("task id");
+    setDropdownComments(comment_Data.data);
+  }
+  console.log(TimeData)
+  const [userdata, setuserdata] = useState({
+    estimate_time:"",
+    spent_time: ""
+  });
+  
+  useEffect(()=>{
+    setuserdata(Time);
+  },[Time])
+  console.log("userdata",userdata)
+  const handleChangePanel = ({ target: { name, value } }) =>{
+    setuserdata({ ...userdata, [name]: value });
+  }
+  const [estimate, setestimate] = useState('');
+  const [spent, setspent] = useState('');
+  
+
+  const insert_time = async (task_id)=>{
+    var addTime = await axios.post(`${server}/api/comment/addtasktime`, { task_id:task_id, user_id:cookies.Id, username: cookies.name, estimate:estimate , spent:spent });
+    console.log(addTime.data)
+  }
+  
+  const update_tasktime = async (task_id)=>{
+    var updateTime = await axios.put(`${server}/api/comment/update_tasktime`, { task_id:task_id, user_id:cookies.Id, estimate:userdata.estimate_time , spent:userdata.spent_time });
+    console.log(updateTime)
+  }
+
 
   return (
     <div>
@@ -978,9 +1027,6 @@ const updateComment = async(id, comment) =>{
                                   </div> 
                                 </GridItem>
                               </GridContainer><br/>
-
-                              {/* <Button color="primary" type="submit" onClick={()=> { updateStatus(task.task_id), close() } }  hidden={cookies.Role_id != "2"}>Update</Button> */}
-
                             </CardBody>
 
                             <CardFooter hidden={cookies.Role_id == "2"}>
@@ -989,13 +1035,83 @@ const updateComment = async(id, comment) =>{
                             </CardFooter>
 
                             <CardBody>
+
+                            <GridContainer>
+                              <GridItem xs={12} sm={12} md={12} >
+                                {/*Time Modulule*/}
+                                {TimeData.length==0?(
+                                        <>
+                                          <form>
+                                            <GridContainer>
+                                              <GridItem>
+                                                <input value={task.task_id} type="hidden"/>
+                                                <label>Estimate Time</label>
+                                                <input type="text" 
+                                                    value={estimate} 
+                                                    onChange={(e)=>setestimate(e.target.value)}
+                                                    onKeyPress={(event)=>{
+                                                      if (event.key === "Enter"){
+                                                        insert_time(task.task_id);
+                                                      }
+                                                    }}
+                                                /><br/>
+                                                <label>Spent Time</label>
+                                                <input type="text" 
+                                                    value={spent} 
+                                                    onChange={(e)=>setspent(e.target.value)} 
+                                                    onKeyPress={(event)=>{
+                                                      if (event.key === "Enter"){
+                                                        insert_time(task.task_id);
+                                                      }
+                                                    }}
+                                                  />
+                                              </GridItem>
+                                            </GridContainer>
+                                          </form>
+                                          </>
+                                        ):(
+                                          <>
+                                            <form onSubmit={update_tasktime}>
+                                              <GridContainer>
+                                                <GridItem>
+                                                  <input value={task.task_id} type="hidden"/>
+                                                  <label>Estimate Time</label>
+                                                  <input type="text" name="estimate_time" 
+                                                    value={userdata.estimate_time} 
+                                                    onChange={handleChange}
+                                                    onKeyPress={(event)=>{
+                                                      if (event.key === "Enter"){
+                                                        update_tasktime(task.task_id);
+                                                      }
+                                                    }}
+                                                  /><br/>
+                                                  <label>Spent Time</label>
+                                                  <input type="text" name="spent_time" 
+                                                    value={userdata.spent_time} 
+                                                    onChange={handleChange}
+                                                    onKeyPress={(event)=>{
+                                                      if (event.key === "Enter"){
+                                                        update_tasktime(task.task_id);
+                                                      }
+                                                    }}
+                                                  />
+                                                </GridItem>
+                                              </GridContainer>
+
+                                            </form>
+                                          </>
+                                        )}
+                                        {/*Time Modulule*/}
+                              </GridItem>
+                            </GridContainer>
+
                             <GridContainer>
                               <GridItem>
                                 <ReactQuill modules={modules} theme="snow" onChange={setCommentValue} />
                                   <div onClick={()=> { sendMessage(task.task_id), close() } }>Save</div>
                               </GridItem>
                             </GridContainer>
-                          
+                           
                           {comments.map((uComment)=>{
                             return(
                               <span>
@@ -1085,6 +1201,50 @@ const updateComment = async(id, comment) =>{
                       </div>
                     </td>
                   </tr>
+                  <p className={showTime==task.task_id ? 'content show':'content'}>
+                    {/*Time Modulule*/}
+                    <p>
+                    {TimeData.length==0?(
+                      <>
+                        <GridContainer>
+                          <GridItem>
+                            <input value={task.task_id} type="hidden"/>
+                            <p>Estimate Time - {estimate}</p>
+                            <p>Spent Time - {spent}</p>
+                          </GridItem>
+                        </GridContainer>
+                      </>
+                      ):(
+                      <>
+                        <GridContainer>
+                          <GridItem>
+                            <input value={task.task_id} type="hidden"/>
+                            <p>Estimate Time - {userdata.estimate_time}</p>
+                            <p>Spent Time - {userdata.spent_time} </p>
+                          </GridItem>
+                        </GridContainer>
+                      </>
+                      )}
+                    {/*Time Modulule*/}
+                      </p>
+                      <p>
+                      {/* display comments in dropdown */}
+                        {dropdown_Comments.map((dComment)=>{
+                          return(
+                            <span>
+                              <GridContainer>
+                                <GridItem>
+                                  <p>{dComment.username}</p>
+                                  <p><ReactQuill value={dComment.comment} theme="bubble" readOnly /></p>
+                                  <p>{dComment.creation_time}</p>
+                                </GridItem>
+                              </GridContainer>
+                            </span>
+                          )
+                        })}
+                      </p>
+                      {/* display comments in dropdown */}
+                  </p>
                 </>
               )
             }
@@ -1118,19 +1278,19 @@ const updateComment = async(id, comment) =>{
                   return(
                     <tr key={task.task_id} onClick={()=>{toggle(task.task_id);getData(task.task_id);getTime(task.task_id);}} className="expand_dropdown">
                       <td>{task.project_name}</td>
-                    <td><h4 className="projectTitle">{task.task_title}</h4></td>
-                    <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
-                    <td className="assignee-data">
-                    {person.map((task_person) => {
-                      return(
-                        <div className="chip">
-                          <span>{task_person}</span>
-                        </div>
-                      )
-                      })
-                    }
-                    </td>
-                    <td>
+                      <td><h4 className="projectTitle">{task.task_title}</h4></td>
+                      <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
+                      <td className="assignee-data">
+                      {person.map((task_person) => {
+                        return(
+                          <div className="chip">
+                            <span>{task_person}</span>
+                          </div>
+                        )
+                        })
+                      }
+                      </td>
+                      <td>
                       <div className="icon-edit-delete">
                       <Popup trigger={<div><a className="bttn-design1" onClick={()=> { projectId(task.task_id) }  }><FiEdit/></a></div>}  className="popupReact" modal nested>
                       {close => (
