@@ -376,7 +376,7 @@ p.usersubtitle{
 
 .High
 {
-  min-width: 30%!important;
+  min-width: 15%!important;
   float: right;
   background-color: red;
   border-radius: 5px;
@@ -389,7 +389,7 @@ p.usersubtitle{
 }
 .Medium
 {
-  min-width: 30%!important;
+  min-width: 15%!important;
   text-align: center;
   float: right;
   background-color: yellow;
@@ -402,7 +402,7 @@ p.usersubtitle{
 }
 .Low
 {
-  min-width: 30%!important;
+  min-width: 15%!important;
   float: right;
   background-color: green;
   border-radius: 5px;
@@ -501,12 +501,19 @@ h3.on-hold{
     justify-content: normal;
     display: grid!important;
 }
+h3.my-task-priorities{
+  width: 100%!important;
+}
 }
 @media only screen and (max-width: 1023px) and (min-width: 768px){ 
   .project-status{
     justify-content: normal;
     display: grid!important;
 }
+h3.my-task-priorities{
+  width: 100%!important;
+}
+.my-task .MuiGrid-grid-md-6{margin-left: 0%!important;max-width:96%!important;}
  }
  
 .project-status .MuiGrid-grid-sm-6{
@@ -521,7 +528,23 @@ h3.on-hold{
     justify-content: normal;
     display: grid!important;
 }
-
+h3.my-task-priorities{
+  width: 100%!important;
+}
+h2.title-my-task{font-size: 15px!important;}
+p.task-high, p.task-medium, p.task-low{font-size:  15px !important;}
+h3.on-track,h3.off-track,h3.completed-project,h3.on-hold{padding:30px!important;}
+.my-task .MuiGrid-grid-md-6{margin-left: 2%!important;
+}
+}
+@media only screen and (max-width: 1440px) and (min-width: 1366px){ 
+  h2.title-my-task{font-size: 20px!important;}
+  .my-task .MuiGrid-grid-md-6{margin-left: 0%!important;}
+  h3.on-track,h3.off-track,h3.completed-project,h3.on-hold{padding:20px!important;}
+ }
+ @media only screen and (max-width: 1365px) and (min-width: 1280px){  h2.title-my-task{font-size: 20px!important;}
+ .my-task .MuiGrid-grid-md-6{margin-left: 0%!important;} 
+ h3.on-track,h3.off-track,h3.completed-project,h3.on-hold{padding:20px!important;}
 }
 h3.my-task-priorities {
   width: 50%;
@@ -544,7 +567,7 @@ p.task-high,p.task-medium,p.task-low{
     font-weight: 400;
 }
 h1.user-welcome {
-  padding-bottom: 60px;
+  padding-bottom: 20px;
   font-size: 40px;
   text-align: center;
   font-family: sans-serif;
@@ -567,7 +590,7 @@ img.gif-image {
   float: left;
     margin-left: 3%;
     position: inherit;
-    margin-top: 3%;
+    margin-top: 1%;
     max-width: 100%;
     flex-basis: 100%;
 }

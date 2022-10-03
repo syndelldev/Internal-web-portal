@@ -67,7 +67,7 @@ function UserById(data){
     const [userdata, setuserdata] = useState({
       role_id:"",
       username: "",
-      password: "",
+      // password: "",
       email: "",
       mobile_no: "",
       //dob: "",
