@@ -6,6 +6,8 @@ import Admin from "layouts/Admin.js";
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import { server } from 'config';
+import axios from "axios";
+import { useCookies } from 'react-cookie';
 // import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 
 const styles = {
@@ -93,9 +95,17 @@ function Dashboard( { project_hold, project_completed, project_running } ) {
 
   const useStyles = makeStyles(styles);
   const classes = useStyles();
-
+  const [cookies, setCookie] = useCookies('');
   const [trackdate,settrackdate] = useState("")
-  
+  const [users, setusers] = useState([])
+
+  useEffect(async()=>{
+    axios.get(`${server}/api/admin/${cookies.Id}` )
+      .then((res)=>{
+        setusers(res.data)
+        //console.log(res)
+      })    
+  },[])
 
   var today = new Date();
   var dd = String(today.getDate()).padStart(2, '0');
@@ -113,7 +123,15 @@ function Dashboard( { project_hold, project_completed, project_running } ) {
 
   return (
     <>
-    
+      <div>
+        {users.map((user)=>{
+          return(
+            <div key={user.id}>
+              <h1 className="user-welcome">Welcome {user.username}  <img src={`${server}/smiley.gif`} alt="smiley" className="gif-image" /></h1>
+            </div>
+          )
+        })}
+      </div>
     <h4 className="project_status">Projects</h4>
     {/* <GridContainer>
 

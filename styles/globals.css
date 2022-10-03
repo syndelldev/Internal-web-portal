@@ -172,7 +172,7 @@ h4.text {
 }
 .makeStyles-content-3{
   
-  margin-top: 30px!important;
+  margin-top: 0px!important;
 
 }
 .makeStyles-cardBody-134{
@@ -308,32 +308,6 @@ img.image {
   float: right;
   width: 40px;
 }
-@media only screen and (max-width: 1365px) and (min-width: 1280px){
-  .projectTitle{
-    font-size: 17px!important;
-  }
-
-}
-@media only screen and (max-width: 1279px) and (min-width: 1024px){
-  .projectTitle{
-    font-size: 17px!important;
-  }
-  .MuiGrid-grid-md-4{
-    max-width: 55.333333%!important;
-    flex-basis:50%!important
-    }
- }
- @media only screen and (max-width: 1080px) and (min-width: 960px) {
-  .MuiGrid-grid-md-4{
-    max-width: 55.333333%!important;
-    flex-basis:50% !important;
-    }
-}
-@media only screen and (min-width: 960px) {
-  h4.projectTitle{
-font-size: 17px!important;
-  }}
-
 .person
 {
   background: #eee5ff!important;
@@ -422,6 +396,7 @@ table.project-data {
   width: 100%;
 }
 table.project-data th{
+  text-align: left;
   padding-left: 15px;
     padding-right: 15px;
     color: #000;
@@ -496,33 +471,13 @@ h3.on-hold{
   justify-content: space-around;
   display: flex;
 }
-@media only screen and (max-width: 1279px) and (min-width: 1024px){
-  .project-status{
-    justify-content: normal;
-    display: grid!important;
-}
-}
-@media only screen and (max-width: 1023px) and (min-width: 768px){ 
-  .project-status{
-    justify-content: normal;
-    display: grid!important;
-}
- }
- 
+
 .project-status .MuiGrid-grid-sm-6{
   margin-right: 30px;
   max-width: 100%;
   flex-basis: 100%;
 }
-/* Mobile css*/
 
-@media only screen and (max-width: 767px) {
-  .project-status{
-    justify-content: normal;
-    display: grid!important;
-}
-
-}
 h3.my-task-priorities {
   width: 50%;
   border: 2px solid #d3d3d3;
@@ -544,7 +499,7 @@ p.task-high,p.task-medium,p.task-low{
     font-weight: 400;
 }
 h1.user-welcome {
-  padding-bottom: 60px;
+  padding-bottom: 15px;
   font-size: 40px;
   text-align: center;
   font-family: sans-serif;
@@ -571,6 +526,9 @@ img.gif-image {
     max-width: 100%;
     flex-basis: 100%;
 }
+svg {
+  float: right;
+}
 h2.title-user-project {
   padding-bottom: 50px;
   font-weight: 500;
@@ -587,4 +545,93 @@ td.status-data {
 p.Task-lang {
   font-weight: 600;
 }
+/** Profile page css start **/
+.profile-page{
+  width: 50%!important;
+}
+.profile-page .makeStyles-typo-527{
+  margin-bottom: 10px;
+}
 
+h5.profile-data {
+  font-size: 15px;
+}
+.profile-label {
+  font-size: 17px;
+  font-weight: 600;
+  padding-bottom: 4px;
+}
+img.user-image{height: 30px;}
+.Project-title {
+  padding-bottom: 40px;
+  font-size: 40px;
+  font-weight: 500;
+}
+/** Profile page css end **/
+/** Project module css start **/
+.task_title {
+  font-weight: 600;
+  font-size: 20px;
+  padding: 20px;
+}
+/** Project module css end 8*/
+@media only screen and (max-width: 1440px) and (min-width: 1366px){ 
+  .my-task .MuiGrid-grid-md-6{margin-left: 0%!important;} 
+  h3.on-track,h3.off-track,h3.completed-project,h3.on-hold{padding:20px!important;}
+ }
+ @media only screen and (max-width: 1365px) and (min-width: 1280px){  
+ .my-task .MuiGrid-grid-md-6{margin-left: 0%!important;} 
+ h3.on-track,h3.off-track,h3.completed-project,h3.on-hold{padding:10px!important;} }
+
+ @media only screen and (max-width: 1560px) and (min-width: 1441px){ 
+  .my-task .MuiGrid-grid-md-6{margin-left: 0%!important;} 
+  h3.on-track,h3.off-track,h3.completed-project,h3.on-hold{padding:10px!important;} }
+ 
+/* Mobile css*/
+
+@media only screen and (max-width: 767px) {
+  .project-status{
+    justify-content: normal;
+    display: grid!important;
+}
+/*Profile page css start*/
+.profile-page.mobile{width: 100%!important;}
+/*Profile page css end*/
+}
+@media only screen and (max-width: 1279px) and (min-width: 1024px){
+  .project-status{
+    justify-content: normal;
+    display: grid!important;
+}
+}
+@media only screen and (max-width: 1023px) and (min-width: 768px){ 
+  .project-status{
+    justify-content: normal;
+    display: grid!important;
+}
+ }
+ @media only screen and (max-width: 1365px) and (min-width: 1280px){
+  .projectTitle{
+    font-size: 17px!important;
+  }
+
+}
+@media only screen and (max-width: 1279px) and (min-width: 1024px){
+  .projectTitle{
+    font-size: 17px!important;
+  }
+  .MuiGrid-grid-md-4{
+    max-width: 55.333333%!important;
+    flex-basis:50%!important
+    }
+ }
+ @media only screen and (max-width: 1080px) and (min-width: 960px) {
+  .MuiGrid-grid-md-4{
+    max-width: 55.333333%!important;
+    flex-basis:50% !important;
+    }
+}
+@media only screen and (min-width: 960px) {
+  h4.projectTitle{
+font-size: 17px!important;
+  }}
