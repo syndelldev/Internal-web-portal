@@ -352,9 +352,9 @@ function Dashboard({task}) {
           <>
             <table className="project-data" >
               <tr className="project-data-title">
+              <th colSpan="2" className="status">Project Name</th>
                 <th colSpan="2" className="title">Task name </th>
                 <th>Priority</th>
-                <th colSpan="2" className="status">Status</th>
                 <th colSpan="2" className="assignee">Assignee</th>
                 <th colSpan="4"className="view-edit">View & Edit</th>
               </tr>
@@ -374,16 +374,9 @@ function Dashboard({task}) {
               return(  
                 <>
                   <tr key={task.task_id} onClick={()=>{toggle(task.task_id);getData(task.task_id);getTime(task.task_id);}} className="expand_dropdown">
+                    <td>{task.project_name}</td>
                     <td colSpan="2"><h4 className="projectTitle">{task.task_title}</h4></td>
                     <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
-                    <td className="status-data">
-                      <span>
-                        {(task.task_status=="taskOn_hold") ? "On Hold" : "" }
-                        {(task.task_status=="task_completed") ? "Completed" : "" }
-                        {(task.task_status=="task_toDo") ? "To Do Task" : "" }
-                        {(task.task_status=="task_Running") ? (date>today) ? "On track": "Off track" : "" }
-                      </span>
-                    </td>
                     <td colSpan="4" className="assignee-data">
                     {person.map((task_person) => {
                       return(
@@ -627,9 +620,9 @@ function Dashboard({task}) {
           <>
             <table className="project-data" >
               <tr className="project-data-title">
+              <th colSpan="2" className="status">Project Name</th>
                 <th colSpan="2" className="title">Task name </th>
                 <th>Priority</th>
-                <th colSpan="2" className="status">Status</th>
                 <th colSpan="2" className="assignee">Assignee</th>
                 <th colSpan="4"className="view-edit">View & Edit</th>
               </tr>
@@ -649,16 +642,9 @@ function Dashboard({task}) {
               return(  
                 <>
                   <tr key={task.task_id} onClick={()=>{toggle(task.task_id);getData(task.task_id);getTime(task.task_id);}} className="expand_dropdown">
+                    <td>{task.project_name}</td>
                     <td colSpan="2"><h4 className="projectTitle">{task.task_title}</h4></td>
                     <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
-                    <td className="status-data">
-                      <span>
-                        {(task.task_status=="taskOn_hold") ? "On Hold" : "" }
-                        {(task.task_status=="task_completed") ? "Completed" : "" }
-                        {(task.task_status=="task_toDo") ? "To Do Task" : "" }
-                        {(task.task_status=="task_Running") ? (date>today) ? "On track": "Off track" : "" }
-                      </span>
-                    </td>
                     <td colSpan="4" className="assignee-data">
                     {person.map((task_person) => {
                       return(
@@ -900,9 +886,9 @@ function Dashboard({task}) {
           <>
             <table className="project-data" >
               <tr className="project-data-title">
+                <th colSpan="2" className="status">Project Name</th>
                 <th colSpan="2" className="title">Task name </th>
                 <th>Priority</th>
-                <th colSpan="2" className="status">Status</th>
                 <th colSpan="2" className="assignee">Assignee</th>
                 <th colSpan="4"className="view-edit">View & Edit</th>
               </tr>
@@ -922,16 +908,9 @@ function Dashboard({task}) {
               return(  
                 <>
                   <tr key={task.task_id} onClick={()=>{toggle(task.task_id);getData(task.task_id);getTime(task.task_id);}} className="expand_dropdown">
+                    <td>{task.project_name}</td>
                     <td colSpan="2"><h4 className="projectTitle">{task.task_title}</h4></td>
                     <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
-                    <td className="status-data">
-                      <span>
-                        {(task.task_status=="taskOn_hold") ? "On Hold" : "" }
-                        {(task.task_status=="task_completed") ? "Completed" : "" }
-                        {(task.task_status=="task_toDo") ? "To Do Task" : "" }
-                        {(task.task_status=="task_Running") ? (date>today) ? "On track": "Off track" : "" }
-                      </span>
-                    </td>
                     <td colSpan="4" className="assignee-data">
                     {person.map((task_person) => {
                       return(
@@ -1169,9 +1148,9 @@ function Dashboard({task}) {
           <>
             <table className="project-data" >
               <tr className="project-data-title">
+                <th colSpan="2" className="status">Project Name</th>
                 <th colSpan="2" className="title">Task name </th>
                 <th>Priority</th>
-                <th colSpan="2" className="status">Status</th>
                 <th colSpan="2" className="assignee">Assignee</th>
                 <th colSpan="4"className="view-edit">View & Edit</th>
               </tr>
@@ -1191,16 +1170,9 @@ function Dashboard({task}) {
               return( 
                 <> 
                   <tr key={task.task_id} onClick={()=>{toggle(task.task_id);getData(task.task_id);getTime(task.task_id);}} className="expand_dropdown">
+                    <td>{task.project_name}</td>
                     <td colSpan="2"><h4 className="projectTitle">{task.task_title}</h4></td>
                     <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
-                    <td className="status-data">
-                      <span>
-                        {(task.task_status=="taskOn_hold") ? "On Hold" : "" }
-                        {(task.task_status=="task_completed") ? "Completed" : "" }
-                        {(task.task_status=="task_toDo") ? "To Do Task" : "" }
-                        {(task.task_status=="task_Running") ? (date>today) ? "On track": "Off track" : "" }
-                      </span>
-                    </td>
                     <td colSpan="4" className="assignee-data">
                     {person.map((task_person) => {
                       return(
