@@ -10,7 +10,19 @@ import { useCookies } from 'react-cookie';
 
 import { server } from 'config';
 
+export async function getServerSideProps(context){
+    console.log(context.req.cookies);
+    
+    const res = await fetch(`${server}/api/profilepage`,{
+        headers: {
+          'Access-Control-Allow-Credentials': true,
+          Cookie: context.req.headers.cookie
+        },
+    })
+    const profile = await res.json();
 
+    return{ props: { profile } }
+}
 
 const styles = {
     typo: {
@@ -49,7 +61,8 @@ const styles = {
     },
 };
 
-function ProfilePage(){
+function ProfilePage({profile}){
+    console.log(profile)
     const [cookies, setCookie] = useCookies(['name']);
  
     const useStyles = makeStyles(styles);
@@ -62,39 +75,55 @@ function ProfilePage(){
                 <Card>
                     <CardHeader color="primary">
                         <h4 className="text">Admin Profile</h4>
-                        {/*<p className={classes.cardCategoryWhite}>Created using Roboto Font Family</p>*/}
-                    </CardHeader>
-                    <CardBody><br/>
+                    </CardHeader><br/><br/>
+                    {profile.map((profile)=>{
+                        return(
+                            <CardBody>
+                                <div className={classes.typo}>
+                                    <div className={classes.note}>Username</div>
+                                    <h5>{profile.username}</h5>
+                                </div>
+                                <div className={classes.typo}>
+                                    <div className={classes.note}>Position</div>
+                                    <h5>{profile.position}</h5>
+                                </div>
+                                <div className={classes.typo}>
+                                    <div className={classes.note}>Department</div>
+                                    <h5>{profile.department}</h5>
+                                </div>
+                                <div className={classes.typo}>
+                                    <div className={classes.note}>Email</div>
+                                    <h5>{profile.email}</h5>
+                                </div>
+                                <div className={classes.typo}>
+                                    <div className={classes.note}>Mobile No.</div>
+                                    <h5>{profile.mobile_no}</h5>
+                                </div>
+                            </CardBody>
+                        )
+                    })}
+                    {/* <CardBody><br/>
                         <div className={classes.typo}>
                             <div className={classes.note}>Username</div><br/>
                             <h5>{cookies.name}</h5>
-                            {/*<h5>{admin.username}</h5>*/}
                         </div>
                         <div className={classes.typo}>
                             <div className={classes.note}>Position</div><br/>
                             <h5>{cookies.Position}</h5>
-                            {/*<h5>{admin.position}</h5>*/}
                         </div>
                         <div className={classes.typo}>
                             <div className={classes.note}>Department</div><br/>
                             <h5>{cookies.Department}</h5>
-                            {/*<h5>{admin.department}</h5>*/}
                         </div>
                         <div className={classes.typo}>
                             <div className={classes.note}>Email</div><br/>
                             <h5>{cookies.Email}</h5>
-                            {/*<h5>{admin.email}</h5>*/}
                         </div>
                         <div className={classes.typo}>
                             <div className={classes.note}>Mobile No.</div><br/>
                             <h5>{cookies.Mobile_num}</h5>
-                            {/*<h5>{admin.mobile_no}</h5>*/}
                         </div>
-                        {/*<div className={classes.typo}>
-                            <div className={classes.note}>Role</div>
-                            <h5>{admin.role}</h5>
-                        </div>*/}
-                    </CardBody>
+                    </CardBody> */}
                 </Card>
             </GridItem>
         </GridContainer>
