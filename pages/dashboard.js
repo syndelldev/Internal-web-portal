@@ -89,7 +89,7 @@ export async function getServerSideProps(){
 }
 
 function Dashboard( { project_hold, project_completed, project_running } ) {
-  console.log(project_hold);
+  // console.log(project_hold);
   // console.log(project_completed);
   // console.log(project_running);
 
@@ -116,8 +116,11 @@ function Dashboard( { project_hold, project_completed, project_running } ) {
   // console.log(today);
 
   const On_track = [];
+  console.log(On_track)
   const Off_track = [];
+  
 
+  
   return (
     <>
       <div>
@@ -138,35 +141,37 @@ function Dashboard( { project_hold, project_completed, project_running } ) {
         if(date>today)
         {
           On_track.push(status.project_id);
+          console.log("On_track",On_track)
         }
         else{
           Off_track.push(status.project_id);
+          console.log("Off_track",Off_track)
         }
       })}
       </GridContainer>
       <div className="project-status">
         <GridContainer>
           <GridItem xs={12} sm={6} md={4} >
-          <a href={`/projects`}><h3 className="on-track">On Track Project - {On_track.length}</h3></a>
+            <a onclick={()=>{On_track_project()}}><h3 className="on-track">On Track Project - {On_track.length}</h3></a>
           </GridItem>
         </GridContainer>
 
         <GridContainer>
           <GridItem xs={12} sm={6} md={4} >
-            <a href={`/projects`}><h3 className="off-track">Off Track Project - {Off_track.length}</h3></a>
+            <a onclick={()=>{}}><h3 className="off-track">Off Track Project - {Off_track.length}</h3></a>
           </GridItem>
         </GridContainer>
 
         <GridContainer>
           <GridItem xs={12} sm={6} md={4} >
-            <a href={`/projects`}><h3 className="completed-project">Completed Project - {project_completed.length}</h3></a>
+            <a onclick={()=>{project_completed()}}><h3 className="completed-project">Completed Project - {project_completed.length}</h3></a>
           </GridItem>
         </GridContainer>
 
         <GridContainer>
           <GridItem xs={12} sm={6} md={4}>
             <div>
-              <a href={`/projects`}><h3 className="on-hold">On Hold Project - {project_hold.length}</h3></a>
+              <a onclick={()=>{project_hold()}}><h3 className="on-hold">On Hold Project - {project_hold.length}</h3></a>
             </div>
           </GridItem>
         </GridContainer>
