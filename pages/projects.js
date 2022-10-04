@@ -5,19 +5,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import Modules from "../layouts/Modules";
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
-import Table from "components/Table/Table.js";
-import Tasks from "components/Tasks/Tasks.js";
-import CustomTabs from "components/CustomTabs/CustomTabs.js";
-import Danger from "components/Typography/Danger.js";
 import Button from "components/CustomButtons/Button.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
-import CardIcon from "components/Card/CardIcon.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { useForm  } from 'react-hook-form';
-import { bugs, website } from "variables/general.js";
 import { server } from 'config';
 // import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 import Popup from "reactjs-popup";
@@ -247,10 +241,10 @@ function Dashboard( { project_details , User_name } ) {
           autoClose:1000,
           theme: "colored",
           hideProgressBar: true,
-          onClose: () => router.push(`${server}/admin/project_module`)
+          onClose: () => router.push(`${server}/projects`)
           });
       }
-      router.reload(`${server}/admin/project_module`);
+      router.reload(`${server}/projects`);
   }
 }
 
@@ -577,14 +571,14 @@ function Dashboard( { project_details , User_name } ) {
             <div className="department_dropdown">
             <button className="dropdown_button">Project Departments</button>
                 <div className="department-link">
-                  <a href={`${server}/admin/project_module`}>All</a>
-                  <a href={`${server}/admin/project_module/project_department/HR`}>HR</a>
-                  <a href={`${server}/admin/project_module/project_department/UI & UX`}>UI & UX</a>
-                  <a href={`${server}/admin/project_module/project_department/Web development`}>Web Developer</a>
-                  <a href={`${server}/admin/project_module/project_department/Content writer`}>Content Writer</a>
-                  <a href={`${server}/admin/project_module/project_department/Project manager`}>Project Manager</a>
-                  <a href={`${server}/admin/project_module/project_department/Mobile App developer`}>Mobile App Developer</a>
-                  <a href={`${server}/admin/project_module/project_department/SEO`}>SEO</a>
+                  <a href={`${server}/projects`}>All</a>
+                  <a href={`${server}/project_department/HR`}>HR</a>
+                  <a href={`${server}/project_department/UI & UX`}>UI & UX</a>
+                  <a href={`${server}/project_department/Web development`}>Web Developer</a>
+                  <a href={`${server}/project_department/Content writer`}>Content Writer</a>
+                  <a href={`${server}/project_department/Project manager`}>Project Manager</a>
+                  <a href={`${server}/project_department/Mobile App developer`}>Mobile App Developer</a>
+                  <a href={`${server}/project_department/SEO`}>SEO</a>
                 </div>
             </div>
           </GridItem>
@@ -593,13 +587,13 @@ function Dashboard( { project_details , User_name } ) {
             <div className="department_dropdown">
               <button className="dropdown_button">Project Languages</button>
                   <div className="department-link">
-                    <a href={`${server}/admin/project_module`}>All</a>
-                    <a href={`${server}/admin/project_module/project_language/Wordpress`}>Wordpress</a>
-                    <a href={`${server}/admin/project_module/project_language/Shopify`}>Shopify</a>
-                    <a href={`${server}/admin/project_module/project_language/ReactJS`}>ReactJS</a>
-                    <a href={`${server}/admin/project_module/project_language/Laravel`}>Laravel</a>
-                    <a href={`${server}/admin/project_module/project_language/Android`}>Android</a>
-                    <a href={`${server}/admin/project_module/project_language/Bubble`}>Bubble</a>
+                    <a href={`${server}/projects`}>All</a>
+                    <a href={`${server}/project_language/Wordpress`}>Wordpress</a>
+                    <a href={`${server}/project_language/Shopify`}>Shopify</a>
+                    <a href={`${server}/project_language/ReactJS`}>ReactJS</a>
+                    <a href={`${server}/project_language/Laravel`}>Laravel</a>
+                    <a href={`${server}/project_language/Android`}>Android</a>
+                    <a href={`${server}/project_language/Bubble`}>Bubble</a>
                   </div>
             </div>
           </GridItem>
@@ -1417,59 +1411,6 @@ function Dashboard( { project_details , User_name } ) {
       </>
     ):("")}
     {/***** Completed Project End *****/}
-
-
-    {/* {project_details.map((project)=>{
-      if(project.project_delete == "no"){
-        var person = project.project_person.split(",");
-        const MySQLDate  = project.project_deadline;
-        let date = MySQLDate.replace(/[-]/g, '/').substr(0,10);
-        if(project.project_status=="running")
-        {
-          if(date>today)
-          {
-            On_track.push(project.project_id);
-          }
-          else
-          {
-            Off_track.push(project.project_id);
-          }
-        }
-        return(
-          <>
-            <GridItem xs={12} sm={6} md={9}>
-              <form>
-                <Card className="projects">
-                  <CardHeader color="primary" className="project-block">
-                    <div className="project-content">
-                      <h4 className="projectTitle">{project.project_title}</h4> 
-                        <div className="icon-display">
-                          <span className={project.project_priority}>{project.project_priority}</span>
-                          <span className={project.project_status}>
-                            {(project.project_status=="on hold") ? "On Hold" : "" }
-                            {(project.project_status=="completed") ? "Completed" : "" }
-                            {(project.project_status=="running") ? (date>today) ? "On track": "Off track" : "" }
-                          </span>
-                          {person.map((project_person) => {
-                            return(
-                              <div className="chip">
-                                <span>{project_person}</span>
-                              </div>
-                            )
-                          })
-                          }
-                        </div>
-                      </div>
-                  </CardHeader>
-                </Card>
-              </form>
-              <ToastContainer limit={1}/>
-            </GridItem>
-          </>
-          );
-          }
-        })
-        } */}
         {/***** Project End *****/}
         <ToastContainer limit={1}/>
       </GridContainer>
