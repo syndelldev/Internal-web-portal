@@ -1471,6 +1471,7 @@ function Dashboard( { project_details , User_name } ) {
         })
         } */}
         {/***** Project End *****/}
+        <ToastContainer limit={1}/>
       </GridContainer>
     </>
   );
