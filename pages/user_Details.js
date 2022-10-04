@@ -158,14 +158,16 @@ function UserDetail({UserDetail}) {
     let addUser = axios.post(`${server}/api/admin/`, {
       role_id:result.role_id, username:result.name, password:hashedPassword, email:result.email, PhoneNum:result.PhoneNum, /*DOB:startDate,*/ department:result.department, position:result.position, status:result.status, role:result.role 
     })
-    toast.success('User Updated Successfully! 🎉', {
-      position: "top-right",
-      theme: "colored",
-      hideProgressBar: true,
-      autoClose:5000,
-      onClose: () => router.reload(`${server}/user_Details`)
-    });
-    router.reload(`${server}/user_Details`);
+    if(!toast.isActive(toastId.current)) {
+      toastId.current = toast.success('User Created Successfully ! 🎉', {
+          position: "top-right",
+          autoClose:1000,
+          theme: "colored",
+          hideProgressBar: true,
+          onClose: () => router.push(`${server}/user_Details`)
+          });
+      }
+      router.reload(`${server}/user_Details`);
   }
   //Add User API End
   return (
@@ -182,7 +184,7 @@ function UserDetail({UserDetail}) {
                 <div>
                   <GridContainer>
                     <GridItem xs={12} sm={12} md={12}>
-                      <form onSubmit={AddUser} method="POST">
+                      <form onSubmit={handleSubmit(AddUser)}  method="POST" >
                         <Card>
                           <CardHeader color="primary">
                             <GridContainer>
@@ -331,7 +333,7 @@ function UserDetail({UserDetail}) {
                           </CardBody>
 
                           <CardFooter>
-                            <Button color="primary" type="submit" onClick={AddUser}>Add User</Button>
+                            <Button color="primary" type="submit" onClick={()=>{AddUser()}}>Add User</Button>
                           </CardFooter>
 
                         </Card>
