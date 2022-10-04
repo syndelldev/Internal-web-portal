@@ -266,12 +266,15 @@ h4.text {
   color: darkblue;
   font-weight: 900;
 }
-
-.icon-edit-delete{
+td.project-edit-table {
+  padding-left: 15px;
+  display: flex;
+}
+/* .icon-edit-delete{
   display: flex;
   align-items: center;
   margin-left: auto;
-}
+} */
 .makeStyles-grid-340{
   width: 100%!important;
   margin: 0px 0px !important;
@@ -281,8 +284,8 @@ h4.text {
   border-radius: 30px!important;
   padding: 10px!important;
   font-weight: 500!important;
-  background: #eee5ff!important;
-  color: #000!important;;
+  background: #00155c!important;
+  color: #fff!important;;
 }
 .multiSelectContainer li:hover{
   font-weight: 500!important;
@@ -396,13 +399,14 @@ table.project-data {
   width: 100%;
 }
 table.project-data th{
+  background-color: #fff;
   text-align: left;
   padding-left: 15px;
     padding-right: 15px;
     color: #000;
     border: 1px solid #D3D3D3;
     font-size: 15px;
-    font-weight: 400;
+    font-weight: 600;
   border: 1px solid #D3D3D3;
   padding-bottom: 8px;
   padding-top: 8px;
@@ -545,6 +549,19 @@ td.status-data {
 p.Task-lang {
   font-weight: 600;
 }
+
+/** Table project layout start**/
+td.project-title-table,td.project-priority-table {
+  padding-left: 15px;
+  padding-right: 15px;
+  font-weight: 600;
+  font-size: 14px;
+}
+td.project-priority-person {
+  padding-left: 15px;
+}
+/** Table project layout end **/
+
 /** Profile page css start **/
 .profile-page{
   width: 50%!important;

@@ -580,7 +580,7 @@ button.addproject{
 }
 .expand_dropdown{
   cursor: pointer;
-  background: aliceblue;
+  background: #00155c1f;
 }
 .content{
   max-height: 0;

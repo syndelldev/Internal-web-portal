@@ -615,7 +615,7 @@ function Dashboard( { project_details , User_name } ) {
         <table className="project-data" >
           <tr className="project-data-title">
             <th  className="status">Project Name</th>
-            <th>Priority</th>
+            <th className="Priority">Priority</th>
             <th className="assignee">Assignee</th>
             <th className="view-edit">View & Edit</th>
           </tr>
@@ -625,9 +625,9 @@ function Dashboard( { project_details , User_name } ) {
                 var person = project.project_person.split(",");
                 return(
                   <tr key={project.project_id} onClick={()=>{toggle(project.project_id)}} className="expand_dropdown">
-                    <td>{project.project_title}</td>
-                    <td>{project.project_priority}</td>
-                    <td>
+                    <td className="project-title-table">{project.project_title}</td>
+                    <td className="project-priority-table">{project.project_priority}</td>
+                    <td className="project-priority-person">
                       {person.map((project_person) => {
                         return(
                           <div className="chip">
@@ -637,7 +637,7 @@ function Dashboard( { project_details , User_name } ) {
                         })
                       }
                     </td>
-                    <td>
+                    <td className="project-edit-table">
                       {/* Edit popUp Start*/}
                       <Popup trigger={<a className="icon-edit-delete"><div className='icon-width' onClick={()=> { projectId(project.project_id) } }><FiEdit/></div></a>} className="popupReact" modal>
                       {close => (
@@ -885,7 +885,7 @@ function Dashboard( { project_details , User_name } ) {
         <table className="project-data" >
           <tr className="project-data-title">
             <th  className="status">Project Name</th>
-            <th>Priority</th>
+            <th className="Prio">Priority</th>
             <th className="assignee">Assignee</th>
             <th className="view-edit">View & Edit</th>
           </tr>
