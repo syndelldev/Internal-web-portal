@@ -147,26 +147,26 @@ function Dashboard( { project_hold, project_completed, project_running } ) {
       <div className="project-status">
         <GridContainer>
           <GridItem xs={12} sm={6} md={4} >
-            <a href="/projects" ><h3 className="on-track">On Track Project - {On_track.length}</h3></a>
+            <h3 className="on-track">On Track Project - {On_track.length}</h3>
           </GridItem>
         </GridContainer>
 
         <GridContainer>
           <GridItem xs={12} sm={6} md={4} >
-            <a href="/projects" ><h3 className="off-track">Off Track Project - {Off_track.length}</h3></a>
+            <h3 className="off-track">Off Track Project - {Off_track.length}</h3>
           </GridItem>
         </GridContainer>
 
         <GridContainer>
           <GridItem xs={12} sm={6} md={4} >
-            <a href="/projects" ><h3 className="completed-project">Completed Project - {project_completed.length}</h3></a>
+            <h3 className="completed-project">Completed Project - {project_completed.length}</h3>
           </GridItem>
         </GridContainer>
 
         <GridContainer>
           <GridItem xs={12} sm={6} md={4}>
             <div>
-              <a href="/projects" ><h3 className="on-hold">On Hold Project - {project_hold.length}</h3></a>
+              <h3 className="on-hold">On Hold Project - {project_hold.length}</h3>
             </div>
           </GridItem>
         </GridContainer>
