@@ -30,6 +30,7 @@ import { server } from 'config';
 import { ToastContainer, toast } from 'react-toastify';
 import { useForm, Controller  } from 'react-hook-form';
 import PhoneInput from 'react-phone-number-input'
+import bcrypt from 'bcryptjs'
 
 export async function getServerSideProps(context){
   const res = await fetch(`${server}/api/admin`)
@@ -150,10 +151,23 @@ function UserDetail({UserDetail}) {
   const [phonenum, setphonenum] = useState()
   const AddUser = async (result) =>{
     console.log(result);
+
+    const hashedPassword = bcrypt.hashSync(result.password, 10)
+    console.log(hashedPassword)
+
     let addUser = axios.post(`${server}/api/admin/`, {
-      role_id:result.role_id, username:result.name, password:result.password, email:result.email, PhoneNum:result.PhoneNum, /*DOB:startDate,*/ department:result.department, position:result.position, status:result.status, role:result.role 
+      role_id:result.role_id, username:result.name, password:hashedPassword, email:result.email, PhoneNum:result.PhoneNum, /*DOB:startDate,*/ department:result.department, position:result.position, status:result.status, role:result.role 
     })
-    
+    if(!toast.isActive(toastId.current)) {
+      toastId.current = toast.success('User Created Successfully ! 🎉', {
+          position: "top-right",
+          autoClose:1000,
+          theme: "colored",
+          hideProgressBar: true,
+          onClose: () => router.push(`${server}/user_Details`)
+          });
+      }
+      router.reload(`${server}/user_Details`);
   }
   //Add User API End
   return (
@@ -170,7 +184,7 @@ function UserDetail({UserDetail}) {
                 <div>
                   <GridContainer>
                     <GridItem xs={12} sm={12} md={12}>
-                      <form onSubmit={handleSubmit(AddUser)} method="POST">
+                      <form onSubmit={handleSubmit(AddUser)}  method="POST" >
                         <Card>
                           <CardHeader color="primary">
                             <GridContainer>
@@ -222,7 +236,7 @@ function UserDetail({UserDetail}) {
                             </GridContainer><br/>
 
                             <GridContainer>
-                              <GridItem xs={12} sm={12} md={6}>
+                              <GridItem xs={12} sm={12} md={12}>
                                 <div className="form-group">
                                   <Controller
                                     name="PhoneNum"
@@ -245,10 +259,10 @@ function UserDetail({UserDetail}) {
                             </GridContainer><br/>
 
                             <GridContainer>
-                              <GridItem xs={12} sm={12} md={6}>
+                              <GridItem xs={12} sm={12} md={12}>
                                 <div className="form-group">
                                   <select name="Department" id="Department" className="form-control signup-input" {...register('department', {required:true ,message:'Please select atleast one option', })}>
-                                    <option value="">Select Your Department...</option>
+                                    <option value="" disabled selected>Select Your Department...</option>
                                     <option value="HR">HR</option>
                                     <option value="UI & UX">UI & UX</option>
                                     <option value="Web Developer">Web Developer</option>
@@ -262,11 +276,64 @@ function UserDetail({UserDetail}) {
                                 </div> 
                               </GridItem>
                             </GridContainer><br/>
+                            
+                            <GridContainer>
+                              <GridItem xs={12} sm={12} md={12}>
+                                <div className="form-group">
+                                  <select name="position" id="position" className="form-control signup-input" {...register('position', {required: "Please enter your department" ,message:'Please select atleast one option', })}>
+                                    <option value="" disabled selected>Select Your Position</option>
+                                    <option value="Jr. HR">Jr. HR</option>
+                                    <option value="Jr. UI & UX">Jr. UI & UX</option>
+                                    <option value="Jr. Web Development">Jr. Web Developer</option>
+                                    <option value="Jr. Content Writer">Jr. Content Writer</option>
+                                    <option value="Jr. Project Manager">Jr. Project Manager</option>
+                                    <option value="Jr. Mobile App Developer">Jr. Mobile App Developer</option>
+                                    <option value="Jr. SEO">Jr. SEO</option>
+                                    <option value="Sr. HR">Sr. HR</option>
+                                    <option value="Sr. UI & UX">Sr. UI & UX</option>
+                                    <option value="Sr. Web Developer">Sr. Web Developer</option>
+                                    <option value="Sr. Content Writer">Sr. Content Writer</option>
+                                    <option value="Sr. Project Manager">Sr. Project Manager</option>
+                                    <option value="Sr. Mobile App Developer">Sr. Mobile App Developer</option>
+                                    <option value="Sr. SEO">Sr. SEO</option>
+                                  </select>
+                                  <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                  <div className="error-msg">{errors.position && <p>{errors.position.message}</p>}</div>
+                                </div>
+                              </GridItem>
+                            </GridContainer><br/>
+
+                            <GridContainer>
+                              <GridItem xs={12} sm={12} md={12}>
+                                <div className="form-group">
+                                  <select name="Status" id="Status" className="form-control signup-input" {...register('status', {required:true ,message:'Please select atleast one option', })}>
+                                    <option value="Select..." disabled selected>Select Your Status...</option>
+                                    <option value="Active">Active</option>
+                                    <option value="Inactive">Inactive</option>
+                                  </select>
+                                  <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                  <div className="error-msg">{errors.status && <p>{errors.status.message}</p>}</div>
+                                </div><br/> 
+                              </GridItem>
+                            
+                              <GridItem xs={12} sm={12} md={12}>
+                                <div className="form-group">
+                                  <select name="Role" id="Role" className="form-control signup-input" {...register('role', {required:true ,message:'Please select atleast one option', })}>
+                                    <option value="Select..." disabled selected>Select Your Role...</option>
+                                    <option value="User">User</option>
+                                    <option value="Admin">Admin</option>
+                                    <option value="Super User">Super User</option>
+                                  </select>
+                                  <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                  <div className="error-msg">{errors.role && <p>{errors.role.message}</p>}</div>
+                                </div> 
+                              </GridItem>
+                            </GridContainer><br/>
 
                           </CardBody>
 
                           <CardFooter>
-                            <Button color="primary" type="submit" onClick={AddUser}>Add User</Button>
+                            <Button color="primary" type="submit" onClick={()=>{AddUser()}}>Add User</Button>
                           </CardFooter>
 
                         </Card>
