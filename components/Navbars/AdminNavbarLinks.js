@@ -265,7 +265,7 @@ export default function AdminNavbarLinks({useravtar}) {
                   <MenuList role="menu" className="logout">
                     {
                     <MenuItem onClick={handleCloseProfile} className={classes.dropdownItem}>
-                      <a href="/user/userprofile">My Profile{/*cookies.name*/}</a>
+                      <a href="/profile_page">My Profile{/*cookies.name*/}</a>
                     </MenuItem>
                     /*
                     <MenuItem onClick={handleCloseProfile} className={classes.dropdownItem}>

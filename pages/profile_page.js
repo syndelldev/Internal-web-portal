@@ -99,6 +99,10 @@ function ProfilePage({profile}){
                                     <div className="profile-label">Mobile No.</div>
                                     <h5 className="profile-data">{profile.mobile_no}</h5>
                                 </div>
+                                <div className="profiles">
+                                    <div className="profile-label">Role</div>
+                                    <h5 className="profile-data">{profile.role}</h5>
+                                </div>
                             </CardBody>
                         )
                     })}
