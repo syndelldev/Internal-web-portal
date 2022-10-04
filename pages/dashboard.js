@@ -89,9 +89,9 @@ export async function getServerSideProps(){
 }
 
 function Dashboard( { project_hold, project_completed, project_running } ) {
-  // console.log(project_hold);
+  console.log(project_hold);
   // console.log(project_completed);
-  console.log(project_running);
+  // console.log(project_running);
 
   const useStyles = makeStyles(styles);
   const classes = useStyles();
@@ -116,10 +116,7 @@ function Dashboard( { project_hold, project_completed, project_running } ) {
   // console.log(today);
 
   const On_track = [];
-  console.log(On_track)
-
   const Off_track = [];
-  console.log(Off_track)
 
   return (
     <>
@@ -133,91 +130,49 @@ function Dashboard( { project_hold, project_completed, project_running } ) {
         })}
       </div>
     <h4 className="project_status">Projects</h4>
-    {/* <GridContainer>
-
-      {all_status.map((status) =>{
-      return(<>
-        <GridItem xs={12} sm={6} md={4}>
-
-          <div className={status.project_status}>
-            <h6 className={status.project_status}>{status.project_status}</h6>
-            <h3 className={status.project_status}><img src={`${server}/reactlogo.png`} className={status.project_status}/>{status.project_total}</h3>
-          </div> 
-        </GridItem>
-
-      </>)
-      })
-      }
-    </GridContainer> */}
 
     <GridContainer>
       {project_running.map((status)=>{
         const MySQLDate  = status.project_deadline;
         let date = MySQLDate.replace(/[-]/g, '/').substr(0,10);
-        console.log("date");
-        // console.log(trackdate);
-        // console.log(status.project_id);
-
         if(date>today)
         {
-          console.count("On track")
-          // console.log(status.project_id);
-
-          
           On_track.push(status.project_id);
-          // console.log(On_track)
-          
-          
         }
         else{
-          console.count("off track")
-          // console.log(status.project_id);
-
           Off_track.push(status.project_id);
-          // console.log(Off_track)
-
         }
-        
-        // return(
-        //   <GridItem xs={12} sm={6} md={4}>
-        //     <div className={status.project_status}>
-        //       <h6>{status.project_status}</h6>
-        //       <h6>{date}</h6>
-        //       <h6>{today}</h6>
-        //     </div>
-        //   </GridItem>
-        // )
       })}
-    </GridContainer>
-<div className="project-status">
-    <GridContainer>
+      </GridContainer>
+      <div className="project-status">
+        <GridContainer>
           <GridItem xs={12} sm={6} md={4} >
-              <h3 className="on-track">On Track Project - {On_track.length}</h3>
+            <a href="/projects" ><h3 className="on-track">On Track Project - {On_track.length}</h3></a>
           </GridItem>
-    </GridContainer>
+        </GridContainer>
 
-    <GridContainer>
+        <GridContainer>
           <GridItem xs={12} sm={6} md={4} >
-              <h3 className="off-track">Off Track Project - {Off_track.length}</h3>
+            <a href="/projects" ><h3 className="off-track">Off Track Project - {Off_track.length}</h3></a>
           </GridItem>
-    </GridContainer>
+        </GridContainer>
 
-    <GridContainer>
+        <GridContainer>
           <GridItem xs={12} sm={6} md={4} >
-              <h3 className="completed-project">Completed Project - {project_completed.length}</h3>
+            <a href="/projects" ><h3 className="completed-project">Completed Project - {project_completed.length}</h3></a>
           </GridItem>
-    </GridContainer>
+        </GridContainer>
 
-    <GridContainer>
+        <GridContainer>
           <GridItem xs={12} sm={6} md={4}>
             <div>
-              <h3 className="on-hold">On Hold Project - {project_hold.length}</h3>
+              <a href="/projects" ><h3 className="on-hold">On Hold Project - {project_hold.length}</h3></a>
             </div>
           </GridItem>
-    </GridContainer>
-    </div>
-    </>);
-
+        </GridContainer>
+      </div>
+    </>
+  );
 }
 
 Dashboard.layout = Admin;
