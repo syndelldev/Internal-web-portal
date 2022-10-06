@@ -18,11 +18,12 @@ a {
 /* filter project language, department dropdown */
 
 .dropdown_button {
+  color: #fff;
   font-weight: 600;
   padding: 9px 20px;
   font-size: 16px;
   border: none;
-  background-color: #ADD8E6;
+  background-color: #00155c;
   border-radius: 8px;
 }
 
@@ -123,9 +124,12 @@ h4.project_status {
 }
 
 .dropdown_button:hover{
-  background-color: #ADD8E6;
+  background-color: #00155c;
   color: white;
   border:none;
+}
+span.copyright a {
+  color: #00155c!important;
 }
 .bttn-design:hover{
   color: white;
@@ -150,7 +154,7 @@ h4.project_status {
 } 
 
 .logout{
-  background-color: #ADD8E6 !important;
+  background-color: #00155c !important;
 }
 .MuiGrid-root.makeStyles-grid-479.MuiGrid-container{
   justify-content: center;
@@ -197,10 +201,11 @@ h4.text {
 }
 
 .bttn-design{
+  color:#fff;
   font-weight: 600;
   padding: 9px 20px;
   font-size: 16px;
-  background-color: #ADD8E6;
+  background-color: #00155c;
   border: none;
   border-radius: 8px;
 }
@@ -214,8 +219,12 @@ h4.text {
   cursor: pointer;
 }
 .icon-width{
+  color: #000;
   margin-right: 20px;
   width: auto;
+}
+a.icon-edit-delete {
+  color: #000;
 }
 .icon-align{
   vertical-align: top;

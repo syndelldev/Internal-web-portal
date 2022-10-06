@@ -62,7 +62,7 @@ html * {
   -moz-osx-font-smoothing: grayscale;
 }
 body {
-  background-color: #ADD8E6;
+  background-color: #00155c;
   color: #3c4858;
   margin: 0;
   font-family: Roboto, Helvetica, Arial, sans-serif;
@@ -133,7 +133,7 @@ h6 {
 }
 
 a {
-  color: #000;
+  color: #fff;
   text-decoration: none;
   /*display: grid;*/
   /*margin-bottom: 20px;*/
