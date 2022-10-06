@@ -59,18 +59,22 @@ function UserRights({UserList,ModuleList}){
 
     const [users, setusers] = useState([])
     
-    
+    const getData = async() => {
+        const res = await axios.post(`${server}/api/rights/${user}`, {userid:user,moduleid:module})
+        console.log(res.data);
+        setusers(res.data)
+    }
     useEffect(() => {
-        const interval = setInterval(() => {
-            axios.post(`${server}/api/rights/${user}`, {userid:user,moduleid:module})
-            .then((res)=>{
-                setusers(res.data)
-            })
-        }, 500);
-        return () => {clearInterval(interval);};
+        console.log("useEffect called");
+        // const interval = setInterval(() => {
+            
+            getData();
+        // }, 500);
+        // return () => {clearInterval(interval)}
     }, [users]);
-
-
+    console.log(users)
+    
+    
     const view_rights = (project_id, view_rights) =>{
         if(view_rights==0){
             var result = 1
@@ -80,7 +84,8 @@ function UserRights({UserList,ModuleList}){
         }
         console.log("result", result)
         let data = axios.put(`${server}/api/rights/project/${project_id}`, {userid:user, moduleid:module, projectid:project_id, view:result})
-        console.log(data)
+        // console.log(data)
+
     }
 
     const edit_rights = (project_id,edit_rights) =>{
@@ -92,7 +97,8 @@ function UserRights({UserList,ModuleList}){
         }
         console.log("result", result)
         let data = axios.put(`${server}/api/rights/project/${project_id}`, {userid:user, moduleid:module, projectid:project_id, edit:result}) 
-        console.log(data)
+        // console.log(data)
+        
     }
 
     return(
@@ -107,7 +113,7 @@ function UserRights({UserList,ModuleList}){
                         <GridContainer>
                             <GridItem xs={12} sm={12} md={3}>
                                 <div className="form-group">
-                                    <select value={user} onChange={(e) => {setuser(e.target.value)}}  className="form-control signup-input" > 
+                                    <select value={user} onChange={(e) => {setuser(e.target.value)}} className="form-control signup-input" > 
                                         {
                                             UserList.map((users)=>{
                                                 return(
@@ -162,6 +168,7 @@ function UserRights({UserList,ModuleList}){
                                                             // onChange={viewCheckbox} 
                                                             defaultChecked={data.view_rights==1} 
                                                             onClick={()=>{view_rights(data.project_id, data.view_rights)}}
+                                                            onChange={()=>{setusers(users)}}
                                                         />
                                                     </TableCell>
 
@@ -170,7 +177,7 @@ function UserRights({UserList,ModuleList}){
                                                             value={data.edit_rights} 
                                                             // onChange={edithandlechange} 
                                                             defaultChecked={data.edit_rights==1} 
-                                                            onClick={()=>{edit_rights(data.project_id, data.edit_rights)}} 
+                                                            onClick={()=>{edit_rights(data.project_id, data.edit_rights);getData();}} 
                                                         /> 
                                                     </TableCell>
                                                                             
