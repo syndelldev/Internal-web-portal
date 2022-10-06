@@ -57,7 +57,6 @@ const styles = {
     width: "40px",
   },
   popup:{
-    // position: "fixed",
     width: "100%",
     height: "100%",
     top: "0",
@@ -82,11 +81,9 @@ const styles = {
 export async function getServerSideProps(){
   const res = await fetch(`${server}/api/project`);
   const project_details = await res.json();
-  // console.log(project_details);
 
   const response = await fetch(`${server}/api/admin`)
   const User_name = await response.json();
-  // console.log(User_name);
 
   const hold = await fetch(`${server}/api/project/project_status/project_hold`)
   const project_hold = await hold.json();
@@ -96,8 +93,6 @@ export async function getServerSideProps(){
 
   const running = await fetch(`${server}/api/project/project_status/project_running`)
   const project_running = await running.json();
-
-  // console.log(all_status);
 
   return{ props: { project_details, project_hold, project_completed, project_running, User_name } }
 }
@@ -162,12 +157,8 @@ function Dashboard( { project_details, project_hold, project_completed, project_
 
     const response = await fetch(`${server}/api/project/update/${id}`)
     const update_data = await response.json();
-    // console.log(update_data[0]);
-
     const udata = update_data[0];
-
     const selectedMember = (udata.project_person).split(",");
-
     const getAllname = [];
 
     selectedMember.map((user)=>{
@@ -182,7 +173,6 @@ function Dashboard( { project_details, project_hold, project_completed, project_
     }
 
   const [selected, setSelected] = useState([userID]);
-
   const handleChange = ({ target: { name, value } }) =>{
     console.log("name");
     console.log([name]);
@@ -191,10 +181,8 @@ function Dashboard( { project_details, project_hold, project_completed, project_
   }
 
   var uMember = uoption.project_person;
-
   const allSelectedMember = [];
   const projectMember = (uMember).split(",");
-
 
   for(var i=0; i<projectMember.length; i++){
     allSelectedMember.push({'label' :projectMember[i] , 'value' : projectMember[i]});
@@ -209,9 +197,6 @@ function Dashboard( { project_details, project_hold, project_completed, project_
           allMember.push(updateSelected[i].value);
     }
   
-    console.log("all users");
-    console.log( allMember );
-
     if( uoption.project_title=="" || uoption.project_description=="" ||  uoption.project_department=="" || uoption.project_language=="" || allMember=="" || startDate=="" || endDate=="" || uoption.project_priority=="" || uoption.project_status=="" ){
       if(! toast.isActive(toastId.current)) {
         toastId.current = toast.error('Please fill all the required fields', {
@@ -323,7 +308,7 @@ useEffect(() =>{
         }
       })}
     </GridContainer>
-    
+
       <div className="project-status">
         <GridContainer>
           <GridItem xs={12} sm={6} md={4} >
@@ -525,7 +510,7 @@ useEffect(() =>{
                                     <GridItem xs={12} sm={12} md={6}>
                                         <div className="form-group">
                                           <span>Project Status</span><span className="required">*</span>
-                                            <select name="project_status" id="Status" className="form-control signup-input" value={uoption.project_status} onChange={handleChange}>
+                                            <select name="project_status" id="Status" className="form-control signup-input" disabled={cookies.Role_id == "2"} value={uoption.project_status} onChange={handleChange}>
                                               <option value=""  disabled selected>Select Project Status</option>
                                               <option value="on hold">On hold</option>
                                               <option value="running">Running</option>
@@ -551,19 +536,11 @@ useEffect(() =>{
                                             onSelect={setUpdateSelected}
                                             placeholder="Select Project Members"
                                             showArrow={true}
+                                            disable={cookies.Role_id == "2"}
                                           />
                                         </div> 
                                       </GridItem>
                                     </GridContainer><br/>
-
-                                    <GridContainer>
-                                      <GridItem xs={12} sm={12} md={12}>
-                                        <div className="form-group">
-                                        <span>Comments</span>
-                                          <textarea className="form-control signup-input" name="project_comment" value={uoption.project_comment} onChange={handleChange} placeholder="Comment" />
-                                        </div> 
-                                      </GridItem>
-                                    </GridContainer>
 
                                   </CardBody>
                                   <CardFooter>
