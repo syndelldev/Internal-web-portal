@@ -36,7 +36,7 @@ const ModuleById = async (req,res) => {
 }
 
 const ProjectById = async (req,res) =>{
-    // console.log(req.body)
+    console.log(req.body)
 
     var check_condition = await executeQuery(" SELECT * FROM `tbl_rights` WHERE user_id=? AND module_id=? AND project_id=? ", [req.body.userid, req.body.moduleid, req.body.projectid] );
     console.log(check_condition)
@@ -47,7 +47,7 @@ const ProjectById = async (req,res) =>{
         let data = await executeQuery(" UPDATE `tbl_rights` SET  view_rights=?  WHERE `user_id`=? AND `project_id`=? ", [req.body.view, req.body.userid, req.body.projectid])
         console.log(data)
     }
-    else if(req.body.edit==0 || req.body.edit==1)
+    else if(req.body.edit==0 || req.body.edit==1 )
     {
         console.log("Update edit_rights")
         let data = await executeQuery(" UPDATE `tbl_rights` SET  edit_rights=?  WHERE `user_id`=? AND `project_id`=? ", [req.body.edit, req.body.userid, req.body.projectid])

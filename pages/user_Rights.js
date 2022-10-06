@@ -43,9 +43,6 @@ export async function getServerSideProps(context){
 
     const responce = await fetch(`${server}/api/rights/module`)
     const ModuleList = await responce.json()
-
-    // const resp = await fetch(`${server}/api/rights/rights_list`)
-    // const rights_list = await resp.json()
     
     return{ props: {UserList,ModuleList} }
 } 
@@ -61,65 +58,40 @@ function UserRights({UserList,ModuleList}){
     // console.log(module)
 
     const [users, setusers] = useState([])
-    useEffect(()=>{
-        // const getData = () => {
+    
+    
+    useEffect(() => {
+        const interval = setInterval(() => {
             axios.post(`${server}/api/rights/${user}`, {userid:user,moduleid:module})
             .then((res)=>{
                 setusers(res.data)
             })
-        // }
-        // getData();
-        console.log(users)
-    },[users])
-   
-    
-    const [viewcheckbox,setviewcheckbox] = useState(0)
-    const viewCheckbox = (e) =>{
-        console.log(e.target.checked);
+        }, 500);
+        return () => {clearInterval(interval);};
+    }, [users]);
 
-        if(e.target.checked)
-        {
-            setviewcheckbox(0)
-        }
-        else
-        {
-            setviewcheckbox(1)
-        }
-    }
-    // console.log(viewcheckbox)
-    
-    const [rightsList, setrightsList] = useState([])
-    const view_rights = (project_id) =>{
-        console.log("view_rights",project_id)
 
-        let data = axios.put(`${server}/api/rights/project/${project_id}`, {userid:user, moduleid:module, projectid:project_id, view:viewcheckbox})
+    const view_rights = (project_id, view_rights) =>{
+        if(view_rights==0){
+            var result = 1
+        }
+        else if(view_rights==1){
+            var result = 0
+        }
+        console.log("result", result)
+        let data = axios.put(`${server}/api/rights/project/${project_id}`, {userid:user, moduleid:module, projectid:project_id, view:result})
         console.log(data)
-        // .then((responce)=>{
-        //     setrightsList(responce.data)
-        //     // users(setrightsList)
-        // }) 
     }
 
-    const [editcheckbox,seteditcheckbox] = useState(0)
-    const editCheckbox = (e) =>{
-        console.log(e.target.checked)
-
-        if(e.target.checked)
-        {
-            console.log('✅ Checkbox is checked');
-            seteditcheckbox(1)
+    const edit_rights = (project_id,edit_rights) =>{
+        if(edit_rights==0){
+            var result = 1
         }
-        else
-        {
-            console.log('⛔️ Checkbox is NOT checked');
-            seteditcheckbox(0)
+        else if(edit_rights==1){
+            var result = 0
         }
-    }
-    
-    const edit_rights = (project_id) =>{
-        // console.log(project_id)
-
-        let data = axios.put(`${server}/api/rights/project/${project_id}`, {userid:user, moduleid:module, projectid:project_id, edit:editcheckbox}) 
+        console.log("result", result)
+        let data = axios.put(`${server}/api/rights/project/${project_id}`, {userid:user, moduleid:module, projectid:project_id, edit:result}) 
         console.log(data)
     }
 
@@ -135,7 +107,7 @@ function UserRights({UserList,ModuleList}){
                         <GridContainer>
                             <GridItem xs={12} sm={12} md={3}>
                                 <div className="form-group">
-                                    <select value={user} onChange={(e) => {setuser(e.target.value)}} className="form-control signup-input" > 
+                                    <select value={user} onChange={(e) => {setuser(e.target.value)}}  className="form-control signup-input" > 
                                         {
                                             UserList.map((users)=>{
                                                 return(
@@ -178,39 +150,35 @@ function UserRights({UserList,ModuleList}){
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {
-                                            users.map((data)=>{
-                                                // const isInArray = data.user_id.includes(user);
-                                                // console.log(users)
-                                                // console.log(isInArray);   
-                                                return(       
-                                                    <TableRow key={data.project_id} value={data.project_id}>
-                                                        <TableCell>{data.project_title}-{data.project_id}</TableCell>  
+                                        {users.map((data)=>{ 
+                                            return(       
+                                                <TableRow key={data.project_id} value={data.project_id}>
+                                                    <TableCell>{data.project_title}-{data.project_id}</TableCell>  
                                                           
-                                                        <TableCell>
-                                                            <input type="checkbox" name="view_rights" 
-                                                                disabled={data.edit_rights==1} 
-                                                                value={data.view_rights} 
-                                                                onChange={viewCheckbox} 
-                                                                defaultChecked={data.view_rights==1} 
-                                                                onClick={()=>view_rights(data.project_id)}
-                                                            />
-                                                        </TableCell>
+                                                    <TableCell>
+                                                        <input type="checkbox" name="view_rights" 
+                                                            disabled={data.edit_rights==1} 
+                                                            value={data.view_rights} 
+                                                            // onChange={viewCheckbox} 
+                                                            defaultChecked={data.view_rights==1} 
+                                                            onClick={()=>{view_rights(data.project_id, data.view_rights)}}
+                                                        />
+                                                    </TableCell>
 
-                                                        <TableCell>
-                                                            <input type="checkbox" name="edit_rights" 
-                                                                value={data.edit_rights} 
-                                                                onChange={editCheckbox} 
-                                                                defaultChecked={data.edit_rights==1} 
-                                                                onClick={()=>edit_rights(data.project_id)} 
-                                                            /> 
-                                                        </TableCell>
+                                                    <TableCell>
+                                                        <input type="checkbox" name="edit_rights" 
+                                                            value={data.edit_rights} 
+                                                            // onChange={edithandlechange} 
+                                                            defaultChecked={data.edit_rights==1} 
+                                                            onClick={()=>{edit_rights(data.project_id, data.edit_rights)}} 
+                                                        /> 
+                                                    </TableCell>
                                                                             
-                                                    </TableRow>   
-                                                    )
-                                                })
-                                            }                                       
-                                        </TableBody>
+                                                </TableRow>   
+                                                )
+                                            })
+                                        }                                       
+                                    </TableBody>
                                 </Table>
                             </div>
                         </CardBody>
