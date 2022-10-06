@@ -59,35 +59,19 @@ function UserRights({UserList,ModuleList}){
 
     const [users, setusers] = useState([])
     
+    
     useEffect(() => {
-        const getData = () => {
+        const interval = setInterval(() => {
             axios.post(`${server}/api/rights/${user}`, {userid:user,moduleid:module})
             .then((res)=>{
                 setusers(res.data)
             })
-        }
-        getData(); 
+        }, 500);
+        return () => {clearInterval(interval);};
     }, [users]);
-    
 
 
-    // const [viewcheckbox,setviewcheckbox] = useState("")
-    // const viewCheckbox = (e) =>{
-    //     console.log(e.target.checked);
-
-    //     if(e.target.checked)
-    //     {
-    //         setviewcheckbox(0)
-    //     }
-    //     else
-    //     {
-    //         setviewcheckbox(1)
-    //     }
-    // }
-    // console.log(viewcheckbox)
-    
     const view_rights = (project_id, view_rights) =>{
-        console.log("view_rights",project_id)
         if(view_rights==0){
             var result = 1
         }
@@ -98,10 +82,9 @@ function UserRights({UserList,ModuleList}){
         let data = axios.put(`${server}/api/rights/project/${project_id}`, {userid:user, moduleid:module, projectid:project_id, view:result})
         console.log(data)
     }
-    
+
     
     const edit_rights = (project_id,edit_rights) =>{
-        console.log("edit_rights", edit_rights)
         if(edit_rights==0){
             var result = 1
         }
