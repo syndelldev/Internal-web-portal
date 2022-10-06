@@ -8,7 +8,21 @@ import GridContainer from "components/Grid/GridContainer.js";
 import { server } from 'config';
 import axios from "axios";
 import { useCookies } from 'react-cookie';
+import Popup from "reactjs-popup";
+import Card from "components/Card/Card.js";
+import CardHeader from "components/Card/CardHeader.js";
+import CardBody from "components/Card/CardBody.js";
+import CardFooter from "components/Card/CardFooter.js";
 // import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
+import { IoMdArrowDropdown } from "react-icons/io";
+import { useForm  } from 'react-hook-form';
+import DatePicker from "react-datepicker";
+import Multiselect from "multiselect-react-dropdown";
+import { ToastContainer, toast } from 'react-toastify';
+import { FaArrowDown,FaArrowUp } from 'react-icons/fa';
+import { FiEdit } from "react-icons/fi";
+import { VscArchive } from 'react-icons/vsc';
+import Button from "components/CustomButtons/Button.js";
 
 const styles = {
   cardCategoryWhite: {
@@ -43,7 +57,6 @@ const styles = {
     width: "40px",
   },
   popup:{
-    // position: "fixed",
     width: "100%",
     height: "100%",
     top: "0",
@@ -68,11 +81,9 @@ const styles = {
 export async function getServerSideProps(){
   const res = await fetch(`${server}/api/project`);
   const project_details = await res.json();
-  // console.log(project_details);
 
   const response = await fetch(`${server}/api/admin`)
   const User_name = await response.json();
-  // console.log(User_name);
 
   const hold = await fetch(`${server}/api/project/project_status/project_hold`)
   const project_hold = await hold.json();
@@ -83,27 +94,158 @@ export async function getServerSideProps(){
   const running = await fetch(`${server}/api/project/project_status/project_running`)
   const project_running = await running.json();
 
-  // console.log(all_status);
-
-  return{ props: { project_hold, project_completed, project_running } }
+  return{ props: { project_details, project_hold, project_completed, project_running, User_name } }
 }
 
-function Dashboard( { project_hold, project_completed, project_running } ) {
-  // console.log(project_hold);
-  // console.log(project_completed);
-  // console.log(project_running);
+function Dashboard( { project_details, project_hold, project_completed, project_running, User_name } ) {
+
+  const { register,  watch, handleSubmit, formState: { errors }, setValue } = useForm(); 
+  const router = useRouter();
 
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   const [cookies, setCookie] = useCookies('');
   const [trackdate,settrackdate] = useState("")
   const [users, setusers] = useState([])
+  const deleteProject = async(id) =>{
+    console.log('delete');
+    console.log(id);
+
+    const res = await fetch(`${server}/api/project/${id}`);
+    router.push(`${server}/admin/project_module`);
+  }
+
+  const [uoption, setUpdate] = React.useState({ 
+    project_title: "",
+    project_description: "",
+    project_department: "",
+    project_language: "",
+    project_start: "",
+    project_deadline: "",
+    project_priority: "",
+    project_status: "",
+    project_person: "",
+    project_comment: ""
+  });
+
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
+
+  const [updateSelected, setUpdateSelected] = React.useState([]);
+
+  const [ userID , setUserId] = useState();
+
+  const userId = async(id) =>{
+
+    const added_By = [];
+    const user = await fetch(`${server}/api/user_dashboard/${id}`)
+    const User_id = await user.json()
+
+    User_id.map((user) => {
+      added_By.push({ 'label' : user.username , 'value' : user.username  })
+    })
+    setUserId(added_By[0]);
+
+  }
+  const add_user = [];
+  add_user.push(userID);
+  console.log(userID)
+
+  const projectId = async(id) =>{
+    console.log('update project id');
+    console.log(id);
+
+    const response = await fetch(`${server}/api/project/update/${id}`)
+    const update_data = await response.json();
+    const udata = update_data[0];
+    const selectedMember = (udata.project_person).split(",");
+    const getAllname = [];
+
+    selectedMember.map((user)=>{
+      getAllname.push( {'label' :user, 'value' :user} );
+    });
+
+    setUpdateSelected(getAllname);
+    setUpdate(udata);
+    setStartDate(new Date(udata.project_start));
+    setEndDate(new Date(udata.project_deadline));
+
+    }
+
+  const [selected, setSelected] = useState([userID]);
+  const handleChange = ({ target: { name, value } }) =>{
+    console.log("name");
+    console.log([name]);
+  
+    setUpdate({ ...uoption, [name]: value });
+  }
+
+  var uMember = uoption.project_person;
+  const allSelectedMember = [];
+  const projectMember = (uMember).split(",");
+
+  for(var i=0; i<projectMember.length; i++){
+    allSelectedMember.push({'label' :projectMember[i] , 'value' : projectMember[i]});
+  }
+  console.log("projectMember", projectMember)
+
+  const toastId = React.useRef(null);
+  const updateProject = async() =>{
+
+    const allMember = [];
+    for(var i=0; i<updateSelected.length; i++){
+          allMember.push(updateSelected[i].value);
+    }
+  
+    if( uoption.project_title=="" || uoption.project_description=="" ||  uoption.project_department=="" || uoption.project_language=="" || allMember=="" || startDate=="" || endDate=="" || uoption.project_priority=="" || uoption.project_status=="" ){
+      if(! toast.isActive(toastId.current)) {
+        toastId.current = toast.error('Please fill all the required fields', {
+            position: "top-right",
+            autoClose:5000,
+            theme: "colored",
+            closeOnClick: true,
+            hideProgressBar: true,
+          });
+        }
+  
+  }else{
+
+    const res = await fetch(`${server}/api/project/update_project`,{
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ project_id:uoption.project_id, project_person: allMember, project_status:uoption.project_status , project_department:uoption.project_department ,  project_title: uoption.project_title , project_description:uoption.project_description , project_language:uoption.project_language, project_comment:uoption.project_comment, project_priority:uoption.project_priority, project_start: startDate , project_deadline: endDate }),
+    });
+    if(!toast.isActive(toastId.current)) {
+      toastId.current = toast.success('Updated Successfully ! 🎉', {
+          position: "top-right",
+          autoClose:1000,
+          theme: "colored",
+          hideProgressBar: true,
+          onClose: () => router.push(`${server}/projects`)
+          });
+      }
+      router.reload(`${server}/projects`);
+  }
+}
+
+const [uoptions, setOptions] = useState([]);
+useEffect(() =>{
+  const u_data = async() =>{
+
+    const getUsername = [];
+
+    User_name.map((user)=>{
+      getUsername.push( {'label' :user.username, 'value' :user.username} );
+    });
+    setOptions(getUsername);
+  }
+  u_data();
+},[]);
 
   useEffect(async()=>{
     axios.get(`${server}/api/admin/${cookies.Id}` )
       .then((res)=>{
         setusers(res.data)
-        //console.log(res)
       })    
   },[])
 
@@ -113,15 +255,32 @@ function Dashboard( { project_hold, project_completed, project_running } ) {
   var yyyy = today.getFullYear();
 
   today = yyyy + '/' + mm + '/' + dd;
-  // console.log(today);
 
   const On_track = [];
   console.log(On_track)
   const Off_track = [];
-  
+  const pro_Completed = [];
+  for(var i=0; i<project_completed.length; i++){
+    pro_Completed.push(project_completed[i].project_id);
+  }
+  console.log(pro_Completed);
+
+  const pro_OnHold = [];
+  for(var i=0; i<project_hold.length; i++){
+    pro_OnHold.push(project_hold[i].project_id);
+  }
 
   
-  return (
+  const [running_title, setrunning_title] = useState(true);
+
+  const [ project_Status, setProjectStatus ] = useState("On Track");
+
+  const [ project_List, setProjects ] = useState([]);
+  const project_Completed = (project) => {
+    setProjects(project);
+  }
+
+  return(
     <>
       <div>
         {users.map((user)=>{
@@ -148,34 +307,306 @@ function Dashboard( { project_hold, project_completed, project_running } ) {
           console.log("Off_track",Off_track)
         }
       })}
-      </GridContainer>
+    </GridContainer>
+
       <div className="project-status">
         <GridContainer>
           <GridItem xs={12} sm={6} md={4} >
-            <a onclick={()=>{On_track_project()}}><h3 className="on-track">On Track Project - {On_track.length}</h3></a>
+            <div onClick={()=> { project_Completed(On_track), setProjectStatus("On Track") }}><h3 className="on-track">On Track Project - {On_track.length}</h3></div>
           </GridItem>
         </GridContainer>
 
         <GridContainer>
           <GridItem xs={12} sm={6} md={4} >
-            <a onclick={()=>{}}><h3 className="off-track">Off Track Project - {Off_track.length}</h3></a>
+            <div onClick={()=> { project_Completed(Off_track), setProjectStatus("Off Track") }}><h3 className="off-track">Off Track Project - {Off_track.length}</h3></div>
           </GridItem>
         </GridContainer>
 
         <GridContainer>
           <GridItem xs={12} sm={6} md={4} >
-            <a onclick={()=>{project_completed()}}><h3 className="completed-project">Completed Project - {project_completed.length}</h3></a>
+            <div onClick={()=> { project_Completed(pro_Completed), setProjectStatus("Completed") }}><h3 className="completed-project">Completed Project - {project_completed.length}</h3></div>
           </GridItem>
         </GridContainer>
 
         <GridContainer>
           <GridItem xs={12} sm={6} md={4}>
             <div>
-              <a onclick={()=>{project_hold()}}><h3 className="on-hold">On Hold Project - {project_hold.length}</h3></a>
+              <div onClick={()=> { project_Completed(pro_OnHold), setProjectStatus("On Hold") }}><h3 className="on-hold">On Hold Project - {project_hold.length}</h3></div>
             </div>
           </GridItem>
         </GridContainer>
       </div>
+
+    {running_title ? (
+      <>
+      <div className="Project-title"> {project_Status} Projects</div>
+        <table className="project-data" >
+          {project_List.length > 0 ? (
+            <>
+          <tr className="project-data-title">
+            <th  className="status">Project Name</th>
+            <th className="Priority">Priority</th>
+            <th className="assignee">Assignee</th>
+            <th className="view-edit">View & Edit</th>
+          </tr>
+
+          {project_details.map((project)=>{
+            if(project.project_delete == "no"){
+
+              var person = project.project_person.split(",");
+              
+              return(
+              <>
+              {project_List.map((pro_list)=>{
+                  if(project.project_id == pro_list){
+
+                    return(
+                      <tr key={project.project_id} className="expand_dropdown">
+                        <td className="project-title-table">{project.project_title}</td>
+                        <td className="project-priority-table">{project.project_priority}</td>
+                        <td className="project-priority-person">
+                          {person.map((project_person) => {
+                            return(
+                              <div className="chip">
+                                <span>{project_person}</span>
+                              </div>
+                              )
+                            })
+                          }
+                        </td>
+                        <td className="project-edit-table">
+                          {/* Edit popUp Start*/}
+                          <Popup trigger={<a className="icon-edit-delete"><div className='icon-width' onClick={()=> { projectId(project.project_id) } }><FiEdit/></div></a>} className="popupReact" modal>
+                      {close => (
+                        <div className="popup-align">
+                          <GridContainer>
+                            <GridItem xs={12} sm={12} md={12}>
+                              <form onSubmit={handleSubmit()}> 
+                                <Card>
+                                  <CardHeader color="primary">
+                                    <GridContainer>
+                                      <GridItem>
+                                        <h4 className={classes.cardTitleWhite}>Edit Project</h4>
+                                        <p className={classes.cardCategoryWhite}>Update your project details</p>
+                                      </GridItem>
+                                      <div className={classes.close}>
+                                        <a onClick={close}>&times;</a>
+                                      </div>
+                                    </GridContainer>
+                                  </CardHeader>
+                                  <CardBody>
+
+                                  <GridContainer>
+                                    <GridItem xs={12} sm={12} md={12}>                      
+                                      <div className="form-group">
+                                        <span>Project Title</span><span className="required">*</span>
+                                        <input type="text" className="form-control signup-input" name="project_title" placeholder="Project Title" disabled={cookies.Role_id == "2"} value={uoption.project_title} onChange={handleChange} />
+                                      </div>
+                                    </GridItem>
+                                  </GridContainer><br/>
+
+                                  <GridContainer>  
+                                    <GridItem xs={12} sm={12} md={12}>
+                                      <div className="form-group">
+                                      <span>Project Description</span><span className="required">*</span>
+                                        <textarea className="form-control signup-input" disabled={cookies.Role_id == "2"} value={uoption.project_description} name="project_description"onChange={handleChange} placeholder="Project Description" />
+                                      </div> 
+                                    </GridItem>
+                                  </GridContainer><br/>
+
+                                  <GridContainer>
+                                    <GridItem xs={12} sm={12} md={6}>
+                                        <div className="form-group">
+                                        <span>Project Department</span><span className="required">*</span>
+                                          <select id="Department" name="project_department" className="form-control signup-input" value={uoption.project_department} onChange={handleChange} disabled={cookies.Role_id == "2"} >
+                                            <option value=""  disabled selected>Select Your Department...</option>
+                                            <option value="HR">HR</option>
+                                            <option value="UI & UX">UI & UX</option>
+                                            <option value="Testing">Testing</option>
+                                            <option value="Web development">Web Development</option>
+                                            <option value="Content writer">Content Writer</option>
+                                            <option value="Project manager">Project Manager</option>
+                                            <option value="Mobile App developer">Mobile App Developer</option>
+                                            <option value="SEO">SEO</option>
+                                          </select>
+                                          <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                        </div> 
+                                    </GridItem>
+
+                                    <GridItem xs={12} sm={12} md={6}>
+                                      <div className="form-group">
+                                      <span>Project Language</span><span className="required">*</span>
+                                        <select name="project_language" id="Project_created_by" className="form-control signup-input"  value={uoption.project_language} onChange={handleChange} disabled={cookies.Role_id == "2"} >
+                                          <option value="" disabled selected>Select Language</option>
+                                          <option value="Wordpress">Wordpress</option>
+                                          <option value="Shopify">Shopify</option>
+                                          <option value="ReactJS">ReactJS</option>
+                                          <option value="Laravel">Laravel</option>
+                                          <option value="Android">Android</option>
+                                          <option value="Bubble">Bubble</option>
+                                        </select>
+                                        <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                      </div> 
+                                    </GridItem>
+                                  </GridContainer><br/>
+
+                                  <GridContainer>  
+                                    <GridItem xs={12} sm={12} md={6}>
+                                      <div className="form-group" onChange={handleChange} >
+                                      <span>Project Start Date</span><span className="required">*</span>
+                                        <DatePicker
+                                          disabled={cookies.Role_id == "2"}
+                                          placeholderText="Start Date : dd/mm/yyyy"
+                                          isClearable
+                                          name="datetime"
+                                          className={"form-control"}
+                                          value={new Date(uoption.project_start)}
+                                          selected={startDate}
+                                          onChange={val => {
+                                            setStartDate(val);
+                                            setValue("start", val);
+                                          }}
+                                          dateFormat="dd-MM-yyyy"
+                                        />
+                                      </div> 
+                                    </GridItem>
+
+                                    <GridItem xs={12} sm={12} md={6}>
+                                      <div className="form-group" onChange={handleChange}>
+                                      <span>Project End Date</span><span className="required">*</span>
+                                        <DatePicker
+                                          disabled={cookies.Role_id == "2"}
+                                          placeholderText="End Date : dd/mm/yyyy"
+                                          isClearable
+                                          name="datetime1"
+                                          value={new Date(uoption.project_deadline)}
+                                          className={"form-control"}
+                                          selected={endDate}
+                                          onChange={val => {
+                                            setEndDate(val);
+                                            setValue("end", val);
+                                          }}
+                                          dateFormat="dd-MM-yyyy"
+                                          minDate={startDate}
+                                        />
+                                      </div> 
+                                    </GridItem>
+                                  </GridContainer><br/>
+
+                                  <GridContainer>
+                                    <GridItem xs={12} sm={12} md={6}>
+                                      <div className="form-group">
+                                      <span>Project Priority</span><span className="required">*</span>
+                                        <select name="project_priority" id="priority" className="form-control signup-input" value={uoption.project_priority} onChange={handleChange} disabled={cookies.Role_id == "2"}>
+                                          <option value=""  disabled selected>Select Project Priority</option>
+                                          <option value="High" className="High">High</option>
+                                          <option value="Medium" className="Medium">Medium</option>
+                                          <option value="Low"className="Low">Low</option>
+                                        </select>
+                                        <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                      </div> 
+                                    </GridItem>
+                                  
+                                    <GridItem xs={12} sm={12} md={6}>
+                                        <div className="form-group">
+                                          <span>Project Status</span><span className="required">*</span>
+                                            <select name="project_status" id="Status" className="form-control signup-input" disabled={cookies.Role_id == "2"} value={uoption.project_status} onChange={handleChange}>
+                                              <option value=""  disabled selected>Select Project Status</option>
+                                              <option value="on hold">On hold</option>
+                                              <option value="running">Running</option>
+                                              <option value="completed">Completed</option>
+                                            </select>
+                                          <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                        </div> 
+                                    </GridItem>
+                                  </GridContainer><br/>
+
+                                  <GridContainer>
+                                    <GridItem xs={12} sm={12} md={12}>
+                                        <div className="form-group">     
+                                        <span>Project Members</span><span className="required">*</span>
+                                          <Multiselect
+                                            disabled={cookies.Role_id == "2"}
+                                            displayValue="value"
+                                            options={uoptions}
+                                            value={updateSelected}
+                                            selectedValues={allSelectedMember}
+                                            onChange={setUpdateSelected}
+                                            onRemove={setUpdateSelected}
+                                            onSelect={setUpdateSelected}
+                                            placeholder="Select Project Members"
+                                            showArrow={true}
+                                            disable={cookies.Role_id == "2"}
+                                          />
+                                        </div> 
+                                      </GridItem>
+                                    </GridContainer><br/>
+
+                                  </CardBody>
+                                  <CardFooter>
+                                    <Button color="primary" onClick={()=> { updateProject(project.project_id); } }>Save</Button>
+                                    <Button className="button" onClick={() => { close(); }}> Cancel </Button>
+                                  </CardFooter>
+
+                                </Card>
+                              </form>
+                            </GridItem>
+                          </GridContainer>
+                        </div>
+                      )}
+                      </Popup>
+                      {/*Edit popup End*/}
+                      {/*Delete popUp Start*/}
+                      <Popup trigger={<a className="icon-edit-delete"><VscArchive/></a>} modal>
+                            {close => (
+                              <div>
+                              <Card>                            
+                                  <GridContainer>
+                                  <GridItem xs={12} sm={12} md={12}>
+                                      <GridContainer>
+                                        <GridItem>
+                                          <div className="delete_popup">
+                                            <CardBody>
+                                              <h2 className="delete_popup">Archive {project.project_title}</h2>
+                                              <h4 className={classes.cardTitleWhite}>Are you sure you want to archive {project.project_title}?</h4>
+                                            </CardBody>
+                                            <CardFooter className="delete_popup_button">
+                                                <Button onClick={()=>deleteProject(project.project_id)}>Yes</Button>
+                                                <Button className="button" onClick={() => { close(); }}> No </Button>
+                                            </CardFooter>
+                                          </div>
+                                        </GridItem>
+
+                                          <div className={classes.close}>
+                                            <a onClick={close}>&times;</a>
+                                          </div>
+                                      </GridContainer>
+                                  </GridItem>
+                                </GridContainer>
+                              </Card>
+      
+                              </div>
+                            )}
+                          </Popup>
+                        {/*Delete popUp End*/}
+                        </td>
+                      </tr>
+                    )
+    
+                  }
+
+              })}
+
+              </>)
+                
+            }
+          })}
+          </>
+         ) : (<div className="no_Data"><h2>No Data</h2></div>)}
+        </table>
+      </>
+    ):("")}
+
     </>
   );
 }
