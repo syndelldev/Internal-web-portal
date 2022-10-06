@@ -83,7 +83,6 @@ function UserRights({UserList,ModuleList}){
         console.log(data)
     }
 
-    
     const edit_rights = (project_id,edit_rights) =>{
         if(edit_rights==0){
             var result = 1
