@@ -140,21 +140,21 @@ function Dashboard( { project_details, project_hold, project_completed, project_
   }
 
   if(cookies.Role_id == "2"){
-    var project_running = (project_runn);
+    var project_running = project_runn;
   }else{
-    var project_running = (project_running);
+    var project_running = project_running;
   }
 
   if(cookies.Role_id == "2"){
-    var project_hold = (project_h);
+    var project_hold = project_h;
   }else{
-    var project_hold = (project_hold);
+    var project_hold = project_hold;
   }
 
   if(cookies.Role_id == "2"){
-    var project_completed = (project_comp);
+    var project_completed = project_comp;
   }else{
-    var project_completed = (project_completed);
+    var project_completed = project_completed;
   }
 
   console.log("run");

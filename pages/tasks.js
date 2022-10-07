@@ -97,7 +97,7 @@ const styles = {
   },
 };
 
-export async function getServerSideProps(){
+export async function getServerSideProps(context){
 
   const res = await fetch(`${server}/api/project`);
   const project_details = await res.json();
@@ -108,15 +108,29 @@ export async function getServerSideProps(){
   const task = await fetch(`${server}/api/subtask`)
   const allTask = await task.json();
 
-  return{ props: {project_details, User_name, allTask} }
+  const u_task = await fetch(`${server}/api/user/user_task`, {
+    headers: {
+      'Access-Control-Allow-Credentials': true,
+      Cookie: context.req.headers.cookie
+    },
+  })
+  const userTask = await u_task.json();
+
+  return{ props: {project_details, User_name, allTask, userTask} }
 }
 
-function Dashboard( { project_details , User_name , allTask } ) {
+function Dashboard( { project_details , User_name , allTask, userTask } ) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
 // get role from cookies
 const [cookies, setCookie] = useCookies(['name']);
   
+if(cookies.Role_id == "2"){
+  var allTask = userTask;
+}else{
+  var allTask = allTask;
+}
+
   const deleteTask = async(id) =>{
     console.log('delete');
     console.log(id);
