@@ -23,6 +23,12 @@ import { FiEdit } from "react-icons/fi";
 import { MdDelete } from 'react-icons/md';
 import { useCookies } from 'react-cookie';
 import axios from "axios";
+import dynamic from "next/dynamic";
+import 'react-quill/dist/quill.snow.css';
+import "react-quill/dist/quill.bubble.css";
+
+
+const ReactQuill = dynamic(import('react-quill'), { ssr: false });
 
 const styles = {
   cardCategoryWhite: {
@@ -401,6 +407,67 @@ function Dashboard( { User_name } ) {
       setshowTime(project_id)
     }
 
+    const [comments, setcomments] = useState([]);
+    console.log(comments);
+    
+    const getData = async (project_id)=>{
+      var comment = await axios.post(`${server}/api/comment/getProjectComment`, { project_id: project_id });
+      setcomments(comment.data)
+    }
+    
+    const sendMessage = async (project_id) => {
+      const date = new Date().toLocaleString();
+      console.log("date");
+      console.log(date);
+  
+      var addComment = await axios.post(`${server}/api/comment/addProjectComments`, {  username: cookies.name, message: value , project_id: project_id, created_D: date });
+      console.log(addComment)
+      console.log(cookies.name)
+      router.reload(`${server}/user/projects`);
+    }
+  
+    const [ value, setValues ] = useState("");
+    const modules = {
+      toolbar: [
+        [{ 'font': [] }],
+        [{ 'size': ['small', false, 'large', 'huge'] }],
+        ['bold', 'italic', 'underline'],
+        [{'list': 'ordered'}, {'list': 'bullet'}],
+        [{ 'align': [] }],
+        [{ 'color': [] }, { 'background': [] }],
+        ['clean'],
+        ['link', 'image', 'video']
+      ]
+    }
+  
+    const [commentEdit, setEditComment] = useState();
+  
+      const editComment = async( id ) =>{
+        console.log("id");
+        console.log(id);
+  
+        var commentId = await axios.post(`${server}/api/comment/comment_id`, { comment_id: id, user: cookies.name });
+        console.log(commentId.data[0]);
+  
+        if(commentId.data != ""){
+          setEditComment(commentId.data[0].comment);
+          console.log("edit");
+          console.log(commentEdit);
+          console.log(commentId.data[0].comment);
+        }
+      }
+      
+      const updateComment = async(id, comment) =>{
+        console.log("update");
+        console.log(comment);
+        console.log(id);
+        var comments = await axios.post(`${server}/api/comment/updateComment`, { comment_id: id, user: cookies.name, comment:comment });
+        router.reload(`${server}/user/projects`);
+      }
+      console.log("set comment");
+      console.log(commentEdit);
+  
+
   return (
     <>
       <div className="buttonalign" hidden={cookies.Role_id == "2"} >
@@ -575,9 +642,6 @@ function Dashboard( { User_name } ) {
                                 </GridItem>
                               </GridContainer><br/>
 
-
-
-
                             </CardBody>
                             <CardFooter>
                                 <Button color="primary" type="submit">Add Project</Button>
@@ -718,7 +782,7 @@ function Dashboard( { User_name } ) {
                     </td>
                     <td className="project-edit-table">
                       {/* Edit popUp Start*/}
-                      <Popup trigger={<a className="icon-edit-delete"><div className='icon-width' onClick={()=> { projectId(project.project_id) } }><FiEdit/></div></a>} className="popupReact" modal>
+                      <Popup trigger={<a className="icon-edit-delete"><div className='icon-width' onClick={()=> { projectId(project.project_id), getData(project.project_id) } }><FiEdit/></div></a>} className="popupReact" modal nested>
                       {close => (
                         <div className="popup-align">
                           <GridContainer>
@@ -882,11 +946,6 @@ function Dashboard( { User_name } ) {
                                         </div> 
                                       </GridItem>
                                     </GridContainer><br/>
-
-
-
-
-
                                   </CardBody>
                                 <div hidden={cookies.Role_id == "2"}>
                                   <CardFooter>
@@ -894,6 +953,76 @@ function Dashboard( { User_name } ) {
                                     <Button className="button" onClick={() => { close(); }}> Cancel </Button>
                                   </CardFooter>
                                 </div>
+
+                                <CardBody>
+                                <GridContainer>
+                                    <GridItem>
+                                      <form>
+                                        <h5 className="projectPriority">Comments</h5>
+                                        <ReactQuill modules={modules} theme="snow" onChange={setValues} />
+                                        <div onClick={()=> sendMessage(project.project_id)}>Save</div>
+                                      </form>
+                                    </GridItem>
+                                  </GridContainer>
+
+                                  {comments.map((m)=>{
+                                    // console.log("comments");
+                                    // console.log(comments);
+                                      return(
+                                        <span>
+                                          <GridContainer>
+                                            <GridItem>
+                                              <span>{m.username}</span>
+                                            </GridItem>
+                                                
+                                            <GridItem>
+                                            <span><p>{m.creation_time}</p></span>
+                                            </GridItem>
+                                          </GridContainer>
+
+                                          <GridContainer>
+                                            <GridItem>
+                                              <div>
+
+                                              <ReactQuill value={m.comment} theme="bubble" readOnly />
+      <Popup
+        trigger={ <span><button onClick={()=>{ editComment(m.id)} } disabled={ m.username != cookies.name }>Edit</button></span> }
+        className="popupReact"
+        modal
+      >
+        {close => (
+                              <Card>
+                                <CardBody>
+                                      <div className={classes.close}>
+                                        <a onClick={close}>&times;</a>
+                                      </div>
+
+                                  <GridContainer>
+                                    <GridItem xs={12} sm={12} md={12} >
+                                      <form>
+                                        <ReactQuill modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
+                                      </form>
+                                    </GridItem>
+                                  </GridContainer>
+
+                                  <CardFooter>
+                                      <Button color="primary" type="submit"  onClick={() => { updateComment(m.id, commentEdit) }}>Update</Button>
+                                      <Button className="button" onClick={() => { close(); }}> Cancel </Button>
+                                  </CardFooter>
+                                </CardBody>
+                              </Card>
+        )}
+        
+      </Popup>
+                                              </div>
+                                            </GridItem>
+                                          </GridContainer>
+
+
+                                        </span>
+                                      )
+                                  })}
+                                  </CardBody>
 
                                 </Card>
                               </form>
@@ -1033,7 +1162,7 @@ function Dashboard( { User_name } ) {
                     </td>
                     <td>
                       {/* Edit popUp Start*/}
-                      <Popup trigger={<a className="icon-edit-delete"><div className='icon-width' onClick={()=> { projectId(project.project_id) } }><FiEdit/></div></a>} className="popupReact" modal>
+                      <Popup trigger={<a className="icon-edit-delete"><div className='icon-width' onClick={()=> { projectId(project.project_id), getData(project.project_id) } }><FiEdit/></div></a>} className="popupReact" modal nested>
                       {close => (
                         <div className="popup-align">
                           <GridContainer>
@@ -1199,10 +1328,6 @@ function Dashboard( { User_name } ) {
                                       </GridItem>
                                     </GridContainer><br/>
 
-
-
-
-
                                   </CardBody>
                                 <div hidden={cookies.Role_id == "2"}>
                                   <CardFooter>
@@ -1210,6 +1335,77 @@ function Dashboard( { User_name } ) {
                                     <Button className="button" onClick={() => { close(); }}> Cancel </Button>
                                   </CardFooter>
                                 </div>
+
+                                <CardBody>
+                                <GridContainer>
+                                    <GridItem>
+                                      <form>
+                                        <h5 className="projectPriority">Comments</h5>
+                                        <ReactQuill modules={modules} theme="snow" onChange={setValues} />
+                                        <div onClick={()=> sendMessage(project.project_id)}>Save</div>
+                                      </form>
+                                    </GridItem>
+                                  </GridContainer>
+
+                                  {comments.map((m)=>{
+                                    // console.log("comments");
+                                    // console.log(comments);
+                                      return(
+                                        <span>
+                                          <GridContainer>
+                                            <GridItem>
+                                              <span>{m.username}</span>
+                                            </GridItem>
+                                                
+                                            <GridItem>
+                                            <span><p>{m.creation_time}</p></span>
+                                            </GridItem>
+                                          </GridContainer>
+
+                                          <GridContainer>
+                                            <GridItem>
+                                              <div>
+
+                                              <ReactQuill value={m.comment} theme="bubble" readOnly />
+      <Popup
+        trigger={ <span><button onClick={()=>{ editComment(m.id)} } disabled={ m.username != cookies.name }>Edit</button></span> }
+        className="popupReact"
+        modal
+      >
+        {close => (
+                              <Card>
+                                <CardBody>
+                                      <div className={classes.close}>
+                                        <a onClick={close}>&times;</a>
+                                      </div>
+
+                                  <GridContainer>
+                                    <GridItem xs={12} sm={12} md={12} >
+                                      <form>
+                                        <ReactQuill modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
+                                      </form>
+                                    </GridItem>
+                                  </GridContainer>
+
+                                  <CardFooter>
+                                      <Button color="primary" type="submit"  onClick={() => { updateComment(m.id, commentEdit) }}>Update</Button>
+                                      <Button className="button" onClick={() => { close(); }}> Cancel </Button>
+                                  </CardFooter>
+                                </CardBody>
+                              </Card>
+        )}
+        
+      </Popup>
+
+                                              </div>
+                                            </GridItem>
+                                          </GridContainer>
+
+
+                                        </span>
+                                      )
+                                  })}
+                                  </CardBody>
 
                                 </Card>
                               </form>
@@ -1299,7 +1495,7 @@ function Dashboard( { User_name } ) {
                             <span>{person[1]}</span>
                           </div>
                             {/* Edit popUp Start*/}
-                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} className="popupReact" >
+                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} className="popupReact">
                             {close => (
                               <div className="popup-align">
                                 <Card>
@@ -1349,7 +1545,7 @@ function Dashboard( { User_name } ) {
                     </td>
                     <td>
                       {/* Edit popUp Start*/}
-                      <Popup trigger={<a className="icon-edit-delete"><div className='icon-width' onClick={()=> { projectId(project.project_id) } }><FiEdit/></div></a>} className="popupReact" modal>
+                      <Popup trigger={<a className="icon-edit-delete"><div className='icon-width' onClick={()=> { projectId(project.project_id), getData(project.project_id) } }><FiEdit/></div></a>} className="popupReact" modal nested>
                       {close => (
                         <div className="popup-align">
                           <GridContainer>
@@ -1514,10 +1710,6 @@ function Dashboard( { User_name } ) {
                                         </div> 
                                       </GridItem>
                                     </GridContainer><br/>
-
-
-
-
                                   </CardBody>
                                 <div hidden={cookies.Role_id == "2"}>
                                   <CardFooter>
@@ -1525,6 +1717,78 @@ function Dashboard( { User_name } ) {
                                     <Button className="button" onClick={() => { close(); }}> Cancel </Button>
                                   </CardFooter>
                                 </div>
+
+                                <CardBody>
+                                <GridContainer>
+                                    <GridItem>
+                                      <form>
+                                        <h5 className="projectPriority">Comments</h5>
+                                        <ReactQuill modules={modules} theme="snow" onChange={setValues} />
+                                        <div onClick={()=> sendMessage(project.project_id)}>Save</div>
+                                      </form>
+                                    </GridItem>
+                                  </GridContainer>
+
+                                  {comments.map((m)=>{
+                                    // console.log("comments");
+                                    // console.log(comments);
+                                      return(
+                                        <span>
+                                          <GridContainer>
+                                            <GridItem>
+                                              <span>{m.username}</span>
+                                            </GridItem>
+                                                
+                                            <GridItem>
+                                            <span><p>{m.creation_time}</p></span>
+                                            </GridItem>
+                                          </GridContainer>
+
+                                          <GridContainer>
+                                            <GridItem>
+                                              <div>
+
+                                              <ReactQuill value={m.comment} theme="bubble" readOnly />
+      <Popup
+        trigger={ <span><button onClick={()=>{ editComment(m.id)} } disabled={ m.username != cookies.name }>Edit</button></span> }
+        className="popupReact"
+        modal
+      >
+        {close => (
+                              <Card>
+                                <CardBody>
+                                      <div className={classes.close}>
+                                        <a onClick={close}>&times;</a>
+                                      </div>
+
+                                  <GridContainer>
+                                    <GridItem xs={12} sm={12} md={12} >
+                                      <form>
+                                        <ReactQuill modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
+                                      </form>
+                                    </GridItem>
+                                  </GridContainer>
+
+                                  <CardFooter>
+                                      <Button color="primary" type="submit"  onClick={() => { updateComment(m.id, commentEdit) }}>Update</Button>
+                                      <Button className="button" onClick={() => { close(); }}> Cancel </Button>
+                                  </CardFooter>
+                                </CardBody>
+                              </Card>
+        )}
+        
+      </Popup>
+
+                                              </div>
+                                            </GridItem>
+                                          </GridContainer>
+
+
+                                        </span>
+                                      )
+                                  })}
+
+                                </CardBody>
 
                                 </Card>
                               </form>
