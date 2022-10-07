@@ -1608,7 +1608,7 @@ const updateComment = async(id, comment) =>{
     <Card>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-          <div className="taskCompleted" onClick={()=> { taskRunning("task_Running") , closeTaskRunning("task_Running"),setrunning_title(!running_title) }}>Task Running {TaskRunning ? <FaArrowDown/>:<FaArrowUp/>} </div>
+          <div className="taskRunning" onClick={()=> { taskRunning("task_Running") , closeTaskRunning("task_Running"),setrunning_title(!running_title) }}>Task Running {TaskRunning ? <FaArrowDown/>:<FaArrowUp/>} </div>
         </GridItem>
       </GridContainer>
     </Card>

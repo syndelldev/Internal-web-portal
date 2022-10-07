@@ -183,7 +183,7 @@ h4.text {
   padding: 9px 9px!important;
 }
 /* ---sub task css---- */
-.taskToDo {
+.taskToDo, .taskOn_hold, .taskRunning, .taskCompleted {
   font-size: 20px;
   padding: 15px;
 
