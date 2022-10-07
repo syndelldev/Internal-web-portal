@@ -309,9 +309,7 @@ useEffect(() =>{
   }
 
   const [running_title, setrunning_title] = useState(false);
-
   const [ project_Status, setProjectStatus ] = useState("On Track");
-
   const [ project_List, setProjects ] = useState([]);
   const project_Completed = (project) => {
     setProjects(project);
@@ -393,7 +391,8 @@ useEffect(() =>{
             <th  className="status">Project Name</th>
             <th className="Priority">Priority</th>
             <th className="assignee">Assignee</th>
-            <th className="view-edit">View & Edit</th>
+            <th className="view-edit" hidden={cookies.Role_id == "2"}>View & Edit</th>
+            <th className="view-edit" hidden={cookies.Role_id != "2"}>View</th>
           </tr>
 
           {project_details.map((project)=>{
@@ -414,7 +413,7 @@ useEffect(() =>{
                           {person.map((project_person) => {
                             return(
                               <div className="chip">
-                                <span>{project_person}</span>
+                                <span title={project_person}>{project_person}</span>
                               </div>
                               )
                             })
@@ -590,11 +589,14 @@ useEffect(() =>{
                                     </GridContainer><br/>
 
                                 </CardBody>
-
+                                
+                                <div hidden={cookies.Role_id == "2"}>
                                   <CardFooter>
                                     <Button color="primary" onClick={()=> { updateProject(project.project_id); } }>Save</Button>
                                     <Button className="button" onClick={() => { close(); }}> Cancel </Button>
                                   </CardFooter>
+                                </div>
+
                                 </Card>
                               </form>
                             </GridItem>
@@ -604,7 +606,7 @@ useEffect(() =>{
                       </Popup>
                       {/*Edit popup End*/}
                       {/*Delete popUp Start*/}
-                      <Popup trigger={<a className="icon-edit-delete"><BiArchiveIn/></a>} modal>
+                      <Popup trigger={<div className="icon-edit-delete" hidden={cookies.Role_id == "2"}><BiArchiveIn/></div>} modal>
                             {close => (
                               <div>
                               <Card>                            
