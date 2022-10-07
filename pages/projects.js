@@ -576,15 +576,9 @@ function Dashboard( { User_name } ) {
                                 </GridItem>
                               </GridContainer><br/>
 
-                              <GridContainer>
-                                <GridItem xs={12} sm={12} md={12}>
-                                  <div className="form-group">
-                                  <span>Comments</span>
-                                    <textarea className="form-control signup-input" placeholder="Comment" {...register('project_comment')} />
-                                    <div className="error-msg">{errors.position && <span>{errors.position.message}</span>}</div>
-                                  </div> 
-                                </GridItem>
-                              </GridContainer>
+
+
+
                             </CardBody>
                             <CardFooter>
                                 <Button color="primary" type="submit">Add Project</Button>
@@ -835,14 +829,10 @@ function Dashboard( { User_name } ) {
                                             </GridItem>
                                           </GridContainer><br/>
 
-                                          <GridContainer>
-                                            <GridItem xs={12} sm={12} md={12}>
-                                              <div className="form-group">
-                                              <span>Comments</span>
-                                                <textarea className="form-control signup-input" name="project_comment" value={uoption.project_comment} onChange={handleChange} placeholder="Comment" />
-                                              </div> 
-                                            </GridItem>
-                                          </GridContainer>
+
+
+
+
 
                                         </CardBody>
                                         <CardFooter>
@@ -1040,14 +1030,9 @@ function Dashboard( { User_name } ) {
                                       </GridItem>
                                     </GridContainer><br/>
 
-                                    <GridContainer>
-                                      <GridItem xs={12} sm={12} md={12}>
-                                        <div className="form-group">
-                                        <span>Comments</span>
-                                          <textarea className="form-control signup-input" name="project_comment" value={uoption.project_comment} onChange={handleChange} placeholder="Comment" />
-                                        </div> 
-                                      </GridItem>
-                                    </GridContainer>
+
+
+
 
                                   </CardBody>
                                   <CardFooter>
@@ -1308,14 +1293,9 @@ function Dashboard( { User_name } ) {
                                             </GridItem>
                                           </GridContainer><br/>
 
-                                          <GridContainer>
-                                            <GridItem xs={12} sm={12} md={12}>
-                                              <div className="form-group">
-                                              <span>Comments</span>
-                                                <textarea className="form-control signup-input" name="project_comment" value={uoption.project_comment} onChange={handleChange} placeholder="Comment" />
-                                              </div> 
-                                            </GridItem>
-                                          </GridContainer>
+
+
+
 
                                         </CardBody>
                                         <CardFooter>
@@ -1513,14 +1493,9 @@ function Dashboard( { User_name } ) {
                                       </GridItem>
                                     </GridContainer><br/>
 
-                                    <GridContainer>
-                                      <GridItem xs={12} sm={12} md={12}>
-                                        <div className="form-group">
-                                        <span>Comments</span>
-                                          <textarea className="form-control signup-input" name="project_comment" value={uoption.project_comment} onChange={handleChange} placeholder="Comment" />
-                                        </div> 
-                                      </GridItem>
-                                    </GridContainer>
+
+
+
 
                                   </CardBody>
                                   <CardFooter>
@@ -1781,14 +1756,9 @@ function Dashboard( { User_name } ) {
                                             </GridItem>
                                           </GridContainer><br/>
 
-                                          <GridContainer>
-                                            <GridItem xs={12} sm={12} md={12}>
-                                              <div className="form-group">
-                                              <span>Comments</span>
-                                                <textarea className="form-control signup-input" name="project_comment" value={uoption.project_comment} onChange={handleChange} placeholder="Comment" />
-                                              </div> 
-                                            </GridItem>
-                                          </GridContainer>
+
+
+
 
                                         </CardBody>
                                         <CardFooter>
@@ -1986,14 +1956,8 @@ function Dashboard( { User_name } ) {
                                       </GridItem>
                                     </GridContainer><br/>
 
-                                    <GridContainer>
-                                      <GridItem xs={12} sm={12} md={12}>
-                                        <div className="form-group">
-                                        <span>Comments</span>
-                                          <textarea className="form-control signup-input" name="project_comment" value={uoption.project_comment} onChange={handleChange} placeholder="Comment" />
-                                        </div> 
-                                      </GridItem>
-                                    </GridContainer>
+
+
 
                                   </CardBody>
                                   <CardFooter>
