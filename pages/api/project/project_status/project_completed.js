@@ -8,7 +8,7 @@ async function projectStatus(req,res) {
     console.log("sucess");
 
     try{
-        let projectStatus = await executeQuery("SELECT * FROM `tbl_project` WHERE project_status='completed' ");
+        let projectStatus = await executeQuery("SELECT * FROM `tbl_project` WHERE project_status='completed' ORDER BY FIELD(`project_priority`,'high','medium','low')");
         res.status(200).json(projectStatus);
     }
     catch(err){

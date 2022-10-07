@@ -8,10 +8,11 @@ async function projectStatus(req,res) {
     console.log("sucess");
 
     try{
-        let projectStatus = await executeQuery("SELECT * FROM `tbl_project` WHERE `project_status` NOT IN ('completed') and `project_delete`='no' ");
+        let projectStatus = await executeQuery("SELECT * FROM `tbl_project` WHERE `project_status` NOT IN ('completed') and `project_delete`='no' ORDER BY FIELD(`project_priority`,'high','medium','low')");
         // let projectStatus2 = await executeQuery("SELECT * FROM `tbl_project` WHERE project_status='on hold' ");
         // let projectStatus3 = await executeQuery("SELECT * FROM `tbl_project` WHERE project_status='completed' ");
         res.status(200).json(projectStatus);
+        console.log(projectStatus)
     }
     catch(err){
         res.status(500).json(err);
