@@ -595,3 +595,11 @@ button.addproject{
 .task_title_status{
   margin-bottom: 5px!important;
 }
+.chip span{
+  color: #fff;
+}
+.project-priority-person .chip{
+  margin-left:-20px;
+  width: 50px;
+  height: 50px;
+}

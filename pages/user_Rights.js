@@ -65,13 +65,9 @@ function UserRights({UserList,ModuleList}){
         setusers(res.data)
     }
     useEffect(() => {
-        console.log("useEffect called");
-        // const interval = setInterval(() => {
-            
-            getData();
-        // }, 500);
-        // return () => {clearInterval(interval)}
-    }, [users]);
+        console.log("useEffect called");            
+        getData();
+    });
     console.log(users)
     
     
@@ -177,7 +173,7 @@ function UserRights({UserList,ModuleList}){
                                                             value={data.edit_rights} 
                                                             // onChange={edithandlechange} 
                                                             defaultChecked={data.edit_rights==1} 
-                                                            onClick={()=>{edit_rights(data.project_id, data.edit_rights);getData();}} 
+                                                            onClick={()=>{edit_rights(data.project_id, data.edit_rights)}} 
                                                         /> 
                                                     </TableCell>
                                                                             
