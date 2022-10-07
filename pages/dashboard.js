@@ -19,9 +19,8 @@ import { useForm  } from 'react-hook-form';
 import DatePicker from "react-datepicker";
 import Multiselect from "multiselect-react-dropdown";
 import { ToastContainer, toast } from 'react-toastify';
-import { FaArrowDown,FaArrowUp } from 'react-icons/fa';
 import { FiEdit } from "react-icons/fi";
-import { VscArchive } from 'react-icons/vsc';
+import { BiArchiveIn } from 'react-icons/bi';
 import Button from "components/CustomButtons/Button.js";
 
 const styles = {
@@ -156,9 +155,6 @@ function Dashboard( { project_details, project_hold, project_completed, project_
   }else{
     var project_completed = project_completed;
   }
-
-  console.log("run");
-  console.log(project_completed);
 
   const [uoption, setUpdate] = React.useState({ 
     project_title: "",
@@ -608,7 +604,7 @@ useEffect(() =>{
                       </Popup>
                       {/*Edit popup End*/}
                       {/*Delete popUp Start*/}
-                      <Popup trigger={<a className="icon-edit-delete"><VscArchive/></a>} modal>
+                      <Popup trigger={<a className="icon-edit-delete"><BiArchiveIn/></a>} modal>
                             {close => (
                               <div>
                               <Card>                            

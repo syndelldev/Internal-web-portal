@@ -582,23 +582,21 @@ const updateComment = async(id, comment) =>{
       <div>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-          <form onSubmit={handleSubmit(onSubmit)}>              
+          <form onSubmit={handleSubmit(onSubmit)}>
             <Card>
               <CardHeader color="primary">
+                <GridContainer>
+                  <GridItem>
+                    <h4 className={classes.cardTitleWhite}>Create Task</h4>
+                    <p className={classes.cardCategoryWhite}>Enter your new task details</p>
+                  </GridItem>
 
-              <GridContainer>
-                <GridItem>
-                  <h4 className={classes.cardTitleWhite}>Create Task</h4>
-                  <p className={classes.cardCategoryWhite}>Enter your new task details</p>
-                </GridItem>
-
-                {/* <GridItem> */}
-                  <div className={classes.close}>
-                    <a onClick={close}>&times;</a>
-                  </div>
-                {/* </GridItem> */}
-              </GridContainer>
-
+                  {/* <GridItem> */}
+                    <div className={classes.close}>
+                      <a onClick={close}>&times;</a>
+                    </div>
+                  {/* </GridItem> */}
+                </GridContainer>
               </CardHeader>
                 <CardBody>
 
