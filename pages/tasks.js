@@ -771,36 +771,36 @@ const updateComment = async(id, comment) =>{
 {/* create project form end */}
 </GridItem>
 
-  <GridItem>
-  <div className="department_dropdown" hidden={cookies.Role_id == "2"}>
-  <button className="dropdown_button">Project Department</button>
-      <div className="department-link">
-        <a href={`${server}/admin/project_module`}>All</a>
-        <a href={`${server}/admin/project_module/project_department/HR`}>HR</a>
-        <a href={`${server}/admin/project_module/project_department/UI & UX`}>UI & UX</a>
-        <a href={`${server}/admin/project_module/project_department/Web development`}>Web Development</a>
-        <a href={`${server}/admin/project_module/project_department/Content writer`}>Content Writer</a>
-        <a href={`${server}/admin/project_module/project_department/Project manager`}>Project Manager</a>
-        <a href={`${server}/admin/project_module/project_department/Mobile App developer`}>Mobile App Developer</a>
-        <a href={`${server}/admin/project_module/project_department/SEO`}>SEO</a>
-      </div>
-</div>
-</GridItem>
+          <GridItem>
+            <div className="department_dropdown">
+            <button className="dropdown_button">Project Departments</button>
+                <div className="department-link">
+                  <a href={`${server}/projects`}>All</a>
+                  <a href={`${server}/project_department/HR`}>HR</a>
+                  <a href={`${server}/project_department/UI & UX`}>UI & UX</a>
+                  <a href={`${server}/project_department/Web development`}>Web Developer</a>
+                  <a href={`${server}/project_department/Content writer`}>Content Writer</a>
+                  <a href={`${server}/project_department/Project manager`}>Project Manager</a>
+                  <a href={`${server}/project_department/Mobile App developer`}>Mobile App Developer</a>
+                  <a href={`${server}/project_department/SEO`}>SEO</a>
+                </div>
+            </div>
+          </GridItem>
 
-<GridItem>
-<div className="department_dropdown" hidden={cookies.Role_id == "2"}>
-  <button className="dropdown_button">Project Language</button>
-      <div className="department-link">
-        <a href={`${server}/admin/project_module`}>All</a>
-        <a href={`${server}/admin/project_module/project_language/Wordpress`}>Wordpress</a>
-        <a href={`${server}/admin/project_module/project_language/Shopify`}>Shopify</a>
-        <a href={`${server}/admin/project_module/project_language/ReactJS`}>ReactJS</a>
-        <a href={`${server}/admin/project_module/project_language/Laravel`}>Laravel</a>
-        <a href={`${server}/admin/project_module/project_language/Android`}>Android</a>
-        <a href={`${server}/admin/project_module/project_language/Bubble`}>Bubble</a>
-      </div>
-</div>
-  </GridItem>
+          <GridItem>
+            <div className="department_dropdown">
+              <button className="dropdown_button">Project Languages</button>
+                  <div className="department-link">
+                    <a href={`${server}/projects`}>All</a>
+                    <a href={`${server}/project_language/Wordpress`}>Wordpress</a>
+                    <a href={`${server}/project_language/Shopify`}>Shopify</a>
+                    <a href={`${server}/project_language/ReactJS`}>ReactJS</a>
+                    <a href={`${server}/project_language/Laravel`}>Laravel</a>
+                    <a href={`${server}/project_language/Android`}>Android</a>
+                    <a href={`${server}/project_language/Bubble`}>Bubble</a>
+                  </div>
+            </div>
+          </GridItem>
 
 </GridContainer>
 </div>
