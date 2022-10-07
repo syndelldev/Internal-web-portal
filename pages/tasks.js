@@ -847,7 +847,7 @@ const updateComment = async(id, comment) =>{
                     {person.map((task_person) => {
                       return(
                         <div className="chip">
-                          <span>{task_person}</span>
+                          <span title={task_person}>{task_person}</span>
                         </div>
                       )
                       })
