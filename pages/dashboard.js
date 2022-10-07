@@ -78,7 +78,7 @@ const styles = {
   },
 };
 
-export async function getServerSideProps(){
+export async function getServerSideProps(context){
   const res = await fetch(`${server}/api/project`);
   const project_details = await res.json();
 
@@ -94,13 +94,34 @@ export async function getServerSideProps(){
   const running = await fetch(`${server}/api/project/project_status/project_running`)
   const project_running = await running.json();
 
-  const run = await fetch(`${server}/api/user/project_status/project_running`)
-  const project_run = await run.json();
+  const run = await fetch(`${server}/api/user/project_status/project_run`, {
+    headers: {
+      'Access-Control-Allow-Credentials': true,
+      Cookie: context.req.headers.cookie
+    },
+  })
+  const project_runn = await run.json();
 
-  return{ props: { project_details, project_hold, project_completed, project_running, User_name, project_run } }
+  const u_hold = await fetch(`${server}/api/user/project_status/project_hold`, {
+    headers: {
+      'Access-Control-Allow-Credentials': true,
+      Cookie: context.req.headers.cookie
+    },
+  })
+  const project_h = await u_hold.json();
+
+  const u_completed = await fetch(`${server}/api/user/project_status/project_completed`, {
+    headers: {
+      'Access-Control-Allow-Credentials': true,
+      Cookie: context.req.headers.cookie
+    },
+  })
+  const project_comp = await u_completed.json();
+
+  return{ props: { project_details, project_hold, project_completed, project_running, User_name, project_runn, project_h, project_comp } }
 }
 
-function Dashboard( { project_details, project_hold, project_completed, project_running, User_name, project_run } ) {
+function Dashboard( { project_details, project_hold, project_completed, project_running, User_name, project_runn, project_h, project_comp } ) {
 
   const { register,  watch, handleSubmit, formState: { errors }, setValue } = useForm(); 
   const router = useRouter();
@@ -117,6 +138,27 @@ function Dashboard( { project_details, project_hold, project_completed, project_
     const res = await fetch(`${server}/api/project/${id}`);
     router.push(`${server}/dashboard`);
   }
+
+  if(cookies.Role_id == "2"){
+    var project_running = (project_runn);
+  }else{
+    var project_running = (project_running);
+  }
+
+  if(cookies.Role_id == "2"){
+    var project_hold = (project_h);
+  }else{
+    var project_hold = (project_hold);
+  }
+
+  if(cookies.Role_id == "2"){
+    var project_completed = (project_comp);
+  }else{
+    var project_completed = (project_completed);
+  }
+
+  console.log("run");
+  console.log(project_completed);
 
   const [uoption, setUpdate] = React.useState({ 
     project_title: "",
@@ -139,7 +181,6 @@ function Dashboard( { project_details, project_hold, project_completed, project_
   const [ userID , setUserId] = useState();
 
   const userId = async(id) =>{
-
     const added_By = [];
     const user = await fetch(`${server}/api/user_dashboard/${id}`)
     const User_id = await user.json()
@@ -148,8 +189,8 @@ function Dashboard( { project_details, project_hold, project_completed, project_
       added_By.push({ 'label' : user.username , 'value' : user.username  })
     })
     setUserId(added_By[0]);
-
   }
+
   const add_user = [];
   add_user.push(userID);
   console.log(userID)
@@ -271,13 +312,14 @@ useEffect(() =>{
     pro_OnHold.push(project_hold[i].project_id);
   }
 
-  const [running_title, setrunning_title] = useState(true);
+  const [running_title, setrunning_title] = useState(false);
 
   const [ project_Status, setProjectStatus ] = useState("On Track");
 
   const [ project_List, setProjects ] = useState([]);
   const project_Completed = (project) => {
     setProjects(project);
+    setrunning_title(true);
   }
 
   return(
@@ -290,14 +332,6 @@ useEffect(() =>{
             </div>
           )
         })}
-        {project_run.map((run)=>{
-          return(
-            <>
-              <h2>{run.project_id}</h2>
-            </>
-          )
-        })
-        }
 
       </div>
     <h4 className="project_status">Projects</h4>
