@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useRouter } from 'next/router';
 import { makeStyles } from "@material-ui/core/styles";
-import Admin from "layouts/Admin.js";
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
+import Modules from "../layouts/Modules";
 import { server } from 'config';
 import axios from "axios";
 import { useCookies } from 'react-cookie';
@@ -78,7 +78,7 @@ const styles = {
   },
 };
 
-export async function getServerSideProps(){
+export async function getServerSideProps(context){
   const res = await fetch(`${server}/api/project`);
   const project_details = await res.json();
 
@@ -94,10 +94,34 @@ export async function getServerSideProps(){
   const running = await fetch(`${server}/api/project/project_status/project_running`)
   const project_running = await running.json();
 
-  return{ props: { project_details, project_hold, project_completed, project_running, User_name } }
+  const run = await fetch(`${server}/api/user/project_status/project_run`, {
+    headers: {
+      'Access-Control-Allow-Credentials': true,
+      Cookie: context.req.headers.cookie
+    },
+  })
+  const project_runn = await run.json();
+
+  const u_hold = await fetch(`${server}/api/user/project_status/project_hold`, {
+    headers: {
+      'Access-Control-Allow-Credentials': true,
+      Cookie: context.req.headers.cookie
+    },
+  })
+  const project_h = await u_hold.json();
+
+  const u_completed = await fetch(`${server}/api/user/project_status/project_completed`, {
+    headers: {
+      'Access-Control-Allow-Credentials': true,
+      Cookie: context.req.headers.cookie
+    },
+  })
+  const project_comp = await u_completed.json();
+
+  return{ props: { project_details, project_hold, project_completed, project_running, User_name, project_runn, project_h, project_comp } }
 }
 
-function Dashboard( { project_details, project_hold, project_completed, project_running, User_name } ) {
+function Dashboard( { project_details, project_hold, project_completed, project_running, User_name, project_runn, project_h, project_comp } ) {
 
   const { register,  watch, handleSubmit, formState: { errors }, setValue } = useForm(); 
   const router = useRouter();
@@ -112,8 +136,29 @@ function Dashboard( { project_details, project_hold, project_completed, project_
     console.log(id);
 
     const res = await fetch(`${server}/api/project/${id}`);
-    router.push(`${server}/admin/project_module`);
+    router.push(`${server}/dashboard`);
   }
+
+  if(cookies.Role_id == "2"){
+    var project_running = (project_runn);
+  }else{
+    var project_running = (project_running);
+  }
+
+  if(cookies.Role_id == "2"){
+    var project_hold = (project_h);
+  }else{
+    var project_hold = (project_hold);
+  }
+
+  if(cookies.Role_id == "2"){
+    var project_completed = (project_comp);
+  }else{
+    var project_completed = (project_completed);
+  }
+
+  console.log("run");
+  console.log(project_completed);
 
   const [uoption, setUpdate] = React.useState({ 
     project_title: "",
@@ -136,7 +181,6 @@ function Dashboard( { project_details, project_hold, project_completed, project_
   const [ userID , setUserId] = useState();
 
   const userId = async(id) =>{
-
     const added_By = [];
     const user = await fetch(`${server}/api/user_dashboard/${id}`)
     const User_id = await user.json()
@@ -145,8 +189,8 @@ function Dashboard( { project_details, project_hold, project_completed, project_
       added_By.push({ 'label' : user.username , 'value' : user.username  })
     })
     setUserId(added_By[0]);
-
   }
+
   const add_user = [];
   add_user.push(userID);
   console.log(userID)
@@ -169,7 +213,6 @@ function Dashboard( { project_details, project_hold, project_completed, project_
     setUpdate(udata);
     setStartDate(new Date(udata.project_start));
     setEndDate(new Date(udata.project_deadline));
-
     }
 
   const [selected, setSelected] = useState([userID]);
@@ -257,27 +300,26 @@ useEffect(() =>{
   today = yyyy + '/' + mm + '/' + dd;
 
   const On_track = [];
-  console.log(On_track)
+  // console.log(On_track)
   const Off_track = [];
   const pro_Completed = [];
   for(var i=0; i<project_completed.length; i++){
     pro_Completed.push(project_completed[i].project_id);
   }
-  console.log(pro_Completed);
 
   const pro_OnHold = [];
   for(var i=0; i<project_hold.length; i++){
     pro_OnHold.push(project_hold[i].project_id);
   }
 
-  
-  const [running_title, setrunning_title] = useState(true);
+  const [running_title, setrunning_title] = useState(false);
 
   const [ project_Status, setProjectStatus ] = useState("On Track");
 
   const [ project_List, setProjects ] = useState([]);
   const project_Completed = (project) => {
     setProjects(project);
+    setrunning_title(true);
   }
 
   return(
@@ -290,6 +332,7 @@ useEffect(() =>{
             </div>
           )
         })}
+
       </div>
     <h4 className="project_status">Projects</h4>
 
@@ -300,14 +343,18 @@ useEffect(() =>{
         if(date>today)
         {
           On_track.push(status.project_id);
-          console.log("On_track",On_track)
+          // console.log("On_track",On_track)
         }
         else{
           Off_track.push(status.project_id);
-          console.log("Off_track",Off_track)
+          // console.log("Off_track",Off_track)
         }
       })}
     </GridContainer>
+
+
+{/* admin project lists start */}
+
 
       <div className="project-status">
         <GridContainer>
@@ -336,6 +383,9 @@ useEffect(() =>{
           </GridItem>
         </GridContainer>
       </div>
+
+{/* admin project lists end */}
+
 
     {running_title ? (
       <>
@@ -375,8 +425,9 @@ useEffect(() =>{
                           }
                         </td>
                         <td className="project-edit-table">
-                          {/* Edit popUp Start*/}
-                          <Popup trigger={<a className="icon-edit-delete"><div className='icon-width' onClick={()=> { projectId(project.project_id) } }><FiEdit/></div></a>} className="popupReact" modal>
+
+                  {/* Edit popUp Start*/}
+                  <Popup trigger={<a className="icon-edit-delete"><div className='icon-width' onClick={()=> { projectId(project.project_id) } }><FiEdit/></div></a>} className="popupReact" modal>
                       {close => (
                         <div className="popup-align">
                           <GridContainer>
@@ -394,8 +445,8 @@ useEffect(() =>{
                                       </div>
                                     </GridContainer>
                                   </CardHeader>
-                                  <CardBody>
 
+                                <CardBody>
                                   <GridContainer>
                                     <GridItem xs={12} sm={12} md={12}>                      
                                       <div className="form-group">
@@ -445,7 +496,7 @@ useEffect(() =>{
                                           <option value="Android">Android</option>
                                           <option value="Bubble">Bubble</option>
                                         </select>
-                                        <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                      <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                                       </div> 
                                     </GridItem>
                                   </GridContainer><br/>
@@ -542,12 +593,12 @@ useEffect(() =>{
                                       </GridItem>
                                     </GridContainer><br/>
 
-                                  </CardBody>
+                                </CardBody>
+
                                   <CardFooter>
                                     <Button color="primary" onClick={()=> { updateProject(project.project_id); } }>Save</Button>
                                     <Button className="button" onClick={() => { close(); }}> Cancel </Button>
                                   </CardFooter>
-
                                 </Card>
                               </form>
                             </GridItem>
@@ -602,7 +653,7 @@ useEffect(() =>{
             }
           })}
           </>
-         ) : (<div className="no_Data"><h2>No Data</h2></div>)}
+         ) : (<div className="no_Data"><h3>No Data</h3></div>)}
         </table>
       </>
     ):("")}
@@ -611,7 +662,7 @@ useEffect(() =>{
   );
 }
 
-Dashboard.layout = Admin;
+Dashboard.layout = Modules;
 
 export default Dashboard;
 
