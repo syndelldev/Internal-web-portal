@@ -93,7 +93,7 @@ export async function getServerSideProps(context){
   const running = await fetch(`${server}/api/project/project_status/project_running`)
   const project_running = await running.json();
 
-  const run = await fetch(`${server}/api/user/project_status/project_run`, {
+  const run = await fetch(`${server}/api/user/project_status/project_running`, {
     headers: {
       'Access-Control-Allow-Credentials': true,
       Cookie: context.req.headers.cookie
@@ -339,11 +339,11 @@ useEffect(() =>{
         if(date>today)
         {
           On_track.push(status.project_id);
-          // console.log("On_track",On_track)
+          console.log("On_track",On_track)
         }
         else{
           Off_track.push(status.project_id);
-          // console.log("Off_track",Off_track)
+          console.log("Off_track",Off_track)
         }
       })}
     </GridContainer>

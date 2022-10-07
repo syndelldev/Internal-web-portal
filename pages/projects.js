@@ -24,7 +24,6 @@ import { MdDelete } from 'react-icons/md';
 import { useCookies } from 'react-cookie';
 import axios from "axios";
 
-
 const styles = {
   cardCategoryWhite: {
     color: "rgba(0,0,0,.62)",
