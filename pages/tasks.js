@@ -122,21 +122,21 @@ export async function getServerSideProps(context){
 function Dashboard( { project_details , User_name , allTask, userTask } ) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
-// get role from cookies
-const [cookies, setCookie] = useCookies(['name']);
-  
-if(cookies.Role_id == "2"){
-  var allTask = userTask;
-}else{
-  var allTask = allTask;
-}
+  // get role from cookies
+  const [cookies, setCookie] = useCookies(['name']);
+    
+  if(cookies.Role_id == "2"){
+    var allTask = userTask;
+  }else{
+    var allTask = allTask;
+  }
 
   const deleteTask = async(id) =>{
     console.log('delete');
     console.log(id);
 
     const res = await fetch(`${server}/api/subtask/deleteTask/${id}`);
-    router.reload(`${server}/admin/subtask_module`);
+    router.reload(`${server}/tasks`);
   }
   const { register,  watch, handleSubmit, formState: { errors }, setValue } = useForm(); 
   const [startDate, setStartDate] = useState();
@@ -264,7 +264,7 @@ if(cookies.Role_id == "2"){
             onClose: () => router.push(`${server}/admin/subtask_module`)
           });
         }
-        router.reload(`${server}/admin/subtask_module`);
+        router.reload(`${server}/tasks`);
   
     }
   }
@@ -310,11 +310,11 @@ if(cookies.Role_id == "2"){
             autoClose:1000,
             theme: "colored",
             hideProgressBar: true,
-            onClose: () => router.push(`${server}/admin/subtask_module`)
+            onClose: () => router.push(`${server}/tasks`)
             });
         }
 
-      router.reload(`${server}/admin/subtask_module`);
+      router.reload(`${server}/tasks`);
     }
     else
     {
@@ -562,11 +562,13 @@ const updateComment = async(id, comment) =>{
   const insert_time = async (task_id)=>{
     var addTime = await axios.post(`${server}/api/comment/addtasktime`, { task_id:task_id, user_id:cookies.Id, username: cookies.name, estimate:estimate , spent:spent });
     console.log(addTime.data)
+    // router.reload(`${server}/tasks`);
   }
   
   const update_tasktime = async (task_id)=>{
     var updateTime = await axios.put(`${server}/api/comment/update_tasktime`, { task_id:task_id, user_id:cookies.Id, estimate:userdata.estimate_time , spent:userdata.spent_time });
     console.log(updateTime)
+    // router.reload(`${server}/tasks`);
   }
 
 
@@ -802,13 +804,15 @@ const updateComment = async(id, comment) =>{
 
 </GridContainer>
 </div>
-
-    <GridContainer>
-        <div hidden={cookies.Role_id != "2"}><h3>My Tasks</h3></div>
+    <div className="main_task_title">
+      <h3>My Tasks</h3>
+      <button className="bttn-design" onClick={()=>{taskToDo("task_toDo") , closeTaskToDo("task_toDo"), settodo_title(!todo_title), taskOnHold("taskOn_hold") , closeTaskOnHold("taskOn_hold"), setonhold_title(!onhold_title), taskRunning("task_Running") , closeTaskRunning("task_Running"),setrunning_title(!running_title), taskCompleted("task_completed") , closeTaskCompleted("task_completed") , setcompleted_title(!completed_title) }}>Expand All</button>
+    </div>
+    <GridContainer>  
     <Card>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-          <div className="taskToDo" onClick={()=> { taskToDo("task_toDo") , closeTaskToDo("task_toDo"), settodo_title(!todo_title) }}>Task to do {taskTodo ? <FaArrowDown/>:<FaArrowUp/>}  </div> 
+          <div className="taskToDo" onClick={()=> { taskToDo("task_toDo") , closeTaskToDo("task_toDo"), settodo_title(!todo_title) }}>Task to do {taskTodo ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
         </GridItem>
       </GridContainer>
     </Card>
@@ -827,18 +831,10 @@ const updateComment = async(id, comment) =>{
               var person = task.task_person.split(",");
               const MySQLDate  = task.task_deadline;
               let date = MySQLDate.replace(/[-]/g, '/').substr(0,10);
-              // console.log(date)
-              // if(date>today)
-              // {
-              //   On_track.push(task.task_id); 
-              // }
-              // else{
-              //   Off_track.push(task.task_id);
-              // }
               return(
                 <>
                   <tr key={task.task_id} onClick={()=>{toggle(task.task_id);getData(task.task_id);getTime(task.task_id);}} className="expand_dropdown">
-                    <td>{task.project_name}</td>
+                    <td className="project-title-table">{task.project_name}</td>
                     <td><h4 className="projectTitle">{task.task_title}</h4></td>
                     <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
                     <td className="assignee-data">
@@ -851,8 +847,7 @@ const updateComment = async(id, comment) =>{
                       })
                     }
                     </td>
-                    <td>
-                      <div className="icon-edit-delete">
+                    <td className="project-edit-table">
                       <Popup trigger={<div><a className="bttn-design1" onClick={()=> { projectId(task.task_id) }  }><FiEdit/></a></div>}  className="popupReact" modal nested>
                       {close => (
                       <div>
@@ -1053,63 +1048,60 @@ const updateComment = async(id, comment) =>{
                                 {/*Time Modulule*/}
                                 {TimeData.length==0?(
                                         <>
-                                          <form>
-                                            <GridContainer>
-                                              <GridItem>
+                                          <form onSubmit={handleSubmit(insert_time)} method="POST">
+                                          <GridContainer>
+                                            <GridItem xs={12} sm={12} md={6}>
                                                 <input value={task.task_id} type="hidden"/>
                                                 <label>Estimate Time</label>
                                                 <input type="text" 
-                                                    value={estimate} 
-                                                    onChange={(e)=>setestimate(e.target.value)}
-                                                    onKeyPress={(event)=>{
-                                                      if (event.key === "Enter"){
-                                                        insert_time(task.task_id);
-                                                      }
-                                                    }}
-                                                /><br/>
+                                                    className="form-control signup-input"
+                                                    // value={estimate} 
+                                                    // onChange={(e)=>setestimate(e.target.value)} 
+                                                    name="estimate_time"
+                                                    {...register('estimate_time',  { required: "Please enter your name", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })}
+                                                />
+                                                <div className="error-msg">{errors.estimate_time && <p>{errors.estimate_time.message}</p>}</div>
+                                            </GridItem>
+                                          
+                                            <GridItem xs={12} sm={12} md={6}>
                                                 <label>Spent Time</label>
                                                 <input type="text" 
+                                                    className="form-control signup-input"
                                                     value={spent} 
-                                                    onChange={(e)=>setspent(e.target.value)} 
-                                                    onKeyPress={(event)=>{
-                                                      if (event.key === "Enter"){
-                                                        insert_time(task.task_id);
-                                                      }
-                                                    }}
+                                                    onChange={(e)=>setspent(e.target.value)}
+                                                    name="spent_time"
+                                                    {...register('spent_time',  { required: "Please enter your name", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })}
                                                   />
+                                                  <div className="error-msg">{errors.spent_time && <p>{errors.spent_time.message}</p>}</div>
                                               </GridItem>
                                             </GridContainer>
+                                            <button color="primary"  onClick={()=>{insert_time(task.task_id)}} type="submit">Save Time</button>
                                           </form>
                                           </>
                                         ):(
                                           <>
                                             <form onSubmit={update_tasktime}>
                                               <GridContainer>
-                                                <GridItem>
+                                                <GridItem xs={12} sm={12} md={6}>
                                                   <input value={task.task_id} type="hidden"/>
                                                   <label>Estimate Time</label>
                                                   <input type="text" name="estimate_time" 
+                                                    className="form-control signup-input"
                                                     value={userdata.estimate_time} 
-                                                    onChange={handleChange}
-                                                    onKeyPress={(event)=>{
-                                                      if (event.key === "Enter"){
-                                                        update_tasktime(task.task_id);
-                                                      }
-                                                    }}
+                                                    onChange={handleChangePanel}
                                                   /><br/>
+                                                </GridItem>
+
+                                                <GridItem xs={12} sm={12} md={6}>
                                                   <label>Spent Time</label>
                                                   <input type="text" name="spent_time" 
+                                                    className="form-control signup-input"
                                                     value={userdata.spent_time} 
-                                                    onChange={handleChange}
-                                                    onKeyPress={(event)=>{
-                                                      if (event.key === "Enter"){
-                                                        update_tasktime(task.task_id);
-                                                      }
-                                                    }}
+                                                    onChange={handleChangePanel}
                                                   />
                                                 </GridItem>
                                               </GridContainer>
-
+                                              <Button color="primary" onClick={()=>{update_tasktime(task.task_id)}}  type="submit">Save Time</Button>
                                             </form>
                                           </>
                                         )}
@@ -1210,7 +1202,6 @@ const updateComment = async(id, comment) =>{
                             </div>
                           )}
                         </Popup>
-                      </div>
                     </td>
                   </tr>
                   <p className={showTime==task.task_id ? 'content show':'content'}>
@@ -1269,7 +1260,7 @@ const updateComment = async(id, comment) =>{
     <Card>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-          <div className="taskOn_hold" onClick={()=> { taskOnHold("taskOn_hold") , closeTaskOnHold("taskOn_hold"), setonhold_title(!onhold_title) }}>Task on hold {TaskOnHold ? <FaArrowDown/>:<FaArrowUp/>}</div>
+          <div className="taskOn_hold" onClick={()=> { taskOnHold("taskOn_hold") , closeTaskOnHold("taskOn_hold"), setonhold_title(!onhold_title) }}>Task on hold {TaskOnHold ? <FaArrowUp/>:<FaArrowDown/>}</div>
         </GridItem>
       </GridContainer>
     </Card>
@@ -1289,7 +1280,7 @@ const updateComment = async(id, comment) =>{
                   var person = task.task_person.split(",");
                   return(
                     <tr key={task.task_id} onClick={()=>{toggle(task.task_id);getData(task.task_id);getTime(task.task_id);}} className="expand_dropdown">
-                      <td>{task.project_name}</td>
+                      <td className="project-title-table">{task.project_name}</td>
                       <td><h4 className="projectTitle">{task.task_title}</h4></td>
                       <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
                       <td className="assignee-data">
@@ -1302,8 +1293,7 @@ const updateComment = async(id, comment) =>{
                         })
                       }
                       </td>
-                      <td>
-                      <div className="icon-edit-delete">
+                      <td className="project-edit-table">
                       <Popup trigger={<div><a className="bttn-design1" onClick={()=> { projectId(task.task_id) }  }><FiEdit/></a></div>}  className="popupReact" modal nested>
                       {close => (
                       <div>
@@ -1594,7 +1584,6 @@ const updateComment = async(id, comment) =>{
                             </div>
                           )}
                         </Popup>
-                      </div>
                     </td>
                     </tr>
                   ) 
@@ -1608,7 +1597,7 @@ const updateComment = async(id, comment) =>{
     <Card>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-          <div className="taskRunning" onClick={()=> { taskRunning("task_Running") , closeTaskRunning("task_Running"),setrunning_title(!running_title) }}>Task Running {TaskRunning ? <FaArrowDown/>:<FaArrowUp/>} </div>
+          <div className="taskRunning" onClick={()=> { taskRunning("task_Running") , closeTaskRunning("task_Running"),setrunning_title(!running_title) }}>Task Running {TaskRunning ? <FaArrowUp/>:<FaArrowDown/>} </div>
         </GridItem>
       </GridContainer>
     </Card>
@@ -1628,7 +1617,7 @@ const updateComment = async(id, comment) =>{
                 var person = task.task_person.split(",");
                 return(
                   <tr key={task.task_id} onClick={()=>{toggle(task.task_id);getData(task.task_id);getTime(task.task_id);}} className="expand_dropdown">
-                    <td>{task.project_name}</td>
+                    <td className="project-title-table">{task.project_name}</td>
                     <td><h4 className="projectTitle">{task.task_title}</h4></td>
                     <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
                     <td className="assignee-data">
@@ -1641,8 +1630,7 @@ const updateComment = async(id, comment) =>{
                       })
                     }
                     </td>
-                    <td>
-                      <div className="icon-edit-delete">
+                    <td className="project-edit-table">
                       <Popup trigger={<div><a className="bttn-design1" onClick={()=> { projectId(task.task_id) }  }><FiEdit/></a></div>}  className="popupReact" modal nested>
                       {close => (
                       <div>
@@ -1933,7 +1921,6 @@ const updateComment = async(id, comment) =>{
                             </div>
                           )}
                         </Popup>
-                      </div>
                     </td>
                   </tr>
                 )
@@ -1947,7 +1934,7 @@ const updateComment = async(id, comment) =>{
     <Card>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-          <div className="taskCompleted" onClick={()=> { taskCompleted("task_completed") , closeTaskCompleted("task_completed") , setcompleted_title(!completed_title)}}>Task completed {TaskCompleted ? <FaArrowDown/>:<FaArrowUp/>} </div>
+          <div className="taskCompleted" onClick={()=> { taskCompleted("task_completed") , closeTaskCompleted("task_completed") , setcompleted_title(!completed_title)}}>Task completed {TaskCompleted ? <FaArrowUp/>:<FaArrowDown/>} </div>
         </GridItem>
       </GridContainer>
     </Card>
@@ -1967,7 +1954,7 @@ const updateComment = async(id, comment) =>{
                 var person = task.task_person.split(",");
                 return(
                   <tr key={task.task_id} onClick={()=>{toggle(task.task_id);getData(task.task_id);getTime(task.task_id);}} className="expand_dropdown">
-                    <td>{task.project_name}</td>
+                    <td className="project-title-table">{task.project_name}</td>
                     <td><h4 className="projectTitle">{task.task_title}</h4></td>
                     <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
                     <td className="assignee-data">
@@ -1980,8 +1967,7 @@ const updateComment = async(id, comment) =>{
                       })
                     }
                     </td>
-                    <td>
-                      <div className="icon-edit-delete">
+                    <td className="project-edit-table">
                       <Popup trigger={<div><a className="bttn-design1" onClick={()=> { projectId(task.task_id) }  }><FiEdit/></a></div>}  className="popupReact" modal nested>
                       {close => (
                       <div>
@@ -2272,7 +2258,6 @@ const updateComment = async(id, comment) =>{
                             </div>
                           )}
                         </Popup>
-                      </div>
                     </td>
                   </tr>
                 ) 
