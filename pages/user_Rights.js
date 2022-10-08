@@ -1,20 +1,20 @@
-import { makeStyles } from "@material-ui/core/styles";
-import { IoMdArrowDropdown } from "react-icons/io";
-import React,{ useState,useEffect } from "react";
 import Modules from "../layouts/Modules";
+import { makeStyles } from "@material-ui/core/styles";
+import React,{ useState,useEffect } from "react";
+import { useRouter } from 'next/router';
+
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-import Button from "components/CustomButtons/Button.js";
 
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableBody from "@material-ui/core/TableBody";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
-import { useRouter } from 'next/router'
+
 import axios from "axios";
 import { server } from 'config';
 
@@ -37,40 +37,54 @@ const styles = {
     },
 };
 
-export async function getServerSideProps(context){
+export async function getServerSideProps(){
     const res = await fetch(`${server}/api/rights`)
     const UserList = await res.json()
 
     const responce = await fetch(`${server}/api/rights/module`)
     const ModuleList = await responce.json()
+
+    // const rights = await fetch(`${server}/api/rights/${user}`, {userid:user,moduleid:module} )
+    // const RightsList = await rights.json()
     
     return{ props: {UserList,ModuleList} }
-} 
+}
 
 function UserRights({UserList,ModuleList}){
+    // console.log(UserList)
+    // console.log(ModuleList)
+
     const useStyles = makeStyles(styles);
     const classes = useStyles();
     const router = useRouter();
+
     const [user, setuser] = useState(1)
-    // console.log(user)
-
     const [module, setmodule] = useState(1)
-    // console.log(module)
-
-    const [users, setusers] = useState([])
-    
-    const getData = async() => {
-        const res = await axios.post(`${server}/api/rights/${user}`, {userid:user,moduleid:module})
-        console.log(res.data);
-        setusers(res.data)
+    const changeUser = (e) => {
+        setuser(e.target.value)
     }
+    const changeModule = (e) => {
+        setmodule(e.target.value)
+    }
+
+    const [RightsList, setRightsList] = React.useState([]);
+    // console.log("RightsList",RightsList)
     useEffect(() => {
-        console.log("useEffect called");            
-        getData();
-    });
-    console.log(users)
-    
-    
+        RightsListFun()
+    }, [RightsList]);
+
+
+    const RightsListFun = async () =>{
+        try{
+            const res = await axios.post(`${server}/api/rights/${user}`, {userid:user,moduleid:module})
+            setRightsList(res.data)
+        }
+        catch(e){
+            console.log("error response", e.response);
+        }
+    }
+
+
     const view_rights = (project_id, view_rights) =>{
         if(view_rights==0){
             var result = 1
@@ -81,9 +95,8 @@ function UserRights({UserList,ModuleList}){
         console.log("result", result)
         let data = axios.put(`${server}/api/rights/project/${project_id}`, {userid:user, moduleid:module, projectid:project_id, view:result})
         // console.log(data)
-
+        router.reload(`${server}/user_Rights`);
     }
-
     const edit_rights = (project_id,edit_rights) =>{
         if(edit_rights==0){
             var result = 1
@@ -94,8 +107,9 @@ function UserRights({UserList,ModuleList}){
         console.log("result", result)
         let data = axios.put(`${server}/api/rights/project/${project_id}`, {userid:user, moduleid:module, projectid:project_id, edit:result}) 
         // console.log(data)
-        
+        router.reload(`${server}/user_Rights`);
     }
+    
 
     return(
         <>
@@ -106,42 +120,31 @@ function UserRights({UserList,ModuleList}){
                             <h4 className="text">User Rights</h4>
                         </CardHeader><br/><br/>
                         <CardBody>
-                        <GridContainer>
-                            <GridItem xs={12} sm={12} md={3}>
-                                <div className="form-group">
-                                    <select value={user} onChange={(e) => {setuser(e.target.value)}} className="form-control signup-input" > 
-                                        {
-                                            UserList.map((users)=>{
+                            <GridContainer>
+                                <GridItem xs={12} sm={12} md={3}>
+                                    <div className="form-group">
+                                        <select value={user} onChange={changeUser} className="form-control signup-input">
+                                            {UserList.map((UserList)=>{
                                                 return(
-                                                    <>
-                                                        <option key={users.id} value={users.id} >{users.username}</option> 
-                                                    </>      
+                                                    <option key={UserList.id} value={UserList.id} >{UserList.username}</option> 
                                                 )
-                                            })
-                                        }
-                                    </select>
-                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                                </div> 
-                            </GridItem>
-                            <GridItem xs={12} sm={12} md={3}>
-                                <div className="form-group">
-                                    <select value={module} onChange={(e) => {setmodule(e.target.value)}} className="form-control signup-input" >
-                                        {
-                                            ModuleList.map((module)=>{
+                                            })}
+                                        </select>
+                                    </div>
+                                </GridItem>
+                                <GridItem xs={12} sm={12} md={3}>
+                                    <div className="form-group">
+                                        <select value={module} onChange={changeModule} className="form-control signup-input">
+                                            {ModuleList.map((ModuleList)=>{
                                                 return(
-                                                    <>
-                                                        <option key={module.module_id} value={module.module_id}>{module.module_name}</option> 
-                                                    </>      
+                                                    <option key={ModuleList.module_id} value={ModuleList.module_id} >{ModuleList.module_name}</option> 
                                                 )
-                                            })
-                                        }
-                                    </select>
-                                </div>
-                                <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                            </GridItem> 
-                        </GridContainer><br/>
-                        {/* <Button color="primary" onClick={getData} type="submit">Submit</Button><br/><br/> */}
-
+                                            })}
+                                        </select>
+                                    </div>
+                                </GridItem>
+                            </GridContainer><br/>
+                            {/* <button color="primary" onClick={RightsListFun} type="submit">Submit</button><br/><br/> */}
                             <div className={classes.tableResponsive}>
                                 <Table className={classes.table}>
                                     <TableHead className={classes.TableHeader}>
@@ -152,35 +155,35 @@ function UserRights({UserList,ModuleList}){
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {users.map((data)=>{ 
-                                            return(       
-                                                <TableRow key={data.project_id} value={data.project_id}>
-                                                    <TableCell>{data.project_title}-{data.project_id}</TableCell>  
-                                                          
+                                    {/* <form> */}
+                                        {RightsList.map((rights)=>{
+                                            return(
+                                                <TableRow key={rights.rights_id} value={rights.rights_id}>
+                                                    <TableCell>{rights.project_title}-{rights.project_id}</TableCell>
                                                     <TableCell>
-                                                        <input type="checkbox" name="view_rights" 
-                                                            disabled={data.edit_rights==1} 
-                                                            value={data.view_rights} 
-                                                            // onChange={viewCheckbox} 
-                                                            defaultChecked={data.view_rights==1} 
-                                                            onClick={()=>{view_rights(data.project_id, data.view_rights)}}
-                                                            onChange={()=>{setusers(users)}}
-                                                        />
+                                                        <input 
+                                                            type="checkbox"
+                                                            name="view_rights"
+                                                            disabled={rights.edit_rights==1} 
+                                                            value={rights.view_rights}
+                                                            defaultChecked={rights.view_rights==1} 
+                                                            onClick={()=>{view_rights(rights.project_id, rights.view_rights)}}
+                                                        />{rights.view_rights}
                                                     </TableCell>
-
                                                     <TableCell>
-                                                        <input type="checkbox" name="edit_rights" 
-                                                            value={data.edit_rights} 
-                                                            // onChange={edithandlechange} 
-                                                            defaultChecked={data.edit_rights==1} 
-                                                            onClick={()=>{edit_rights(data.project_id, data.edit_rights)}} 
-                                                        /> 
+                                                        <input 
+                                                            type="checkbox"
+                                                            name="edit_rights" 
+                                                            value={rights.edit_rights}
+                                                            defaultChecked={rights.edit_rights==1} 
+                                                            onClick={()=>{edit_rights(rights.project_id, rights.edit_rights)}}
+                                                            // onChange={editCheckbox} 
+                                                        />{rights.edit_rights}
                                                     </TableCell>
-                                                                            
-                                                </TableRow>   
-                                                )
-                                            })
-                                        }                                       
+                                                </TableRow>
+                                            )
+                                        })}
+                                     {/* </form> */}
                                     </TableBody>
                                 </Table>
                             </div>
@@ -193,5 +196,4 @@ function UserRights({UserList,ModuleList}){
 }
 
 UserRights.layout = Modules;
-
 export default UserRights;
