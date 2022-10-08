@@ -160,7 +160,7 @@ function Dashboard( { User_name } ) {
     console.log(id);
 
     const res = await fetch(`${server}/api/project/${id}`);
-    router.push(`${server}/admin/project_module`);
+    router.push(`${server}/projects`);
   }
 
   const [uoption, setUpdate] = React.useState({ 
@@ -180,24 +180,6 @@ function Dashboard( { User_name } ) {
   const [endDate, setEndDate] = useState();
 
   const [updateSelected, setUpdateSelected] = React.useState([]);
-
-  const [ userID , setUserId] = useState();
-
-  const userId = async(id) =>{
-
-    const added_By = [];
-    const user = await fetch(`${server}/api/user_dashboard/${id}`)
-    const User_id = await user.json()
-
-    User_id.map((user) => {
-      added_By.push({ 'label' : user.username , 'value' : user.username  })
-    })
-    setUserId(added_By[0]);
-
-  }
-  const add_user = [];
-  add_user.push(userID);
-  console.log(userID)
 
   const projectId = async(id) =>{
     console.log('update project id');
@@ -221,15 +203,11 @@ function Dashboard( { User_name } ) {
     setUpdate(udata);
     setStartDate(new Date(udata.project_start));
     setEndDate(new Date(udata.project_deadline));
-
     }
 
-  const [selected, setSelected] = useState([userID]);
+  const [selected, setSelected] = useState();
 
   const handleChange = ({ target: { name, value } }) =>{
-    console.log("name");
-    console.log([name]);
-  
     setUpdate({ ...uoption, [name]: value });
   }
 
@@ -237,7 +215,6 @@ function Dashboard( { User_name } ) {
 
   const allSelectedMember = [];
   const projectMember = (uMember).split(",");
-
 
   for(var i=0; i<projectMember.length; i++){
     allSelectedMember.push({'label' :projectMember[i] , 'value' : projectMember[i]});
@@ -292,15 +269,18 @@ function Dashboard( { User_name } ) {
   const onSubmit = async (result) =>{
     
     console.log("result");
-    console.log(result.start.toDateString());
-    const p_start = result.start.toDateString();
-    const p_end = result.end.toDateString();
     
-    if(result.project_title != ""){
+    if(result.project_title != "" && result.project_description !="" &&  result.project_department !="" && result.project_language !="" && selected !="" && result.start !="" && result.end !="" && result.project_priority !="" && result.project_status !=""){
+
+      const p_start = result.start.toDateString();
+      const p_end = result.end.toDateString();
+  
       const res = await fetch(`${server}/api/project/addproject`,{
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body:JSON.stringify({project_person:selected,project_department:result.project_department,project_status:result.project_status , project_title:result.project_title, project_description:result.project_description, project_language:result.project_language, project_comment:result.project_comment, project_priority:result.project_priority, project_start: p_start , project_deadline: p_end , projectAdded_by: cookies }),
+        body:JSON.stringify({project_person:selected,project_department:result.project_department,project_status:result.project_status , project_title:result.project_title, 
+          project_description:result.project_description, project_language:result.project_language, project_comment:result.project_comment, project_priority:result.project_priority, 
+          project_start: p_start , project_deadline: p_end , projectAdded_by: cookies }),
       })
       const data=await res.json()
       
@@ -313,11 +293,11 @@ function Dashboard( { User_name } ) {
               autoClose:1000,
               theme: "colored",
               hideProgressBar: true,
-              onClose: () => router.push(`${server}/admin/project_module`)
+              onClose: () => router.push(`${server}/projects`)
               });
           }
-  
-        router.reload(`${server}/admin/project_module`);
+
+        router.reload(`${server}/projects`);
       }
       else
       {
@@ -334,7 +314,6 @@ function Dashboard( { User_name } ) {
             hideProgressBar: true,
           });
         }
-
     }
   }
 
@@ -423,7 +402,7 @@ function Dashboard( { User_name } ) {
       var addComment = await axios.post(`${server}/api/comment/addProjectComments`, {  username: cookies.name, message: value , project_id: project_id, created_D: date });
       console.log(addComment)
       console.log(cookies.name)
-      router.reload(`${server}/user/projects`);
+      router.reload(`${server}/projects`);
     }
   
     const [ value, setValues ] = useState("");
@@ -436,33 +415,26 @@ function Dashboard( { User_name } ) {
         [{ 'align': [] }],
         [{ 'color': [] }, { 'background': [] }],
         ['clean'],
-        ['link', 'image', 'video']
+        ['link'],
+        ['image'],
+        ['video']
       ]
     }
   
     const [commentEdit, setEditComment] = useState();
   
       const editComment = async( id ) =>{
-        console.log("id");
-        console.log(id);
-  
         var commentId = await axios.post(`${server}/api/comment/comment_id`, { comment_id: id, user: cookies.name });
         console.log(commentId.data[0]);
   
         if(commentId.data != ""){
           setEditComment(commentId.data[0].comment);
-          console.log("edit");
-          console.log(commentEdit);
-          console.log(commentId.data[0].comment);
         }
       }
       
       const updateComment = async(id, comment) =>{
-        console.log("update");
-        console.log(comment);
-        console.log(id);
         var comments = await axios.post(`${server}/api/comment/updateComment`, { comment_id: id, user: cookies.name, comment:comment });
-        router.reload(`${server}/user/projects`);
+        router.reload(`${server}/projects`);
       }
       console.log("set comment");
       console.log(commentEdit);
@@ -470,10 +442,12 @@ function Dashboard( { User_name } ) {
 
   return (
     <>
-      <div className="buttonalign" hidden={cookies.Role_id == "2"} >
+      <div className="buttonalign">
         <GridContainer>
+
+        <div className="buttonalign" hidden={cookies.Role_id == "2"} >
           <GridItem>
-            <Popup trigger={<div><button className="bttn-design" onClick={ ()=> userId(cookies.Id)}>Add Project</button></div>} className="popupReact" modal>
+            <Popup trigger={<div><button className="bttn-design">Add Project</button></div>} className="popupReact" modal>
             {close => (
               <div>
                 <GridContainer>
@@ -552,7 +526,7 @@ function Dashboard( { User_name } ) {
 
                               <GridContainer>  
                                 <GridItem xs={12} sm={12} md={6}>
-                                  <div className="form-group" {...register('project_start')}>
+                                  <div className="form-group">
                                   <span>Project Start Date</span><span className="required">*</span>
                                     <DatePicker
                                       placeholderText="Start Date : dd/mm/yyyy"
@@ -566,13 +540,14 @@ function Dashboard( { User_name } ) {
                                       }}
                                       dateFormat="dd-MM-yyyy"
                                       minDate={new Date()}
+                                      required
                                     />
                                   <div className="error-msg">{errors.project_start && <span>{errors.project_start.message}</span>}</div>
                                   </div> 
                                 </GridItem>
 
                                 <GridItem xs={12} sm={12} md={6}>
-                                  <div className="form-group" {...register('project_deadline')}>
+                                  <div className="form-group">
                                   <span>Project End Date</span><span className="required">*</span>
                                     <DatePicker
                                       placeholderText="End Date : dd/mm/yyyy"
@@ -583,9 +558,11 @@ function Dashboard( { User_name } ) {
                                       onChange={val => {
                                         setEnd_Date(val);
                                         setValue("end", val);
+                                        
                                       }}
                                       dateFormat="dd-MM-yyyy"
                                       minDate={addStartDate}
+                                      required
                                     />
                                   <div className="error-msg">{errors.project_deadline && <span>{errors.project_deadline.message}</span>}</div>
                                   </div> 
@@ -624,7 +601,7 @@ function Dashboard( { User_name } ) {
 
                               <GridContainer>
                                 <GridItem xs={12} sm={12} md={12}>
-                                <div className="form-group" {...register('project_person')}>
+                                <div className="form-group">
                                   <span>Project Members</span><span className="required">*</span>
                                   <Multiselect
                                   displayValue="value"
@@ -656,10 +633,11 @@ function Dashboard( { User_name } ) {
             </Popup>
             {/* create project form end */}
           </GridItem>
+          </div>
 
           <GridItem>
             <div className="department_dropdown">
-            <button className="dropdown_button">Project Departments</button>
+            <button className="dropdown_button" hidden={cookies.Role_id == "2"}>Project Departments</button>
                 <div className="department-link">
                   <a href={`${server}/projects`}>All</a>
                   <a href={`${server}/project_department/HR`}>HR</a>
@@ -692,16 +670,32 @@ function Dashboard( { User_name } ) {
     <GridContainer>
     
     {/***** Running Project start *****/}
-    <div className="Project-title">Projects</div>
-    <div className="Project-expand" onClick={()=> 
-      {  project_running("running"), closeOnHold("running"), setrunning_title(!running_title), project_OnHold("on hold"), closeTaskToDo("on hold"), setonhold_title(!onhold_title)
-      project_Completed("completed"), closeCompleted("completed"), setcompleted_title(!completed_title) }}
-      >Expand All</div>
+  <GridContainer>
+    <GridItem>
+      <div className="Project-title">Projects</div>
+    </GridItem>
+
+    <GridContainer>
+      <GridItem>
+        <button className="bttn-design" onClick={()=> 
+          {  project_running("running"), closeOnHold("running"), setrunning_title(true), project_OnHold("on hold"), closeTaskToDo("on hold"), setonhold_title(true)
+          project_Completed("completed"), closeCompleted("completed"), setcompleted_title(true) }}
+          >Expand All</button>
+      </GridItem>
+
+      <GridItem>
+        <button className="bttn-design" onClick={()=> 
+          {  project_running("running"), closeOnHold("running"), setrunning_title(false), project_OnHold("on hold"), closeTaskToDo("on hold"), setonhold_title(false)
+          project_Completed("completed"), closeCompleted("completed"), setcompleted_title(false) }}
+          >Collapse All</button>
+      </GridItem>
+    </GridContainer>
+  </GridContainer>
 
     <Card className="task_title_status">
       <GridContainer >
         <GridItem xs={12} sm={12} md={12} >
-          <div onClick={()=> {  project_running("running") , closeOnHold("running") , setrunning_title(!running_title) }} className="task_title" > Project In progress {running_title ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
+          <div onClick={()=> {  project_running("running"), closeOnHold("running"), setrunning_title(!running_title) }} className="task_title" > Project In progress {running_title ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
         </GridItem>
       </GridContainer>
     </Card>
@@ -1081,7 +1075,7 @@ function Dashboard( { User_name } ) {
     <Card className="task_title_status">
       <GridContainer >
         <GridItem xs={12} sm={12} md={12} >
-          <div onClick={()=> {  project_OnHold("on hold") , closeTaskToDo("on hold") , setonhold_title(!onhold_title) }} className="task_title" > Project On Hold {onhold_title ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
+          <div onClick={()=> {  project_OnHold("on hold"), closeTaskToDo("on hold"), setonhold_title(!onhold_title) }} className="task_title" > Project On Hold {onhold_title ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
         </GridItem>
       </GridContainer>
     </Card>
@@ -1464,7 +1458,7 @@ function Dashboard( { User_name } ) {
     <Card className="task_title_status">
       <GridContainer >
         <GridItem xs={12} sm={12} md={12} >
-          <div onClick={()=> {  project_Completed("completed") , closeCompleted("completed") , setcompleted_title(!completed_title) }} className="task_title"> Project Completed {completed_title ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
+          <div onClick={()=> {  project_Completed("completed"), closeCompleted("completed"), setcompleted_title(!completed_title) }} className="task_title"> Project Completed {completed_title ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
         </GridItem>
       </GridContainer>
     </Card>
