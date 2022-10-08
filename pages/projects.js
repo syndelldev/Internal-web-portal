@@ -26,7 +26,7 @@ import axios from "axios";
 import dynamic from "next/dynamic";
 import 'react-quill/dist/quill.snow.css';
 import "react-quill/dist/quill.bubble.css";
-
+import { useMemo } from "react";
 
 const ReactQuill = dynamic(import('react-quill'), { ssr: false });
 
@@ -86,57 +86,54 @@ const styles = {
 };
 
 export async function getServerSideProps(context){
-  // const res = await fetch(`${server}/api/project`);
-  // const project_details = await res.json();
+  const res = await fetch(`${server}/api/project`);
+  const project_details = await res.json();
 
-  // const res1 = await fetch(`${server}/api/user_dashboard`, {
-  //   headers: {
-  //     'Access-Control-Allow-Credentials': true,
-  //     Cookie: context.req.headers.cookie
-  //   },
-  // })
-  // const user_project = await res1.json()
-  // console.log(user_project)
+  const res1 = await fetch(`${server}/api/user_dashboard`, {
+    headers: {
+      'Access-Control-Allow-Credentials': true,
+      Cookie: context.req.headers.cookie
+    },
+  })
+  const user_project = await res1.json()
+  console.log(user_project)
 
   const response = await fetch(`${server}/api/admin`)
   const User_name = await response.json();
 
-  return{ props: { User_name } }
+  return{ props: { project_details, user_project, User_name } }
 }
 
-function Dashboard( { User_name } ) {
+function Dashboard( { project_details, user_project, User_name } ) {
 
   const useStyles = makeStyles(styles);
   const classes = useStyles();
 
   const [cookies, setCookie] = useCookies(['name']);
 
-  const [project_details, setproject_details] = useState([])
-  //Fetch API According Role Start
-  if(cookies.Role_id==1 || cookies.Role_id==3){    
-    useEffect(async()=>{
-      const res = await fetch(`${server}/api/project`);
-      const project_details = await res.json();
-      setproject_details(project_details)
-    })
-  }
-  else if(cookies.Role_id==2){
-    useEffect(async()=>{
-      const res = await fetch(`${server}/api/user_dashboard`);
-      const project_details = await res.json();
-      setproject_details(project_details)
-    })
-  }
-  // else if(cookies.Role_id==3){
+  // const [project_details, setproject_details] = useState([])
+  // //Fetch API According Role Start
+  // if(cookies.Role_id==1 || cookies.Role_id==3){    
   //   useEffect(async()=>{
   //     const res = await fetch(`${server}/api/project`);
   //     const project_details = await res.json();
   //     setproject_details(project_details)
   //   })
   // }
+  // else if(cookies.Role_id==2){
+  //   useEffect(async()=>{
+  //     const res = await fetch(`${server}/api/user_dashboard`);
+  //     const project_details = await res.json();
+  //     setproject_details(project_details)
+  //   })
+  // }
 
-  // console.log(project_details)
-  //Fetch API According Role End
+  if(cookies.Role_id == "2"){
+    var project_details = user_project;
+  }else{
+    var project_details = project_details;
+  }
+
   const [addStartDate, setStart_Date] = useState();
   const [addEndDate, setEnd_Date] = useState();
 
@@ -406,20 +403,47 @@ function Dashboard( { User_name } ) {
     }
   
     const [ value, setValues ] = useState("");
-    const modules = {
-      toolbar: [
-        [{ 'font': [] }],
-        [{ 'size': ['small', false, 'large', 'huge'] }],
-        ['bold', 'italic', 'underline'],
-        [{'list': 'ordered'}, {'list': 'bullet'}],
-        [{ 'align': [] }],
-        [{ 'color': [] }, { 'background': [] }],
-        ['clean'],
-        ['link'],
-        ['image'],
-        ['video']
-      ]
-    }
+    function imageHandler() {
+      console.log("custom image handler1");
+      console.log("custom image handler2");
+      console.log("custom image handler3");
+  }
+
+    const modules = useMemo(() => ({
+      toolbar: {
+          container: [
+              [{ 'font': [] }],
+              [{ 'size': ['small', false, 'large', 'huge'] }],
+              ['bold', 'italic', 'underline'],
+              [{'list': 'ordered'}, {'list': 'bullet'}],
+              [{ 'align': [] }],
+              [{ 'color': [] }, { 'background': [] }],
+              ['clean'],
+              ['link'],
+              ['image'],
+              ['video']
+          ],
+          handlers: {
+            image: imageHandler
+          }
+      },
+    }), []);
+  
+
+    // const modules = {
+    //   toolbar: [
+    //     [{ 'font': [] }],
+    //     [{ 'size': ['small', false, 'large', 'huge'] }],
+    //     ['bold', 'italic', 'underline'],
+    //     [{'list': 'ordered'}, {'list': 'bullet'}],
+    //     [{ 'align': [] }],
+    //     [{ 'color': [] }, { 'background': [] }],
+    //     ['clean'],
+    //     ['link'],
+    //     ['image'],
+    //     ['video']
+    //   ],
+    // }
   
     const [commentEdit, setEditComment] = useState();
   

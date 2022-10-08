@@ -48,6 +48,7 @@
     "perfect-scrollbar": "^1.5.5",
     "prop-types": "^15.8.1",
     "pusher-js": "^7.4.0",
+    "quill-image-uploader": "^1.2.3",
     "react": "^17.0.0",
     "react-accessible-accordion": "^5.0.0",
     "react-beautiful-dnd": "^13.1.1",
