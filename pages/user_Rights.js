@@ -159,7 +159,7 @@ function UserRights({UserList,ModuleList}){
                                         {RightsList.map((rights)=>{
                                             return(
                                                 <TableRow key={rights.rights_id} value={rights.rights_id}>
-                                                    <TableCell>{rights.project_title}-{rights.project_id}</TableCell>
+                                                    <TableCell>{rights.project_title}</TableCell>
                                                     <TableCell>
                                                         <input 
                                                             type="checkbox"
@@ -168,7 +168,7 @@ function UserRights({UserList,ModuleList}){
                                                             value={rights.view_rights}
                                                             defaultChecked={rights.view_rights==1} 
                                                             onClick={()=>{view_rights(rights.project_id, rights.view_rights)}}
-                                                        />{rights.view_rights}
+                                                        />
                                                     </TableCell>
                                                     <TableCell>
                                                         <input 
@@ -178,7 +178,7 @@ function UserRights({UserList,ModuleList}){
                                                             defaultChecked={rights.edit_rights==1} 
                                                             onClick={()=>{edit_rights(rights.project_id, rights.edit_rights)}}
                                                             // onChange={editCheckbox} 
-                                                        />{rights.edit_rights}
+                                                        />
                                                     </TableCell>
                                                 </TableRow>
                                             )

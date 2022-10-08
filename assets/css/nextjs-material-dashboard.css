@@ -608,3 +608,11 @@ button.addproject{
   align-items: center;
   justify-content: space-between;
 }
+.edit_project{
+  border: none!important;
+  background: transparent!important;
+}
+.view_project{
+  border: none;
+  background: transparent;
+}

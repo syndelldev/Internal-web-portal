@@ -11,6 +11,7 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 import { IoMdArrowDropdown } from "react-icons/io";
+import { FaEye } from 'react-icons/fa';
 import { useForm  } from 'react-hook-form';
 import { server } from 'config';
 // import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
@@ -800,7 +801,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
                     </td>
                     <td className="project-edit-table">
                       {/* Edit popUp Start*/}
-                      <Popup trigger={<a className="icon-edit-delete"><div className='icon-width' onClick={()=> { projectId(project.project_id), getData(project.project_id) } }><FiEdit/></div></a>} className="popupReact" modal nested>
+                      <Popup trigger={<button className="edit_project" disabled={project.edit_rights==0}  onClick={()=> { projectId(project.project_id), getData(project.project_id) }} ><FiEdit/></button>} className="popupReact" modal nested>
                       {close => (
                         <div className="popup-align">
                           <GridContainer>
@@ -1071,7 +1072,6 @@ function Dashboard( { project_details, user_project, User_name } ) {
                                             </CardFooter>
                                           </div>
                                         </GridItem>
-
                                           <div className={classes.close}>
                                             <a onClick={close}>&times;</a>
                                           </div>
@@ -1084,6 +1084,46 @@ function Dashboard( { project_details, user_project, User_name } ) {
                             )}
                           </Popup>
                         {/*Delete popUp End*/}
+                        {/*View Project Detail Start*/}
+                        <Popup trigger={<button disabled={project.view_rights==0} className="view_project" ><FaEye/></button>} modal>
+                        {close => (
+                            <div>
+                              <GridItem xs={6} sm={6} md={12} key={project.project_id}>
+                                <Card >
+                                  <CardHeader color="primary">
+                                    <GridContainer>
+                                      <GridItem>
+                                        <h4>{project.project_title}</h4>
+                                      </GridItem>
+                                      <div className={classes.close}>
+                                        <a onClick={close}>&times;</a>
+                                      </div>   
+                                    </GridContainer>
+                                  </CardHeader><br/>
+                                  <CardFooter>
+                                    <p>Project Language</p>-<p>{project.project_language}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p>{project.project_person}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p>{project.project_description}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p>{project.project_department}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p>{project.project_status}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p className="projectPriority">{project.project_priority} Priority</p>
+                                  </CardFooter>
+                                </Card>
+                              </GridItem>
+                            </div>
+                          )}
+                        </Popup>
+                        {/*View Project Detail End*/}
                     </td>
                   </tr>
                 )
@@ -1178,9 +1218,9 @@ function Dashboard( { project_details, user_project, User_name } ) {
                         </span>
                       )}
                     </td>
-                    <td>
+                    <td classname="project-edit-table">
                       {/* Edit popUp Start*/}
-                      <Popup trigger={<a className="icon-edit-delete"><div className='icon-width' onClick={()=> { projectId(project.project_id), getData(project.project_id) } }><FiEdit/></div></a>} className="popupReact" modal nested>
+                      <Popup trigger={<button className="edit_project"  disabled={project.edit_rights==0} onClick={()=> { projectId(project.project_id), getData(project.project_id) }}><FiEdit/></button>} className="popupReact" modal nested>
                       {close => (
                         <div className="popup-align">
                           <GridContainer>
@@ -1467,6 +1507,46 @@ function Dashboard( { project_details, user_project, User_name } ) {
                             )}
                           </Popup>
                         {/*Delete popUp End*/}
+                        {/*View Project Detail Start*/}
+                        <Popup trigger={<button disabled={project.view_rights==0} className="view_project"><FaEye/></button>} modal>
+                        {close => (
+                            <div>
+                              <GridItem xs={6} sm={6} md={12} key={project.project_id}>
+                                <Card >
+                                  <CardHeader color="primary">
+                                    <GridContainer>
+                                      <GridItem>
+                                        <h4>{project.project_title}</h4>
+                                      </GridItem>
+                                      <div className={classes.close}>
+                                        <a onClick={close}>&times;</a>
+                                      </div>   
+                                    </GridContainer>
+                                  </CardHeader><br/>
+                                  <CardFooter>
+                                    <p>Project Language</p>-<p>{project.project_language}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p>{project.project_person}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p>{project.project_description}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p>{project.project_department}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p>{project.project_status}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p className="projectPriority">{project.project_priority} Priority</p>
+                                  </CardFooter>
+                                </Card>
+                              </GridItem>
+                            </div>
+                          )}
+                        </Popup>
+                        {/*View Project Detail End*/}
                     </td>
                   </tr>
                 )
@@ -1561,9 +1641,9 @@ function Dashboard( { project_details, user_project, User_name } ) {
                         </span>
                       )}
                     </td>
-                    <td>
+                    <td classname="project-edit-table">
                       {/* Edit popUp Start*/}
-                      <Popup trigger={<a className="icon-edit-delete"><div className='icon-width' onClick={()=> { projectId(project.project_id), getData(project.project_id) } }><FiEdit/></div></a>} className="popupReact" modal nested>
+                      <Popup trigger={<button className="edit_project"  disabled={project.edit_rights==0} ><div className='icon-width' onClick={()=> { projectId(project.project_id), getData(project.project_id) } }><FiEdit/></div></button>} className="popupReact" modal nested>
                       {close => (
                         <div className="popup-align">
                           <GridContainer>
@@ -1849,6 +1929,46 @@ function Dashboard( { project_details, user_project, User_name } ) {
                             )}
                           </Popup>
                         {/*Delete popUp End*/}
+                        {/*View Project Detail Start*/}
+                        <Popup trigger={<button disabled={project.view_rights==0} className="view_project"><FaEye/></button>} className="popupReact" modal >
+                        {close => (
+                            <div>
+                              <GridItem xs={6} sm={6} md={12} key={project.project_id}>
+                                <Card >
+                                  <CardHeader color="primary">
+                                    <GridContainer>
+                                      <GridItem>
+                                        <h4>{project.project_title}</h4>
+                                      </GridItem>
+                                      <div className={classes.close}>
+                                        <a onClick={close}>&times;</a>
+                                      </div>   
+                                    </GridContainer>
+                                  </CardHeader><br/>
+                                  <CardFooter>
+                                    <p>Project Language</p>-<p>{project.project_language}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p>{project.project_person}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p>{project.project_description}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p>{project.project_department}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p>{project.project_status}</p>
+                                  </CardFooter>
+                                  <CardFooter>
+                                    <p className="projectPriority">{project.project_priority} Priority</p>
+                                  </CardFooter>
+                                </Card>
+                              </GridItem>
+                            </div>
+                          )}
+                        </Popup>
+                        {/*View Project Detail End*/}
                     </td>
                   </tr>
                 )
