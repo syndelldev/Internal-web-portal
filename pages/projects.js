@@ -25,9 +25,8 @@ import { MdDelete } from 'react-icons/md';
 import { useCookies } from 'react-cookie';
 import axios from "axios";
 import dynamic from "next/dynamic";
-import 'react-quill/dist/quill.snow.css';
-import "react-quill/dist/quill.bubble.css";
 import { useMemo } from "react";
+
 
 const ReactQuill = dynamic(import('react-quill'), { ssr: false });
 
@@ -405,10 +404,43 @@ function Dashboard( { project_details, user_project, User_name } ) {
   
     const [ value, setValues ] = useState("");
     function imageHandler() {
-      console.log("custom image handler1");
-      console.log("custom image handler2");
-      console.log("custom image handler3");
+
+    const input = document.createElement("input");
+    input.setAttribute("type", "file");
+    input.setAttribute("accept", "image/*");
+    // input.setAttribute("multiple", "multiple");
+    input.click();
+
+    input.onchange = async () => {
+      const file = input.files[0];
+      try {
+        // const imgFile = [];
+        // for(var i=0; i<file.length; i++){
+        //   imgFile.push(file[i].name);
+        // }
+        const link = file;
+        console.log("link");
+        console.log(link);
+        // editor.insertEmbed(editor.getSelection(), "image", link);
+        var formData = new FormData();
+      formData.append('image', file);
+      var fileName = file.name;
+      console.log(fileName);
+
+      const range = quill.getSelection(true);
+      console.log(range);
+
+      }catch(err){
+        console.log("upload err:", err);
+      }
+    };
   }
+
+  function uploadFiles() {
+    console.log("1");
+  }
+
+
 
     const modules = useMemo(() => ({
       toolbar: {
