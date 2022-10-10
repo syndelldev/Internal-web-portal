@@ -5,6 +5,11 @@ const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
 import '../node_modules/react-quill/dist/quill.snow.css';
+import { server } from 'config';
+// import Quill from "quill";
+// import { ImageHandler, VideoHandler, AttachmentHandler } from "quill-upload";
+
+// Quill.register("modules/imageHandler", ImageHandler);
 
 class MyComponent extends React.Component {
     constructor(props) {
@@ -17,7 +22,10 @@ class MyComponent extends React.Component {
         this.setState({ editorHtml: html });
     }
 
-    apiPostNewsImage() {
+    apiPostNewsImage(formData) {
+        fetch(
+            `${server}/api/upload`,
+            { method: 'POST', body: formData })
         // API post, returns image location as string e.g. 'http://www.example.com/images/foo.png'
     }
 
@@ -29,27 +37,45 @@ class MyComponent extends React.Component {
         input.click();
 
         input.onchange = async () => {
-            const file = input.files[0];
+            let data = null;
+            const file = input.files ? input.files[0] : null;
             const formData = new FormData();
 
             formData.append('image', file);
+            formData.getAll('image');
+            // var options = { content: formData.getAll('image') };
+            // console.log(options);
+            // formData.append('resource_type', 'raw');
 
             // Save current cursor state
             const range = this.quill.getSelection(true);
 
             // Insert temporary loading placeholder image
-            this.quill.insertEmbed(range.index, 'image', `${window.location.origin}/${file.name}`);
+            this.quill.insertEmbed(range.index, 'image', `${server}/${file.name}`);
 
             // Move cursor to right side of image (easier to continue typing)
             this.quill.setSelection(range.index + 1);
 
-            const res = await apiPostNewsImage(formData); // API post, returns image location as string e.g. 'http://www.example.com/images/foo.png'
+            // const res = await apiPostNewsImage(formData); // API post, returns image location as string e.g. 'http://www.example.com/images/foo.png'
+            console.log(file);
+
+            const res = await fetch(`${server}/api/upload`,{ 
+                method: 'POST',
+                // headers: { "Content-Type": "application/json" },
+                body: formData,
+            });
+            data = await res.json();
+            console.log(data);
+
+            if (data.error) {
+                console.error(data.error);
+            }
 
             // Remove placeholder image
             this.quill.deleteText(range.index, 1);
 
             // Insert uploaded image
-            this.quill.insertEmbed(range.index, 'image', res.body.image);
+            // this.quill.insertEmbed(range.index, 'image', res.body.image);
             this.quill.insertEmbed(range.index, 'image', res);
         };
     }
@@ -72,7 +98,6 @@ class MyComponent extends React.Component {
                                 [{ size: [] }],
                                 ['bold', 'italic', 'underline', 'strike', 'blockquote'],
                                 [{ list: 'ordered' }, { list: 'bullet' }],
-                                ['link', 'video'],
                                 ['link', 'image', 'video'],
                                 ['clean'],
                                 ['code-block']
