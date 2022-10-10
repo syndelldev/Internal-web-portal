@@ -88,11 +88,10 @@ function UserDetail({UserDetail}) {
   });
 
   const [selected, setSelected] = useState("");
-  console.log(selected)
+  // console.log(selected)
 
   let role_id_type = userdata.role_id;
   const role_id = ["1","2","3"]
-  // console.log(role_id)
 
   if(selected.role == 'Admin'){
     role_id_type = role_id[0];
@@ -104,8 +103,6 @@ function UserDetail({UserDetail}) {
     role_id_type = role_id[2];
   }
   console.log(role_id_type)
-
-  
   
   const [SingleUser, setSingleUser]=useState([])
   const getSingleUserData = async (id)=>{
