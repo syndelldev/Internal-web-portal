@@ -1055,10 +1055,9 @@ const updateComment = async(id, comment) =>{
                                                 <label>Estimate Time</label>
                                                 <input type="text" 
                                                     className="form-control signup-input"
-                                                    // value={estimate} 
-                                                    // onChange={(e)=>setestimate(e.target.value)} 
+                                                    value={estimate} 
+                                                    onChange={(e)=>setestimate(e.target.value)} 
                                                     name="estimate_time"
-                                                    {...register('estimate_time',  { required: "Please enter your name", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })}
                                                 />
                                                 <div className="error-msg">{errors.estimate_time && <p>{errors.estimate_time.message}</p>}</div>
                                             </GridItem>
@@ -1070,7 +1069,6 @@ const updateComment = async(id, comment) =>{
                                                     value={spent} 
                                                     onChange={(e)=>setspent(e.target.value)}
                                                     name="spent_time"
-                                                    {...register('spent_time',  { required: "Please enter your name", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })}
                                                   />
                                                   <div className="error-msg">{errors.spent_time && <p>{errors.spent_time.message}</p>}</div>
                                               </GridItem>
@@ -1108,6 +1106,7 @@ const updateComment = async(id, comment) =>{
                                         {/*Time Modulule*/}
                               </GridItem>
                             </GridContainer>
+
 
                             <GridContainer>
                               <GridItem>
@@ -1279,6 +1278,7 @@ const updateComment = async(id, comment) =>{
                 if(task.task_status == TaskOnHold){
                   var person = task.task_person.split(",");
                   return(
+                    <>
                     <tr key={task.task_id} onClick={()=>{toggle(task.task_id);getData(task.task_id);getTime(task.task_id);}} className="expand_dropdown">
                       <td className="project-title-table">{task.project_name}</td>
                       <td><h4 className="projectTitle">{task.task_title}</h4></td>
@@ -1492,6 +1492,70 @@ const updateComment = async(id, comment) =>{
 
                             <CardBody>
                             <GridContainer>
+                              <GridItem xs={12} sm={12} md={12} >
+                                {/*Time Modulule*/}
+                                {TimeData.length==0?(
+                                        <>
+                                          <form onSubmit={handleSubmit(insert_time)} method="POST">
+                                          <GridContainer>
+                                            <GridItem xs={12} sm={12} md={6}>
+                                                <input value={task.task_id} type="hidden"/>
+                                                <label>Estimate Time</label>
+                                                <input type="text" 
+                                                    className="form-control signup-input"
+                                                    value={estimate} 
+                                                    onChange={(e)=>setestimate(e.target.value)} 
+                                                    name="estimate_time"
+                                                />
+                                                <div className="error-msg">{errors.estimate_time && <p>{errors.estimate_time.message}</p>}</div>
+                                            </GridItem>
+                                          
+                                            <GridItem xs={12} sm={12} md={6}>
+                                                <label>Spent Time</label>
+                                                <input type="text" 
+                                                    className="form-control signup-input"
+                                                    value={spent} 
+                                                    onChange={(e)=>setspent(e.target.value)}
+                                                    name="spent_time"
+                                                  />
+                                                  <div className="error-msg">{errors.spent_time && <p>{errors.spent_time.message}</p>}</div>
+                                              </GridItem>
+                                            </GridContainer>
+                                            <button color="primary"  onClick={()=>{insert_time(task.task_id)}} type="submit">Save Time</button>
+                                          </form>
+                                          </>
+                                        ):(
+                                          <>
+                                            <form onSubmit={update_tasktime}>
+                                              <GridContainer>
+                                                <GridItem xs={12} sm={12} md={6}>
+                                                  <input value={task.task_id} type="hidden"/>
+                                                  <label>Estimate Time</label>
+                                                  <input type="text" name="estimate_time" 
+                                                    className="form-control signup-input"
+                                                    value={userdata.estimate_time} 
+                                                    onChange={handleChangePanel}
+                                                  /><br/>
+                                                </GridItem>
+
+                                                <GridItem xs={12} sm={12} md={6}>
+                                                  <label>Spent Time</label>
+                                                  <input type="text" name="spent_time" 
+                                                    className="form-control signup-input"
+                                                    value={userdata.spent_time} 
+                                                    onChange={handleChangePanel}
+                                                  />
+                                                </GridItem>
+                                              </GridContainer>
+                                              <Button color="primary" onClick={()=>{update_tasktime(task.task_id)}}  type="submit">Save Time</Button>
+                                            </form>
+                                          </>
+                                        )}
+                                        {/*Time Modulule*/}
+                              </GridItem>
+                            </GridContainer>
+
+                            <GridContainer>
                               <GridItem>
                                 <ReactQuill modules={modules} theme="snow" onChange={setCommentValue} />
                                   <div onClick={()=> { sendMessage(task.task_id), close() } }>Save</div>
@@ -1586,6 +1650,51 @@ const updateComment = async(id, comment) =>{
                         </Popup>
                     </td>
                     </tr>
+                    <p className={showTime==task.task_id ? 'content show':'content'}>
+                    {/*Time Modulule*/}
+                    <p>
+                    {TimeData.length==0?(
+                      <>
+                        <GridContainer>
+                          <GridItem>
+                            <input value={task.task_id} type="hidden"/>
+                            <p>Estimate Time - {estimate}</p>
+                            <p>Spent Time - {spent}</p>
+                          </GridItem>
+                        </GridContainer>
+                      </>
+                      ):(
+                      <>
+                        <GridContainer>
+                          <GridItem>
+                            <input value={task.task_id} type="hidden"/>
+                            <p>Estimate Time - {userdata.estimate_time}</p>
+                            <p>Spent Time - {userdata.spent_time} </p>
+                          </GridItem>
+                        </GridContainer>
+                      </>
+                      )}
+                    {/*Time Modulule*/}
+                      </p>
+                      <p>
+                      {/* display comments in dropdown */}
+                        {dropdown_Comments.map((dComment)=>{
+                          return(
+                            <span>
+                              <GridContainer>
+                                <GridItem>
+                                  <p>{dComment.username}</p>
+                                  <p><ReactQuill value={dComment.comment} theme="bubble" readOnly /></p>
+                                  <p>{dComment.creation_time}</p>
+                                </GridItem>
+                              </GridContainer>
+                            </span>
+                          )
+                        })}
+                      </p>
+                      {/* display comments in dropdown */}
+                  </p>
+                  </>
                   ) 
                 }
               }
@@ -1616,6 +1725,7 @@ const updateComment = async(id, comment) =>{
               if(task.task_status == TaskRunning){
                 var person = task.task_person.split(",");
                 return(
+                  <>
                   <tr key={task.task_id} onClick={()=>{toggle(task.task_id);getData(task.task_id);getTime(task.task_id);}} className="expand_dropdown">
                     <td className="project-title-table">{task.project_name}</td>
                     <td><h4 className="projectTitle">{task.task_title}</h4></td>
@@ -1828,6 +1938,71 @@ const updateComment = async(id, comment) =>{
                             </CardFooter>
 
                             <CardBody>
+
+                            <GridContainer>
+                              <GridItem xs={12} sm={12} md={12} >
+                                {/*Time Modulule*/}
+                                {TimeData.length==0?(
+                                        <>
+                                          <form onSubmit={handleSubmit(insert_time)} method="POST">
+                                          <GridContainer>
+                                            <GridItem xs={12} sm={12} md={6}>
+                                                <input value={task.task_id} type="hidden"/>
+                                                <label>Estimate Time</label>
+                                                <input type="text" 
+                                                    className="form-control signup-input"
+                                                    value={estimate} 
+                                                    onChange={(e)=>setestimate(e.target.value)} 
+                                                    name="estimate_time"
+                                                />
+                                                <div className="error-msg">{errors.estimate_time && <p>{errors.estimate_time.message}</p>}</div>
+                                            </GridItem>
+                                          
+                                            <GridItem xs={12} sm={12} md={6}>
+                                                <label>Spent Time</label>
+                                                <input type="text" 
+                                                    className="form-control signup-input"
+                                                    value={spent} 
+                                                    onChange={(e)=>setspent(e.target.value)}
+                                                    name="spent_time"
+                                                  />
+                                                  <div className="error-msg">{errors.spent_time && <p>{errors.spent_time.message}</p>}</div>
+                                              </GridItem>
+                                            </GridContainer>
+                                            <button color="primary"  onClick={()=>{insert_time(task.task_id)}} type="submit">Save Time</button>
+                                          </form>
+                                          </>
+                                        ):(
+                                          <>
+                                            <form onSubmit={update_tasktime}>
+                                              <GridContainer>
+                                                <GridItem xs={12} sm={12} md={6}>
+                                                  <input value={task.task_id} type="hidden"/>
+                                                  <label>Estimate Time</label>
+                                                  <input type="text" name="estimate_time" 
+                                                    className="form-control signup-input"
+                                                    value={userdata.estimate_time} 
+                                                    onChange={handleChangePanel}
+                                                  /><br/>
+                                                </GridItem>
+
+                                                <GridItem xs={12} sm={12} md={6}>
+                                                  <label>Spent Time</label>
+                                                  <input type="text" name="spent_time" 
+                                                    className="form-control signup-input"
+                                                    value={userdata.spent_time} 
+                                                    onChange={handleChangePanel}
+                                                  />
+                                                </GridItem>
+                                              </GridContainer>
+                                              <Button color="primary" onClick={()=>{update_tasktime(task.task_id)}}  type="submit">Save Time</Button>
+                                            </form>
+                                          </>
+                                        )}
+                                        {/*Time Modulule*/}
+                              </GridItem>
+                            </GridContainer>
+
                             <GridContainer>
                               <GridItem>
                                 <ReactQuill modules={modules} theme="snow" onChange={setCommentValue} />
@@ -1923,6 +2098,51 @@ const updateComment = async(id, comment) =>{
                         </Popup>
                     </td>
                   </tr>
+                  <p className={showTime==task.task_id ? 'content show':'content'}>
+                    {/*Time Modulule*/}
+                    <p>
+                    {TimeData.length==0?(
+                      <>
+                        <GridContainer>
+                          <GridItem>
+                            <input value={task.task_id} type="hidden"/>
+                            <p>Estimate Time - {estimate}</p>
+                            <p>Spent Time - {spent}</p>
+                          </GridItem>
+                        </GridContainer>
+                      </>
+                      ):(
+                      <>
+                        <GridContainer>
+                          <GridItem>
+                            <input value={task.task_id} type="hidden"/>
+                            <p>Estimate Time - {userdata.estimate_time}</p>
+                            <p>Spent Time - {userdata.spent_time} </p>
+                          </GridItem>
+                        </GridContainer>
+                      </>
+                      )}
+                    {/*Time Modulule*/}
+                      </p>
+                      <p>
+                      {/* display comments in dropdown */}
+                        {dropdown_Comments.map((dComment)=>{
+                          return(
+                            <span>
+                              <GridContainer>
+                                <GridItem>
+                                  <p>{dComment.username}</p>
+                                  <p><ReactQuill value={dComment.comment} theme="bubble" readOnly /></p>
+                                  <p>{dComment.creation_time}</p>
+                                </GridItem>
+                              </GridContainer>
+                            </span>
+                          )
+                        })}
+                      </p>
+                      {/* display comments in dropdown */}
+                  </p>
+                  </>
                 )
               }
             }
@@ -1953,6 +2173,7 @@ const updateComment = async(id, comment) =>{
               if(task.task_status == TaskCompleted){
                 var person = task.task_person.split(",");
                 return(
+                  <>
                   <tr key={task.task_id} onClick={()=>{toggle(task.task_id);getData(task.task_id);getTime(task.task_id);}} className="expand_dropdown">
                     <td className="project-title-table">{task.project_name}</td>
                     <td><h4 className="projectTitle">{task.task_title}</h4></td>
@@ -2165,6 +2386,71 @@ const updateComment = async(id, comment) =>{
                             </CardFooter>
 
                             <CardBody>
+
+                            <GridContainer>
+                              <GridItem xs={12} sm={12} md={12} >
+                                {/*Time Modulule*/}
+                                {TimeData.length==0?(
+                                        <>
+                                          <form onSubmit={handleSubmit(insert_time)} method="POST">
+                                          <GridContainer>
+                                            <GridItem xs={12} sm={12} md={6}>
+                                                <input value={task.task_id} type="hidden"/>
+                                                <label>Estimate Time</label>
+                                                <input type="text" 
+                                                    className="form-control signup-input"
+                                                    value={estimate} 
+                                                    onChange={(e)=>setestimate(e.target.value)} 
+                                                    name="estimate_time"
+                                                />
+                                                <div className="error-msg">{errors.estimate_time && <p>{errors.estimate_time.message}</p>}</div>
+                                            </GridItem>
+                                          
+                                            <GridItem xs={12} sm={12} md={6}>
+                                                <label>Spent Time</label>
+                                                <input type="text" 
+                                                    className="form-control signup-input"
+                                                    value={spent} 
+                                                    onChange={(e)=>setspent(e.target.value)}
+                                                    name="spent_time"
+                                                  />
+                                                  <div className="error-msg">{errors.spent_time && <p>{errors.spent_time.message}</p>}</div>
+                                              </GridItem>
+                                            </GridContainer>
+                                            <button color="primary"  onClick={()=>{insert_time(task.task_id)}} type="submit">Save Time</button>
+                                          </form>
+                                          </>
+                                        ):(
+                                          <>
+                                            <form onSubmit={update_tasktime}>
+                                              <GridContainer>
+                                                <GridItem xs={12} sm={12} md={6}>
+                                                  <input value={task.task_id} type="hidden"/>
+                                                  <label>Estimate Time</label>
+                                                  <input type="text" name="estimate_time" 
+                                                    className="form-control signup-input"
+                                                    value={userdata.estimate_time} 
+                                                    onChange={handleChangePanel}
+                                                  /><br/>
+                                                </GridItem>
+
+                                                <GridItem xs={12} sm={12} md={6}>
+                                                  <label>Spent Time</label>
+                                                  <input type="text" name="spent_time" 
+                                                    className="form-control signup-input"
+                                                    value={userdata.spent_time} 
+                                                    onChange={handleChangePanel}
+                                                  />
+                                                </GridItem>
+                                              </GridContainer>
+                                              <Button color="primary" onClick={()=>{update_tasktime(task.task_id)}}  type="submit">Save Time</Button>
+                                            </form>
+                                          </>
+                                        )}
+                                        {/*Time Modulule*/}
+                              </GridItem>
+                            </GridContainer>
+
                             <GridContainer>
                               <GridItem>
                                 <ReactQuill modules={modules} theme="snow" onChange={setCommentValue} />
@@ -2260,6 +2546,51 @@ const updateComment = async(id, comment) =>{
                         </Popup>
                     </td>
                   </tr>
+                  <p className={showTime==task.task_id ? 'content show':'content'}>
+                    {/*Time Modulule*/}
+                    <p>
+                    {TimeData.length==0?(
+                      <>
+                        <GridContainer>
+                          <GridItem>
+                            <input value={task.task_id} type="hidden"/>
+                            <p>Estimate Time - {estimate}</p>
+                            <p>Spent Time - {spent}</p>
+                          </GridItem>
+                        </GridContainer>
+                      </>
+                      ):(
+                      <>
+                        <GridContainer>
+                          <GridItem>
+                            <input value={task.task_id} type="hidden"/>
+                            <p>Estimate Time - {userdata.estimate_time}</p>
+                            <p>Spent Time - {userdata.spent_time} </p>
+                          </GridItem>
+                        </GridContainer>
+                      </>
+                      )}
+                    {/*Time Modulule*/}
+                      </p>
+                      <p>
+                      {/* display comments in dropdown */}
+                        {dropdown_Comments.map((dComment)=>{
+                          return(
+                            <span>
+                              <GridContainer>
+                                <GridItem>
+                                  <p>{dComment.username}</p>
+                                  <p><ReactQuill value={dComment.comment} theme="bubble" readOnly /></p>
+                                  <p>{dComment.creation_time}</p>
+                                </GridItem>
+                              </GridContainer>
+                            </span>
+                          )
+                        })}
+                      </p>
+                      {/* display comments in dropdown */}
+                  </p>
+                  </>
                 ) 
               }
             }
