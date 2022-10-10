@@ -27,7 +27,6 @@ import dynamic from "next/dynamic";
 import 'react-quill/dist/quill.snow.css';
 import "react-quill/dist/quill.bubble.css";
 
-
 const ReactQuill = dynamic(import('react-quill'), { ssr: false });
 
 const styles = {
@@ -111,6 +110,16 @@ function Dashboard( { User_name } ) {
 
   const [cookies, setCookie] = useCookies(['name']);
 
+  const createNotification = (allMember) => {
+    // alert(allMember);
+    toast.info('Notification !', {
+      position: "top-right",
+      autoClose:false,
+      theme: "colored",
+      hideProgressBar: true,
+      });
+    }
+
   const [project_details, setproject_details] = useState([])
   //Fetch API According Role Start
   if(cookies.Role_id==1 || cookies.Role_id==3){    
@@ -127,15 +136,7 @@ function Dashboard( { User_name } ) {
       setproject_details(project_details)
     })
   }
-  // else if(cookies.Role_id==3){
-  //   useEffect(async()=>{
-  //     const res = await fetch(`${server}/api/project`);
-  //     const project_details = await res.json();
-  //     setproject_details(project_details)
-  //   })
-  // }
 
-  // console.log(project_details)
   //Fetch API According Role End
   const [addStartDate, setStart_Date] = useState();
   const [addEndDate, setEnd_Date] = useState();
@@ -197,7 +198,7 @@ function Dashboard( { User_name } ) {
   }
   const add_user = [];
   add_user.push(userID);
-  console.log(userID)
+  // console.log(userID)
 
   const projectId = async(id) =>{
     console.log('update project id');
@@ -246,14 +247,14 @@ function Dashboard( { User_name } ) {
 
   const toastId = React.useRef(null);
   const updateProject = async() =>{
-
+    // e.preventDefault()
     const allMember = [];
     for(var i=0; i<updateSelected.length; i++){
           allMember.push(updateSelected[i].value);
     }
   
-    console.log("all users");
-    console.log( allMember );
+    // console.log("all users");
+    // console.log( allMember );
 
     if( uoption.project_title=="" || uoption.project_description=="" ||  uoption.project_department=="" || uoption.project_language=="" || allMember=="" || startDate=="" || endDate=="" || uoption.project_priority=="" || uoption.project_status=="" ){
       if(! toast.isActive(toastId.current)) {
@@ -282,7 +283,7 @@ function Dashboard( { User_name } ) {
           onClose: () => router.push(`${server}/projects`)
           });
       }
-      router.reload(`${server}/projects`);
+      // router.reload(`${server}/projects`);
   }
 }
 
@@ -408,7 +409,7 @@ function Dashboard( { User_name } ) {
     }
 
     const [comments, setcomments] = useState([]);
-    console.log(comments);
+    // console.log(comments);
     
     const getData = async (project_id)=>{
       var comment = await axios.post(`${server}/api/comment/getProjectComment`, { project_id: project_id });
@@ -464,12 +465,15 @@ function Dashboard( { User_name } ) {
         var comments = await axios.post(`${server}/api/comment/updateComment`, { comment_id: id, user: cookies.name, comment:comment });
         router.reload(`${server}/user/projects`);
       }
-      console.log("set comment");
-      console.log(commentEdit);
-  
+      // console.log("set comment");
+      // console.log(commentEdit);
+      
+      
+      
 
   return (
     <>
+
       <div className="buttonalign" hidden={cookies.Role_id == "2"} >
         <GridContainer>
           <GridItem>
@@ -949,7 +953,7 @@ function Dashboard( { User_name } ) {
                                   </CardBody>
                                 <div hidden={cookies.Role_id == "2"}>
                                   <CardFooter>
-                                    <Button color="primary" onClick={()=> { updateProject(project.project_id); } }>Save</Button>
+                                    <Button color="primary" onClick={()=> { updateProject(project.project_id); createNotification() } }>Save</Button>
                                     <Button className="button" onClick={() => { close(); }}> Cancel </Button>
                                   </CardFooter>
                                 </div>
@@ -960,7 +964,7 @@ function Dashboard( { User_name } ) {
                                       <form>
                                         <h5 className="projectPriority">Comments</h5>
                                         <ReactQuill modules={modules} theme="snow" onChange={setValues} />
-                                        <div onClick={()=> sendMessage(project.project_id)}>Save</div>
+                                        <div onClick={()=> {sendMessage(project.project_id)}}>Save</div>
                                       </form>
                                     </GridItem>
                                   </GridContainer>
@@ -1842,7 +1846,7 @@ function Dashboard( { User_name } ) {
     ):("")}
     {/***** Completed Project End *****/}
         {/***** Project End *****/}
-        <ToastContainer limit={1}/>
+        <ToastContainer limit={2}/>
       </GridContainer>
     </>
   );
