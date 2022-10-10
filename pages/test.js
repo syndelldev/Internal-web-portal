@@ -1,251 +1,79 @@
-import React, { useEffect, useState , useRef } from "react";
-// layout for this page
+import * as React from "react";
 
-import User from "layouts/User.js";
+const App = () => {
+/** "selected" here is state variable which will hold the
+* value of currently selected dropdown.
+*/
+const [selected, setSelected] = React.useState("");
 
-// core components
-import GridItem from "components/Grid/GridItem.js";
-import GridContainer from "components/Grid/GridContainer.js";
+/** Function that will set different values to state variable
+* based on which dropdown is selected
+*/
+const changeSelectOptionHandler = (event) => {
+	setSelected(event.target.value);
+};
 
-import Card from "components/Card/Card.js";
-import CardHeader from "components/Card/CardHeader.js";
-import CardFooter from "components/Card/CardFooter.js";
+/** Different arrays for different dropdowns */
+const algorithm = [
+	"Searching Algorithm",
+	"Sorting Algorithm",
+	"Graph Algorithm",
+];
+const language = ["C++", "Java", "Python", "C#"];
+const dataStructure = ["Arrays", "LinkedList", "Stack", "Queue"];
 
-import { useForm } from 'react-hook-form';
-import Popup from "reactjs-popup";
-import axios from "axios";
-import { server } from 'config';
-import { FiEdit } from "react-icons/fi";
-import { FaEye } from 'react-icons/fa';
-import { makeStyles } from "@material-ui/core/styles";
-import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
-import { useCookies } from 'react-cookie';
-import { Button } from "@material-ui/core";
-import { getAllJSDocTags } from "typescript";
+/** Type variable to store different array for different dropdown */
+let type = null;
 
+/** This will be used to create set of options that user will see */
+let options = null;
 
-export async function getServerSideProps(context){
-  //console.log(context.req.cookies);
-  const res = await fetch(`${server}/api/user_dashboard`, {
-    headers: {
-      'Access-Control-Allow-Credentials': true,
-      Cookie: context.req.headers.cookie
-    },
-  })
-  const project = await res.json()
-  //console.log(project)
-
-  return { props: {project}, }
+/** Setting Type variable according to dropdown */
+if (selected === "Algorithm") {
+	type = algorithm;
+} else if (selected === "Language") {
+	type = language;
+} else if (selected === "Data Structure") {
+	type = dataStructure;
 }
 
-function Dashboard({project}) {
-  // console.log(project)
-  const useStyles = makeStyles(styles);
-  const classes = useStyles();
-
-  const [cookies, setCookie] = useCookies('');
-  //console.log(cookies.Id);
-
-  const [users, setusers] = useState([])
-
-  useEffect(async()=>{
-    axios.get(`${server}/api/admin/${cookies.Id}` )
-      .then((res)=>{
-        setusers(res.data)
-        //console.log(res)
-      })    
-  },[])
-  // console.log(users)
-
-  const [username, setusername] = useState('');
-  const [message, setmessage] = useState('');
-
-  const [comments, setcomments] = useState([]);
-  console.log(comments)
-  
-  const getData = async (project_id)=>{
-
-    // alert(project_id)
-    let comment = await axios.post(`${server}/api/comment/comment`, { project_id: project_id });
-    // console.log(comment.data)
-    setcomments(comment.data)
-    console.log(comments)
-  }
-  
-
-  const sendMessage = async (project_id) => {
-    // e.preventDefault();
-    // alert(project_id)
-    let addComment = await axios.post(`${server}/api/comment/addcomment`, {  username: cookies.name, message: message , project_id: project_id });
-    console.log(addComment)
-    console.log(cookies.name)
-  }
-
-  return (
-    <>
-      <div>
-        {users.map((user)=>{
-          return(
-            <div key={user.id}>
-              <h1>Welcome {user.username} </h1>
-            </div>
-          )
-        })}
-      </div>
-      <GridContainer>
-       {
-          project.map((project)=>{
-            // const bDate = ((project.project_deadline).substr(0,10).split("-",3));
-            return(
-              <GridItem xs={6} sm={6} md={4} key={project.project_id}>
-                <Card className="projects">
-                  <CardHeader color="primary" className="project-block">
-                  {/*<img className="image" src={`${server}/reactlogo.png`} />*/}
-                  <div className="project-content">
-                    <h4 className="projectTitle">{project.project_title}</h4>
-                  
-                  {/*<CardFooter>
-                    <p className="projectLanguage">{project.project_language}</p>
-            <p className="projectPriority">*/}
-                      
-                      {/*View Project PopUp*/}
-                      {/* <Button disabled={project.view_rights==0} >View</Button>
-                      <Button disabled={project.edit_rights==0} >Edit</Button> */}
-                      <div className="icon-display">
-                        <Popup trigger={<Button disabled={project.view_rights==0} ><FaEye/></Button>}  className="popupReact"  modal>
-                          {close => (
-                            <div>
-                              <GridItem xs={6} sm={6} md={12} key={project.project_id}>
-                                <Card >
-                                  <CardHeader color="primary">
-                                    <GridContainer>
-                                      <GridItem>
-                                        <h4>{project.project_title}</h4>
-                                      </GridItem>
-                                      <div className={classes.close}>
-                                        <a onClick={close}>&times;</a>
-                                      </div>   
-                                    </GridContainer>
-                                  </CardHeader><br/>
-                                  <CardFooter>
-                                    <p>Project Language</p>-<p>{project.project_language}</p>
-                                  </CardFooter>
-                                  <CardFooter>
-                                    <p>{project.project_person}</p>
-                                  </CardFooter>
-                                  <CardFooter>
-                                    <p>{project.project_description}</p>
-                                  </CardFooter>
-                                  <CardFooter>
-                                    <p>{project.project_department}</p>
-                                  </CardFooter>
-                                  <CardFooter>
-                                    <p>{project.project_status}</p>
-                                  </CardFooter>
-                                  <CardFooter>
-                                    <p className="projectPriority">{project.project_priority} Priority</p>
-                                  </CardFooter>
-                                </Card>
-                              </GridItem>
-                            </div>
-                          )}
-                        </Popup>
-
-                        {/*Edit Project PopUp*/}
-                        <Popup trigger={<div> <button disabled={project.edit_rights==0} onClick={()=>getData(project.project_id)} className="user-icon"><FiEdit/></button> </div>}  className="popupReact"  modal >
-                          {close => (
-                            <div>
-                              
-                              <GridItem xs={6} sm={6} md={12} key={project.project_id}>
-                                <Card>
-                                  <CardHeader color="primary">
-                                    <h4>{project.project_title}</h4>
-                                      <div className={classes.close}>
-                                        <a onClick={close}>&times;</a>
-                                      </div>
-                                  </CardHeader>
-                                  <CardFooter>
-                                    <p>Project Language - {project.project_language}</p>
-                                  </CardFooter>
-                                  <CardFooter>
-                                    <p>Project Person - {project.project_person}</p>
-                                  </CardFooter>
-                                  <CardFooter>
-                                    <p>Project Description - {project.project_description}</p>
-                                  </CardFooter>
-                                  <CardFooter>
-                                    <p>Department - {project.project_department}</p>
-                                  </CardFooter>
-                                  <CardFooter>
-                                    <p>Project Status - {project.project_status}</p>
-                                  </CardFooter>
-                                  <CardFooter>
-                                    <p className="projectPriority">{project.project_priority} Priority</p>
-                                  </CardFooter>
-                                  {comments.map((m)=>{
-                                    const Date = ((m.creation_time).substr(0,10).split("-",3));
-                                    const Time = ((m.creation_time).substr(11,16).split(":",3));
-                                    return(
-                                      <>
-                                        <GridContainer>
-                                          <GridItem xs={12} sm={12} md={12}>
-                                            <p>{m.username}</p>
-                                            <p>{m.comment}</p>
-                                            <p>{Date[2]}/{Date[1]}/{Date[0]}</p>
-                                            <p>{Time[0]}:{Time[1]}:{Time[2]}</p>
-                                          </GridItem>
-                                        </GridContainer><br/>
-                                      </>
-                                    )
-                                  })}
-                                  
-                                  <form>
-                                  <br/>
-                                      {/* <input
-                                        type="text"
-                                        value={username}
-                                        onChange={(e) => {
-                                          setusername(e.target.value);
-                                        }}
-                                      />  */}
-                                      <textarea
-                                        className="form-control signup-input"
-                                        type="text"
-                                        value={message}
-                                        onChange={(e) => {
-                                          setmessage(e.target.value);
-                                        }}
-                                      ></textarea>
-                                      <Button type="submit" onClick={()=>sendMessage(project.project_id)}>comment</Button>
-                                    </form>
-                                </Card>
-                              </GridItem>
-
-                            </div>
-                          )}
-                        </Popup>
-                    {/*</p>
-                  </CardFooter>*/}
-                  {/*<CardFooter>
-                    <p>{project.project_person}</p>
-                  </CardFooter>
-                  <CardFooter>
-                    <p className="projectPriority">{project.project_priority} Priority</p>
-                </CardFooter>*/}
-                </div>
-                </div>
-                </CardHeader>
-                </Card>
-              </GridItem>
-            )
-          })
-        }
-          
-        </GridContainer>
-    </>
-  );
+/** If "Type" is null or undefined then options will be null,
+* otherwise it will create a options iterable based on our array
+*/
+if (type) {
+	options = type.map((el) => <option key={el}>{el}</option>);
 }
+return (
+	<div
+	style={{
+		padding: "16px",
+		margin: "16px",
+	}}
+	>
+	<form>
+		<div>
+		{/** Bind changeSelectOptionHandler to onChange method of select.
+		* This method will trigger every time different
+		* option is selected.
+		*/}
+		<select onChange={changeSelectOptionHandler}>
+			<option>Choose...</option>
+			<option>Algorithm</option>
+			<option>Language</option>
+			<option>Data Structure</option>
+		</select>
+		</div>
+		<div>
+		<select>
+			{
+			/** This is where we have used our options variable */
+			options
+			}
+		</select>
+		</div>
+	</form>
+	</div>
+);
+};
 
-Dashboard.layout = User;
-
-export default Dashboard;
+export default App;

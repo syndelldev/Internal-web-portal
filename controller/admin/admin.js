@@ -45,6 +45,7 @@ const UpdateUser = async (req,res) =>{
 
     console.log(req.body)
 
+    
     try{
         let UpdataUser = await executeQuery(" UPDATE tbl_user SET ? WHERE id = ? ", [req.body, id])
         res.status(200).json(UpdataUser);

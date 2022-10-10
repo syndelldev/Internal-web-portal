@@ -47,14 +47,7 @@ function UserDetail({UserDetail}) {
   //Status Active
   const [value, setvalue] = useState('Active');
 
-  const toggleChange = () => {
-    // if(value==='Active'){
-    //   setvalue('Inactive')
-    // }
-    // else if(value==='Inactive'){
-    //   setvalue('Active')
-    // }
-  }
+  
   //Delete User
   const deleteUser = async(id) =>{
 
@@ -93,6 +86,27 @@ function UserDetail({UserDetail}) {
     status: "",
     role: ""
   });
+
+  const [selected, setSelected] = useState("");
+  console.log(selected)
+
+  let role_id_type = userdata.role_id;
+  const role_id = ["1","2","3"]
+  // console.log(role_id)
+
+  if(selected.role == 'Admin'){
+    role_id_type = role_id[0];
+  }
+  else if(selected.role == 'User'){
+    role_id_type = role_id[1];
+  }
+  else if(selected.role == 'Super User'){
+    role_id_type = role_id[2];
+  }
+  console.log(role_id_type)
+
+  
+  
   const [SingleUser, setSingleUser]=useState([])
   const getSingleUserData = async (id)=>{
     const res = await fetch(`${server}/api/admin/${id}`)
@@ -106,8 +120,10 @@ function UserDetail({UserDetail}) {
   
   const handleChange = ({ target: { name, value } }) =>{
     setuserdata({ ...userdata, [name]: value });
+    setSelected({ ...selected, [name]: value });
   }
   console.log(userdata);
+  
 
   //Password Hide & Show Toggle
   const [pwd, setPwd] = useState('');
@@ -129,7 +145,10 @@ function UserDetail({UserDetail}) {
         }
     }
     else{
-      let data = await axios.put(`${server}/api/admin/${id}`, userdata);
+      // let data = await axios.put(`${server}/api/admin/${id}`, userdata);
+      let data = await axios.put(`${server}/api/admin/${id}`, {
+        role_id:role_id_type , username:userdata.username, password:userdata.password, email:userdata.email, mobile_no:userdata.mobile_no, department:userdata.department, position:userdata.position, status:userdata.status, role:userdata.role
+      });
       console.log(data)
       console.log(userdata)
 
@@ -389,7 +408,7 @@ function UserDetail({UserDetail}) {
                               <div>
                                 <GridContainer>
                                   <GridItem xs={12} sm={12} md={12}>
-                                    <form onSubmit={handleSubmit(UpdateUser)} method="POST">{/*()=>{UpdateUser(user.id)}*/}
+                                    <form onSubmit={handleSubmit(UpdateUser)} method="POST">
                                     <Card>
                                       <CardHeader color="primary">
                                       <GridContainer>
@@ -402,14 +421,6 @@ function UserDetail({UserDetail}) {
                                       </GridContainer>
                                       </CardHeader>
                                       <CardBody><br/>
-
-                                        <GridContainer>  
-                                          <GridItem xs={12} sm={12} md={12}>
-                                            <div className="form-group">
-                                              <input type="hidden" className="form-control signup-input" name="role_id" value={userdata.role_id} onChange={handleChange}  />
-                                            </div> 
-                                          </GridItem>
-                                        </GridContainer><br/>
 
                                         <GridContainer>
                                           <GridItem xs={12} sm={12} md={12}>
@@ -496,10 +507,10 @@ function UserDetail({UserDetail}) {
                                               <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                                             </div> 
                                           </GridItem>
-                                        
+
                                           <GridItem xs={12} sm={12} md={6}>
                                             <div className="form-group">
-                                              <select name="role" id="Role" className="form-control signup-input" value={userdata.role} onChange={handleChange} autoComplete="off" >
+                                              <select name="role" id="Role" className="form-control signup-input" value={userdata.role}  onChange={handleChange} autoComplete="off" >
                                                 <option value="" disabled selected >enter your role</option>
                                                 <option value="User">User</option>
                                                 <option value="Admin">Admin</option>
@@ -508,6 +519,13 @@ function UserDetail({UserDetail}) {
                                               <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                                             </div> 
                                           </GridItem>
+
+                                          <GridItem xs={12} sm={12} md={6}>
+                                            <div className="form-group">
+                                              <input type="text" className="form-control signup-input" name="role_id" value={role_id_type} onChange={handleChange} />
+                                            </div> 
+                                          </GridItem>
+                                          
                                         </GridContainer><br/>
 
                                       </CardBody>
