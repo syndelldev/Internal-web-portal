@@ -6,10 +6,6 @@ import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
 import '../node_modules/react-quill/dist/quill.snow.css';
 import { server } from 'config';
-// import Quill from "quill";
-// import { ImageHandler, VideoHandler, AttachmentHandler } from "quill-upload";
-
-// Quill.register("modules/imageHandler", ImageHandler);
 
 class MyComponent extends React.Component {
     constructor(props) {
@@ -43,15 +39,12 @@ class MyComponent extends React.Component {
 
             formData.append('image', file);
             formData.getAll('image');
-            // var options = { content: formData.getAll('image') };
-            // console.log(options);
-            // formData.append('resource_type', 'raw');
 
             // Save current cursor state
             const range = this.quill.getSelection(true);
 
             // Insert temporary loading placeholder image
-            this.quill.insertEmbed(range.index, 'image', `${server}/${file.name}`);
+            this.quill.insertEmbed(range.index, 'image', `${server}/upload_img/${file.name}`);
 
             // Move cursor to right side of image (easier to continue typing)
             this.quill.setSelection(range.index + 1);
