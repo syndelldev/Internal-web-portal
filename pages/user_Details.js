@@ -522,7 +522,7 @@ function UserDetail({UserDetail}) {
 
                                           <GridItem xs={12} sm={12} md={6}>
                                             <div className="form-group">
-                                              <input type="text" className="form-control signup-input" name="role_id" value={role_id_type} onChange={handleChange} />
+                                              <input type="hidden" className="form-control signup-input" name="role_id" value={role_id_type} onChange={handleChange} />
                                             </div> 
                                           </GridItem>
                                           
