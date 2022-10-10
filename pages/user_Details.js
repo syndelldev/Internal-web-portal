@@ -49,9 +49,9 @@ function UserDetail({UserDetail}) {
 
   const toggleChange = () => {
     // if(value==='Active'){
-    //   setvalue('Deactive')
+    //   setvalue('Inactive')
     // }
-    // else if(value==='Deactive'){
+    // else if(value==='Inactive'){
     //   setvalue('Active')
     // }
   }
@@ -59,15 +59,15 @@ function UserDetail({UserDetail}) {
   const deleteUser = async(id) =>{
 
     let delUser = await axios.put(`${server}/api/admin/${id}`,{status:value})
-    router.push("/admin/userdetail");
+    router.push("/user_Details");
   
     //console.log(delUser);
     console.log(value)
 
     if(value==='Active'){
-      setvalue('Deactive')
+      setvalue('Inactive')
     }
-    else if(value==='Deactive'){
+    else if(value==='Inactive'){
       setvalue('Active')
     }
   }
@@ -491,7 +491,7 @@ function UserDetail({UserDetail}) {
                                               <select name="status" id="Status" className="form-control signup-input"  value={userdata.status} onChange={handleChange} autoComplete="off"   >
                                                 <option value="" disabled selected>enter your status</option>
                                                 <option value="Active">Active</option>
-                                                <option value="Deactive">Deactive</option>
+                                                <option value="Inactive">Inactive</option>
                                               </select>
                                               <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                                             </div> 
