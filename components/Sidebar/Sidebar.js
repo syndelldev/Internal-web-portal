@@ -12,10 +12,11 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Icon from "@material-ui/core/Icon";
+import { server } from 'config';
 // core components
 import AdminNavbarLinks from "components/Navbars/AdminNavbarLinks.js";
 import RTLNavbarLinks from "components/Navbars/RTLNavbarLinks.js";
-
+import { useCookies } from 'react-cookie';
 import styles from "assets/jss/nextjs-material-dashboard/components/sidebarStyle.js";
 
 export default function Sidebar(props) {
@@ -24,6 +25,8 @@ export default function Sidebar(props) {
   // creates styles for this component
   const useStyles = makeStyles(styles);
   const classes = useStyles();
+  // get role from cookies
+  const [cookies, setCookie] = useCookies(['name']);
   // verifies if routeName is the one active (in browser input)
   function activeRoute(routeName) {
     return router.route.indexOf(routeName) > -1 ? true : false;
@@ -92,42 +95,14 @@ export default function Sidebar(props) {
         target="_blank"
       >
         <div className={classes.logoImage}>
-          <img src={logo} alt="logo" className={classes.img} />
+          <img src={`${server}/syndellll.png`} alt="logo" className={classes.img} />
         </div>
         {logoText}
       </a>
     </div>
-  );
+    );
   return (
     <div>
-      <Hidden mdUp implementation="css">
-        <Drawer
-          variant="temporary"
-          anchor={props.rtlActive ? "left" : "right"}
-          open={props.open}
-          classes={{
-            paper: classNames(classes.drawerPaper, {
-              [classes.drawerPaperRTL]: props.rtlActive,
-            }),
-          }}
-          onClose={props.handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-        >
-          {brand}
-          <div className={classes.sidebarWrapper}>
-            {props.rtlActive ? <RTLNavbarLinks /> : <AdminNavbarLinks />}
-            {links}
-          </div>
-          {image !== undefined ? (
-            <div
-              className={classes.background}
-              style={{ backgroundImage: "url(" + image + ")" }}
-            />
-          ) : null}
-        </Drawer>
-          </Hidden>
       <Hidden smDown implementation="css">
         <Drawer
           anchor={props.rtlActive ? "right" : "left"}
@@ -140,7 +115,54 @@ export default function Sidebar(props) {
           }}
         >
           {brand}
-          <div className={classes.sidebarWrapper}>{links}</div>
+          <div className={classes.sidebarWrapper}>
+            <div className="makeStyles-sidebarWrapper-36">
+                <ul className="MuiList-root makeStyles-list-22 MuiList-padding"><br/>
+                <a className=" makeStyles-item-15" href="/dashboard">
+                  <div className="MuiButtonBase-root MuiListItem-root makeStyles-itemLink-16undefined MuiListItem-gutters MuiListItem-button" tabIndex="0" role="button" aria-disabled="false">
+                    <svg className="MuiSvgIcon-root makeStyles-itemIcon-17" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"></path>
+                    </svg>
+                    <div className="MuiListItemText-root makeStyles-itemText-19">Dashboard</div>
+                    <span className="MuiTouchRipple-root"></span>
+                  </div>
+                </a>
+                <a className=" makeStyles-item-15" href="/projects">
+                  <div className="MuiButtonBase-root MuiListItem-root makeStyles-itemLink-16undefined MuiListItem-gutters MuiListItem-button" tabIndex="0" role="button" aria-disabled="false">
+                    {/* <span className="material-icons MuiIcon-root makeStyles-itemIcon-17  makeStyles-whiteFont-21" aria-hidden="true">content_paste</span> */}
+                    <svg className="MuiSvgIcon-root makeStyles-itemIcon-17" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"></path>
+                    </svg>
+                    <div className="MuiListItemText-root makeStyles-itemText-19">Projects</div>
+                    <span className="MuiTouchRipple-root"></span>
+                  </div>
+                </a>
+                <a className=" makeStyles-item-15" href="/tasks">
+                  <div className="MuiButtonBase-root MuiListItem-root makeStyles-itemLink-16undefined MuiListItem-gutters MuiListItem-button" tabIndex="0" role="button" aria-disabled="false">
+                    <span className="material-icons MuiIcon-root makeStyles-itemIcon-17  makeStyles-whiteFont-21" aria-hidden="true">content_paste</span>
+                    <div className="MuiListItemText-root makeStyles-itemText-19">Tasks</div>
+                    <span className="MuiTouchRipple-root"></span>
+                  </div>
+                </a>
+           
+                <a className=" makeStyles-item-15" href="/user_Rights" hidden={cookies.Role_id == "2"}>
+                  <div className="MuiButtonBase-root MuiListItem-root makeStyles-itemLink-16undefined MuiListItem-gutters MuiListItem-button" tabIndex="0" role="button" aria-disabled="false">
+                    <span className="material-icons MuiIcon-root makeStyles-itemIcon-17  makeStyles-whiteFont-21" aria-hidden="true">content_paste</span>
+                    <div className="MuiListItemText-root makeStyles-itemText-19">User Rights</div>
+                    <span className="MuiTouchRipple-root"></span>
+                  </div>
+                </a>
+                <a className=" makeStyles-item-15" href="/user_Details" hidden={cookies.Role_id != "1"}>
+                  <div className="MuiButtonBase-root MuiListItem-root makeStyles-itemLink-16undefined MuiListItem-gutters MuiListItem-button" tabIndex="0" role="button" aria-disabled="false">
+                    <span className="material-icons MuiIcon-root makeStyles-itemIcon-17  makeStyles-whiteFont-21" aria-hidden="true">content_paste</span>
+                    <div className="MuiListItemText-root makeStyles-itemText-19">User Details</div>
+                    <span className="MuiTouchRipple-root"></span>
+                  </div>
+                </a>
+
+                </ul>
+            </div>
+          </div>
           {image !== undefined ? (
             <div
               className={classes.background}
@@ -148,7 +170,7 @@ export default function Sidebar(props) {
             />
           ) : null}
         </Drawer>
-      </Hidden>
+          </Hidden>
     </div>
   );
 }

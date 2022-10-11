@@ -2,7 +2,7 @@ import { executeQuery } from "../../config/db";
 
 const getAllUser = async (req,res) =>{
     try{
-        let userData=await executeQuery(" SELECT * FROM `tbl_user` ", [] );
+        let userData=await executeQuery(" SELECT * FROM `tbl_user` WHERE `role_id` NOT IN (1) ", [] );
         res.send(userData);
     }
     catch(err){
@@ -45,6 +45,7 @@ const UpdateUser = async (req,res) =>{
 
     console.log(req.body)
 
+    
     try{
         let UpdataUser = await executeQuery(" UPDATE tbl_user SET ? WHERE id = ? ", [req.body, id])
         res.status(200).json(UpdataUser);
