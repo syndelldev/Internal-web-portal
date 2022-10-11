@@ -67,7 +67,7 @@ function UserById(data){
     const [userdata, setuserdata] = useState({
       role_id:"",
       username: "",
-      password: "",
+      // password: "",
       email: "",
       mobile_no: "",
       //dob: "",
@@ -252,6 +252,7 @@ function UserById(data){
                               <option value="">enter your role</option>
                               <option value="User">User</option>
                               <option value="Admin">Admin</option>
+                              <option value="Super User">Super User</option>
                             </select>
                             <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                           </div> 
