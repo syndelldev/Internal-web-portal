@@ -201,6 +201,8 @@ h4.text {
 }
 
 .bttn-design{
+  cursor: pointer!important;
+  margin-right: 30px;
   color:#fff;
   font-weight: 600;
   padding: 9px 20px;
@@ -411,6 +413,7 @@ table.project-data {
   width: 100%;
 }
 table.project-data th{
+  width: 20%!important;
   background-color: #fff;
   text-align: left;
   padding-left: 15px;
@@ -443,7 +446,7 @@ td.assignee-data p {
   padding-right: 10px;
 }
 td {
-  padding-top: 10px;
+  padding-top: 5px;
 }
 h4.projectTitle{
   padding-left: 15px;
@@ -503,8 +506,11 @@ h3.not-data {
   font-weight: 400;
 }
 table.project-data {
-  margin-top: 20px;
+  margin-top: 10px;
 
+}
+td.priority-data p {
+  float: left;
 }
 .project-status .MuiGrid-grid-sm-6{
   margin-right: 30px;
@@ -579,7 +585,12 @@ td.status-data {
 p.Task-lang {
   font-weight: 600;
 }
+/**icon css**/
+img.dashboard-image {
+  padding-right: 10px;}
 
+/**icon css**/
+.dropdown-effect{display: flex;}
 /** Table project layout start**/
 td.project-title-table,td.project-priority-table {
   padding-left: 15px;
@@ -610,7 +621,7 @@ h5.profile-data {
 }
 img.user-image{height: 30px;}
 .Project-title {
-  padding-bottom: 5px;
+  padding-bottom: 25px;
   font-size: 40px;
   font-weight: 500;
 }

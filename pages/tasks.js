@@ -804,9 +804,12 @@ const updateComment = async(id, comment) =>{
 
 </GridContainer>
 </div>
-    <div className="main_task_title">
-      <h3>My Tasks</h3>
-      <button className="bttn-design" onClick={()=>{taskToDo("task_toDo") , closeTaskToDo("task_toDo"), settodo_title(!todo_title), taskOnHold("taskOn_hold") , closeTaskOnHold("taskOn_hold"), setonhold_title(!onhold_title), taskRunning("task_Running") , closeTaskRunning("task_Running"),setrunning_title(!running_title), taskCompleted("task_completed") , closeTaskCompleted("task_completed") , setcompleted_title(!completed_title) }}>Expand All</button>
+
+<div className="Project-title">Tasks</div>
+<div className="main_task_title">
+
+      <button className="bttn-design" onClick={()=>{taskToDo("task_toDo") ,  settodo_title(true), taskOnHold("taskOn_hold") , setonhold_title(true), taskRunning("task_Running") , closeTaskRunning("task_Running"),setrunning_title(true), taskCompleted("task_completed") , setcompleted_title(true) }}>Expand All</button>
+      <button className="bttn-design" onClick={()=>{taskToDo("task_toDo") , closeTaskToDo("task_toDo"), settodo_title(false), taskOnHold("taskOn_hold") , closeTaskOnHold("taskOn_hold"), setonhold_title(false), taskRunning("task_Running") , closeTaskRunning("task_Running"),setrunning_title(false), taskCompleted("task_completed") , closeTaskCompleted("task_completed") , setcompleted_title(false) }}>Collpase All</button>
     </div>
     <GridContainer>  
     <Card>
