@@ -110,15 +110,17 @@ function Dashboard( { User_name } ) {
 
   const [cookies, setCookie] = useCookies(['name']);
 
-  const createNotification = (allMember) => {
-    // alert(allMember);
+  //Notification Start
+  const createNotification = (project_id) => {
+    console.log(project_id)
     toast.info('Notification !', {
       position: "top-right",
       autoClose:false,
       theme: "colored",
       hideProgressBar: true,
-      });
-    }
+    });
+  }
+  //Notification End
 
   const [project_details, setproject_details] = useState([])
   //Fetch API According Role Start
@@ -696,11 +698,27 @@ function Dashboard( { User_name } ) {
     <GridContainer>
     
     {/***** Running Project start *****/}
-    <div className="Project-title">Projects</div>
-    <div className="Project-expand" onClick={()=> 
-      {  project_running("running"), closeOnHold("running"), setrunning_title(!running_title), project_OnHold("on hold"), closeTaskToDo("on hold"), setonhold_title(!onhold_title)
-      project_Completed("completed"), closeCompleted("completed"), setcompleted_title(!completed_title) }}
-      >Expand All</div>
+    <GridContainer>
+    <GridItem>
+      <div className="Project-title">Projects</div>
+    </GridItem>
+
+    <GridContainer>
+      <GridItem>
+        <button className="bttn-design" onClick={()=> 
+          {  project_running("running"), closeOnHold("running"), setrunning_title(true), project_OnHold("on hold"), closeTaskToDo("on hold"), setonhold_title(true)
+          project_Completed("completed"), closeCompleted("completed"), setcompleted_title(true) }}
+          >Expand All</button>
+      </GridItem>
+
+      <GridItem>
+        <button className="bttn-design" onClick={()=> 
+          {  project_running("running"), closeOnHold("running"), setrunning_title(false), project_OnHold("on hold"), closeTaskToDo("on hold"), setonhold_title(false)
+          project_Completed("completed"), closeCompleted("completed"), setcompleted_title(false) }}
+          >Collapse All</button>
+      </GridItem>
+    </GridContainer>
+  </GridContainer>
 
     <Card className="task_title_status">
       <GridContainer >
@@ -953,7 +971,7 @@ function Dashboard( { User_name } ) {
                                   </CardBody>
                                 <div hidden={cookies.Role_id == "2"}>
                                   <CardFooter>
-                                    <Button color="primary" onClick={()=> { updateProject(project.project_id); createNotification() } }>Save</Button>
+                                    <Button color="primary" onClick={()=> { updateProject(project.project_id); createNotification(project.project_id) } }>Save</Button>
                                     <Button className="button" onClick={() => { close(); }}> Cancel </Button>
                                   </CardFooter>
                                 </div>
