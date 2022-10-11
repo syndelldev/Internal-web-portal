@@ -41,13 +41,26 @@ class MyComponent extends React.Component {
             formData.getAll('image');
 
             // Save current cursor state
-            const range = this.quill.getSelection(true);
+            // const range = this.quill.getSelection(true);
+
+            // Insert temporary loading placeholder image
+            // this.quill.insertEmbed(range.index, 'image', `${server}/upload_img/${file.name}`);
 
             // Move cursor to right side of image (easier to continue typing)
-            this.quill.setSelection(range.index + 1);
+            // this.quill.setSelection(range.index + 1);
 
             // const res = await apiPostNewsImage(formData); // API post, returns image location as string e.g. 'http://www.example.com/images/foo.png'
             console.log(file);
+
+            const range = this.quill.getSelection(true);
+            this.quill.setSelection(range.index + 1);
+
+            // Remove placeholder image
+            this.quill.deleteText(range.index, 1);
+
+            // Insert uploaded image
+            // this.quill.insertEmbed(range.index, 'image', res.body.image);
+            this.quill.insertEmbed(range.index, 'image', `${server}/upload_img/${file.name}`);
 
             const res = await fetch(`${server}/api/upload`,{ 
                 method: 'POST',
@@ -60,16 +73,6 @@ class MyComponent extends React.Component {
             if (data.error) {
                 console.error(data.error);
             }
-
-            // Remove placeholder image
-            this.quill.deleteText(range.index, 1);
-
-            // Insert uploaded image
-            // this.quill.insertEmbed(range.index, 'image', res.body.image);
-            this.quill.insertEmbed(range.index, 'image', `${server}/upload_img/${file.name}`);
-
-            // Insert temporary loading placeholder image
-            // this.quill.insertEmbed(range.index, 'image', `${server}/upload_img/${file.name}`);
 
         };
     }
