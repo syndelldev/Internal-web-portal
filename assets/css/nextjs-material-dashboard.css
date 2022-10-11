@@ -599,8 +599,6 @@ button.addproject{
   color: #fff;
 }
 .project-priority-person .chip{
-  margin-left:-20px;
-
   height: 50px;
 }
 .main_task_title{
@@ -619,3 +617,19 @@ button.addproject{
 .makeStyles-cardTitleWhite-560,p.makeStyles-cardCategoryWhite-559{
   color: #fff!important;
 }
+
+  /* css added by Pradeep */
+  .main_task_title{
+    margin: 30px -15px 0;
+  }
+  .quill strong img{
+    max-width: 100px;
+    max-height: 100px;
+    margin: 0 10px;
+  }
+  .btn-primary{
+    background-color: #00155c!important;
+    border: 1px solid #00155c!important;
+  }
+  
+  /* end added css by Pradeep */

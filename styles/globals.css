@@ -260,7 +260,7 @@ a.icon-edit-delete {
     left:100% !important;
     height:100% !important;
     transition: transform .2s ease-in-out !important;*/
-    transform: translateX(76%);
+    /* transform: translateX(76%); */
 }
 td.project-edit-table a {
   color: #000;
@@ -644,6 +644,13 @@ img.user-image{height: 30px;}
 /*Profile page css start*/
 .profile-page.mobile{width: 100%!important;}
 /*Profile page css end*/
+/* ccs added by pradeep */
+/* expand and collapse btn css */
+.bttn-design{
+  margin-left: 15px;
+  margin-top: 30px;
+}
+/* end css added by pradeep */
 }
 @media only screen and (max-width: 1279px) and (min-width: 1024px){
   .project-status{
@@ -682,3 +689,4 @@ img.user-image{height: 30px;}
   h4.projectTitle{
 font-size: 17px!important;
   }}
+
