@@ -3,25 +3,28 @@ import { useState } from "react";
 import { useRouter } from 'next/router'
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
+import InputLabel from "@material-ui/core/InputLabel";
 // layout for this page
 import Admin from "layouts/Admin.js";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
+import CustomInput from "components/CustomInput/CustomInput.js";
 import Button from "components/CustomButtons/Button.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
+import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
-import { IoMdEye , IoMdEyeOff , IoMdArrowDropdown } from "react-icons/io";
+import { IoMdArrowDropdown } from "react-icons/io";
 import { useForm, Controller  } from 'react-hook-form';
 import { server } from 'config';
+import avatar from "assets/img/faces/marc.jpg";
 import DatePicker from "react-datepicker";
 import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input'
-
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
-import bcrypt from 'bcryptjs'
+
 
 const styles = {
   cardCategoryWhite: {
@@ -51,17 +54,11 @@ function AddUser() {
 
   const [phonenum, setphonenum] = useState()
 
-  //Password Hide & Show Toggle
-  const [pwd, setPwd] = useState('');
-  const [isRevealPwd, setIsRevealPwd] = useState(false);
-
   const onSubmit = async (result) =>{
-    const hashedPassword = bcrypt.hashSync(result.password, 10)
-    console.log(hashedPassword)
-
+    
     console.log(result);
     let addUser = axios.post(`${server}/api/admin/`, {
-      role_id:result.role_id, username:result.name, password:hashedPassword, email:result.email, PhoneNum:result.PhoneNum, /*DOB:startDate,*/ department:result.department, position:result.position, status:result.status, role:result.role 
+      role_id:result.role_id, username:result.name, password:result.password, email:result.email, PhoneNum:result.PhoneNum, /*DOB:startDate,*/ department:result.department, position:result.position, status:result.status, role:result.role 
     })
     toast.success('User Created Successfully! 🎉', {
       position: "top-right",
@@ -143,8 +140,7 @@ function AddUser() {
                       <GridContainer>  
                         <GridItem xs={12} sm={12} md={12}>
                           <div className="form-group">
-                            <input  type={isRevealPwd ? 'text' : 'password'} name="password" className="form-control signup-input" placeholder="Password" {...register('password', { required: "You must specify a password",minLength: {value: 8, message: "Password must have at least 8 characters" }, pattern: {value: /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/, message: 'must include lower, upper, number, and special chars',} })}  />
-                            <span className='icon-eyes' onClick={() => setIsRevealPwd((prevState) => !prevState)} >{isRevealPwd ? <IoMdEyeOff /> : <IoMdEye/>}</span>
+                            <input type="password" className="form-control signup-input" placeholder="Password" {...register('password', { required: "You must specify a password",minLength: {value: 8, message: "Password must have at least 8 characters" }, pattern: {value: /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/, message: 'must include lower, upper, number, and special chars',} })}  />
                             <div className="error-msg">{errors.password && <p>{errors.password.message}</p>}</div>
                           </div> 
                         </GridItem>
