@@ -33,7 +33,7 @@ import "assets/css/nextjs-material-dashboard.css?v=1.1.0";
 import { CookiesProvider } from 'react-cookie';
 import 'react-quill/dist/quill.snow.css';
 
-// import firebase from "./utils/firebase.js";
+// import firebase from "utils/firebase.js";
 
 
 Router.events.on("routeChangeStart", (url) => {
