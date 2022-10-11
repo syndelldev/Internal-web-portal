@@ -28,7 +28,7 @@
     "axios": "^0.27.2",
     "bcrypt": "^5.0.1",
     "bcryptjs": "^2.4.3",
-    "bootstrap": "^5.2.1",
+    "bootstrap": "^5.2.2",
     "caniuse-lite": "^1.0.30001393",
     "chartist": "^1.1.2",
     "classnames": "^2.3.1",

@@ -487,7 +487,7 @@ function Dashboard( { User_name } ) {
                   <GridItem xs={12} sm={12} md={12}>
                     <form onSubmit={handleSubmit(onSubmit)}>              
                       <Card>
-                        <CardHeader color="primary">
+                        <CardHeader className="model-header" color="primary">
                           <GridContainer>
                             <GridItem>
                               <h4 className={classes.cardTitleWhite}>Create Project</h4>

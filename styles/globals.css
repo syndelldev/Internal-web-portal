@@ -260,7 +260,7 @@ a.icon-edit-delete {
     left:100% !important;
     height:100% !important;
     transition: transform .2s ease-in-out !important;*/
-    transform: translateX(76%);
+    /* transform: translateX(76%); */
 }
 td.project-edit-table a {
   color: #000;
