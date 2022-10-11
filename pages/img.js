@@ -43,9 +43,6 @@ class MyComponent extends React.Component {
             // Save current cursor state
             const range = this.quill.getSelection(true);
 
-            // Insert temporary loading placeholder image
-            this.quill.insertEmbed(range.index, 'image', `${server}/upload_img/${file.name}`);
-
             // Move cursor to right side of image (easier to continue typing)
             this.quill.setSelection(range.index + 1);
 
@@ -70,6 +67,10 @@ class MyComponent extends React.Component {
             // Insert uploaded image
             // this.quill.insertEmbed(range.index, 'image', res.body.image);
             this.quill.insertEmbed(range.index, 'image', `${server}/upload_img/${file.name}`);
+
+            // Insert temporary loading placeholder image
+            // this.quill.insertEmbed(range.index, 'image', `${server}/upload_img/${file.name}`);
+
         };
     }
 
