@@ -262,6 +262,9 @@ a.icon-edit-delete {
     transition: transform .2s ease-in-out !important;*/
     transform: translateX(76%);
 }
+td.project-edit-table a {
+  color: #000;
+}
 .project-block {
   padding-bottom: 4px!important;
 }
@@ -607,7 +610,7 @@ h5.profile-data {
 }
 img.user-image{height: 30px;}
 .Project-title {
-  padding-bottom: 40px;
+  padding-bottom: 5px;
   font-size: 40px;
   font-weight: 500;
 }
