@@ -3,7 +3,7 @@ import { executeQuery } from "../../config/db";
 
 const getAllProject = async (req,res) =>{
     try{
-        let projectData=await executeQuery(" SELECT * FROM `tbl_project` ", [] );
+        let projectData=await executeQuery(" SELECT * FROM `tbl_project` ORDER BY FIELD(`project_priority`,'high','medium','low')", [] );
         res.send(projectData);
     }
     catch(err){

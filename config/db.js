@@ -23,7 +23,7 @@ pool.getConnection((err)=>{
     {
         console.log("Database Connection Error");
     }
-    console.log("Database Connected Succesfully");
+    console.log("Database Connected Successfully");
 });
 
 const executeQuery=(query, arraparams)=>{
@@ -32,7 +32,7 @@ const executeQuery=(query, arraparams)=>{
             pool.query(query, arraparams,(err,data)=>{
                 if(err)
                 {
-                    console.log('Error in executing Query');
+                    console.log('Error in executing query');
                     rejects(err);
                 }
                 resolve(data);

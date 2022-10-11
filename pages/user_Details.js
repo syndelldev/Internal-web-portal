@@ -1,0 +1,561 @@
+import React,{ useEffect, useState } from "react";
+import { useRouter } from 'next/router'
+import { makeStyles } from "@material-ui/core/styles";
+
+import { IoMdEye , IoMdEyeOff , IoMdArrowDropdown } from "react-icons/io";
+import { FiEdit } from 'react-icons/fi'
+import { FaEye } from 'react-icons/fa'
+
+// layout for this page
+import Modules from "../layouts/Modules";
+// core components
+import GridItem from "components/Grid/GridItem.js";
+import GridContainer from "components/Grid/GridContainer.js";
+import Button from "components/CustomButtons/Button.js";
+import Card from "components/Card/Card.js";
+import CardHeader from "components/Card/CardHeader.js";
+import CardAvatar from "components/Card/CardAvatar.js";
+import CardBody from "components/Card/CardBody.js";
+import CardFooter from "components/Card/CardFooter.js";
+
+import Table from "@material-ui/core/Table";
+import TableHead from "@material-ui/core/TableHead";
+import TableBody from "@material-ui/core/TableBody";
+import TableRow from "@material-ui/core/TableRow";
+import TableCell from "@material-ui/core/TableCell";
+import styles from "assets/jss/nextjs-material-dashboard/components/tableStyle.js";
+import axios from "axios";
+import Popup from "reactjs-popup";
+import { server } from 'config';
+import { ToastContainer, toast } from 'react-toastify';
+import { useForm, Controller  } from 'react-hook-form';
+import PhoneInput from 'react-phone-number-input'
+import bcrypt from 'bcryptjs'
+
+export async function getServerSideProps(context){
+  const res = await fetch(`${server}/api/admin`)
+  const UserDetail = await res.json()
+  //console.log(UserDetail);
+
+  return{ props: {UserDetail} }
+} 
+
+function UserDetail({UserDetail}) {
+  // console.log(UserDetail);
+  const { register,  watch, handleSubmit, formState: { errors }, setValue, control } = useForm({mode: "onBlur"}); 
+
+  //Status Active
+  const [value, setvalue] = useState('Active');
+
+  
+  //Delete User
+  const deleteUser = async(id) =>{
+
+    let delUser = await axios.put(`${server}/api/admin/${id}`,{status:value})
+    router.push("/user_Details");
+  
+    //console.log(delUser);
+    console.log(value)
+
+    if(value==='Active'){
+      setvalue('Inactive')
+    }
+    else if(value==='Inactive'){
+      setvalue('Active')
+    }
+  }
+
+  const onSubmit = async(data) =>{
+    //console.log(data);
+  }
+  const router = useRouter();
+  const useStyles = makeStyles(styles);
+  const classes = useStyles();
+  
+  //Update API Start
+
+  const [userdata, setuserdata] = useState({
+    role_id:"",
+    username: "",
+    password: "",
+    email: "",
+    mobile_no: "",
+    //dob: "",
+    department: "",
+    position: "",
+    status: "",
+    role: ""
+  });
+
+  const [selected, setSelected] = useState("");
+  // console.log(selected)
+
+  let role_id_type = userdata.role_id;
+  const role_id = ["1","2","3"]
+
+  if(selected.role == 'Admin'){
+    role_id_type = role_id[0];
+  }
+  else if(selected.role == 'User'){
+    role_id_type = role_id[1];
+  }
+  else if(selected.role == 'Super User'){
+    role_id_type = role_id[2];
+  }
+  console.log(role_id_type)
+  
+  const [SingleUser, setSingleUser]=useState([])
+  const getSingleUserData = async (id)=>{
+    const res = await fetch(`${server}/api/admin/${id}`)
+    const data = await res.json()
+    setSingleUser(data[0])
+  }
+
+  useEffect(()=>{
+    setuserdata(SingleUser);
+  },[SingleUser])
+  
+  const handleChange = ({ target: { name, value } }) =>{
+    setuserdata({ ...userdata, [name]: value });
+    setSelected({ ...selected, [name]: value });
+  }
+  console.log(userdata);
+  
+
+  //Password Hide & Show Toggle
+  const [pwd, setPwd] = useState('');
+  const [isRevealPwd, setIsRevealPwd] = useState(false);
+
+  //Update User API
+  const toastId = React.useRef(null);
+  const UpdateUser = async (id) =>{
+
+    if( userdata.username == "" || userdata.password == "" || userdata.email == "" || userdata.mobile_no == "" || userdata.department == "" || userdata.position == "" || userdata.status == "" || userdata.role == "" ){
+      if(! toast.isActive(toastId.current)){
+        toastId.current = toast.error('Please fill all the required fields', {
+            position: "top-right",
+            autoClose:5000,
+            theme: "colored",
+            closeOnClick: true,
+            hideProgressBar: true,
+          });
+        }
+    }
+    else{
+      // let data = await axios.put(`${server}/api/admin/${id}`, userdata);
+      let data = await axios.put(`${server}/api/admin/${id}`, {
+        role_id:role_id_type , username:userdata.username, password:userdata.password, email:userdata.email, mobile_no:userdata.mobile_no, department:userdata.department, position:userdata.position, status:userdata.status, role:userdata.role
+      });
+      console.log(data)
+      console.log(userdata)
+
+      if(!toast.isActive(toastId.current)) {
+        toastId.current = toast.success('Updated Successfully ! 🎉', {
+            position: "top-right",
+            autoClose:1000,
+            theme: "colored",
+            hideProgressBar: true,
+            onClose: () => router.push(`${server}/user_Details`)
+            });
+        }
+        router.reload(`${server}/user_Details`);
+    }
+  }
+  //Update API End
+
+  //Add User API Start
+  const [phonenum, setphonenum] = useState()
+  const AddUser = async (result) =>{
+    console.log(result);
+
+    const hashedPassword = bcrypt.hashSync(result.password, 10)
+    console.log(hashedPassword)
+
+    let addUser = axios.post(`${server}/api/admin/`, {
+      role_id:result.role_id, username:result.name, password:hashedPassword, email:result.email, PhoneNum:result.PhoneNum, /*DOB:startDate,*/ department:result.department, position:result.position, status:result.status, role:result.role 
+    })
+    if(!toast.isActive(toastId.current)) {
+      toastId.current = toast.success('User Created Successfully ! 🎉', {
+          position: "top-right",
+          autoClose:1000,
+          theme: "colored",
+          hideProgressBar: true,
+          onClose: () => router.push(`${server}/user_Details`)
+          });
+      }
+      router.reload(`${server}/user_Details`);
+  }
+  //Add User API End
+  return (
+    <>
+    <div>
+      {/*Users Details List Start*/}
+      <GridContainer>
+        <GridItem xs={12} sm={12} md={12}>
+          <Card>
+            <CardHeader color="primary">
+              <h4 className="text">User Details</h4>
+              <Popup trigger={<Button color="primary" className="add_new_user">+ Add New User</Button>} className="popupReact" modal>
+              {close => (
+                <div>
+                  <GridContainer>
+                    <GridItem xs={12} sm={12} md={12}>
+                      <form onSubmit={handleSubmit(AddUser)}  method="POST" >
+                        <Card>
+                          <CardHeader color="primary">
+                            <GridContainer>
+                              <GridItem>
+                                <h4 className="text">Create New User</h4>
+                              </GridItem>
+                              <div className={classes.close}>
+                                <a onClick={close}>&times;</a>
+                              </div>
+                            </GridContainer>
+                          </CardHeader>
+                          <CardBody><br/>
+
+                            <GridContainer>  
+                              <GridItem xs={12} sm={12} md={12}>
+                                <div className="form-group">
+                                  <input type="hidden" className="form-control signup-input" placeholder="role_id" value={2} {...register('role_id', { required: 'Please enter your role_id'} )} />
+                                  <div className="error-msg">{errors.role_id && <p>{errors.role_id.message}</p>}</div>
+                                </div> 
+                              </GridItem>
+                            </GridContainer><br/>
+
+                            <GridContainer>
+                              <GridItem xs={12} sm={12} md={12}>
+                                <div className="form-group">
+                                  <input type="text" className="form-control signup-input" placeholder="Username" {...register('name',  { required: "Please enter your Name", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })} />
+                                  <div className="error-msg">{errors.name && <p>{errors.name.message}</p>}</div>
+                                </div> 
+                                <div className="error-msg">{errors.username && <p>{errors.username.message}</p>}</div>
+                              </GridItem>
+                            </GridContainer><br/>
+
+                            <GridContainer>  
+                              <GridItem xs={12} sm={12} md={12}>
+                                <div className="form-group">
+                                  <input type="text" className="form-control signup-input" placeholder="Email" {...register('email', { required: 'Please enter your email', pattern: {value: /^[a-zA-Z0-9]+@+syndelltech+.+[A-z]$/ , message: 'Please enter a valid email ex:email@syndelltech.in',},} )} />
+                                  <div className="error-msg">{errors.email && <p>{errors.email.message}</p>}</div>
+                                </div> 
+                              </GridItem>
+                            </GridContainer><br/>
+
+                            <GridContainer>
+                              <GridItem xs={12} sm={12} md={12}>
+                                <div className="form-group">
+                                  <input type="password" className="form-control signup-input" placeholder="Password" {...register('password', { required: "You must specify a password",minLength: {value: 8, message: "Password must have at least 8 characters" }, pattern: {value: /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/, message: 'must include lower, upper, number, and special chars',} })}  />
+                                  <div className="error-msg">{errors.password && <p>{errors.password.message}</p>}</div>
+                                </div> 
+                              </GridItem>
+                            </GridContainer><br/>
+
+                            <GridContainer>
+                              <GridItem xs={12} sm={12} md={12}>
+                                <div className="form-group">
+                                  <Controller
+                                    name="PhoneNum"
+                                    control={control}
+                                    rules={{ required: true }}
+                                    render={({ field: { onChange, value } }) => (
+                                    <PhoneInput
+                                      className="form-control signup-input"
+                                      {...register('PhoneNum',  { required: "Please enter your phone number", message: 'Only Numbers allow', })} 
+                                      defaultCountry={"IN"}
+                                      maxLength={11}
+                                      placeholder="Phone Number"
+                                      value={phonenum}
+                                      onChange={setphonenum}
+                                    />
+                                    )}
+                                  />
+                                </div> 
+                              </GridItem>
+                            </GridContainer><br/>
+
+                            <GridContainer>
+                              <GridItem xs={12} sm={12} md={12}>
+                                <div className="form-group">
+                                  <select name="Department" id="Department" className="form-control signup-input" {...register('department', {required:true ,message:'Please select atleast one option', })}>
+                                    <option value="" disabled selected>Select Your Department...</option>
+                                    <option value="HR">HR</option>
+                                    <option value="UI & UX">UI & UX</option>
+                                    <option value="Web Developer">Web Developer</option>
+                                    <option value="Content Writer">Content Writer</option>
+                                    <option value="Project Manager">Project Manager</option>
+                                    <option value="Mobile App Developer">Mobile App Developer</option>
+                                    <option value="SEO">SEO</option>
+                                  </select>
+                                  <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                  <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>
+                                </div> 
+                              </GridItem>
+                            </GridContainer><br/>
+                            
+                            <GridContainer>
+                              <GridItem xs={12} sm={12} md={12}>
+                                <div className="form-group">
+                                  <select name="position" id="position" className="form-control signup-input" {...register('position', {required: "Please enter your department" ,message:'Please select atleast one option', })}>
+                                    <option value="" disabled selected>Select Your Position</option>
+                                    <option value="Jr. HR">Jr. HR</option>
+                                    <option value="Jr. UI & UX">Jr. UI & UX</option>
+                                    <option value="Jr. Web Development">Jr. Web Developer</option>
+                                    <option value="Jr. Content Writer">Jr. Content Writer</option>
+                                    <option value="Jr. Project Manager">Jr. Project Manager</option>
+                                    <option value="Jr. Mobile App Developer">Jr. Mobile App Developer</option>
+                                    <option value="Jr. SEO">Jr. SEO</option>
+                                    <option value="Sr. HR">Sr. HR</option>
+                                    <option value="Sr. UI & UX">Sr. UI & UX</option>
+                                    <option value="Sr. Web Developer">Sr. Web Developer</option>
+                                    <option value="Sr. Content Writer">Sr. Content Writer</option>
+                                    <option value="Sr. Project Manager">Sr. Project Manager</option>
+                                    <option value="Sr. Mobile App Developer">Sr. Mobile App Developer</option>
+                                    <option value="Sr. SEO">Sr. SEO</option>
+                                  </select>
+                                  <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                  <div className="error-msg">{errors.position && <p>{errors.position.message}</p>}</div>
+                                </div>
+                              </GridItem>
+                            </GridContainer><br/>
+
+                            <GridContainer>
+                              <GridItem xs={12} sm={12} md={12}>
+                                <div className="form-group">
+                                  <select name="Status" id="Status" className="form-control signup-input" {...register('status', {required:true ,message:'Please select atleast one option', })}>
+                                    <option value="Select..." disabled selected>Select Your Status...</option>
+                                    <option value="Active">Active</option>
+                                    <option value="Inactive">Inactive</option>
+                                  </select>
+                                  <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                  <div className="error-msg">{errors.status && <p>{errors.status.message}</p>}</div>
+                                </div><br/> 
+                              </GridItem>
+                            
+                              <GridItem xs={12} sm={12} md={12}>
+                                <div className="form-group">
+                                  <select name="Role" id="Role" className="form-control signup-input" {...register('role', {required:true ,message:'Please select atleast one option', })}>
+                                    <option value="Select..." disabled selected>Select Your Role...</option>
+                                    <option value="User">User</option>
+                                    <option value="Admin">Admin</option>
+                                    <option value="Super User">Super User</option>
+                                  </select>
+                                  <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                  <div className="error-msg">{errors.role && <p>{errors.role.message}</p>}</div>
+                                </div> 
+                              </GridItem>
+                            </GridContainer><br/>
+
+                          </CardBody>
+
+                          <CardFooter>
+                            <Button color="primary" type="submit" onClick={()=>{AddUser()}}>Add User</Button>
+                          </CardFooter>
+
+                        </Card>
+                      </form>
+                    </GridItem>
+                  </GridContainer>
+                </div>
+              )}
+              </Popup>
+            </CardHeader>
+              <CardBody>
+              <div className={classes.tableResponsive}>
+                <Table className={classes.table}>
+                  <TableHead className={classes.TableHeader}>
+                    <TableRow className={classes.tableHeadRow}>
+                      <TableCell>ID</TableCell>
+                      <TableCell>Username</TableCell>
+                      <TableCell>Email</TableCell>
+                      <TableCell>Mobile No</TableCell>
+                      <TableCell>Department</TableCell>
+                      <TableCell>Position</TableCell>
+                      <TableCell>Status</TableCell>
+                      <TableCell>Role</TableCell>
+                      <TableCell>Action</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                  {UserDetail.map((user)=>{
+                    return(
+                      <TableRow key={user.id} className={classes.tableHeadRow}>
+                        <TableCell>{user.id}</TableCell>
+                        <TableCell>{user.username}</TableCell>
+                        <TableCell>{user.email}</TableCell>
+                        <TableCell>{user.mobile_no}</TableCell>
+                        <TableCell>{user.department}</TableCell>
+                        <TableCell>{user.position}</TableCell>
+                        <TableCell>
+                        <div>
+                          <label className="switch">
+                            <a>
+                              <input type="checkbox" name="status" value={user.status} defaultChecked={user.status === 'Active'}  onClick={()=>deleteUser(user.id)} />
+                              <span className="slider round" ></span>
+                            </a> 
+                          </label>
+                        </div>
+                        </TableCell>
+                        <TableCell>{user.role}</TableCell>
+                        <TableCell>
+                          {/* <a href={`/admin/userdetail/${user.id}`}><FiEdit/></a>&nbsp;&nbsp;&nbsp; */}
+                          {/*Edit user Detail Start*/}
+                          <Popup trigger={<div><a onClick={()=>{getSingleUserData(user.id)}}><FiEdit/></a></div>} className="popupReact" modal>
+                            {close => (
+                              <div>
+                                <GridContainer>
+                                  <GridItem xs={12} sm={12} md={12}>
+                                    <form onSubmit={handleSubmit(UpdateUser)} method="POST">
+                                    <Card>
+                                      <CardHeader color="primary">
+                                      <GridContainer>
+                                        <GridItem>
+                                          <h4 className="text">Update User Detail</h4>
+                                        </GridItem>
+                                          <div className={classes.close}>
+                                            <a onClick={close}>&times;</a>
+                                          </div>
+                                      </GridContainer>
+                                      </CardHeader>
+                                      <CardBody><br/>
+
+                                        <GridContainer>
+                                          <GridItem xs={12} sm={12} md={12}>
+                                            <div className="form-group">
+                                              <input type="text" className="form-control signup-input" name="username" placeholder="enter your name" value={userdata.username} onChange={handleChange} />
+                                            </div> 
+                                          </GridItem>
+                                        </GridContainer><br/>
+
+                                        <GridContainer>  
+                                          <GridItem xs={12} sm={12} md={12}>
+                                            <div className="form-group">
+                                              <input type="text" className="form-control signup-input" name="email" placeholder="enter your email" value={userdata.email} onChange={handleChange} autoComplete="off"  />
+                                            </div> 
+                                          </GridItem>
+                                        </GridContainer><br/>
+
+                                        <GridContainer>  
+                                          <GridItem xs={12} sm={12} md={12}>
+                                            <div className="form-group">
+                                              <input type={isRevealPwd ? 'text' : 'password'} className="form-control signup-input" name="password" placeholder="enter your password" value={userdata.password} onChange={handleChange} autoComplete="off"  />
+                                              <span className='icon-eyes' onClick={() => setIsRevealPwd((prevState) => !prevState)} >{isRevealPwd ? <IoMdEyeOff /> : <IoMdEye/>}</span>
+                                            </div> 
+                                          </GridItem>
+                                        </GridContainer><br/>
+
+                                        <GridContainer>
+                                          <GridItem xs={12} sm={12} md={6}>
+                                            <div className="form-group">
+                                              <input type="text" className="form-control signup-input" name="mobile_no" placeholder="enter your Mobile number" value={userdata.mobile_no} onChange={handleChange} autoComplete="off"  />
+                                            </div> 
+                                          </GridItem>
+                                          <GridItem xs={12} sm={12} md={6}>
+                                            <div className="form-group">
+                                              <select name="department" id="Department" value={userdata.department} onChange={handleChange} autoComplete="off" className="form-control signup-input" >
+                                                <option value="" disabled selected>enter your department</option>
+                                                <option value="HR">HR</option>
+                                                <option value="UI & UX">UI & UX</option>
+                                                <option value="Web development">Web development</option>
+                                                <option value="Content writer">Content writer</option>
+                                                <option value="Project manager">Project manager</option>
+                                                <option value="Mobile App developer">Mobile App developer</option>
+                                                <option value="SEO">SEO</option>
+                                              </select>
+                                              <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                            </div> 
+                                          </GridItem>
+                                        </GridContainer><br/>
+
+                                        <GridContainer>
+                                          <GridItem xs={12} sm={12} md={12}>
+                                            <div className="form-group">
+                                              {/*<input type="text" className="form-control signup-input" name="position" placeholder="enter your position" value={userdata.position} onChange={handleChange} autoComplete="off"  />*/}
+                                              <select name="position" id="position" className="form-control signup-input" value={userdata.position} onChange={handleChange}  >
+                                                <option value="" disabled selected>Junior HR</option>
+                                                <option value="Jr. HR">Jr. HR</option>
+                                                <option value="Jr. UI & UX">Jr. UI & UX</option>
+                                                <option value="Jr. Web Development">Jr. Web Developer</option>
+                                                <option value="Jr. Content Writer">Jr. Content Writer</option>
+                                                <option value="Jr. Project Manager">Jr. Project Manager</option>
+                                                <option value="Jr. Mobile App Developer">Jr. Mobile App Developer</option>
+                                                <option value="Jr. SEO">Jr. SEO</option>
+                                                <option value="Sr. HR">Sr. HR</option>
+                                                <option value="Sr. UI & UX">Sr. UI & UX</option>
+                                                <option value="Sr. Web Developer">Sr. Web Developer</option>
+                                                <option value="Sr. Content Writer">Sr. Content Writer</option>
+                                                <option value="Sr. Project Manager">Sr. Project Manager</option>
+                                                <option value="Sr. Mobile App Developer">Sr. Mobile App Developer</option>
+                                                <option value="Sr. SEO">Sr. SEO</option>
+                                              </select>
+                                              <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                            </div> 
+                                          </GridItem>
+                                        </GridContainer><br/>
+
+                                        <GridContainer>
+                                          <GridItem xs={12} sm={12} md={6}>
+                                            <div className="form-group">
+                                              <select name="status" id="Status" className="form-control signup-input"  value={userdata.status} onChange={handleChange} autoComplete="off"   >
+                                                <option value="" disabled selected>enter your status</option>
+                                                <option value="Active">Active</option>
+                                                <option value="Inactive">Inactive</option>
+                                              </select>
+                                              <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                            </div> 
+                                          </GridItem>
+
+                                          <GridItem xs={12} sm={12} md={6}>
+                                            <div className="form-group">
+                                              <select name="role" id="Role" className="form-control signup-input" value={userdata.role}  onChange={handleChange} autoComplete="off" >
+                                                <option value="" disabled selected >enter your role</option>
+                                                <option value="User">User</option>
+                                                <option value="Admin">Admin</option>
+                                                <option value="Super User">Super User</option>
+                                              </select>
+                                              <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                            </div> 
+                                          </GridItem>
+
+                                          <GridItem xs={12} sm={12} md={6}>
+                                            <div className="form-group">
+                                              <input type="hidden" className="form-control signup-input" name="role_id" value={role_id_type} onChange={handleChange} />
+                                            </div> 
+                                          </GridItem>
+                                          
+                                        </GridContainer><br/>
+
+                                      </CardBody>
+                                      <CardFooter>
+                                        <Button color="primary" type="submit" onClick={()=>{UpdateUser(user.id)}}>Update User</Button>
+                                      </CardFooter>
+                                    </Card>
+                                    </form>
+                                  </GridItem>
+                                </GridContainer>
+                              </div>
+                            )}
+                          </Popup>
+                          {/*Edit user Detail End*/}
+                          {/* <a href={`/admin/viewuser/${user.id}`}><FaEye/></a> */}
+                        </TableCell>
+                      </TableRow>
+                    )
+                  })}
+                  </TableBody>
+                </Table>
+              </div>
+            </CardBody>
+          </Card>
+        </GridItem>
+      </GridContainer>
+      <ToastContainer limit={1}/>
+      {/*Users Details List End*/}
+    </div>
+    </>
+  );
+}
+
+UserDetail.layout = Modules;
+
+export default UserDetail;

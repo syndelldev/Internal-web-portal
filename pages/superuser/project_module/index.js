@@ -191,8 +191,8 @@ function ProjectModule( { project_details , User_name } ) {
   const projectId = async(id) =>{
     console.log('update project id');
     console.log(id);
-    // var comment = await axios.post(`${server}/api/comment/getProjectComment`, { project_id: id });
-    // setcomments(comment.data)
+    var comment = await axios.post(`${server}/api/comment/getProjectComment`, { project_id: id });
+    setcomments(comment.data)
 
     const response = await fetch(`${server}/api/project/update/${id}`)
     const update_data = await response.json();
@@ -886,7 +886,7 @@ const updateComment = async(id, comment) =>{
                         <Button className="button" onClick={() => { close(); }}> Cancel </Button>
                     </CardFooter>
                     
-                    {/*<CardBody>
+                    <CardBody>
                       <GridContainer>
                         <GridItem>
                           <ReactQuill modules={modules} theme="snow" onChange={setCommentValue} />
@@ -894,61 +894,77 @@ const updateComment = async(id, comment) =>{
                         </GridItem>
                       </GridContainer>
                     
-                       {comments.map((superuserComment)=>{
-                        return(
-                          <span>
-                            <GridContainer>
-                              <GridItem>
-                                <span>{superuserComment.username}</span>
-                              </GridItem>
-                            </GridContainer>
+                    {comments.map((superuserComment)=>{
+                      return(
+                        <span>
+                          <GridContainer>
+                            <GridItem>
+                              <span>{superuserComment.username}</span>
+                            </GridItem>
+                          </GridContainer>
 
-                            <GridContainer>
-                              <GridItem>
-                                <div>
-                                  <ReactQuill value={superuserComment.comment} theme="bubble" readOnly />
-                                  <Popup trigger={ <span><button onClick={()=>{ editComment(superuserComment.id)} } disabled={ superuserComment.username != cookies.name }>Edit</button></span> }
-                                    className="popupReact"
-                                    modal
-                                  >
-                                  {close => (
-                                    <Card>
-                                      <CardBody>
-                                            <div className={classes.close}>
-                                              <a onClick={close}>&times;</a>
-                                            </div>
-                                            <GridContainer>
-                                              <GridItem xs={12} sm={12} md={12} >
-                                                <form>
-                                                  <ReactQuill modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
-                                                </form>
-                                              </GridItem>
-                                            </GridContainer>
-                                            <CardFooter>
-                                                <Button color="primary" type="submit"  onClick={() => { updateComment(superuserComment.id, commentEdit) }}>Update</Button>
-                                                <Button className="button" onClick={() => { close(); }}> Cancel </Button>
-                                            </CardFooter>
-                                          </CardBody>
-                                        </Card>
-                                        )}  
-                                      </Popup>
+                          <GridContainer>
+                                            <GridItem>
+                                              <div>
+
+                                              <ReactQuill value={superuserComment.comment} theme="bubble" readOnly />
+
+      <Popup trigger={ <span><button onClick={()=>{ editComment(superuserComment.id)} } disabled={ superuserComment.username != cookies.name }>Edit</button></span> }
+        className="popupReact"
+        modal
+      >
+        {close => (
+                              <Card>
+                                <CardBody>
+                                      <div className={classes.close}>
+                                        <a onClick={close}>&times;</a>
                                       </div>
+
+                                  <GridContainer>
+                                    <GridItem xs={12} sm={12} md={12} >
+                                      <form>
+
+                                        <ReactQuill modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
+
+                                      </form>
                                     </GridItem>
                                   </GridContainer>
-                                </span>
-                              )
-                            })
 
-                          }
-                          </CardBody> */}
-                        </Card>
-                      </form>
-                    </GridItem>
-                  </GridContainer>
-                </div>
+                                  <CardFooter>
+                                      <Button color="primary" type="submit"  onClick={() => { updateComment(superuserComment.id, commentEdit) }}>Update</Button>
+                                      <Button className="button" onClick={() => { close(); }}> Cancel </Button>
+                                  </CardFooter>
+                                </CardBody>
+                              </Card>
+        )}
+        
+      </Popup>
+
+                                              </div>
+                                            </GridItem>
+                                          </GridContainer>
+
+                        </span>
+                      )
+                    })
+
+                    }
+                    </CardBody>
+
+
+
+                  </Card>
+              </form>
+              </GridItem>
+              </GridContainer>
+
+              </div>
+
+
               )}
               </Popup>
-                <Popup trigger={<a><MdDelete/></a>} modal>
+
+                      <Popup trigger={<a><MdDelete/></a>} modal>
                         {close => (
                           <div>
                           <Card>                            

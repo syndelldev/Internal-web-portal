@@ -11,6 +11,9 @@ import bcrypt from 'bcryptjs'
 function SignIn(){
     const { register, watch, handleSubmit, formState: { errors }, setValue, control } = useForm({mode: "onBlur"}); 
     const router = useRouter();
+    
+    //const notify = () => toast("Wow so easy!");
+
 
     const [startDate, setStartDate] = useState();
     console.log(startDate)
@@ -27,10 +30,9 @@ function SignIn(){
     const password = useRef({});
     password.current = watch("password", "");
 
-    
     //API call
     const onSubmit= async(result) =>{
-        console.log(result.password);
+
         const hashedPassword = bcrypt.hashSync(result.password, 10)
         console.log(hashedPassword)
 
@@ -46,7 +48,9 @@ function SignIn(){
             toast.success('SignUp Successfully !', {
                 position: "top-right",
                 autoClose:1000,
-                onClose: () => router.push("/login")
+                theme: "colored",
+                hideProgressBar: true,
+                onClose: () => router.push(`${server}/login`)
             });
             router.push("/login");
         }
@@ -57,7 +61,7 @@ function SignIn(){
     }
     return(
         <>
-            <style global jsx>{`html, body,div#__next{background-color: #ADD8E6; }`}</style>
+            <style global jsx>{`html, body,div#__next{background-color: #00155c; }`}</style>
             <section className='login-section'>
                 <div className='container login-container'>
                     <div className='login-div'>

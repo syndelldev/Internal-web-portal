@@ -8,7 +8,7 @@ async function projectStatus(req,res) {
     console.log(req.cookies);
 
     try{
-        let projectStatus = await executeQuery("SELECT * FROM `tbl_project` WHERE project_status='on hold'  AND project_person LIKE ? ", [`%${req.cookies.name}%`]);
+        let projectStatus = await executeQuery("SELECT * FROM `tbl_project` WHERE project_status='on hold'  AND project_person LIKE ?  and `project_delete`='no' ORDER BY FIELD(`project_priority`,'high','medium','low')", [`%${req.cookies.name}%`]);
         res.status(200).json(projectStatus);
         // console.log(projectStatus)
     }
