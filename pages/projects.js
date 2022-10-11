@@ -1055,46 +1055,6 @@ function Dashboard( { User_name } ) {
                       )}
                       </Popup>
                       {/*Edit popup End*/}
-                      {/*View Project PopUp Start*/}
-                      <Popup trigger={<button disabled={project.view_rights==0} ><FaEye/></button>}  className="popupReact"  modal>
-                          {close => (
-                            <div>
-                              <GridItem xs={6} sm={6} md={12} key={project.project_id}>
-                                <Card >
-                                  <CardHeader color="primary">
-                                    <GridContainer>
-                                      <GridItem>
-                                        <h4>{project.project_title}</h4>
-                                      </GridItem>
-                                      <div className={classes.close}>
-                                        <a onClick={close}>&times;</a>
-                                      </div>   
-                                    </GridContainer>
-                                  </CardHeader><br/>
-                                  <CardFooter>
-                                    <p>Project Language</p>-<p>{project.project_language}</p>
-                                  </CardFooter>
-                                  <CardFooter>
-                                    <p>{project.project_person}</p>
-                                  </CardFooter>
-                                  <CardFooter>
-                                    <p>{project.project_description}</p>
-                                  </CardFooter>
-                                  <CardFooter>
-                                    <p>{project.project_department}</p>
-                                  </CardFooter>
-                                  <CardFooter>
-                                    <p>{project.project_status}</p>
-                                  </CardFooter>
-                                  <CardFooter>
-                                    <p className="projectPriority">{project.project_priority} Priority</p>
-                                  </CardFooter>
-                                </Card>
-                              </GridItem>
-                            </div>
-                          )}
-                        </Popup>
-                      {/*View Project PopUp End */}
                       {/*Delete popUp Start*/}
                       <Popup trigger={<div className="icon-edit-delete" hidden={cookies.Role_id == "2"}><MdDelete/></div>} modal>
                             {close => (
