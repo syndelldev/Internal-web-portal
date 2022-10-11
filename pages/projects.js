@@ -807,8 +807,8 @@ function Dashboard( { User_name } ) {
                                   <CardHeader color="primary">
                                     <GridContainer>
                                       <GridItem>
-                                        <h4 className={classes.cardTitleWhite}>Edit Project</h4>
-                                        <p className={classes.cardCategoryWhite}>Update your project details</p>
+                                        <h4 className={classes.cardTitleWhite + ' ' + 'text-white'}>Edit Project</h4>
+                                        <p className={classes.cardCategoryWhite + ' ' + 'text-white'}>Update your project details</p>
                                       </GridItem>
                                       <div className={classes.close}>
                                         <a onClick={close}>&times;</a>
@@ -1001,7 +1001,7 @@ function Dashboard( { User_name } ) {
 
                                               <ReactQuill value={m.comment} theme="bubble" readOnly />
       <Popup
-        trigger={ <span><button onClick={()=>{ editComment(m.id)} } disabled={ m.username != cookies.name }>Edit</button></span> }
+        trigger={ <span><button className="btn btn-primary" onClick={()=>{ editComment(m.id)} } disabled={ m.username != cookies.name }>Edit</button></span> }
         className="popupReact"
         modal
       >
@@ -1187,8 +1187,8 @@ function Dashboard( { User_name } ) {
                                   <CardHeader color="primary">
                                     <GridContainer>
                                       <GridItem>
-                                        <h4 className={classes.cardTitleWhite}>Edit Project</h4>
-                                        <p className={classes.cardCategoryWhite}>Update your project details</p>
+                                        <h4 className={classes.cardTitleWhite + ' ' + 'text-white'}>Edit Project</h4>
+                                        <p className={classes.cardCategoryWhite + ' ' + 'text-white'}>Update your project details</p>
                                       </GridItem>
                                       <div className={classes.close}>
                                         <a onClick={close}>&times;</a>
@@ -1383,7 +1383,7 @@ function Dashboard( { User_name } ) {
 
                                               <ReactQuill value={m.comment} theme="bubble" readOnly />
       <Popup
-        trigger={ <span><button onClick={()=>{ editComment(m.id)} } disabled={ m.username != cookies.name }>Edit</button></span> }
+        trigger={ <span><button className="btn btn-primary" onClick={()=>{ editComment(m.id)} } disabled={ m.username != cookies.name }>Edit</button></span> }
         className="popupReact"
         modal
       >
@@ -1570,8 +1570,8 @@ function Dashboard( { User_name } ) {
                                   <CardHeader color="primary">
                                     <GridContainer>
                                       <GridItem>
-                                        <h4 className={classes.cardTitleWhite}>Edit Project</h4>
-                                        <p className={classes.cardCategoryWhite}>Update your project details</p>
+                                        <h4 className={classes.cardTitleWhite + ' ' + 'text-white'}>Edit Project</h4>
+                                        <p className={classes.cardCategoryWhite + ' ' + 'text-white'}>Update your project details</p>
                                       </GridItem>
                                       <div className={classes.close}>
                                         <a onClick={close}>&times;</a>
@@ -1765,7 +1765,7 @@ function Dashboard( { User_name } ) {
 
                                               <ReactQuill value={m.comment} theme="bubble" readOnly />
       <Popup
-        trigger={ <span><button onClick={()=>{ editComment(m.id)} } disabled={ m.username != cookies.name }>Edit</button></span> }
+        trigger={ <span><button className="btn btn-primary" onClick={()=>{ editComment(m.id)} } disabled={ m.username != cookies.name }>Edit</button></span> }
         className="popupReact"
         modal
       >
