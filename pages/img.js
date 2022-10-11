@@ -18,10 +18,10 @@ class MyComponent extends React.Component {
         this.setState({ editorHtml: html });
     }
 
-    apiPostNewsImage(formData) {
-        fetch(
-            `${server}/api/upload`,
-            { method: 'POST', body: formData })
+    apiPostNewsImage() {
+        console.log("1");
+        console.log("1");
+        console.log("1");
         // API post, returns image location as string e.g. 'http://www.example.com/images/foo.png'
     }
 
@@ -69,7 +69,7 @@ class MyComponent extends React.Component {
 
             // Insert uploaded image
             // this.quill.insertEmbed(range.index, 'image', res.body.image);
-            this.quill.insertEmbed(range.index, 'image', res);
+            this.quill.insertEmbed(range.index, 'image', `${server}/upload_img/${file.name}`);
         };
     }
 
