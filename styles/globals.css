@@ -260,7 +260,10 @@ a.icon-edit-delete {
     left:100% !important;
     height:100% !important;
     transition: transform .2s ease-in-out !important;*/
-    transform: translateX(100%);
+    transform: translateX(76%);
+}
+td.project-edit-table a {
+  color: #000;
 }
 .project-block {
   padding-bottom: 4px!important;
@@ -449,6 +452,7 @@ h4.projectTitle{
   padding-right: 15px;
 }
 h3.on-track {
+  cursor: pointer;
   background: #0096FF;
   padding: 50px;
   border-radius: 10px;
@@ -457,6 +461,7 @@ h3.on-track {
   font-weight: 600;
 }
 h3.off-track{
+  cursor: pointer;
   background: #FF0000;
   padding: 50px;
   border-radius: 10px;
@@ -465,6 +470,7 @@ h3.off-track{
   font-weight: 600;
 }
 h3.completed-project{
+  cursor: pointer;
   background: #34BE82;
   padding: 50px;
   border-radius: 10px;
@@ -473,6 +479,7 @@ h3.completed-project{
   font-weight: 600;
 }
 h3.on-hold{
+  cursor: pointer;
   background:#FFD800;
   padding: 50px;
   border-radius: 10px;
@@ -484,7 +491,21 @@ h3.on-hold{
   justify-content: space-around;
   display: flex;
 }
+.Projects-title {
+  padding-top: 30px;
+  padding-left: 40px;
+  font-size: 30px;
+  font-weight: 600;
+}
+h3.not-data {
+  padding-left: 40px;
+  font-size: 20px;
+  font-weight: 400;
+}
+table.project-data {
+  margin-top: 20px;
 
+}
 .project-status .MuiGrid-grid-sm-6{
   margin-right: 30px;
   max-width: 100%;
@@ -589,7 +610,7 @@ h5.profile-data {
 }
 img.user-image{height: 30px;}
 .Project-title {
-  padding-bottom: 40px;
+  padding-bottom: 5px;
   font-size: 40px;
   font-weight: 500;
 }
