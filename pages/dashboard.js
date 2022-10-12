@@ -383,7 +383,9 @@ useEffect(() =>{
 
     {running_title ? (
       <>
+
       <div className="Projects-title"> {project_Status} Projects</div>
+      <div className="tracking-projects"></div>
         <table className="project-data" >
           {project_List.length > 0 ? (
             <>
@@ -432,8 +434,8 @@ useEffect(() =>{
                                   <CardHeader color="primary">
                                     <GridContainer>
                                       <GridItem>
-                                        <h4 className={classes.cardTitleWhite}>Edit Project</h4>
-                                        <p className={classes.cardCategoryWhite}>Update your project details</p>
+                                        <h4 className={classes.cardTitleWhite + ' ' + 'text-white'}>Edit Project</h4>
+                                        <p className={classes.cardCategoryWhite + ' ' + 'text-white'}>Update your project details</p>
                                       </GridItem>
                                       <div className={classes.close}>
                                         <a onClick={close}>&times;</a>
@@ -653,6 +655,7 @@ useEffect(() =>{
           </>
          ) : (<div className="no_Data"><h3 className="not-data">No Data</h3></div>)}
         </table>
+  
       </>
     ):("")}
 

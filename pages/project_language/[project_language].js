@@ -518,8 +518,8 @@ function ProjectFilter({ project_details , User_name }){
                                         <CardHeader color="primary">
                                             <GridContainer>
                                             <GridItem>
-                                                <h4 className={classes.cardTitleWhite}>Edit Project</h4>
-                                                <p className={classes.cardCategoryWhite}>Update your project details</p>
+                                                <h4 className={classes.cardTitleWhite + ' ' + 'text-white'}>Edit Project</h4>
+                                                <p className={classes.cardCategoryWhite + ' ' + 'text-white'}>Update your project details</p>
                                             </GridItem>
                                             <div className={classes.close}>
                                                 <a onClick={close}>&times;</a>

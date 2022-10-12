@@ -722,8 +722,8 @@ const updateComment = async(id, comment) =>{
 
                   <GridContainer>
                     <GridItem>
-                      <h4 className={classes.cardTitleWhite}>Edit Project{(project.project_id)}</h4>
-                      <p className={classes.cardCategoryWhite}>Update your project details</p>
+                      <h4 className={classes.cardTitleWhite + ' ' + 'text-white'}>Edit Project{(project.project_id)}</h4>
+                      <p className={classes.cardCategoryWhite + ' ' + 'text-white'}>Update your project details</p>
                     </GridItem>
 
                     {/* <GridItem> */}

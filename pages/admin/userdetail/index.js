@@ -130,7 +130,7 @@ function UserDetail({UserDetail}) {
                   <TableRow className={classes.tableHeadRow}>
                     <TableCell>ID</TableCell>
                     <TableCell>Username</TableCell>
-                    <TableCell>Password</TableCell>
+                    {/* <TableCell>Password</TableCell> */}
                     <TableCell>Email</TableCell>
                     <TableCell>Mobile No</TableCell>
                     <TableCell>Department</TableCell>
@@ -182,7 +182,7 @@ function UserDetail({UserDetail}) {
                     <TableRow key={user.id} className={classes.tableHeadRow}>
                       <TableCell>{user.id}</TableCell>
                       <TableCell>{user.username}</TableCell>
-                      <TableCell>{user.password}</TableCell>
+                      {/* <TableCell>{user.password}</TableCell> */}
                       <TableCell>{user.email}</TableCell>
                       <TableCell>{user.mobile_no}</TableCell>
                       <TableCell>{user.department}</TableCell>
