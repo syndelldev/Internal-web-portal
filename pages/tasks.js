@@ -435,11 +435,10 @@ const updateStatus = async(t_status) =>{
         position: "top-right",
         autoClose:1000,
         theme: "colored",
-        hideProgressBar: true,
-        onClose: () => router.push(`${server}/tasks`)
+        hideProgressBar: true
       });
     }
-    // router.reload(`${server}/tasks`);
+  router.reload(`${server}/tasks`);
 }
 
 const [comments, setcomments] = useState([]);
@@ -814,13 +813,25 @@ const updateComment = async(id, comment) =>{
 </GridContainer>
 </div>
 
-<div className="Project-title">Tasks</div>
-<div className="main_task_title">
+<GridContainer>
+  <GridItem>
+    <div className="Project-title">Tasks</div>
+  </GridItem>
 
-      <button className="bttn-design" onClick={()=>{taskToDo("task_toDo") ,  settodo_title(true), taskOnHold("taskOn_hold") , setonhold_title(true), taskRunning("task_Running") , closeTaskRunning("task_Running"),setrunning_title(true), taskCompleted("task_completed") , setcompleted_title(true) }}>Expand All</button>
-      <button className="bttn-design" onClick={()=>{taskToDo("task_toDo") , closeTaskToDo("task_toDo"), settodo_title(false), taskOnHold("taskOn_hold") , closeTaskOnHold("taskOn_hold"), setonhold_title(false), taskRunning("task_Running") , closeTaskRunning("task_Running"),setrunning_title(false), taskCompleted("task_completed") , closeTaskCompleted("task_completed") , setcompleted_title(false) }}>Collpase All</button>
-    </div>
-    <GridContainer>  
+  <div className="main_task_title">
+    <GridContainer>
+      <GridItem>
+        <button className="bttn-design" onClick={()=>{taskToDo("task_toDo") ,  settodo_title(true), taskOnHold("taskOn_hold") , setonhold_title(true), taskRunning("task_Running") , closeTaskRunning("task_Running"),setrunning_title(true), taskCompleted("task_completed") , setcompleted_title(true) }}>Expand All</button>
+      </GridItem>
+      <GridItem>
+        <button className="bttn-design" onClick={()=>{taskToDo("task_toDo") , closeTaskToDo("task_toDo"), settodo_title(false), taskOnHold("taskOn_hold") , closeTaskOnHold("taskOn_hold"), setonhold_title(false), taskRunning("task_Running") , closeTaskRunning("task_Running"),setrunning_title(false), taskCompleted("task_completed") , closeTaskCompleted("task_completed") , setcompleted_title(false) }}>Collpase All</button>
+      </GridItem>
+    </GridContainer>
+  </div>
+
+</GridContainer>
+
+  <GridContainer>
     <Card>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>

@@ -602,11 +602,6 @@ button.addproject{
   margin-left: -20px;
   height: 50px;
 }
-.main_task_title{
-  /* display: flex;
-
-  justify-content: end; */
-}
 .edit_project{
   border: none!important;
   background: transparent!important;
@@ -620,9 +615,9 @@ button.addproject{
 }
 
   /* css added by Pradeep */
-  .main_task_title{
+  /* .main_task_title{
     margin: 30px -15px 0;
-  }
+  } */
   .quill strong img{
     max-width: 100px;
     max-height: 100px;
