@@ -609,6 +609,10 @@ td.project-title-table,td.project-priority-table {
 td.project-priority-person {
   padding-left: 15px;
 }
+.form-group span{
+  color:#00155c;
+  font-weight: 600;
+}
 /** Table project layout end **/
 
 /** Profile page css start **/
@@ -634,6 +638,36 @@ img.user-image{height: 30px;}
   font-weight: 500;
 }
 /** Profile page css end **/
+/** Project sidebar css start **/
+.Project-sidebar{
+  padding-bottom:0px!important;
+}
+.Project-sidebar-comments{
+padding-top: 0px!important;
+}
+h5.project-comments{
+  margin: 0px !important;
+  font-size: 15px;
+  color:#00155c;
+  font-weight: 600;
+}
+p.save-btn{
+  text-align: center;
+  margin-top: 20px;
+  width: 15%;
+  cursor: pointer!important;
+  margin-right: 30px;
+  color:#fff;
+  font-weight: 600;
+  padding: 9px 20px;
+  font-size: 16px;
+  background-color: #00155c;
+  border: none;
+  border-radius: 8px;
+
+
+}
+/** Project sidebar css end **/
 /** Project module css start **/
 .task_title {
   font-weight: 600;

@@ -815,7 +815,7 @@ function Dashboard( { User_name } ) {
                                       </div>
                                     </GridContainer>
                                   </CardHeader>
-                                  <CardBody>
+                                  <CardBody className="Project-sidebar">
 
                                   <GridContainer>
                                     <GridItem xs={12} sm={12} md={12}>                      
@@ -969,13 +969,13 @@ function Dashboard( { User_name } ) {
                                   </CardFooter>
                                 </div>
 
-                                <CardBody>
+                                <CardBody className="Project-sidebar-comments">
                                 <GridContainer>
                                     <GridItem>
                                       <form>
-                                        <h5 className="projectPriority">Comments</h5>
+                                        <h5 className="project-comments">Comments</h5>
                                         <ReactQuill modules={modules} theme="snow" onChange={setValues} />
-                                        <div onClick={()=> {sendMessage(project.project_id)}}>Save</div>
+                                        <div onClick={()=> {sendMessage(project.project_id)}}><p className="save-btn">Save</p></div>
                                       </form>
                                     </GridItem>
                                   </GridContainer>
