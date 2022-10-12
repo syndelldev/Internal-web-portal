@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { useState } from "react";
 import { useRouter } from 'next/router';
 import { makeStyles } from "@material-ui/core/styles";
@@ -27,8 +27,21 @@ import axios from "axios";
 import dynamic from "next/dynamic";
 import 'react-quill/dist/quill.snow.css';
 import "react-quill/dist/quill.bubble.css";
+// import ReactQuill from "react-quill";
 
-const ReactQuill = dynamic(import('react-quill'), { ssr: false });
+// const ReactQuill = dynamic(import('react-quill'), { ssr: false });
+
+const ReactQuill = dynamic(
+  async () => {
+    const { default: RQ } = await import("react-quill");
+
+    return ({ forwardedRef, ...props }) => <RQ ref={forwardedRef} {...props} />;
+  },
+  {
+    ssr: false
+  }
+);
+
 
 const styles = {
   cardCategoryWhite: {
@@ -431,18 +444,102 @@ function Dashboard( { User_name } ) {
     }
   
     const [ value, setValues ] = useState("");
-    const modules = {
-      toolbar: [
-        [{ 'font': [] }],
-        [{ 'size': ['small', false, 'large', 'huge'] }],
-        ['bold', 'italic', 'underline'],
-        [{'list': 'ordered'}, {'list': 'bullet'}],
-        [{ 'align': [] }],
-        [{ 'color': [] }, { 'background': [] }],
-        ['clean'],
-        ['link', 'image', 'video']
-      ]
-    }
+    const quillRef = useRef(null);
+
+    const imageHandler = () => {
+
+      // const editor = quillRef.current.getEditor();
+      const input = document.createElement('input');
+
+      input.setAttribute('type', 'file');
+      input.setAttribute('accept', 'image/*');
+      input.click();
+
+      input.onchange = async () => {
+          let data = null;
+          const file = input.files ? input.files[0] : null;
+          const formData = new FormData();
+
+          formData.append('image', file);
+          formData.getAll('image');
+
+          console.log(file);
+
+          // // Insert temporary loading placeholder image
+          // this.quill.insertEmbed(range.index, 'image', `${server}/upload_img/${file.name}`);
+
+          // // Move cursor to right side of image (easier to continue typing)
+          // this.quill.setSelection(range.index + 1);
+
+          // const res = await apiPostNewsImage(formData); // API post, returns image location as string e.g. 'http://www.example.com/images/foo.png'
+          // console.log(file);
+
+          const res = await fetch(`${server}/api/upload`,{ 
+              method: 'POST',
+              body: formData,
+          });
+          data = await res.json();
+          console.log(data.files.image.originalFilename);
+
+          insertToEditor(`${server}/upload_img/${file.name}`);
+
+          // Save current cursor 
+          const range = quillRef.current.getEditor().getSelection();
+          // const range = quillObj.getEditorSelection();
+          console.log(range);
+          const quill = quillRef.current.getEditor();
+          quill.insertEmbed( range.index, "image", `${server}/upload_img/${file.name}`);
+          quillRef.current.getEditor().setSelection(range.index + 1);
+
+          // if (data.error) {
+          //     console.error(data.error);
+          // }
+
+          // // Remove placeholder image
+          // this.quill.deleteText(range.index, 1);
+
+          // // Insert uploaded image
+          // this.quill.insertEmbed(range.index, 'image', res);
+      };
+
+  }
+
+  const insertToEditor = url => {
+    // push image url to rich editor.
+    // const range = quillRef.current;
+    const quillEditor = quillRef.current.getEditor();
+
+    console.log("123");
+    console.log(url);
+    console.log(quillEditor);
+    // quil.setSelection(range.index + 1);
+    // console.log(quil.current.getEditor().getSelection());
+    // console.log(quillRef.current.getEditor().getSelection());
+
+    // const range = quillRef.getSelection(true);
+    // quillEditor.editor.insertembed(1 , "image", `${url}`);
+  };
+
+
+  const modules = useMemo(() => ({
+      toolbar: {
+          container: [
+              [{ 'font': [] }],
+              [{ 'size': ['small', false, 'large', 'huge'] }],
+              ['bold', 'italic', 'underline'],
+              [{'list': 'ordered'}, {'list': 'bullet'}],
+              [{ 'align': [] }],
+              [{ 'color': [] }, { 'background': [] }],
+              ['clean'],
+              ['link'],
+              ['image'],
+              ['video']
+          ],
+          handlers: {
+            image: imageHandler
+          }
+      },
+    }), []);
   
     const [commentEdit, setEditComment] = useState();
   
@@ -471,8 +568,7 @@ function Dashboard( { User_name } ) {
       // console.log("set comment");
       // console.log(commentEdit);
       
-      
-      
+      const [val, setVal] = useState("");
 
   return (
     <>
@@ -981,8 +1077,14 @@ function Dashboard( { User_name } ) {
                                 <GridContainer>
                                     <GridItem>
                                       <form>
-                                        <h5 className="projectPriority">Comments</h5>
-                                        <ReactQuill modules={modules} theme="snow" onChange={setValues} />
+                                        <h5 className="projectPriority">Comments ref1</h5>
+                                          <ReactQuill
+                                          forwardedRef={quillRef}
+                                            modules={modules}
+                                            value={val} onChange={setVal} 
+                                            theme="snow" 
+                                            // onChange={setValues} 
+                                          />
                                         <div onClick={()=> {sendMessage(project.project_id)}}>Save</div>
                                       </form>
                                     </GridItem>
@@ -1364,7 +1466,12 @@ function Dashboard( { User_name } ) {
                                     <GridItem>
                                       <form>
                                         <h5 className="projectPriority">Comments</h5>
-                                        <ReactQuill modules={modules} theme="snow" onChange={setValues} />
+                                          <ReactQuill
+                                          ref={quillRef}
+                                            modules={modules} 
+                                            theme="snow" 
+                                            onChange={setValues} 
+                                          />
                                         <div onClick={()=> sendMessage(project.project_id)}>Save</div>
                                       </form>
                                     </GridItem>
