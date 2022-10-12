@@ -436,7 +436,7 @@ function Dashboard( { User_name } ) {
       var addComment = await axios.post(`${server}/api/comment/addProjectComments`, {  username: cookies.name, message: value , project_id: project_id, created_D: date });
       console.log(addComment)
       console.log(cookies.name)
-      // router.reload(`${server}/user/projects`);
+      router.reload(`${server}/user/projects`);
     }
   
     const [ value, setValues ] = useState("");
@@ -473,7 +473,19 @@ function Dashboard( { User_name } ) {
           quill.insertEmbed( range.index, "image", `${server}/upload_img/${data.files.image.newFilename}${data.files.image.originalFilename}`);
           quillRef.current.getEditor().setSelection(range.index + 1);
 
-      };
+      }else{
+
+        if(! toast.isActive(toastId.current)) {
+          toastId.current = toast.error('Please upload only image', {
+              position: "top-right",
+              autoClose:5000,
+              theme: "colored",
+              closeOnClick: true,
+              hideProgressBar: true,
+            });
+        }
+  
+      }
     }
   }
 
