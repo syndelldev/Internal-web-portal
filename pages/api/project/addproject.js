@@ -45,12 +45,12 @@ async function addProject(req,res){
             
                 
 
-            var addUserQuery = await executeQuery("INSERT INTO `tbl_project_rights` ( `module_id`,`user_id`, `view`, `edit` ) VALUES (1,?,0,1)", [ `${userid}` ]);
+            // var addUserQuery = await executeQuery("INSERT INTO `tbl_project_rights` ( `module_id`,`user_id`, `view`, `edit` ) VALUES (1,?,0,1)", [ `${userid}` ]);
             
-            var addUserQuery =  await executeQuery("SELECT id FROM `tbl_user` where username =? ",[`${allSelectedUser}`])
+            // var addUserQuery =  await executeQuery("SELECT id FROM `tbl_user` where username =? ",[`${allSelectedUser}`])
 
-            var addUserQuery = await executeQuery("INSERT INTO `tbl_rights` ( `user_id`,`project_id`,`view_rights`, `edit_rights` ) VALUES (?,?,1,1)", [ req.body.project_person , addUserQuery.insertId ]);
-            console.log(addUserQuery)
+            // var addUserQuery = await executeQuery("INSERT INTO `tbl_rights` ( `user_id`,`project_id`,`view_rights`, `edit_rights` ) VALUES (?,?,1,1)", [ req.body.project_person , addUserQuery.insertId ]);
+            // console.log(addUserQuery)
         }
         catch(err){
             console.log(err);

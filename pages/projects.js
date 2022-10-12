@@ -28,6 +28,11 @@ import dynamic from "next/dynamic";
 import 'react-quill/dist/quill.snow.css';
 import "react-quill/dist/quill.bubble.css";
 
+// import PushNotificationLayout from "../components/Notification/PushNotificationLayout.js";
+import * as firebase from "firebase/app";
+import "firebase/messaging";
+import { firebaseCloudMessaging } from "../utils/firebase";
+
 const ReactQuill = dynamic(import('react-quill'), { ssr: false });
 
 const styles = {
@@ -104,24 +109,12 @@ export async function getServerSideProps(context){
   return{ props: { User_name } }
 }
 
-function Dashboard( { User_name } ) {
+function Dashboard( { User_name , children } ) {
 
   const useStyles = makeStyles(styles);
   const classes = useStyles();
 
   const [cookies, setCookie] = useCookies(['name']);
-
-  //Notification Start
-  const createNotification = (project_id) => {
-    console.log(project_id)
-    toast.info('Notification !', {
-      position: "top-right",
-      autoClose:false,
-      theme: "colored",
-      hideProgressBar: true,
-    });
-  }
-  //Notification End
 
   const [project_details, setproject_details] = useState([])
   //Fetch API According Role Start
@@ -293,10 +286,11 @@ function Dashboard( { User_name } ) {
   const { register,  watch, handleSubmit, formState: { errors }, setValue } = useForm(); 
   const router = useRouter();
 
+  const [insertedProjectId, setinsertedProjectId] = useState("")
+  // console.log('insertedProjectId', insertedProjectId)
   const onSubmit = async (result) =>{
-    
-    console.log("result");
-    console.log(result.start.toDateString());
+
+    // console.log(result);
     const p_start = result.start.toDateString();
     const p_end = result.end.toDateString();
     
@@ -307,7 +301,9 @@ function Dashboard( { User_name } ) {
         body:JSON.stringify({project_person:selected,project_department:result.project_department,project_status:result.project_status , project_title:result.project_title, project_description:result.project_description, project_language:result.project_language, project_comment:result.project_comment, project_priority:result.project_priority, project_start: p_start , project_deadline: p_end , projectAdded_by: cookies }),
       })
       const data=await res.json()
-      
+      console.log(data)
+      setinsertedProjectId(data.insertId)
+      // console.log(data.insertId)
       if(res.status==200)
       {
         // alert("success");
@@ -317,11 +313,12 @@ function Dashboard( { User_name } ) {
               autoClose:1000,
               theme: "colored",
               hideProgressBar: true,
-              onClose: () => router.push(`${server}/admin/project_module`)
+              // onClose: () => router.push(`${server}/admin/project_module`)
               });
           }
-  
-        router.reload(`${server}/admin/project_module`);
+          console.log(selected)
+        // router.reload(`${server}/admin/project_module`);
+
       }
       else
       {
@@ -349,13 +346,14 @@ function Dashboard( { User_name } ) {
       const getUsername = [];
 
       User_name.map((user)=>{
-        getUsername.push( {'label' :user.username, 'value' :user.username} );
+        getUsername.push( {'label' :user.id, 'value' :user.username} );
       });
       setOptions(getUsername);
+      console.log(getUsername)
     }
     u_data();
   },[]);
-
+  
   // project Running block open and close onclick
   const [projectRunning, setprojectRunning] = useState([]);
   const project_running = (project) => {
@@ -471,11 +469,64 @@ function Dashboard( { User_name } ) {
       // console.log("set comment");
       // console.log(commentEdit);
       
-      
+  //Notification Start
+    useEffect(()=>{
+      setToken();
+      // Event listener that listens for the push notification event in the background
+      if ("serviceWorker" in navigator){
+          navigator.serviceWorker.addEventListener("message", (event) => {
+              console.log("event for the service worker", event);
+          });
+      }
+      // Calls the getMessage() function if the token is there
+      async function setToken() {
+          try{
+              const token = await firebaseCloudMessaging.init();
+              if (token){
+                  console.log("token : ", token);
+                  getMessage();
+              }
+          }
+          catch(error){
+              console.log(error);
+          }
+      }
+  })
+
+  // Handles the click function on the toast showing push notification
+  const handleClickPushNotification = (url) => {
+      router.push(url);
+  };
+  // Get the push notification message and triggers a toast to display it
+
+  async function getMessage(){
+    console.log('persons', selected)
+    console.log('insertedProjectId', insertedProjectId)
+
+    var data = await axios.post(`${server}/api/notification`, { projectId : insertedProjectId });
+    console.log(data)
+    
+
+    selected.map((msg)=>{
+      toast.info(
+        <div onClick={() => handleClickPushNotification(msg?.data?.url)}>
+          <h5>{msg.label}</h5>
+          <h5 className="Project-title">{msg.value}</h5>
+        </div>,
+        {
+          autoClose: false,
+        }
+      )
+    })
+  }
+  //Notification End    
       
 
   return (
     <>
+    {/* <PushNotificationLayout>
+      <h2>Test</h2>
+    </PushNotificationLayout> */}
 
       <div className="buttonalign" hidden={cookies.Role_id == "2"} >
         <GridContainer>
@@ -485,7 +536,7 @@ function Dashboard( { User_name } ) {
               <div>
                 <GridContainer>
                   <GridItem xs={12} sm={12} md={12}>
-                    <form onSubmit={handleSubmit(onSubmit)}>              
+                    <form onSubmit={handleSubmit(onSubmit)}>          
                       <Card>
                         <CardHeader color="primary">
                           <GridContainer>
@@ -499,7 +550,9 @@ function Dashboard( { User_name } ) {
                           </GridContainer>
 
                           </CardHeader>
+                          
                             <CardBody>
+                              
                               <GridContainer>
                                 <GridItem xs={12} sm={12} md={12}>                      
                                   <div className="form-group">
@@ -648,10 +701,10 @@ function Dashboard( { User_name } ) {
                                 </div> 
                                 </GridItem>
                               </GridContainer><br/>
-
+                              
                             </CardBody>
                             <CardFooter>
-                                <Button color="primary" type="submit">Add Project</Button>
+                                <Button color="primary" type="submit" onClick={()=>{getMessage()}}>Add Project</Button>
                                 <Button className="button" onClick={() => { close(); }}> Cancel </Button>
                             </CardFooter>
                           </Card>
@@ -1857,7 +1910,8 @@ function Dashboard( { User_name } ) {
     ):("")}
     {/***** Completed Project End *****/}
         {/***** Project End *****/}
-        <ToastContainer limit={2}/>
+        <ToastContainer/>
+        { children }
       </GridContainer>
     </>
   );
