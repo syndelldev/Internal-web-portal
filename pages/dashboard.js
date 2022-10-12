@@ -13,7 +13,6 @@ import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
-// import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { useForm  } from 'react-hook-form';
 import DatePicker from "react-datepicker";
@@ -117,10 +116,42 @@ export async function getServerSideProps(context){
   })
   const project_comp = await u_completed.json();
 
-  return{ props: { project_details, project_hold, project_completed, project_running, User_name, project_runn, project_h, project_comp } }
+  const high = await fetch(`${server}/api/user/u_priority`,{
+    headers: {
+      'Access-Control-Allow-Credentials': true,
+      Cookie: context.req.headers.cookie
+    },
+  })
+  const high_priority = await high.json();
+
+  const low = await fetch(`${server}/api/user/project_priority/low_priority`,{
+    headers: {
+      'Access-Control-Allow-Credentials': true,
+      Cookie: context.req.headers.cookie
+    },
+  })
+  const low_priority = await low.json();
+
+  const medium = await fetch(`${server}/api/user/project_priority/medium_priority`,{
+    headers: {
+      'Access-Control-Allow-Credentials': true,
+      Cookie: context.req.headers.cookie
+    },
+  })
+  const medium_priority = await medium.json();
+
+  const alltask = await fetch(`${server}/api/user_dashboard/subtask_person`,{
+    headers: {
+      'Access-Control-Allow-Credentials': true,
+      Cookie: context.req.headers.cookie
+    },
+  })
+  const all_task = await alltask.json();
+
+  return{ props: { project_details, project_hold, project_completed, project_running, User_name, project_runn, project_h, project_comp, high_priority, low_priority, medium_priority, all_task } }
 }
 
-function Dashboard( { project_details, project_hold, project_completed, project_running, User_name, project_runn, project_h, project_comp } ) {
+function Dashboard( { project_details, project_hold, project_completed, project_running, User_name, project_runn, project_h, project_comp, high_priority, low_priority, medium_priority, all_task } ) {
 
   const { register,  watch, handleSubmit, formState: { errors }, setValue } = useForm(); 
   const router = useRouter();
@@ -658,6 +689,34 @@ useEffect(() =>{
   
       </>
     ):("")}
+
+
+
+
+
+<div className="my-task"  hidden={cookies.Role_id == "1"}>
+        <GridContainer>
+          <GridItem xs={12} sm={6} md={6}>
+            <h3 className="my-task-priorities"><h2 className="title-my-task">My Task Priorities</h2>
+              {high_priority.map((task)=>{
+                        const MySQLDate  = new Date(task.task_deadline).toDateString();
+                        const today = new Date().toDateString();
+
+              if(MySQLDate>=today){
+                return(
+                  <span>
+                    <div>
+                      <p className="task-high">{task.task_title}<span className={task.task_priority}>{task.task_priority}</span></p>
+                    </div>
+                  </span>
+                )
+              }
+
+              })}
+            </h3>
+          </GridItem>
+        </GridContainer>
+      </div>    
 
     </>
   );

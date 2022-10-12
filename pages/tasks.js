@@ -313,7 +313,7 @@ function Dashboard( { project_details , User_name , allTask, userTask } ) {
     if(res.status==200)
     {
       // alert("success");
-      if(!toast.isActive(toastID.current)) {
+      if(!toast.isActive(toastId.current)) {
         toastId.current = toast.success('Task added Successfully!🎉', {
             position: "top-right",
             autoClose:1000,
