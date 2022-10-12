@@ -40,7 +40,16 @@ import "react-quill/dist/quill.bubble.css";
 // import Typography from "@material-ui/core/Typography";
 // import AccordionSummary from "@material-ui/core/AccordionSummary";
 
-const ReactQuill = dynamic(import('react-quill'), { ssr: false });
+const ReactQuill = dynamic(
+  async () => {
+    const { default: RQ } = await import("react-quill");
+
+    return ({ forwardedRef, ...props }) => <RQ ref={forwardedRef} {...props} />;
+  },
+  {
+    ssr: false
+  }
+);
 
 const styles = {
   cardCategoryWhite: {
@@ -256,7 +265,7 @@ function Dashboard( { project_details , User_name , allTask, userTask } ) {
         body: JSON.stringify({ task_id:uoption.task_id, project_name:u_project , task_person: allMember, task_status:uoption.task_status , task_department:uoption.task_department ,  task_title: uoption.task_title , task_description:uoption.task_description , task_language:uoption.task_language, task_comment:uoption.task_comment, task_priority:uoption.task_priority, task_start: startDate , task_deadline: endDate }),
       });
       if(!toast.isActive(toastId.current)) {
-        toastId.current = toast.success('Task updated Successfully ! 🎉', {
+        toastId.current = toast.success('Task updated Successfully!🎉', {
             position: "top-right",
             autoClose:1000,
             theme: "colored",
@@ -305,7 +314,7 @@ function Dashboard( { project_details , User_name , allTask, userTask } ) {
     {
       // alert("success");
       if(!toast.isActive(toastID.current)) {
-        toastId.current = toast.success('Task added Successfully ! 🎉', {
+        toastId.current = toast.success('Task added Successfully!🎉', {
             position: "top-right",
             autoClose:1000,
             theme: "colored",
@@ -422,7 +431,7 @@ const updateStatus = async(t_status) =>{
     body: JSON.stringify({ task_id: uoption.task_id, task_status: t_status }),
   });
   if(!toast.isActive(toastId.current)) {
-    toastId.current = toast.success('Status updated Successfully ! 🎉', {
+    toastId.current = toast.success('Status updated Successfully!', {
         position: "top-right",
         autoClose:1000,
         theme: "colored",
@@ -461,7 +470,7 @@ const sendMessage = async (task_id) => {
   console.log(cookies.name)
 
   if(!toast.isActive(toastId.current)) {
-    toastId.current = toast.success('Comment added successfully!🎉', {
+    toastId.current = toast.success('Comment added successfully!', {
         position: "top-right",
         autoClose:1000,
         theme: "colored",
@@ -494,7 +503,7 @@ const updateComment = async(id, comment) =>{
   var comment = await axios.post(`${server}/api/comment/updateComment`, { comment_id: id, user: cookies.name, comment:comment });
 
   if(!toast.isActive(toastId.current)) {
-    toastId.current = toast.success('Comment updated successfully!🎉', {
+    toastId.current = toast.success('Comment updated successfully!', {
         position: "top-right",
         autoClose:1000,
         theme: "colored",
@@ -815,7 +824,7 @@ const updateComment = async(id, comment) =>{
     <Card>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-          <div className="taskToDo" onClick={()=> { taskToDo("task_toDo") , closeTaskToDo("task_toDo"), settodo_title(!todo_title) }}>Task to do {taskTodo ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
+          <div className="taskToDo" onClick={()=> { taskToDo("task_toDo") , closeTaskToDo("task_toDo"), settodo_title(!todo_title) }}>Task to do {todo_title ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
         </GridItem>
       </GridContainer>
     </Card>
@@ -1262,7 +1271,7 @@ const updateComment = async(id, comment) =>{
     <Card>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-          <div className="taskOn_hold" onClick={()=> { taskOnHold("taskOn_hold") , closeTaskOnHold("taskOn_hold"), setonhold_title(!onhold_title) }}>Task on hold {TaskOnHold ? <FaArrowUp/>:<FaArrowDown/>}</div>
+          <div className="taskOn_hold" onClick={()=> { taskOnHold("taskOn_hold") , closeTaskOnHold("taskOn_hold"), setonhold_title(!onhold_title) }}>Task on hold {onhold_title ? <FaArrowUp/>:<FaArrowDown/>}</div>
         </GridItem>
       </GridContainer>
     </Card>
@@ -1709,7 +1718,7 @@ const updateComment = async(id, comment) =>{
     <Card>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-          <div className="taskRunning" onClick={()=> { taskRunning("task_Running") , closeTaskRunning("task_Running"),setrunning_title(!running_title) }}>Task Running {TaskRunning ? <FaArrowUp/>:<FaArrowDown/>} </div>
+          <div className="taskRunning" onClick={()=> { taskRunning("task_Running") , closeTaskRunning("task_Running"),setrunning_title(!running_title) }}>Task Running {running_title ? <FaArrowUp/>:<FaArrowDown/>} </div>
         </GridItem>
       </GridContainer>
     </Card>
@@ -2157,7 +2166,7 @@ const updateComment = async(id, comment) =>{
     <Card>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-          <div className="taskCompleted" onClick={()=> { taskCompleted("task_completed") , closeTaskCompleted("task_completed") , setcompleted_title(!completed_title)}}>Task completed {TaskCompleted ? <FaArrowUp/>:<FaArrowDown/>} </div>
+          <div className="taskCompleted" onClick={()=> { taskCompleted("task_completed") , closeTaskCompleted("task_completed") , setcompleted_title(!completed_title)}}>Task completed {completed_title ? <FaArrowUp/>:<FaArrowDown/>} </div>
         </GridItem>
       </GridContainer>
     </Card>
