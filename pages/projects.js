@@ -95,25 +95,25 @@ const styles = {
 };
 
 export async function getServerSideProps(context){
-  // const res = await fetch(`${server}/api/project`);
-  // const project_details = await res.json();
+  const res = await fetch(`${server}/api/project`);
+  const project_details = await res.json();
 
-  // const res1 = await fetch(`${server}/api/user_dashboard`, {
-  //   headers: {
-  //     'Access-Control-Allow-Credentials': true,
-  //     Cookie: context.req.headers.cookie
-  //   },
-  // })
-  // const user_project = await res1.json()
-  // console.log(user_project)
+  const response = await fetch(`${server}/api/user_dashboard`, {
+    headers: {
+      'Access-Control-Allow-Credentials': true,
+      Cookie: context.req.headers.cookie
+    },
+  })
+  const user_project = await response.json()
+  console.log(user_project)
 
-  const response = await fetch(`${server}/api/admin`)
-  const User_name = await response.json();
+  const resp = await fetch(`${server}/api/admin`)
+  const User_name = await resp.json();
 
-  return{ props: { User_name } }
+  return{ props: { project_details, user_project, User_name } }
 }
 
-function Dashboard( { User_name } ) {
+function Dashboard( { project_details, user_project, User_name } ) {
 
   const useStyles = makeStyles(styles);
   const classes = useStyles();
@@ -132,21 +132,23 @@ function Dashboard( { User_name } ) {
   }
   //Notification End
 
-  const [project_details, setproject_details] = useState([])
+  // const [project_details, setproject_details] = useState([])
   //Fetch API According Role Start
-  if(cookies.Role_id==1 || cookies.Role_id==3){    
-    useEffect(async()=>{
-      const res = await fetch(`${server}/api/project`);
-      const project_details = await res.json();
-      setproject_details(project_details)
-    })
+  if(cookies.Role_id==1 || cookies.Role_id==3){
+    var project_details = project_details;
+    // useEffect(async()=>{
+    //   const res = await fetch(`${server}/api/project`);
+    //   const project_details = await res.json();
+    //   setproject_details(project_details)
+    // })
   }
   else if(cookies.Role_id==2){
-    useEffect(async()=>{
-      const res = await fetch(`${server}/api/user_dashboard`);
-      const project_details = await res.json();
-      setproject_details(project_details)
-    })
+    var project_details = user_project;
+    // useEffect(async()=>{
+    //   const res = await fetch(`${server}/api/user_dashboard`);
+    //   const project_details = await res.json();
+    //   setproject_details(project_details)
+    // })
   }
 
   //Fetch API According Role End
@@ -270,7 +272,7 @@ function Dashboard( { User_name } ) {
 
     if( uoption.project_title=="" || uoption.project_description=="" ||  uoption.project_department=="" || uoption.project_language=="" || allMember=="" || startDate=="" || endDate=="" || uoption.project_priority=="" || uoption.project_status=="" ){
       if(! toast.isActive(toastId.current)) {
-        toastId.current = toast.error('Please fill all the required fields', {
+        toastId.current = toast.error('Please fill all the required fields!', {
             position: "top-right",
             autoClose:5000,
             theme: "colored",
@@ -287,7 +289,7 @@ function Dashboard( { User_name } ) {
       body: JSON.stringify({ project_id:uoption.project_id, project_person: allMember, project_status:uoption.project_status , project_department:uoption.project_department ,  project_title: uoption.project_title , project_description:uoption.project_description , project_language:uoption.project_language, project_comment:uoption.project_comment, project_priority:uoption.project_priority, project_start: startDate , project_deadline: endDate }),
     });
     if(!toast.isActive(toastId.current)) {
-      toastId.current = toast.success('Updated Successfully ! 🎉', {
+      toastId.current = toast.success('Updated Successfully !', {
           position: "top-right",
           autoClose:1000,
           theme: "colored",
@@ -434,11 +436,19 @@ function Dashboard( { User_name } ) {
       console.log(date);
   
       var addComment = await axios.post(`${server}/api/comment/addProjectComments`, {  username: cookies.name, message: value , project_id: project_id, created_D: date });
-      console.log(addComment)
-      console.log(cookies.name)
-      router.reload(`${server}/user/projects`);
-    }
+
+      if(!toast.isActive(toastId.current)) {
+        toastId.current = toast.success('Comment added successfully!', {
+            position: "top-right",
+            autoClose:1000,
+            theme: "colored",
+            hideProgressBar: true,
+          });
+      }
   
+      // router.reload(`${server}/projects`);
+    }
+    
     const [ value, setValues ] = useState("");
     const quillRef = useRef(null);
 
@@ -522,7 +532,7 @@ function Dashboard( { User_name } ) {
           setEditComment(commentId.data[0].comment);
           console.log("edit");
           console.log(commentEdit);
-          console.log(commentId.data[0].comment);
+          console.log(commentId.data[0].comment);        
         }
       }
       
@@ -531,11 +541,18 @@ function Dashboard( { User_name } ) {
         console.log(comment);
         console.log(id);
         var comments = await axios.post(`${server}/api/comment/updateComment`, { comment_id: id, user: cookies.name, comment:comment });
-        router.reload(`${server}/user/projects`);
+
+        if(!toast.isActive(toastId.current)) {
+          toastId.current = toast.success('Comment updated successfully!', {
+              position: "top-right",
+              autoClose:1000,
+              theme: "colored",
+              hideProgressBar: true
+            });
+        }
+        router.reload(`${server}/projects`);
       }
       
-      const [val, setVal] = useState("");
-
   return (
     <>
 
@@ -1035,7 +1052,7 @@ function Dashboard( { User_name } ) {
                                 <GridContainer>
                                     <GridItem>
                                       <form>
-                                        <h5 className="projectPriority">Comments ref1</h5>
+                                        <h5 className="projectPriority">Comments</h5>
                                           <ReactQuill
                                           forwardedRef={quillRef}
                                             modules={modules}
@@ -1043,7 +1060,7 @@ function Dashboard( { User_name } ) {
                                             theme="snow" 
                                             onChange={setValues} 
                                           />
-                                        <div onClick={()=> {sendMessage(project.project_id)}}>Save</div>
+                                        <button className="btn btn-primary" onClick={()=> {sendMessage(project.project_id), close()} }>Save</button>
                                       </form>
                                     </GridItem>
                                   </GridContainer>
@@ -1430,7 +1447,7 @@ function Dashboard( { User_name } ) {
                                             theme="snow" 
                                             onChange={setValues} 
                                           />
-                                        <div onClick={()=> sendMessage(project.project_id)}>Save</div>
+                                        <button className="btn btn-primary" onClick={()=> {sendMessage(project.project_id), close()} }>Save</button>
                                       </form>
                                     </GridItem>
                                   </GridContainer>
@@ -1812,7 +1829,7 @@ function Dashboard( { User_name } ) {
                                       <form>
                                         <h5 className="projectPriority">Comments</h5>
                                           <ReactQuill forwardedRef={quillRef} modules={modules} theme="snow" onChange={setValues} />
-                                        <div onClick={()=> sendMessage(project.project_id)}>Save</div>
+                                        <button className="btn btn-primary" onClick={()=> {sendMessage(project.project_id), close()} }>Save</button>
                                       </form>
                                     </GridItem>
                                   </GridContainer>
@@ -1834,7 +1851,7 @@ function Dashboard( { User_name } ) {
                                             <GridItem>
                                               <div>
 
-                                              <ReactQuill forwardedRef={quillRef} value={m.comment} theme="bubble" readOnly />
+                                              <ReactQuill value={m.comment} theme="bubble" readOnly />
       <Popup
         trigger={ <span><button className="btn btn-primary" onClick={()=>{ editComment(m.id)} } disabled={ m.username != cookies.name }>Edit</button></span> }
         className="popupReact"
