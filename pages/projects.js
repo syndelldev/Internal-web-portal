@@ -696,32 +696,24 @@ function Dashboard( { User_name } ) {
           </GridItem>
         </GridContainer>
       </div>
-    <GridContainer>
-    
-    {/***** Running Project start *****/}
-    <GridContainer>
-    <GridItem>
-      <div className="Project-title">Projects</div>
-    </GridItem>
-
-    <GridContainer>
-      <GridItem>
-        <button className="bttn-design" onClick={()=> 
+      {/* <div className="Project-title">Projects</div> */}
+      <div className="main_task_title">
+           <div className="Project-title">Projects</div>
+      <button className="bttn-design" onClick={()=> 
           {  project_running("running"), closeOnHold("running"), setrunning_title(true), project_OnHold("on hold"), closeTaskToDo("on hold"), setonhold_title(true)
           project_Completed("completed"), closeCompleted("completed"), setcompleted_title(true) }}
-          >Expand All</button>
-      </GridItem>
-
-      <GridItem>
-        <button className="bttn-design" onClick={()=> 
+          >Expand All</button><button className="bttn-design" onClick={()=> 
           {  project_running("running"), closeOnHold("running"), setrunning_title(false), project_OnHold("on hold"), closeTaskToDo("on hold"), setonhold_title(false)
           project_Completed("completed"), closeCompleted("completed"), setcompleted_title(false) }}
           >Collapse All</button>
-      </GridItem>
-    </GridContainer>
-  </GridContainer>
+       </div>
 
-    <Card className="task_title_status">
+    <GridContainer>
+    
+    {/***** Running Project start *****/}
+   
+
+<Card className="task_title_status">
       <GridContainer >
         <GridItem xs={12} sm={12} md={12} >
           <div onClick={()=> {  project_running("running") , closeOnHold("running") , setrunning_title(!running_title) }} className="task_title" > Project In progress {running_title ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
@@ -744,7 +736,7 @@ function Dashboard( { User_name } ) {
                 return(
                   <tr key={project.project_id} onClick={()=>{toggle(project.project_id)}} className="expand_dropdown">
                     <td className="project-title-table">{project.project_title}</td>
-                    <td className="project-priority-table">{project.project_priority}</td>
+                    <td className="priority-data"><p className={project.project_priority}>{project.project_priority}</p></td>
                     <td className="project-priority-person">
                       {person.length>2 ? (
                         <>
@@ -815,8 +807,8 @@ function Dashboard( { User_name } ) {
                                   <CardHeader color="primary">
                                     <GridContainer>
                                       <GridItem>
-                                        <h4 className={classes.cardTitleWhite}>Edit Project</h4>
-                                        <p className={classes.cardCategoryWhite}>Update your project details</p>
+                                        <h4 className={classes.cardTitleWhite + ' ' + 'text-white'}>Edit Project</h4>
+                                        <p className={classes.cardCategoryWhite + ' ' + 'text-white'}>Update your project details</p>
                                       </GridItem>
                                       <div className={classes.close}>
                                         <a onClick={close}>&times;</a>
@@ -1009,7 +1001,7 @@ function Dashboard( { User_name } ) {
 
                                               <ReactQuill value={m.comment} theme="bubble" readOnly />
       <Popup
-        trigger={ <span><button onClick={()=>{ editComment(m.id)} } disabled={ m.username != cookies.name }>Edit</button></span> }
+        trigger={ <span><button className="btn btn-primary" onClick={()=>{ editComment(m.id)} } disabled={ m.username != cookies.name }>Edit</button></span> }
         className="popupReact"
         modal
       >
@@ -1124,7 +1116,7 @@ function Dashboard( { User_name } ) {
                 return(
                   <tr key={project.project_id} onClick={()=>{toggle(project.project_id)}} className="expand_dropdown">
                     <td className="project-title-table">{project.project_title}</td>
-                    <td className="project-priority-table">{project.project_priority}</td>
+                    <td className="project-priority-table"><p className={project.project_priority}>{project.project_priority}</p></td>
                     <td className="project-priority-person">
                     {person.length>2 ? (
                         <span>
@@ -1195,8 +1187,8 @@ function Dashboard( { User_name } ) {
                                   <CardHeader color="primary">
                                     <GridContainer>
                                       <GridItem>
-                                        <h4 className={classes.cardTitleWhite}>Edit Project</h4>
-                                        <p className={classes.cardCategoryWhite}>Update your project details</p>
+                                        <h4 className={classes.cardTitleWhite + ' ' + 'text-white'}>Edit Project</h4>
+                                        <p className={classes.cardCategoryWhite + ' ' + 'text-white'}>Update your project details</p>
                                       </GridItem>
                                       <div className={classes.close}>
                                         <a onClick={close}>&times;</a>
@@ -1391,7 +1383,7 @@ function Dashboard( { User_name } ) {
 
                                               <ReactQuill value={m.comment} theme="bubble" readOnly />
       <Popup
-        trigger={ <span><button onClick={()=>{ editComment(m.id)} } disabled={ m.username != cookies.name }>Edit</button></span> }
+        trigger={ <span><button className="btn btn-primary" onClick={()=>{ editComment(m.id)} } disabled={ m.username != cookies.name }>Edit</button></span> }
         className="popupReact"
         modal
       >
@@ -1507,7 +1499,7 @@ function Dashboard( { User_name } ) {
                 return(
                   <tr key={project.project_id} onClick={()=>{toggle(project.project_id)}} className="expand_dropdown">
                     <td className="project-title-table">{project.project_title}</td>
-                    <td  className="project-priority-table">{project.project_priority}</td>
+                    <td  className="priority-data"><p className={project.project_priority}>{project.project_priority}</p></td>
                     <td className="project-priority-person">
                     {person.length>2 ? (
                         <>
@@ -1578,8 +1570,8 @@ function Dashboard( { User_name } ) {
                                   <CardHeader color="primary">
                                     <GridContainer>
                                       <GridItem>
-                                        <h4 className={classes.cardTitleWhite}>Edit Project</h4>
-                                        <p className={classes.cardCategoryWhite}>Update your project details</p>
+                                        <h4 className={classes.cardTitleWhite + ' ' + 'text-white'}>Edit Project</h4>
+                                        <p className={classes.cardCategoryWhite + ' ' + 'text-white'}>Update your project details</p>
                                       </GridItem>
                                       <div className={classes.close}>
                                         <a onClick={close}>&times;</a>
@@ -1773,7 +1765,7 @@ function Dashboard( { User_name } ) {
 
                                               <ReactQuill value={m.comment} theme="bubble" readOnly />
       <Popup
-        trigger={ <span><button onClick={()=>{ editComment(m.id)} } disabled={ m.username != cookies.name }>Edit</button></span> }
+        trigger={ <span><button className="btn btn-primary" onClick={()=>{ editComment(m.id)} } disabled={ m.username != cookies.name }>Edit</button></span> }
         className="popupReact"
         modal
       >

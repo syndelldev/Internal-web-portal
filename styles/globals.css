@@ -201,6 +201,8 @@ h4.text {
 }
 
 .bttn-design{
+  cursor: pointer!important;
+  margin-right: 30px;
   color:#fff;
   font-weight: 600;
   padding: 9px 20px;
@@ -260,7 +262,7 @@ a.icon-edit-delete {
     left:100% !important;
     height:100% !important;
     transition: transform .2s ease-in-out !important;*/
-    transform: translateX(76%);
+    /* transform: translateX(76%); */
 }
 td.project-edit-table a {
   color: #000;
@@ -292,6 +294,8 @@ td.project-edit-table {
   margin: 0px 0px !important;
 }
 .chip{
+  width: 20%!important;
+  border: 2px solid;
   display: inherit;
   border-radius: 30px!important;
   padding: 10px!important;
@@ -411,6 +415,7 @@ table.project-data {
   width: 100%;
 }
 table.project-data th{
+  width: 20%!important;
   background-color: #fff;
   text-align: left;
   padding-left: 15px;
@@ -443,7 +448,7 @@ td.assignee-data p {
   padding-right: 10px;
 }
 td {
-  padding-top: 10px;
+  padding-top: 5px;
 }
 h4.projectTitle{
   padding-left: 15px;
@@ -503,8 +508,11 @@ h3.not-data {
   font-weight: 400;
 }
 table.project-data {
-  margin-top: 20px;
+  margin-top: 10px;
 
+}
+td.priority-data p {
+  float: left;
 }
 .project-status .MuiGrid-grid-sm-6{
   margin-right: 30px;
@@ -579,7 +587,12 @@ td.status-data {
 p.Task-lang {
   font-weight: 600;
 }
+/**icon css**/
+img.dashboard-image {
+  padding-right: 10px;}
 
+/**icon css**/
+.dropdown-effect{display: flex;}
 /** Table project layout start**/
 td.project-title-table,td.project-priority-table {
   padding-left: 15px;
@@ -610,7 +623,7 @@ h5.profile-data {
 }
 img.user-image{height: 30px;}
 .Project-title {
-  padding-bottom: 5px;
+  padding-bottom: 25px;
   font-size: 40px;
   font-weight: 500;
 }
@@ -644,6 +657,13 @@ img.user-image{height: 30px;}
 /*Profile page css start*/
 .profile-page.mobile{width: 100%!important;}
 /*Profile page css end*/
+/* ccs added by pradeep */
+/* expand and collapse btn css */
+.bttn-design{
+  margin-left: 15px;
+  margin-top: 30px;
+}
+/* end css added by pradeep */
 }
 @media only screen and (max-width: 1279px) and (min-width: 1024px){
   .project-status{
@@ -682,3 +702,4 @@ img.user-image{height: 30px;}
   h4.projectTitle{
 font-size: 17px!important;
   }}
+
