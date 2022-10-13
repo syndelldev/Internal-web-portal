@@ -846,7 +846,8 @@ function Dashboard( { project_details, user_project, User_name } ) {
   </div>
 
 {dateDataDisplay ? (
-  <>
+  <span>
+    <h3>Projects List</h3>
     <table className="project-data" >
       <tr className="project-data-title">
             <th  className="status">Project Name</th>
@@ -924,7 +925,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
           })}
         </table>
 
-  </>
+  </span>
 ) 
 : ("")
 
