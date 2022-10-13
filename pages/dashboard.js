@@ -681,8 +681,8 @@ useEffect(() =>{
                         // let date = MySQLDate.replace(/[-]/g, '-').substr(0,10);
 
                         const today = new Date().toISOString().slice(0,10);
-                        console.log( new Date().toISOString().slice(0,10) );
-                        console.log(date);
+                        // console.log( new Date().toISOString().slice(0,10) );
+                        // console.log(date);
 
               if(date >= today){
                 return(
