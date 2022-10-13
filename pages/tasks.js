@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { useState } from "react";
 import { useRouter } from 'next/router';
 // react plugin for creating charts
@@ -306,7 +306,7 @@ function Dashboard( { project_details , User_name , allTask, userTask } ) {
     const res = await fetch(`${server}/api/subtask/add_subtask`,{
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body:JSON.stringify({task_person:selected, project_name:p_selected, task_status:result.task_status , task_title:result.task_title, task_description:result.task_description, task_language:result.task_language, task_comment:result.task_comment, task_priority:result.task_priority, task_start: p_start , task_deadline: p_end }),
+      body:JSON.stringify({task_person:selected, project_name:p_selected, task_status:result.task_status , task_title:result.task_title, task_description:result.task_description, task_language:result.task_language, task_createdBy:cookies.name , task_priority:result.task_priority, task_start: p_start , task_deadline: p_end }),
     })
     const data=await res.json()
 
@@ -444,20 +444,79 @@ const updateStatus = async(t_status) =>{
 const [comments, setcomments] = useState([]);
 
 const [ u_Comment, setCommentValue ] = useState("");
-const modules = {
-  toolbar: {
-    container: [
-    [{ 'font': [] }],
-    [{ 'size': ['small', false, 'large', 'huge'] }],
-    ['bold', 'italic', 'underline'],
-    [{'list': 'ordered'}, {'list': 'bullet'}],
-    [{ 'align': [] }],
-    [{ 'color': [] }, { 'background': [] }],
-    ['clean'],
-    ['link', 'image', 'video']
-  ]
- }
+
+
+
+const quillRef = useRef(null);
+
+const imageHandler = () => {
+
+  const input = document.createElement('input');
+  input.setAttribute('type', 'file');
+  input.setAttribute('accept', 'image/*');
+  input.click();
+
+  input.onchange = async () => {
+      let data = null;
+      const file = input.files ? input.files[0] : null;
+
+      if (/^image\//.test(file.type)) {          
+      const formData = new FormData();
+
+      formData.append('image', file);
+      formData.getAll('image');
+
+      const res = await fetch(`${server}/api/upload`,{ 
+          method: 'POST',
+          body: formData,
+      });
+      data = await res.json();
+      console.log(data);
+      console.log(data.files.image.newFilename);
+
+      // Save current cursor 
+      const range = quillRef.current.getEditor().getSelection();
+      const quill = quillRef.current.getEditor();
+      quill.insertEmbed( range.index, "image", `${server}/upload_img/${data.files.image.newFilename}${data.files.image.originalFilename}`);
+      quillRef.current.getEditor().setSelection(range.index + 1);
+
+  }else{
+
+    if(! toast.isActive(toastId.current)) {
+      toastId.current = toast.error('Please upload only image', {
+          position: "top-right",
+          autoClose:5000,
+          theme: "colored",
+          closeOnClick: true,
+          hideProgressBar: true,
+        });
+    }
+
+  }
 }
+}
+
+const modules = useMemo(() => ({
+  toolbar: {
+      container: [
+          [{ 'font': [] }],
+          [{ 'size': ['small', false, 'large', 'huge'] }],
+          ['bold', 'italic', 'underline'],
+          [{'list': 'ordered'}, {'list': 'bullet'}],
+          [{ 'align': [] }],
+          [{ 'color': [] }, { 'background': [] }],
+          ['clean'],
+          ['link'],
+          ['image'],
+          ['video']
+      ],
+      handlers: {
+        image: imageHandler
+      }
+  },
+}), []);
+
+
 
 const sendMessage = async (task_id) => {
   const date = new Date().toLocaleString();
@@ -473,8 +532,7 @@ const sendMessage = async (task_id) => {
         position: "top-right",
         autoClose:1000,
         theme: "colored",
-        hideProgressBar: true,
-        onClose: () => router.push(`${server}/tasks`)
+        hideProgressBar: true
       });
   }
 
@@ -749,17 +807,7 @@ const updateComment = async(id, comment) =>{
                       </div> 
                     </GridItem>
                   </GridContainer><br/>
-
-                  <GridContainer>
-                    <GridItem xs={12} sm={12} md={12}>
-                      <div className="form-group">
-                      <span>Comments</span>
-                        <textarea className="form-control signup-input" placeholder="Comment" {...register('task_comment')} />
-                        {/* <div className="error-msg">{errors.position && <span>{errors.position.message}</span>}</div> */}
-                      </div> 
-                    </GridItem>
-                  </GridContainer>
-                  
+                 
                 </CardBody>
 
                 <CardFooter>
@@ -1133,8 +1181,8 @@ const updateComment = async(id, comment) =>{
 
                             <GridContainer>
                               <GridItem>
-                                <ReactQuill modules={modules} theme="snow" onChange={setCommentValue} />
-                                  <div onClick={()=> { sendMessage(task.task_id), close() } }>Save</div>
+                                <ReactQuill forwardedRef={quillRef} modules={modules} theme="snow" onChange={setCommentValue} />
+                                  <button className="btn btn-primary" onClick={()=> { sendMessage(task.task_id), close() } }>Save</button>
                               </GridItem>
                             </GridContainer>
                            
@@ -1166,7 +1214,7 @@ const updateComment = async(id, comment) =>{
                             <GridContainer>
                               <GridItem xs={12} sm={12} md={12} >
                                 <form>
-                                  <ReactQuill modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
+                                  <ReactQuill forwardedRef={quillRef} modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
                                 </form>
                               </GridItem>
                             </GridContainer>
@@ -1580,8 +1628,8 @@ const updateComment = async(id, comment) =>{
 
                             <GridContainer>
                               <GridItem>
-                                <ReactQuill modules={modules} theme="snow" onChange={setCommentValue} />
-                                  <div onClick={()=> { sendMessage(task.task_id), close() } }>Save</div>
+                                <ReactQuill forwardedRef={quillRef} modules={modules} theme="snow" onChange={setCommentValue} />
+                                  <button className="btn btn-primary" onClick={()=> { sendMessage(task.task_id), close() } }>Save</button>
                               </GridItem>
                             </GridContainer>
                           
@@ -1613,7 +1661,7 @@ const updateComment = async(id, comment) =>{
                             <GridContainer>
                               <GridItem xs={12} sm={12} md={12} >
                                 <form>
-                                  <ReactQuill modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
+                                  <ReactQuill forwardedRef={quillRef} modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
                                 </form>
                               </GridItem>
                             </GridContainer>
@@ -2028,8 +2076,8 @@ const updateComment = async(id, comment) =>{
 
                             <GridContainer>
                               <GridItem>
-                                <ReactQuill modules={modules} theme="snow" onChange={setCommentValue} />
-                                  <div onClick={()=> { sendMessage(task.task_id), close() } }>Save</div>
+                                <ReactQuill forwardedRef={quillRef} modules={modules} theme="snow" onChange={setCommentValue} />
+                                  <button className="btn btn-primary" onClick={()=> { sendMessage(task.task_id), close() } }>Save</button>
                               </GridItem>
                             </GridContainer>
                           
@@ -2061,7 +2109,7 @@ const updateComment = async(id, comment) =>{
                             <GridContainer>
                               <GridItem xs={12} sm={12} md={12} >
                                 <form>
-                                  <ReactQuill modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
+                                  <ReactQuill forwardedRef={quillRef} modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
                                 </form>
                               </GridItem>
                             </GridContainer>
@@ -2476,8 +2524,8 @@ const updateComment = async(id, comment) =>{
 
                             <GridContainer>
                               <GridItem>
-                                <ReactQuill modules={modules} theme="snow" onChange={setCommentValue} />
-                                  <div onClick={()=> { sendMessage(task.task_id), close() } }>Save</div>
+                                <ReactQuill forwardedRef={quillRef} modules={modules} theme="snow" onChange={setCommentValue} />
+                                  <button className="btn btn-primary" onClick={()=> { sendMessage(task.task_id), close() } }>Save</button>
                               </GridItem>
                             </GridContainer>
                           
@@ -2509,7 +2557,7 @@ const updateComment = async(id, comment) =>{
                             <GridContainer>
                               <GridItem xs={12} sm={12} md={12} >
                                 <form>
-                                  <ReactQuill modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
+                                  <ReactQuill forwardedRef={quillRef} modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
                                 </form>
                               </GridItem>
                             </GridContainer>
@@ -2623,7 +2671,7 @@ const updateComment = async(id, comment) =>{
     ):("")}
     
     {/* </GridItem> */}
-
+      <ToastContainer limit={1}/>
     </GridContainer>
     </div>
   );

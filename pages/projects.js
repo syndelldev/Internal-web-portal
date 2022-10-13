@@ -1945,7 +1945,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
     ):("")}
     {/***** Completed Project End *****/}
         {/***** Project End *****/}
-        <ToastContainer limit={2}/>
+        <ToastContainer limit={1}/>
       </GridContainer>
     </>
   );
