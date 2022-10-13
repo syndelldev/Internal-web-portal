@@ -133,6 +133,58 @@ function Dashboard( { User_name , children } ) {
     })
   }
 
+    //Notification Start
+    useEffect(()=>{
+      setToken();
+      // Event listener that listens for the push notification event in the background
+      if ("serviceWorker" in navigator){
+          navigator.serviceWorker.addEventListener("message", (event) => {
+              console.log("event for the service worker", event);
+          });
+      }
+      // Calls the getMessage() function if the token is there
+      async function setToken() {
+          try{
+              const token = await firebaseCloudMessaging.init();
+              if (token){
+                  console.log("token : ", token);
+                  getMessage();
+              }
+          }
+          catch(error){
+              console.log(error);
+          }
+      }
+  })
+
+  // Handles the click function on the toast showing push notification
+  const handleClickPushNotification = (url) => {
+      router.push(url);
+  };
+  // Get the push notification message and triggers a toast to display it
+
+  function getMessage(){
+    console.log('persons', selected)
+    // console.log('insertedProjectId', insertedProjectId)
+
+    // var data = await axios.post(`${server}/api/notification`, { projectId : insertedProjectId });
+    // console.log(data)
+    
+
+    selected.map((msg)=>{
+      toast.info(
+        <div>
+          <h5>{msg.label}</h5>
+          <h5 className="Project-title">{msg.value}</h5>
+        </div>,
+        {
+          autoClose: false,
+        }
+      )
+    })
+  }
+  //Notification End  
+
   //Fetch API According Role End
   const [addStartDate, setStart_Date] = useState();
   const [addEndDate, setEnd_Date] = useState();
@@ -467,59 +519,7 @@ function Dashboard( { User_name , children } ) {
         router.reload(`${server}/user/projects`);
       }
       // console.log("set comment");
-      // console.log(commentEdit);
-      
-  //Notification Start
-    useEffect(()=>{
-      setToken();
-      // Event listener that listens for the push notification event in the background
-      if ("serviceWorker" in navigator){
-          navigator.serviceWorker.addEventListener("message", (event) => {
-              console.log("event for the service worker", event);
-          });
-      }
-      // Calls the getMessage() function if the token is there
-      async function setToken() {
-          try{
-              const token = await firebaseCloudMessaging.init();
-              if (token){
-                  console.log("token : ", token);
-                  getMessage();
-              }
-          }
-          catch(error){
-              console.log(error);
-          }
-      }
-  })
-
-  // Handles the click function on the toast showing push notification
-  const handleClickPushNotification = (url) => {
-      router.push(url);
-  };
-  // Get the push notification message and triggers a toast to display it
-
-  async function getMessage(){
-    console.log('persons', selected)
-    console.log('insertedProjectId', insertedProjectId)
-
-    var data = await axios.post(`${server}/api/notification`, { projectId : insertedProjectId });
-    console.log(data)
-    
-
-    selected.map((msg)=>{
-      toast.info(
-        <div onClick={() => handleClickPushNotification(msg?.data?.url)}>
-          <h5>{msg.label}</h5>
-          <h5 className="Project-title">{msg.value}</h5>
-        </div>,
-        {
-          autoClose: false,
-        }
-      )
-    })
-  }
-  //Notification End    
+      // console.log(commentEdit);  
       
 
   return (
