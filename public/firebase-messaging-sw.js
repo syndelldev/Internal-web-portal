@@ -11,3 +11,12 @@ firebase.initializeApp({
 });
 
 const messaging = firebase.messaging();
+
+//background notifications will be received here
+// firebase.messaging().setBackgroundMessageHandler((payload)=>{
+//   const { title, body } = JSON.parse(payload.data.notification);
+//   var options = {
+//     body,
+//   };
+//   registration.showNotification(title, options);
+// })
