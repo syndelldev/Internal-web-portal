@@ -593,7 +593,7 @@ button.addproject{
   padding: 15px
 }
 .task_title_status{
-  margin-bottom: 5px!important;
+  margin-bottom: 3px!important;
 }
 .chip span{
   color: #fff;
@@ -602,11 +602,7 @@ button.addproject{
   margin-left: -20px;
   height: 50px;
 }
-.main_task_title{
-  /* display: flex;
 
-  justify-content: end; */
-}
 .edit_project{
   border: none!important;
   background: transparent!important;
