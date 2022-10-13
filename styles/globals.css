@@ -143,6 +143,9 @@ span.copyright a {
 .jss3{
   margin-top: 0px!important;
 }
+ul.MuiList-root.makeStyles-list-22.MuiList-padding {
+  display: grid!important;
+}
 .buttonpopup5:hover{
   background-color: #ADD8E6;
   color: #fff;
