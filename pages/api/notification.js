@@ -6,9 +6,11 @@ async function getNotification(req,res){
     if(req.method == 'POST'){
         try{
             console.log(req.body)
-            // let data = await executeQuery(" SELECT * FROM `tbl_project` WHERE project_id=? ", [req.body.projectId] );
-            // console.log(data)
-            // res.send(data);
+
+            var inserted_project =  await executeQuery("SELECT * FROM `tbl_project` WHERE project_id=?", [req.body.ProjectId])  
+            console.log(inserted_project) 
+
+            res.send(inserted_project);
         }
         catch(err){
             console.log(err)

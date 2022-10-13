@@ -110,12 +110,12 @@ export async function getServerSideProps(context){
 }
 
 function Dashboard( { User_name , children } ) {
-
+  
   const useStyles = makeStyles(styles);
   const classes = useStyles();
 
   const [cookies, setCookie] = useCookies(['name']);
-
+  // console.log(cookies.name)
   const [project_details, setproject_details] = useState([])
   //Fetch API According Role Start
   if(cookies.Role_id==1 || cookies.Role_id==3){    
@@ -132,58 +132,6 @@ function Dashboard( { User_name , children } ) {
       setproject_details(project_details)
     })
   }
-
-    //Notification Start
-    useEffect(()=>{
-      setToken();
-      // Event listener that listens for the push notification event in the background
-      if ("serviceWorker" in navigator){
-          navigator.serviceWorker.addEventListener("message", (event) => {
-              console.log("event for the service worker", event);
-          });
-      }
-      // Calls the getMessage() function if the token is there
-      async function setToken() {
-          try{
-              const token = await firebaseCloudMessaging.init();
-              if (token){
-                  console.log("token : ", token);
-                  getMessage();
-              }
-          }
-          catch(error){
-              console.log(error);
-          }
-      }
-  })
-
-  // Handles the click function on the toast showing push notification
-  const handleClickPushNotification = (url) => {
-      router.push(url);
-  };
-  // Get the push notification message and triggers a toast to display it
-
-  function getMessage(){
-    console.log('persons', selected)
-    // console.log('insertedProjectId', insertedProjectId)
-
-    // var data = await axios.post(`${server}/api/notification`, { projectId : insertedProjectId });
-    // console.log(data)
-    
-
-    selected.map((msg)=>{
-      toast.info(
-        <div>
-          <h5>{msg.label}</h5>
-          <h5 className="Project-title">{msg.value}</h5>
-        </div>,
-        {
-          autoClose: false,
-        }
-      )
-    })
-  }
-  //Notification End  
 
   //Fetch API According Role End
   const [addStartDate, setStart_Date] = useState();
@@ -338,8 +286,7 @@ function Dashboard( { User_name , children } ) {
   const { register,  watch, handleSubmit, formState: { errors }, setValue } = useForm(); 
   const router = useRouter();
 
-  const [insertedProjectId, setinsertedProjectId] = useState("")
-  // console.log('insertedProjectId', insertedProjectId)
+  // const [insertedProject, setinsertedProject] = useState([])
   const onSubmit = async (result) =>{
 
     // console.log(result);
@@ -354,8 +301,53 @@ function Dashboard( { User_name , children } ) {
       })
       const data=await res.json()
       console.log(data)
-      setinsertedProjectId(data.insertId)
-      // console.log(data.insertId)
+
+      async function getMessage(){
+        console.log('persons', selected)
+        console.log('insertedProjectId : ', data.insertId)
+        
+        var getInsertedProject = await axios.post(`${server}/api/notification/`,{ProjectId:data.insertId})
+        console.log('insertedProject', getInsertedProject.data)
+
+        selected.map((person)=>{
+          toast.info(
+          <div>
+            <p>{person.value},</p>
+            {getInsertedProject.data.map((project)=>{
+              return(
+                <p>You Added in {project.project_title} project </p>
+              )
+            })}
+          </div>,
+          {
+            autoClose: false,
+            theme:"colored",
+          }
+          )
+        })
+
+        // getInsertedProject.data.map((msg)=>{
+        //   toast.info(
+        //     <div>
+        //       <h5>{msg.project_title}</h5>
+        //       {selected.map((person)=>{
+        //         return(
+        //           <div>
+        //             <p>{person.label}</p>
+        //             <p>{person.value}</p>
+        //           </div>
+        //         )
+        //       })}
+        //     </div>,
+        //     {
+        //       autoClose: false,
+        //       theme:"colored",
+        //     }
+        //   )
+        // })
+      }
+      getMessage();
+
       if(res.status==200)
       {
         // alert("success");
@@ -390,6 +382,54 @@ function Dashboard( { User_name , children } ) {
 
     }
   }
+  
+  //Notification Start
+  useEffect(()=>{
+    setToken();
+    // Event listener that listens for the push notification event in the background
+    if ("serviceWorker" in navigator){
+        navigator.serviceWorker.addEventListener("message", (event) => {
+            console.log("event for the service worker", event);
+        });
+    }
+    // Calls the getMessage() function if the token is there
+    async function setToken() {
+        try{
+            const token = await firebaseCloudMessaging.init();
+            if (token){
+                console.log("token : ", token);
+                getMessage();
+            }
+        }
+        catch(error){
+            console.log(error);
+        }
+      }
+    })
+
+  // Handles the click function on the toast showing push notification
+  const handleClickPushNotification = (url) => {
+      router.push(url);
+  };
+  // Get the push notification message and triggers a toast to display it
+
+  // function getMessage(){
+  //   console.log('persons', selected)
+  //   console.log('insertedProjectId : ', insertedProjectId)
+    
+  //   selected.map((msg)=>{
+  //     toast.info(
+  //       <div>
+  //         <h5>{msg.label}</h5>
+  //         <h5 className="Project-title">{msg.value}</h5>
+  //       </div>,
+  //       {
+  //         autoClose: false,
+  //       }
+  //     )
+  //   })
+  // }
+  //Notification End  
 
   const [uoptions, setOptions] = useState([]);
   useEffect(() =>{
@@ -401,7 +441,6 @@ function Dashboard( { User_name , children } ) {
         getUsername.push( {'label' :user.id, 'value' :user.username} );
       });
       setOptions(getUsername);
-      console.log(getUsername)
     }
     u_data();
   },[]);
@@ -471,12 +510,12 @@ function Dashboard( { User_name , children } ) {
     
     const sendMessage = async (project_id) => {
       const date = new Date().toLocaleString();
-      console.log("date");
-      console.log(date);
+      // console.log("date");
+      // console.log(date);
   
       var addComment = await axios.post(`${server}/api/comment/addProjectComments`, {  username: cookies.name, message: value , project_id: project_id, created_D: date });
-      console.log(addComment)
-      console.log(cookies.name)
+      // console.log(addComment)
+      // console.log(cookies.name)
       router.reload(`${server}/user/projects`);
     }
   
@@ -704,7 +743,7 @@ function Dashboard( { User_name , children } ) {
                               
                             </CardBody>
                             <CardFooter>
-                                <Button color="primary" type="submit" onClick={()=>{getMessage()}}>Add Project</Button>
+                                <Button color="primary" type="submit">Add Project</Button>
                                 <Button className="button" onClick={() => { close(); }}> Cancel </Button>
                             </CardFooter>
                           </Card>
