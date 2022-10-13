@@ -503,8 +503,8 @@ function Dashboard( { User_name , children } ) {
     console.log('persons', selected)
     console.log('insertedProjectId', insertedProjectId)
 
-    // var data = await axios.post(`${server}/api/notification`, { projectId : insertedProjectId });
-    // console.log(data)
+    var data = await axios.post(`${server}/api/notification`, { projectId : insertedProjectId });
+    console.log(data)
     
 
     selected.map((msg)=>{
