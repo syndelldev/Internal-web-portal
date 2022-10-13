@@ -262,7 +262,7 @@ a.icon-edit-delete {
     left:100% !important;
     height:100% !important;
     transition: transform .2s ease-in-out !important;*/
-    /* transform: translateX(76%); */
+    transform: translateX(76%);
 }
 td.project-edit-table a {
   color: #000;
@@ -281,8 +281,8 @@ td.project-edit-table a {
   font-weight: 900;
 }
 td.project-edit-table {
-  padding-left: 15px;
-  display: flex;
+  transform: translate(50%,60%);
+  float: left;
 }
 /* .icon-edit-delete{
   display: flex;
@@ -420,9 +420,9 @@ table.project-data th{
   text-align: left;
   padding-left: 15px;
     padding-right: 15px;
-    color: #000;
+    color: #00155c;
     border: 1px solid #D3D3D3;
-    font-size: 15px;
+    font-size: 18px;
     font-weight: 600;
   border: 1px solid #D3D3D3;
   padding-bottom: 8px;
@@ -459,7 +459,7 @@ h4.projectTitle{
 h3.on-track {
   cursor: pointer;
   background: #0096FF;
-  padding: 50px;
+  padding: 40px;
   border-radius: 10px;
   color: #fff;
   font-size: 20px;
@@ -468,7 +468,7 @@ h3.on-track {
 h3.off-track{
   cursor: pointer;
   background: #FF0000;
-  padding: 50px;
+  padding: 40px;
   border-radius: 10px;
   color: #fff;
   font-size: 20px;
@@ -477,7 +477,7 @@ h3.off-track{
 h3.completed-project{
   cursor: pointer;
   background: #34BE82;
-  padding: 50px;
+  padding: 40px;
   border-radius: 10px;
   color: #fff;
   font-size: 20px;
@@ -486,24 +486,30 @@ h3.completed-project{
 h3.on-hold{
   cursor: pointer;
   background:#FFD800;
-  padding: 50px;
+  padding: 40px;
   border-radius: 10px;
   color: #fff;
   font-size: 20px;
   font-weight: 600;
 }
 .project-status{
-  justify-content: space-around;
+  justify-content: center;
   display: flex;
 }
 .Projects-title {
-  padding-top: 30px;
-  padding-left: 40px;
+  padding-top: 20px;
+  color: #00155c;
   font-size: 30px;
   font-weight: 600;
 }
+.tracking-projects {
+  border-bottom: 3px solid #00155c;
+  width: 8%;
+  padding-top: 10px;
+}
 h3.not-data {
-  padding-left: 40px;
+  color: #00155c;
+   margin: 0px;
   font-size: 20px;
   font-weight: 400;
 }
@@ -541,7 +547,7 @@ p.task-high,p.task-medium,p.task-low{
     font-weight: 400;
 }
 h1.user-welcome {
-  padding-bottom: 15px;
+  padding-bottom: 3px;
   font-size: 40px;
   text-align: center;
   font-family: sans-serif;
@@ -603,6 +609,10 @@ td.project-title-table,td.project-priority-table {
 td.project-priority-person {
   padding-left: 15px;
 }
+.form-group span{
+  color:#00155c;
+  font-weight: 600;
+}
 /** Table project layout end **/
 
 /** Profile page css start **/
@@ -628,6 +638,36 @@ img.user-image{height: 30px;}
   font-weight: 500;
 }
 /** Profile page css end **/
+/** Project sidebar css start **/
+.Project-sidebar{
+  padding-bottom:0px!important;
+}
+.Project-sidebar-comments{
+padding-top: 0px!important;
+}
+h5.project-comments{
+  margin: 0px !important;
+  font-size: 15px;
+  color:#00155c;
+  font-weight: 600;
+}
+p.save-btn{
+  text-align: center;
+  margin-top: 20px;
+  width: 15%;
+  cursor: pointer!important;
+  margin-right: 30px;
+  color:#fff;
+  font-weight: 600;
+  padding: 9px 20px;
+  font-size: 16px;
+  background-color: #00155c;
+  border: none;
+  border-radius: 8px;
+
+
+}
+/** Project sidebar css end **/
 /** Project module css start **/
 .task_title {
   font-weight: 600;
@@ -638,18 +678,30 @@ img.user-image{height: 30px;}
 @media only screen and (max-width: 1440px) and (min-width: 1366px){ 
   .my-task .MuiGrid-grid-md-6{margin-left: 0%!important;} 
   h3.on-track,h3.off-track,h3.completed-project,h3.on-hold{padding:20px!important;}
+  .popup-align {
+    transform: translateX(47%);
+}
  }
  @media only screen and (max-width: 1365px) and (min-width: 1280px){  
+  .popup-align {
+    transform: translateX(36%);
+}
  .my-task .MuiGrid-grid-md-6{margin-left: 0%!important;} 
  h3.on-track,h3.off-track,h3.completed-project,h3.on-hold{padding:10px!important;} }
 
  @media only screen and (max-width: 1560px) and (min-width: 1441px){ 
+  .popup-align {
+    transform: translateX(54%);
+}
   .my-task .MuiGrid-grid-md-6{margin-left: 0%!important;} 
   h3.on-track,h3.off-track,h3.completed-project,h3.on-hold{padding:10px!important;} }
  
 /* Mobile css*/
 
 @media only screen and (max-width: 767px) {
+  .popup-align {
+    transform: translateX(0%);
+}
   .project-status{
     justify-content: normal;
     display: grid!important;
@@ -670,11 +722,17 @@ img.user-image{height: 30px;}
     justify-content: normal;
     display: grid!important;
 }
+.popup-align {
+  transform: translateX(20%);
+}
 }
 @media only screen and (max-width: 1023px) and (min-width: 768px){ 
   .project-status{
     justify-content: normal;
     display: grid!important;
+}
+.popup-align {
+  transform: translateX(0%);
 }
  }
  @media only screen and (max-width: 1365px) and (min-width: 1280px){

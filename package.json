@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "node server.js",
     "build": "next build",
-    "start": "NODE_ENV=production node server.js",
+    "start": "next start",
     "test": "echo \"Error: no test specified\" && exit 1",
     "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && rm -rf .next/ && npm install && npm run dev"
   },
@@ -48,6 +48,7 @@
     "next-compose-plugins": "2.2.1",
     "next-connect": "^0.13.0",
     "next-images": "^1.8.4",
+    "npm-sass": "^3.1.0",
     "path": "0.12.7",
     "perfect-scrollbar": "^1.5.5",
     "prop-types": "^15.8.1",

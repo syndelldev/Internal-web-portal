@@ -383,7 +383,9 @@ useEffect(() =>{
 
     {running_title ? (
       <>
+
       <div className="Projects-title"> {project_Status} Projects</div>
+      <div className="tracking-projects"></div>
         <table className="project-data" >
           {project_List.length > 0 ? (
             <>
@@ -653,6 +655,7 @@ useEffect(() =>{
           </>
          ) : (<div className="no_Data"><h3 className="not-data">No Data</h3></div>)}
         </table>
+  
       </>
     ):("")}
 
