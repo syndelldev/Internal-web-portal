@@ -699,10 +699,12 @@ useEffect(() =>{
           <GridItem xs={12} sm={6} md={6}>
             <h3 className="my-task-priorities"><h2 className="title-my-task">My Task Priorities</h2>
               {high_priority.map((task)=>{
-                        const MySQLDate  = new Date(task.task_deadline).toDateString();
-                        const today = new Date().toDateString();
+                        const MySQLDate  = task.task_deadline;
+                        let date = MySQLDate.replace(/[-]/g, '/').substr(0,10);
+                        console.log(date);
+                        console.log(today);
 
-              if(MySQLDate>=today){
+              if(date >= today){
                 return(
                   <span>
                     <div>
