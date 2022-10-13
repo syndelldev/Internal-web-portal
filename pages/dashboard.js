@@ -124,34 +124,10 @@ export async function getServerSideProps(context){
   })
   const high_priority = await high.json();
 
-  const low = await fetch(`${server}/api/user/project_priority/low_priority`,{
-    headers: {
-      'Access-Control-Allow-Credentials': true,
-      Cookie: context.req.headers.cookie
-    },
-  })
-  const low_priority = await low.json();
-
-  const medium = await fetch(`${server}/api/user/project_priority/medium_priority`,{
-    headers: {
-      'Access-Control-Allow-Credentials': true,
-      Cookie: context.req.headers.cookie
-    },
-  })
-  const medium_priority = await medium.json();
-
-  const alltask = await fetch(`${server}/api/user_dashboard/subtask_person`,{
-    headers: {
-      'Access-Control-Allow-Credentials': true,
-      Cookie: context.req.headers.cookie
-    },
-  })
-  const all_task = await alltask.json();
-
-  return{ props: { project_details, project_hold, project_completed, project_running, User_name, project_runn, project_h, project_comp, high_priority, low_priority, medium_priority, all_task } }
+  return{ props: { project_details, project_hold, project_completed, project_running, User_name, project_runn, project_h, project_comp, high_priority } }
 }
 
-function Dashboard( { project_details, project_hold, project_completed, project_running, User_name, project_runn, project_h, project_comp, high_priority, low_priority, medium_priority, all_task } ) {
+function Dashboard( { project_details, project_hold, project_completed, project_running, User_name, project_runn, project_h, project_comp, high_priority } ) {
 
   const { register,  watch, handleSubmit, formState: { errors }, setValue } = useForm(); 
   const router = useRouter();
