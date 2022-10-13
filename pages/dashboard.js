@@ -13,6 +13,7 @@ import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
+// import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { useForm  } from 'react-hook-form';
 import DatePicker from "react-datepicker";
@@ -116,18 +117,10 @@ export async function getServerSideProps(context){
   })
   const project_comp = await u_completed.json();
 
-  const high = await fetch(`${server}/api/user/u_priority`,{
-    headers: {
-      'Access-Control-Allow-Credentials': true,
-      Cookie: context.req.headers.cookie
-    },
-  })
-  const high_priority = await high.json();
-
-  return{ props: { project_details, project_hold, project_completed, project_running, User_name, project_runn, project_h, project_comp, high_priority } }
+  return{ props: { project_details, project_hold, project_completed, project_running, User_name, project_runn, project_h, project_comp } }
 }
 
-function Dashboard( { project_details, project_hold, project_completed, project_running, User_name, project_runn, project_h, project_comp, high_priority } ) {
+function Dashboard( { project_details, project_hold, project_completed, project_running, User_name, project_runn, project_h, project_comp } ) {
 
   const { register,  watch, handleSubmit, formState: { errors }, setValue } = useForm(); 
   const router = useRouter();
@@ -390,9 +383,7 @@ useEffect(() =>{
 
     {running_title ? (
       <>
-
       <div className="Projects-title"> {project_Status} Projects</div>
-      <div className="tracking-projects"></div>
         <table className="project-data" >
           {project_List.length > 0 ? (
             <>
@@ -441,8 +432,8 @@ useEffect(() =>{
                                   <CardHeader color="primary">
                                     <GridContainer>
                                       <GridItem>
-                                        <h4 className={classes.cardTitleWhite + ' ' + 'text-white'}>Edit Project</h4>
-                                        <p className={classes.cardCategoryWhite + ' ' + 'text-white'}>Update your project details</p>
+                                        <h4 className={classes.cardTitleWhite}>Edit Project</h4>
+                                        <p className={classes.cardCategoryWhite}>Update your project details</p>
                                       </GridItem>
                                       <div className={classes.close}>
                                         <a onClick={close}>&times;</a>
@@ -662,43 +653,8 @@ useEffect(() =>{
           </>
          ) : (<div className="no_Data"><h3 className="not-data">No Data</h3></div>)}
         </table>
-  
       </>
     ):("")}
-
-
-
-
-
-<div className="my-task"  hidden={cookies.Role_id == "1"}>
-        <GridContainer>
-          <GridItem xs={12} sm={6} md={6}>
-            <h3 className="my-task-priorities"><h2 className="title-my-task">My Task Priorities</h2>
-              {high_priority.map((task)=>{
-
-                        const MySQLDate  = task.task_deadline;
-                        let date = MySQLDate.substr(0,10);
-                        // let date = MySQLDate.replace(/[-]/g, '-').substr(0,10);
-
-                        const today = new Date().toISOString().slice(0,10);
-                        // console.log( new Date().toISOString().slice(0,10) );
-                        // console.log(date);
-
-              if(date >= today){
-                return(
-                  <span>
-                    <div>
-                      <p className="task-high">{task.task_title}<span className={task.task_priority}>{task.task_priority}</span></p>
-                    </div>
-                  </span>
-                )
-              }
-
-              })}
-            </h3>
-          </GridItem>
-        </GridContainer>
-      </div>    
 
     </>
   );
@@ -707,4 +663,3 @@ useEffect(() =>{
 Dashboard.layout = Modules;
 
 export default Dashboard;
-
