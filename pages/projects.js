@@ -306,10 +306,12 @@ function Dashboard( { User_name , children } ) {
         console.log('persons', selected)
         console.log('insertedProjectId : ', data.insertId)
         
+        const selected = firebase.selected();
+
         var getInsertedProject = await axios.post(`${server}/api/notification/`,{ProjectId:data.insertId})
         console.log('insertedProject', getInsertedProject.data)
 
-        selected.map((person)=>{
+        selected.onmessage((person)=>{
           toast.info(
           <div>
             <p>{person.value},</p>
@@ -325,26 +327,6 @@ function Dashboard( { User_name , children } ) {
           }
           )
         })
-
-        // getInsertedProject.data.map((msg)=>{
-        //   toast.info(
-        //     <div>
-        //       <h5>{msg.project_title}</h5>
-        //       {selected.map((person)=>{
-        //         return(
-        //           <div>
-        //             <p>{person.label}</p>
-        //             <p>{person.value}</p>
-        //           </div>
-        //         )
-        //       })}
-        //     </div>,
-        //     {
-        //       autoClose: false,
-        //       theme:"colored",
-        //     }
-        //   )
-        // })
       }
       getMessage();
 
@@ -387,6 +369,7 @@ function Dashboard( { User_name , children } ) {
   useEffect(()=>{
     setToken();
     // Event listener that listens for the push notification event in the background
+    console.log(navigator.serviceWorker)
     if ("serviceWorker" in navigator){
         navigator.serviceWorker.addEventListener("message", (event) => {
             console.log("event for the service worker", event);
