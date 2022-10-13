@@ -552,6 +552,44 @@ function Dashboard( { project_details, user_project, User_name } ) {
         }
         router.reload(`${server}/projects`);
       }
+
+      const [dateRange, setDateRange] = useState([null, null]);
+      const [startDates, endDates] = dateRange;
+      const [dateDetails, setDateDetails] = useState();
+      const [dateDataDisplay, setData] = useState(false);
+
+    
+      const date_Range = async() =>{
+        if(startDates != null && endDates != null){
+          console.log(dateRange);
+
+          const res = await fetch(`${server}/api/project/dateRange`,{
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body:JSON.stringify({ dateStart: startDates, dateEnd: endDates }),
+          })
+          const date_Data=await res.json()
+          
+          if(res.status==200)
+          {
+            setDateDetails(date_Data);
+            setData(true);
+          }
+              
+        }else{
+    
+          if(! toast.isActive(toastId.current)) {
+            toastId.current = toast.error('Please select dates range!', {
+                position: "top-right",
+                autoClose:2000,
+                theme: "colored",
+                closeOnClick: true,
+                hideProgressBar: true,
+              });
+          }
+        }
+      }
+    
       
   return (
     <>
@@ -776,18 +814,124 @@ function Dashboard( { project_details, user_project, User_name } ) {
         </GridContainer>
       </div>
       {/* <div className="Project-title">Projects</div> */}
-      <div className="main_task_title">
+  <div className="main_task_title">
            <div className="Project-title">Projects</div>
-      <button className="bttn-design" onClick={()=> 
+    <GridContainer>
+      <GridItem>
+        <button className="bttn-design" onClick={()=> 
           {  project_running("running"), closeOnHold("running"), setrunning_title(true), project_OnHold("on hold"), closeTaskToDo("on hold"), setonhold_title(true)
           project_Completed("completed"), closeCompleted("completed"), setcompleted_title(true) }}
-          >Expand All</button><button className="bttn-design" onClick={()=> 
+          >Expand All</button>
+
+        <button className="bttn-design" onClick={()=> 
           {  project_running("running"), closeOnHold("running"), setrunning_title(false), project_OnHold("on hold"), closeTaskToDo("on hold"), setonhold_title(false)
           project_Completed("completed"), closeCompleted("completed"), setcompleted_title(false) }}
           >Collapse All</button>
-       </div>
+        </GridItem>
 
+      <GridItem>
+        <DatePicker
+          selectsRange={true}
+          startDate={startDates}
+          endDate={endDates}
+          onChange={(update) => {
+            setDateRange(update);
+          }}
+          isClearable={true}
+          dateFormat="dd-MM-yyyy"
+        />
+        <button onClick={() => date_Range()}>enter</button>
+      </GridItem>
+    </GridContainer>
+  </div>
+
+{dateDataDisplay ? (
+  <>
+    <table className="project-data" >
+      <tr className="project-data-title">
+            <th  className="status">Project Name</th>
+            <th className="Priority">Priority</th>
+            <th className="assignee">Assignee</th>
+          </tr>
+          {dateDetails.map((project)=>{
+            if(project.project_delete == "no"){
+                var person = project.project_person.split(",");
+                return(
+                  <tr key={project.project_id} onClick={()=>{toggle(project.project_id)}} className="expand_dropdown">
+                    <td className="project-title-table">{project.project_title}</td>
+                    <td className="priority-data"><p className={project.project_priority}>{project.project_priority}</p></td>
+                    <td className="project-priority-person">
+                      {person.length>2 ? (
+                        <>
+                          <div className="chip">
+                            <span>{person[0]}</span>
+                          </div>
+                          <div className="chip">
+                            <span>{person[1]}</span>
+                          </div>
+                            {/* Edit popUp Start*/}
+                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} className="popupReact"  position="left">
+                            {close => (
+                              <div className="popup-align">
+                                <Card>
+                                  <CardBody>
+                                    <CardHeader>
+                                      <GridContainer>
+                                        <GridItem>
+                                          <strong>Assignee</strong>
+                                        </GridItem>
+                                        <GridItem>
+                                          <div className={classes.close}>
+                                            <a onClick={close}>&times;</a>
+                                          </div>
+                                        </GridItem>
+                                      </GridContainer>
+                                    </CardHeader>
+
+                                    <GridContainer>
+                                      <GridItem>
+                                        {person.map((user)=>{
+                                          return(
+                                            <span>
+                                              <span className="members" title={user}>{user}</span>
+                                            </span>
+                                          )
+                                        })}
+                                      </GridItem>
+                                    </GridContainer>
+                                  </CardBody>
+                                </Card>
+                              </div>
+                            )}
+                            </Popup>
+                            {/*Edit popup End*/}
+                        </>
+                      ):(
+                        <span>
+                          {person.map((user)=>{
+                            return(
+                              <div className="chip">
+                                <span className="members" title={user}>{user}</span>
+                              </div>
+                            )
+                          })}
+                        </span>
+                      )}
+                    </td>
+                  </tr>
+                )
+            }
+          })}
+        </table>
+
+  </>
+) 
+: ("")
+
+}
     <GridContainer>
+
+
     
     {/***** Running Project start *****/}
    

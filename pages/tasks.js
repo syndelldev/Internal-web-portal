@@ -636,9 +636,6 @@ const updateComment = async(id, comment) =>{
     console.log(updateTime)
     // router.reload(`${server}/tasks`);
   }
-  const [dateRange, setDateRange] = useState([null, null]);
-  const [startDates, endDates] = dateRange;
-
 
   return (
     <div>
@@ -878,17 +875,7 @@ const updateComment = async(id, comment) =>{
     </GridContainer>
   </div>
 
-  <GridItem xs={12} sm={5} md={2}>
-    <DatePicker
-      className={"form-control"}
-      selectsRange={true}
-      startDate={startDates}
-      endDate={endDates}
-      onChange={(update) => {
-        setDateRange(update);
-      }}
-      isClearable={true}
-    />
+  <GridItem>
   </GridItem>
 
 </GridContainer>
