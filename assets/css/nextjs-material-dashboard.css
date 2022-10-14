@@ -695,7 +695,7 @@ p.makeStyles-cardCategoryWhite-559 {
 .MuiGrid-container .model-update{
   border: 1px solid #777777;
   border-radius: 10px;
-  display: inline-block;
+  display: inline-flex;
 }
 @media (max-width: 767px) {
   .content-inner {
