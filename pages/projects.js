@@ -992,7 +992,7 @@ function Dashboard( { User_name } ) {
                                     // console.log("comments");
                                     // console.log(comments);
                                       return(
-                                        <span>
+                                        <span className="model-update">
                                           <GridContainer>
                                             <GridItem>
                                               <span>{m.username}</span>
@@ -1374,7 +1374,7 @@ function Dashboard( { User_name } ) {
                                     // console.log("comments");
                                     // console.log(comments);
                                       return(
-                                        <span>
+                                        <span className="model-update">
                                           <GridContainer>
                                             <GridItem>
                                               <span>{m.username}</span>
@@ -1756,7 +1756,7 @@ function Dashboard( { User_name } ) {
                                     // console.log("comments");
                                     // console.log(comments);
                                       return(
-                                        <span>
+                                        <span className="model-update">
                                           <GridContainer>
                                             <GridItem>
                                               <span>{m.username}</span>
