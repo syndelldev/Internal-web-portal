@@ -31,11 +31,11 @@ export default function home(){
         e.preventDefault();
 
         if (email == "") {
-            let text = "Enter your Email ID";
+            let text = "Please Enter your Email ID";
             document.getElementById("erremail").innerHTML = text;
         }
         if (password == "") {
-            let text = "Enter your Password";
+            let text = "Please Enter your Password";
             document.getElementById("errpassword").innerHTML = text;
         }
 
