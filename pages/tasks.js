@@ -727,7 +727,8 @@ const updateComment = async(id, comment) =>{
                         displayValue="value"
                         options={project_list}
                         value={p_selected}
-                        singleSelect={true}
+                        // singleSelect={true}
+                        selectionLimit="1"
                         onChange={setProject}
                         // onKeyPressFn={function noRefCheck(){}}
                         onRemove={setProject}

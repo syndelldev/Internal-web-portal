@@ -8,7 +8,15 @@ import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input'
 import { ToastContainer, toast } from 'react-toastify';
 import bcrypt from 'bcryptjs'
 
-function SignIn(){
+export async function getServerSideProps(context){
+
+    const res = await fetch(`${server}/api/user/user_department`);
+    const user_Department = await res.json();
+    
+    return{ props: {user_Department} }
+}
+
+function SignIn({ user_Department }){
     const { register, watch, handleSubmit, formState: { errors }, setValue, control } = useForm({mode: "onBlur"}); 
     const router = useRouter();
     
@@ -160,15 +168,12 @@ function SignIn(){
                                 <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>*/}
                                 
                                 <select name="Department" id="Department" className="form-control signup-input" {...register('department', {required: "Please enter your department" ,message:'Please select atleast one option', })}>
-                                    <option value="">Select Your Department</option>
-                                    <option value="HR">HR</option>
-                                    <option value="UI & UX">UI & UX</option>
-                                    <option value="Web development">Web development</option>
-                                    <option value="Content writer">Content writer</option>
-                                    <option value="Project manager">Project manager</option>
-                                    <option value="Mobile App developer">Mobile App developer</option>
-                                    <option value="SEO">SEO</option>
-                                    <option value="Testing Department">Testing Department</option>
+                                    <option value="" disabled selected>Select Your Department</option>
+                                    {user_Department.map((department)=>{
+                                        return(
+                                            <option value={department.department_name}>{department.department_name}</option>
+                                        )
+                                    })}
                                 </select>
                                 <span className='icon-eyes'><IoMdArrowDropdown /></span>
                                 <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>
