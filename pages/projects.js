@@ -834,6 +834,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
       <GridItem>
 
         <DatePicker
+        monthsShown={2}
           selectsRange={true}
           startDate={startDates}
           endDate={endDates}
@@ -841,7 +842,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
             setDateRange(update);
           }}
           isClearable={true}
-          dateFormat="dd-MM-yyyy"
+          dateFormat="dd/MM/yyyy"
         />
         <button onClick={() => date_Range()}>enter</button>
 

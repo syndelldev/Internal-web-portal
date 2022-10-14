@@ -5,11 +5,11 @@ const { createPool } = require("mysql");
 const { resolve } = require("path");
 
 const pool = createPool({
-    host:"dbportal.crq074bejaot.ap-northeast-1.rds.amazonaws.com",
-    user:"admin",
-    password:"12345678",
+    host:"127.0.0.1",
+    user:"root",
+    password:"",
     port:"3306",
-    database:"dbportal"
+    database:"web_portal"
     // host: process.env.MYSQL_HOST,
     // port: process.env.MYSQL_PORT,
     // database: process.env.MYSQL_DATABASE,

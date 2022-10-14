@@ -442,13 +442,9 @@ const updateStatus = async(t_status) =>{
 }
 
 const [comments, setcomments] = useState([]);
-
 const [ u_Comment, setCommentValue ] = useState("");
 
-
-
 const quillRef = useRef(null);
-
 const imageHandler = () => {
 
   const input = document.createElement('input');
@@ -515,8 +511,6 @@ const modules = useMemo(() => ({
       }
   },
 }), []);
-
-
 
 const sendMessage = async (task_id) => {
   const date = new Date().toLocaleString();
@@ -909,16 +903,66 @@ const updateComment = async(id, comment) =>{
                     <td className="project-title-table">{task.project_name}</td>
                     <td><h4 className="projectTitle">{task.task_title}</h4></td>
                     <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
-                    <td className="assignee-data">
-                    {person.map((task_person) => {
-                      return(
-                        <div className="chip">
-                          <span title={task_person}>{task_person}</span>
-                        </div>
-                      )
-                      })
-                    }
+
+                    <td className="project-priority-person">
+                      {person.length>2 ? (
+                        <>
+                          <div className="chip">
+                            <span>{person[0]}</span>
+                          </div>
+                          <div className="chip">
+                            <span>{person[1]}</span>
+                          </div>
+                            {/* Edit popUp Start*/}
+                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} className="popupReact"  position="left">
+                            {close => (
+                              <div className="popup-align">
+                                <Card>
+                                  <CardBody>
+                                    <CardHeader>
+                                      <GridContainer>
+                                        <GridItem>
+                                          <strong>Assignee</strong>
+                                        </GridItem>
+                                        <GridItem>
+                                          <div className={classes.close}>
+                                            <a onClick={close}>&times;</a>
+                                          </div>
+                                        </GridItem>
+                                      </GridContainer>
+                                    </CardHeader>
+
+                                    <GridContainer>
+                                      <GridItem>
+                                        {person.map((user)=>{
+                                          return(
+                                            <span>
+                                              <span className="members" title={user}>{user}</span>
+                                            </span>
+                                          )
+                                        })}
+                                      </GridItem>
+                                    </GridContainer>
+                                  </CardBody>
+                                </Card>
+                              </div>
+                            )}
+                            </Popup>
+                            {/*Edit popup End*/}
+                        </>
+                        ):(
+                        <span>
+                          {person.map((user)=>{
+                            return(
+                              <div className="chip">
+                                <span className="members" title={user}>{user}</span>
+                              </div>
+                            )
+                          })}
+                        </span>
+                      )}
                     </td>
+
                     <td className="project-edit-table">
                       <Popup trigger={<div><a className="bttn-design1" onClick={()=> { projectId(task.task_id) }  }><FiEdit/></a></div>}  className="popupReact" modal nested>
                       {close => (
@@ -1355,16 +1399,66 @@ const updateComment = async(id, comment) =>{
                       <td className="project-title-table">{task.project_name}</td>
                       <td><h4 className="projectTitle">{task.task_title}</h4></td>
                       <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
-                      <td className="assignee-data">
-                      {person.map((task_person) => {
-                        return(
+
+                      <td className="project-priority-person">
+                      {person.length>2 ? (
+                        <>
                           <div className="chip">
-                            <span>{task_person}</span>
+                            <span>{person[0]}</span>
                           </div>
-                        )
-                        })
-                      }
-                      </td>
+                          <div className="chip">
+                            <span>{person[1]}</span>
+                          </div>
+                            {/* Edit popUp Start*/}
+                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} className="popupReact"  position="left">
+                            {close => (
+                              <div className="popup-align">
+                                <Card>
+                                  <CardBody>
+                                    <CardHeader>
+                                      <GridContainer>
+                                        <GridItem>
+                                          <strong>Assignee</strong>
+                                        </GridItem>
+                                        <GridItem>
+                                          <div className={classes.close}>
+                                            <a onClick={close}>&times;</a>
+                                          </div>
+                                        </GridItem>
+                                      </GridContainer>
+                                    </CardHeader>
+
+                                    <GridContainer>
+                                      <GridItem>
+                                        {person.map((user)=>{
+                                          return(
+                                            <span>
+                                              <span className="members" title={user}>{user}</span>
+                                            </span>
+                                          )
+                                        })}
+                                      </GridItem>
+                                    </GridContainer>
+                                  </CardBody>
+                                </Card>
+                              </div>
+                            )}
+                            </Popup>
+                            {/*Edit popup End*/}
+                        </>
+                        ):(
+                        <span>
+                          {person.map((user)=>{
+                            return(
+                              <div className="chip">
+                                <span className="members" title={user}>{user}</span>
+                              </div>
+                            )
+                          })}
+                        </span>
+                      )}
+                    </td>
+
                       <td className="project-edit-table">
                       <Popup trigger={<div><a className="bttn-design1" onClick={()=> { projectId(task.task_id) }  }><FiEdit/></a></div>}  className="popupReact" modal nested>
                       {close => (
@@ -1802,16 +1896,66 @@ const updateComment = async(id, comment) =>{
                     <td className="project-title-table">{task.project_name}</td>
                     <td><h4 className="projectTitle">{task.task_title}</h4></td>
                     <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
-                    <td className="assignee-data">
-                    {person.map((task_person) => {
-                      return(
-                        <div className="chip">
-                          <span>{task_person}</span>
-                        </div>
-                      )
-                      })
-                    }
+
+                    <td className="project-priority-person">
+                      {person.length>2 ? (
+                        <>
+                          <div className="chip">
+                            <span>{person[0]}</span>
+                          </div>
+                          <div className="chip">
+                            <span>{person[1]}</span>
+                          </div>
+                            {/* Edit popUp Start*/}
+                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} className="popupReact"  position="left">
+                            {close => (
+                              <div className="popup-align">
+                                <Card>
+                                  <CardBody>
+                                    <CardHeader>
+                                      <GridContainer>
+                                        <GridItem>
+                                          <strong>Assignee</strong>
+                                        </GridItem>
+                                        <GridItem>
+                                          <div className={classes.close}>
+                                            <a onClick={close}>&times;</a>
+                                          </div>
+                                        </GridItem>
+                                      </GridContainer>
+                                    </CardHeader>
+
+                                    <GridContainer>
+                                      <GridItem>
+                                        {person.map((user)=>{
+                                          return(
+                                            <span>
+                                              <span className="members" title={user}>{user}</span>
+                                            </span>
+                                          )
+                                        })}
+                                      </GridItem>
+                                    </GridContainer>
+                                  </CardBody>
+                                </Card>
+                              </div>
+                            )}
+                            </Popup>
+                            {/*Edit popup End*/}
+                        </>
+                        ):(
+                        <span>
+                          {person.map((user)=>{
+                            return(
+                              <div className="chip">
+                                <span className="members" title={user}>{user}</span>
+                              </div>
+                            )
+                          })}
+                        </span>
+                      )}
                     </td>
+
                     <td className="project-edit-table">
                       <Popup trigger={<div><a className="bttn-design1" onClick={()=> { projectId(task.task_id) }  }><FiEdit/></a></div>}  className="popupReact" modal nested>
                       {close => (
@@ -2250,16 +2394,66 @@ const updateComment = async(id, comment) =>{
                     <td className="project-title-table">{task.project_name}</td>
                     <td><h4 className="projectTitle">{task.task_title}</h4></td>
                     <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
-                    <td className="assignee-data">
-                    {person.map((task_person) => {
-                      return(
-                        <div className="chip">
-                          <span>{task_person}</span>
-                        </div>
-                      )
-                      })
-                    }
+
+                    <td className="project-priority-person">
+                      {person.length>2 ? (
+                        <>
+                          <div className="chip">
+                            <span>{person[0]}</span>
+                          </div>
+                          <div className="chip">
+                            <span>{person[1]}</span>
+                          </div>
+                            {/* Edit popUp Start*/}
+                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} className="popupReact"  position="left">
+                            {close => (
+                              <div className="popup-align">
+                                <Card>
+                                  <CardBody>
+                                    <CardHeader>
+                                      <GridContainer>
+                                        <GridItem>
+                                          <strong>Assignee</strong>
+                                        </GridItem>
+                                        <GridItem>
+                                          <div className={classes.close}>
+                                            <a onClick={close}>&times;</a>
+                                          </div>
+                                        </GridItem>
+                                      </GridContainer>
+                                    </CardHeader>
+
+                                    <GridContainer>
+                                      <GridItem>
+                                        {person.map((user)=>{
+                                          return(
+                                            <span>
+                                              <span className="members" title={user}>{user}</span>
+                                            </span>
+                                          )
+                                        })}
+                                      </GridItem>
+                                    </GridContainer>
+                                  </CardBody>
+                                </Card>
+                              </div>
+                            )}
+                            </Popup>
+                            {/*Edit popup End*/}
+                        </>
+                        ):(
+                        <span>
+                          {person.map((user)=>{
+                            return(
+                              <div className="chip">
+                                <span className="members" title={user}>{user}</span>
+                              </div>
+                            )
+                          })}
+                        </span>
+                      )}
                     </td>
+
                     <td className="project-edit-table">
                       <Popup trigger={<div><a className="bttn-design1" onClick={()=> { projectId(task.task_id) }  }><FiEdit/></a></div>}  className="popupReact" modal nested>
                       {close => (
