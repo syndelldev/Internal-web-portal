@@ -5,7 +5,7 @@ const handler=nc();
 async function getNotification(req,res){
     if(req.method == 'POST'){
         try{
-            // console.log(req)
+            console.log(req.body)
 
             var inserted_project =  await executeQuery("SELECT * FROM `tbl_project` WHERE project_id=?", [req.body.ProjectId])  
             console.log(inserted_project) 

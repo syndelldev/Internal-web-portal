@@ -31,6 +31,9 @@ import { DateRangePicker } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 
+import "firebase/messaging";
+import firebase from "firebase/app";
+import { firebaseCloudMessaging } from "../utils/firebase";
 
 const ReactQuill = dynamic(
   async () => {
@@ -125,15 +128,33 @@ function Dashboard( { project_details, user_project, User_name } ) {
   const [cookies, setCookie] = useCookies(['name']);
 
   //Notification Start
-  const createNotification = (project_id) => {
-    console.log(project_id)
-    toast.info('Notification !', {
-      position: "top-right",
-      autoClose:false,
-      theme: "colored",
-      hideProgressBar: true,
-    });
-  }
+  useEffect(()=>{
+    setToken();
+    // Event listener that listens for the push notification event in the background
+    // console.log(navigator)
+    // if ("serviceWorker" in navigator){
+    //     navigator.serviceWorker.addEventListener("message", (event) => {
+    //         console.log("event for the service worker", event);
+    //     });
+    // }
+    // Calls the getMessage() function if the token is there
+    async function setToken() {
+        try{
+            const token = await firebaseCloudMessaging.init();
+            if (token){
+                console.log("token : ", token);
+                getMessage();
+            }
+        }
+        catch(error){
+            console.log(error);
+        }
+      }
+    })
+    // Handles the click function on the toast showing push notification
+  const handleClickPushNotification = (url) => {
+    router.push(url);
+  };
   //Notification End
 
   // const [project_details, setproject_details] = useState([])
@@ -310,7 +331,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
 
   const onSubmit = async (result) =>{
     
-    console.log("result");
+    // console.log("result");
     console.log(result.start.toDateString());
     const p_start = result.start.toDateString();
     const p_end = result.end.toDateString();
@@ -323,6 +344,64 @@ function Dashboard( { project_details, user_project, User_name } ) {
       })
       const data=await res.json()
       
+      const  getMessage = async() => {
+        console.log("Notification Function")
+        const messaging = firebase.messaging();
+        console.log('messaging', messaging);
+
+
+        console.log('persons', selected)
+        console.log('insertedProjectId : ', data.insertId)
+        
+        var getInsertedProject = await axios.post(`${server}/api/notification/`,{ProjectId:data.insertId}, {
+          // headers:{
+          //   'Content-Type': 'application/json',
+          //   'Authorization': 'eIRduI7lC7YlC0Uagaiy3W:APA91bFtpxqXFiWMA9oXTHLSuOJdUVpkjar4mJpK72JFRk9riFy5IQbYuAorr1xKvQ4UXuhwpAl_g5q9fVGwKjPFSZ-D76mqdItZFskIglXrpktUbJANehCNa0RZsPSeTVDP0ibQWvwV'
+          // }
+        })
+        console.log('insertedProject', getInsertedProject.data)
+        // messaging.onMessage((payload)=>{
+        //   console.log("Test")
+        //   const { title, body } = JSON.parse(message.data.notification);
+        //   var options = {
+        //     body,
+        //   };
+        //   console.log(self.registration)
+        //   self.registration.showNotification(title, body);
+          
+
+        //   toast.info(
+        //     <div>
+        //       <p>{message.notification.title}</p>
+        //       <p>{message.notification.body}</p>
+        //     </div>,
+        //     {
+        //       autoClose: false,
+        //       theme:"colored",
+        //     }
+        //   )
+        // })
+
+        selected.map((person)=>{
+          toast.info(
+          <div key={person.id}>
+            <p>{person.value},</p>
+            {getInsertedProject.data.map((project)=>{
+              return(
+                <p>You Added in {project.project_title} project </p>
+              )
+            })}
+          </div>,
+          {
+            autoClose: false,
+            theme:"colored",
+          }
+          )
+        })
+      }
+      getMessage();
+
+
       if(res.status==200)
       {
         // alert("success");
@@ -332,11 +411,11 @@ function Dashboard( { project_details, user_project, User_name } ) {
               autoClose:1000,
               theme: "colored",
               hideProgressBar: true,
-              onClose: () => router.push(`${server}/admin/project_module`)
+              // onClose: () => router.push(`${server}/projects`)
               });
           }
   
-        router.reload(`${server}/admin/project_module`);
+        // router.reload(`${server}/projects`);
       }
       else
       {
@@ -353,7 +432,6 @@ function Dashboard( { project_details, user_project, User_name } ) {
             hideProgressBar: true,
           });
         }
-
     }
   }
 
@@ -2148,7 +2226,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
     ):("")}
     {/***** Completed Project End *****/}
         {/***** Project End *****/}
-        <ToastContainer limit={1}/>
+        <ToastContainer/>
       </GridContainer>
     </>
   );
