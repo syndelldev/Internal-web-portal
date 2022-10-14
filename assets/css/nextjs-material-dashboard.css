@@ -625,6 +625,8 @@ button.addproject{
     margin: 0 10px;
   }
   .btn-primary{
+    margin-top: 10px;
+    margin-bottom: 10px;
     background-color: #00155c!important;
     border: 1px solid #00155c!important;
   }

@@ -1201,7 +1201,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
                                 <GridContainer>
                                     <GridItem>
                                       <form>
-                                        <h5 className="projectPriority">Comments</h5>
+                                        <h5 className="project-comments">Comments</h5>
                                           <ReactQuill
                                           forwardedRef={quillRef}
                                             modules={modules}
@@ -1218,13 +1218,13 @@ function Dashboard( { project_details, user_project, User_name } ) {
                                     // console.log("comments");
                                     // console.log(comments);
                                       return(
-                                        <span>
-                                          <GridContainer>
-                                            <GridItem>
+                                        <span className="comment-box">
+                                          <GridContainer className="comment-box">
+                                            <GridItem className="comment-box"> 
                                               <span>{m.username}</span>
                                             </GridItem>
                                                 
-                                            <GridItem>
+                                            <GridItem className="comment-box">
                                             <span><p>{m.creation_time}</p></span>
                                             </GridItem>
                                           </GridContainer>
@@ -1589,7 +1589,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
                                 <GridContainer>
                                     <GridItem>
                                       <form>
-                                        <h5 className="projectPriority">Comments</h5>
+                                        <h5 className="project-comments">Comments</h5>
                                           <ReactQuill
                                           forwardedRef={quillRef}
                                             modules={modules} 
@@ -1976,7 +1976,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
                                 <GridContainer>
                                     <GridItem>
                                       <form>
-                                        <h5 className="projectPriority">Comments</h5>
+                                        <h5 className="project-comments">Comments</h5>
                                           <ReactQuill forwardedRef={quillRef} modules={modules} theme="snow" onChange={setValues} />
                                         <button className="btn btn-primary" onClick={()=> {sendMessage(project.project_id), close()} }>Save</button>
                                       </form>
@@ -1985,7 +1985,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
 
                                   {comments.map((m)=>{
                                       return(
-                                        <span>
+                                        <span className="comment-box">
                                           <GridContainer>
                                             <GridItem>
                                               <span>{m.username}</span>
