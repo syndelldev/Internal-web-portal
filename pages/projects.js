@@ -545,6 +545,8 @@ function Dashboard( { project_details, user_project, User_name } ) {
       const [startDates, endDates] = dateRange;
       // get selected dates projects list
       const [dateDetails, setDateDetails] = useState();
+      // get selected dates projects list for user
+      const [date_uData, setDate_uDetails] = useState();
       // onclick show data
       const [dateDataDisplay, setData] = useState(false);
     
@@ -565,6 +567,21 @@ function Dashboard( { project_details, user_project, User_name } ) {
             setDateDetails(date_Data);
             setData(true);
           }
+
+          const response = await fetch(`${server}/api/project/dateRange_ProjectsUser`,{
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body:JSON.stringify({ dateStart: startDates, dateEnd: endDates, user: cookies.name }),
+          })
+          const date_uData=await response.json()
+          // console.log("user data");
+          // console.log(date_uData);
+          
+          if(res.status==200)
+          {
+            setDate_uDetails(date_uData);
+            setData(true);
+          }
               
         }else{
           // select startDate and endDate toast error
@@ -580,8 +597,18 @@ function Dashboard( { project_details, user_project, User_name } ) {
         }
       }
       
+      if(cookies.Role_id==1 || cookies.Role_id==3){
+        var project_list = dateDetails;
+        console.log(project_list);
+      }
+      else if(cookies.Role_id==2){
+        var project_list = date_uData;
+        console.log(project_list);
+      }
+    
+      
   return (
-    <>
+    <span>
 
       <div className="buttonalign" hidden={cookies.Role_id == "2"} >
         <GridContainer>
@@ -804,7 +831,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
       </div>
       {/* <div className="Project-title">Projects</div> */}
   <div className="main_task_title">
-           <div className="Project-title">Projects</div>
+    <div className="Project-title">Projects</div>
     <GridContainer>
       <GridItem>
         <button className="bttn-design" onClick={()=> 
@@ -931,7 +958,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
 <Card className="task_title_status">
       <GridContainer >
         <GridItem xs={12} sm={12} md={12} >
-          <div onClick={()=> {  project_running("running") , closeOnHold("running") , setrunning_title(!running_title) }} className="task_title" > Project In progress {running_title ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
+          <div onClick={()=> {  project_running("running") , closeOnHold("running") , setrunning_title(!running_title) }} className="task_title" > Project In Progress {running_title ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
         </GridItem>
       </GridContainer>
     </Card>
@@ -2083,7 +2110,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
         {/***** Project End *****/}
         <ToastContainer limit={1}/>
       </GridContainer>
-    </>
+    </span>
   );
 }
 
