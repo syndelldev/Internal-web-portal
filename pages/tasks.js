@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { useState } from "react";
 import { useRouter } from 'next/router';
 // react plugin for creating charts
@@ -40,7 +40,16 @@ import "react-quill/dist/quill.bubble.css";
 // import Typography from "@material-ui/core/Typography";
 // import AccordionSummary from "@material-ui/core/AccordionSummary";
 
-const ReactQuill = dynamic(import('react-quill'), { ssr: false });
+const ReactQuill = dynamic(
+  async () => {
+    const { default: RQ } = await import("react-quill");
+
+    return ({ forwardedRef, ...props }) => <RQ ref={forwardedRef} {...props} />;
+  },
+  {
+    ssr: false
+  }
+);
 
 const styles = {
   cardCategoryWhite: {
@@ -256,7 +265,7 @@ function Dashboard( { project_details , User_name , allTask, userTask } ) {
         body: JSON.stringify({ task_id:uoption.task_id, project_name:u_project , task_person: allMember, task_status:uoption.task_status , task_department:uoption.task_department ,  task_title: uoption.task_title , task_description:uoption.task_description , task_language:uoption.task_language, task_comment:uoption.task_comment, task_priority:uoption.task_priority, task_start: startDate , task_deadline: endDate }),
       });
       if(!toast.isActive(toastId.current)) {
-        toastId.current = toast.success('Task updated Successfully ! 🎉', {
+        toastId.current = toast.success('Task updated Successfully!🎉', {
             position: "top-right",
             autoClose:1000,
             theme: "colored",
@@ -297,15 +306,15 @@ function Dashboard( { project_details , User_name , allTask, userTask } ) {
     const res = await fetch(`${server}/api/subtask/add_subtask`,{
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body:JSON.stringify({task_person:selected, project_name:p_selected, task_status:result.task_status , task_title:result.task_title, task_description:result.task_description, task_language:result.task_language, task_comment:result.task_comment, task_priority:result.task_priority, task_start: p_start , task_deadline: p_end }),
+      body:JSON.stringify({task_person:selected, project_name:p_selected, task_status:result.task_status , task_title:result.task_title, task_description:result.task_description, task_language:result.task_language, task_createdBy:cookies.name , task_priority:result.task_priority, task_start: p_start , task_deadline: p_end }),
     })
     const data=await res.json()
 
     if(res.status==200)
     {
       // alert("success");
-      if(!toast.isActive(toastID.current)) {
-        toastId.current = toast.success('Task added Successfully ! 🎉', {
+      if(!toast.isActive(toastId.current)) {
+        toastId.current = toast.success('Task added Successfully!🎉', {
             position: "top-right",
             autoClose:1000,
             theme: "colored",
@@ -422,34 +431,92 @@ const updateStatus = async(t_status) =>{
     body: JSON.stringify({ task_id: uoption.task_id, task_status: t_status }),
   });
   if(!toast.isActive(toastId.current)) {
-    toastId.current = toast.success('Status updated Successfully ! 🎉', {
+    toastId.current = toast.success('Status updated Successfully!', {
         position: "top-right",
         autoClose:1000,
         theme: "colored",
-        hideProgressBar: true,
-        onClose: () => router.push(`${server}/tasks`)
+        hideProgressBar: true
       });
     }
-    // router.reload(`${server}/tasks`);
+  router.reload(`${server}/tasks`);
 }
 
 const [comments, setcomments] = useState([]);
 
 const [ u_Comment, setCommentValue ] = useState("");
-const modules = {
-  toolbar: {
-    container: [
-    [{ 'font': [] }],
-    [{ 'size': ['small', false, 'large', 'huge'] }],
-    ['bold', 'italic', 'underline'],
-    [{'list': 'ordered'}, {'list': 'bullet'}],
-    [{ 'align': [] }],
-    [{ 'color': [] }, { 'background': [] }],
-    ['clean'],
-    ['link', 'image', 'video']
-  ]
- }
+
+
+
+const quillRef = useRef(null);
+
+const imageHandler = () => {
+
+  const input = document.createElement('input');
+  input.setAttribute('type', 'file');
+  input.setAttribute('accept', 'image/*');
+  input.click();
+
+  input.onchange = async () => {
+      let data = null;
+      const file = input.files ? input.files[0] : null;
+
+      if (/^image\//.test(file.type)) {          
+      const formData = new FormData();
+
+      formData.append('image', file);
+      formData.getAll('image');
+
+      const res = await fetch(`${server}/api/upload`,{ 
+          method: 'POST',
+          body: formData,
+      });
+      data = await res.json();
+      console.log(data);
+      console.log(data.files.image.newFilename);
+
+      // Save current cursor 
+      const range = quillRef.current.getEditor().getSelection();
+      const quill = quillRef.current.getEditor();
+      quill.insertEmbed( range.index, "image", `${server}/upload_img/${data.files.image.newFilename}${data.files.image.originalFilename}`);
+      quillRef.current.getEditor().setSelection(range.index + 1);
+
+  }else{
+
+    if(! toast.isActive(toastId.current)) {
+      toastId.current = toast.error('Please upload only image', {
+          position: "top-right",
+          autoClose:5000,
+          theme: "colored",
+          closeOnClick: true,
+          hideProgressBar: true,
+        });
+    }
+
+  }
 }
+}
+
+const modules = useMemo(() => ({
+  toolbar: {
+      container: [
+          [{ 'font': [] }],
+          [{ 'size': ['small', false, 'large', 'huge'] }],
+          ['bold', 'italic', 'underline'],
+          [{'list': 'ordered'}, {'list': 'bullet'}],
+          [{ 'align': [] }],
+          [{ 'color': [] }, { 'background': [] }],
+          ['clean'],
+          ['link'],
+          ['image'],
+          ['video']
+      ],
+      handlers: {
+        image: imageHandler
+      }
+  },
+}), []);
+
+
 
 const sendMessage = async (task_id) => {
   const date = new Date().toLocaleString();
@@ -461,12 +528,11 @@ const sendMessage = async (task_id) => {
   console.log(cookies.name)
 
   if(!toast.isActive(toastId.current)) {
-    toastId.current = toast.success('Comment added successfully!🎉', {
+    toastId.current = toast.success('Comment added successfully!', {
         position: "top-right",
         autoClose:1000,
         theme: "colored",
-        hideProgressBar: true,
-        onClose: () => router.push(`${server}/tasks`)
+        hideProgressBar: true
       });
   }
 
@@ -494,7 +560,7 @@ const updateComment = async(id, comment) =>{
   var comment = await axios.post(`${server}/api/comment/updateComment`, { comment_id: id, user: cookies.name, comment:comment });
 
   if(!toast.isActive(toastId.current)) {
-    toastId.current = toast.success('Comment updated successfully!🎉', {
+    toastId.current = toast.success('Comment updated successfully!', {
         position: "top-right",
         autoClose:1000,
         theme: "colored",
@@ -570,7 +636,6 @@ const updateComment = async(id, comment) =>{
     console.log(updateTime)
     // router.reload(`${server}/tasks`);
   }
-
 
   return (
     <div>
@@ -741,17 +806,7 @@ const updateComment = async(id, comment) =>{
                       </div> 
                     </GridItem>
                   </GridContainer><br/>
-
-                  <GridContainer>
-                    <GridItem xs={12} sm={12} md={12}>
-                      <div className="form-group">
-                      <span>Comments</span>
-                        <textarea className="form-control signup-input" placeholder="Comment" {...register('task_comment')} />
-                        {/* <div className="error-msg">{errors.position && <span>{errors.position.message}</span>}</div> */}
-                      </div> 
-                    </GridItem>
-                  </GridContainer>
-                  
+                 
                 </CardBody>
 
                 <CardFooter>
@@ -804,17 +859,32 @@ const updateComment = async(id, comment) =>{
 
 </GridContainer>
 </div>
-<div className="main_task_title">
+
 <div className="Project-title">Tasks</div>
 
-      <button className="bttn-design" onClick={()=>{taskToDo("task_toDo") ,  settodo_title(true), taskOnHold("taskOn_hold") , setonhold_title(true), taskRunning("task_Running") , closeTaskRunning("task_Running"),setrunning_title(true), taskCompleted("task_completed") , setcompleted_title(true) }}>Expand All</button>
-      <button className="bttn-design" onClick={()=>{taskToDo("task_toDo") , closeTaskToDo("task_toDo"), settodo_title(false), taskOnHold("taskOn_hold") , closeTaskOnHold("taskOn_hold"), setonhold_title(false), taskRunning("task_Running") , closeTaskRunning("task_Running"),setrunning_title(false), taskCompleted("task_completed") , closeTaskCompleted("task_completed") , setcompleted_title(false) }}>Collapse All</button>
-    </div>
-    <GridContainer>  
-    <Card className="task_title_status">
+<GridContainer>
+
+  <div className="main_task_title">
+    <GridContainer>
+      <GridItem>
+        <button className="bttn-design" onClick={()=>{taskToDo("task_toDo") ,  settodo_title(true), taskOnHold("taskOn_hold") , setonhold_title(true), taskRunning("task_Running") , setrunning_title(true), taskCompleted("task_completed") , setcompleted_title(true) }}>Expand All</button>
+      </GridItem>
+      <GridItem>
+        <button className="bttn-design" onClick={()=>{taskToDo("task_toDo") , closeTaskToDo("task_toDo"), settodo_title(false), taskOnHold("taskOn_hold") , closeTaskOnHold("taskOn_hold"), setonhold_title(false), taskRunning("task_Running") , closeTaskRunning("task_Running"),setrunning_title(false), taskCompleted("task_completed") , closeTaskCompleted("task_completed") , setcompleted_title(false) }}>Collpase All</button>
+      </GridItem>
+    </GridContainer>
+  </div>
+
+  <GridItem>
+  </GridItem>
+
+</GridContainer>
+
+  <GridContainer>
+    <Card>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-          <div className="task_title" onClick={()=> { taskToDo("task_toDo") , closeTaskToDo("task_toDo"), settodo_title(!todo_title) }}>Task to do {taskTodo ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
+          <div className="taskToDo" onClick={()=> { taskToDo("task_toDo") , closeTaskToDo("task_toDo"), settodo_title(!todo_title) }}>Task to do {todo_title ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
         </GridItem>
       </GridContainer>
     </Card>
@@ -1112,8 +1182,8 @@ const updateComment = async(id, comment) =>{
 
                             <GridContainer>
                               <GridItem>
-                                <ReactQuill modules={modules} theme="snow" onChange={setCommentValue} />
-                                  <div onClick={()=> { sendMessage(task.task_id), close() } }>Save</div>
+                                <ReactQuill forwardedRef={quillRef} modules={modules} theme="snow" onChange={setCommentValue} />
+                                  <button className="btn btn-primary" onClick={()=> { sendMessage(task.task_id), close() } }>Save</button>
                               </GridItem>
                             </GridContainer>
                            
@@ -1145,7 +1215,7 @@ const updateComment = async(id, comment) =>{
                             <GridContainer>
                               <GridItem xs={12} sm={12} md={12} >
                                 <form>
-                                  <ReactQuill modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
+                                  <ReactQuill forwardedRef={quillRef} modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
                                 </form>
                               </GridItem>
                             </GridContainer>
@@ -1258,10 +1328,10 @@ const updateComment = async(id, comment) =>{
     ):("")
     }
 
-    <Card className="task_title_status">
+    <Card>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-          <div className="taskOn_hold task_title" onClick={()=> { taskOnHold("taskOn_hold") , closeTaskOnHold("taskOn_hold"), setonhold_title(!onhold_title) }}>Task on hold {TaskOnHold ? <FaArrowUp/>:<FaArrowDown/>}</div>
+          <div className="taskOn_hold" onClick={()=> { taskOnHold("taskOn_hold") , closeTaskOnHold("taskOn_hold"), setonhold_title(!onhold_title) }}>Task on hold {onhold_title ? <FaArrowUp/>:<FaArrowDown/>}</div>
         </GridItem>
       </GridContainer>
     </Card>
@@ -1559,8 +1629,8 @@ const updateComment = async(id, comment) =>{
 
                             <GridContainer>
                               <GridItem>
-                                <ReactQuill modules={modules} theme="snow" onChange={setCommentValue} />
-                                  <div onClick={()=> { sendMessage(task.task_id), close() } }>Save</div>
+                                <ReactQuill forwardedRef={quillRef} modules={modules} theme="snow" onChange={setCommentValue} />
+                                  <button className="btn btn-primary" onClick={()=> { sendMessage(task.task_id), close() } }>Save</button>
                               </GridItem>
                             </GridContainer>
                           
@@ -1592,7 +1662,7 @@ const updateComment = async(id, comment) =>{
                             <GridContainer>
                               <GridItem xs={12} sm={12} md={12} >
                                 <form>
-                                  <ReactQuill modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
+                                  <ReactQuill forwardedRef={quillRef} modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
                                 </form>
                               </GridItem>
                             </GridContainer>
@@ -1705,10 +1775,10 @@ const updateComment = async(id, comment) =>{
       </>
     ):("")}
     
-    <Card className="task_title_status">
+    <Card>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-          <div className="taskRunning task_title" onClick={()=> { taskRunning("task_Running") , closeTaskRunning("task_Running"),setrunning_title(!running_title) }}>Task Running {TaskRunning ? <FaArrowUp/>:<FaArrowDown/>} </div>
+          <div className="taskRunning" onClick={()=> { taskRunning("task_Running") , closeTaskRunning("task_Running"),setrunning_title(!running_title) }}>Task Running {running_title ? <FaArrowUp/>:<FaArrowDown/>} </div>
         </GridItem>
       </GridContainer>
     </Card>
@@ -2007,8 +2077,8 @@ const updateComment = async(id, comment) =>{
 
                             <GridContainer>
                               <GridItem>
-                                <ReactQuill modules={modules} theme="snow" onChange={setCommentValue} />
-                                  <div onClick={()=> { sendMessage(task.task_id), close() } }>Save</div>
+                                <ReactQuill forwardedRef={quillRef} modules={modules} theme="snow" onChange={setCommentValue} />
+                                  <button className="btn btn-primary" onClick={()=> { sendMessage(task.task_id), close() } }>Save</button>
                               </GridItem>
                             </GridContainer>
                           
@@ -2040,7 +2110,7 @@ const updateComment = async(id, comment) =>{
                             <GridContainer>
                               <GridItem xs={12} sm={12} md={12} >
                                 <form>
-                                  <ReactQuill modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
+                                  <ReactQuill forwardedRef={quillRef} modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
                                 </form>
                               </GridItem>
                             </GridContainer>
@@ -2153,10 +2223,10 @@ const updateComment = async(id, comment) =>{
       </>
     ):("")}
     
-    <Card className="task_title_status">
+    <Card>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-          <div className="taskCompleted task_title" onClick={()=> { taskCompleted("task_completed") , closeTaskCompleted("task_completed") , setcompleted_title(!completed_title)}}>Task completed {TaskCompleted ? <FaArrowUp/>:<FaArrowDown/>} </div>
+          <div className="taskCompleted" onClick={()=> { taskCompleted("task_completed") , closeTaskCompleted("task_completed") , setcompleted_title(!completed_title)}}>Task completed {completed_title ? <FaArrowUp/>:<FaArrowDown/>} </div>
         </GridItem>
       </GridContainer>
     </Card>
@@ -2455,8 +2525,8 @@ const updateComment = async(id, comment) =>{
 
                             <GridContainer>
                               <GridItem>
-                                <ReactQuill modules={modules} theme="snow" onChange={setCommentValue} />
-                                  <div onClick={()=> { sendMessage(task.task_id), close() } }>Save</div>
+                                <ReactQuill forwardedRef={quillRef} modules={modules} theme="snow" onChange={setCommentValue} />
+                                  <button className="btn btn-primary" onClick={()=> { sendMessage(task.task_id), close() } }>Save</button>
                               </GridItem>
                             </GridContainer>
                           
@@ -2488,7 +2558,7 @@ const updateComment = async(id, comment) =>{
                             <GridContainer>
                               <GridItem xs={12} sm={12} md={12} >
                                 <form>
-                                  <ReactQuill modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
+                                  <ReactQuill forwardedRef={quillRef} modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
                                 </form>
                               </GridItem>
                             </GridContainer>
@@ -2602,7 +2672,7 @@ const updateComment = async(id, comment) =>{
     ):("")}
     
     {/* </GridItem> */}
-
+      <ToastContainer limit={1}/>
     </GridContainer>
     </div>
   );

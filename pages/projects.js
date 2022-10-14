@@ -561,58 +561,15 @@ function Dashboard( { project_details, user_project, User_name } ) {
       const [startDates, endDates] = dateRange;
       const [dateDetails, setDateDetails] = useState();
       const [dateDataDisplay, setData] = useState(false);
-
     
-      // const date_Range = async() =>{
-      //   if(startDates != null && endDates != null){
-      //     console.log(dateRange);
-
-      //     const res = await fetch(`${server}/api/project/dateRange`,{
-      //       method: "POST",
-      //       headers: { "Content-Type": "application/json" },
-      //       body:JSON.stringify({ dateStart: startDates, dateEnd: endDates }),
-      //     })
-      //     const date_Data=await res.json()
-          
-      //     if(res.status==200)
-      //     {
-      //       setDateDetails(date_Data);
-      //       setData(true);
-      //     }
-              
-      //   }else{
-    
-      //     if(! toast.isActive(toastId.current)) {
-      //       toastId.current = toast.error('Please select dates range!', {
-      //           position: "top-right",
-      //           autoClose:2000,
-      //           theme: "colored",
-      //           closeOnClick: true,
-      //           hideProgressBar: true,
-      //         });
-      //     }
-      //   }
-      // }
-
-      const [state, setState] = useState([
-        {
-          startDate: new Date(),
-          endDate: new Date(),
-          key: 'selection'
-        }
-      ]);
-      console.log("state");
-      // console.log(state[0].startDate);
-      // console.log(state[0].endDate);
-      
       const date_Range = async() =>{
-        if(state[0].startDate != null && state[0].endDate != null){
+        if(startDates != null && endDates != null){
           console.log(dateRange);
 
           const res = await fetch(`${server}/api/project/dateRange`,{
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body:JSON.stringify({ dateStart: state[0].startDate, dateEnd: state[0].endDate }),
+            body:JSON.stringify({ dateStart: startDates, dateEnd: endDates }),
           })
           const date_Data=await res.json()
           
@@ -635,7 +592,6 @@ function Dashboard( { project_details, user_project, User_name } ) {
           }
         }
       }
-
       
   return (
     <>
@@ -876,7 +832,8 @@ function Dashboard( { project_details, user_project, User_name } ) {
         </GridItem>
 
       <GridItem>
-        {/* <DatePicker
+
+        <DatePicker
           selectsRange={true}
           startDate={startDates}
           endDate={endDates}
@@ -885,20 +842,9 @@ function Dashboard( { project_details, user_project, User_name } ) {
           }}
           isClearable={true}
           dateFormat="dd-MM-yyyy"
-        /> */}
-
-        <DateRangePicker
-          onChange={item => setState([item.selection])}
-          showSelectionPreview={true}
-          moveRangeOnFirstSelection={false}
-          months={2}
-          ranges={state}
-          direction="horizontal"
-          preventSnapRefocus={true}
-          calendarFocus="backwards"
         />
-
         <button onClick={() => date_Range()}>enter</button>
+
       </GridItem>
     </GridContainer>
   </div>
