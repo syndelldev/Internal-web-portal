@@ -609,8 +609,8 @@ function Dashboard( { project_details, user_project, User_name } ) {
                         <CardHeader color="primary">
                           <GridContainer>
                             <GridItem>
-                              <h4 className={classes.cardTitleWhite}>Create Project</h4>
-                              <p className={classes.cardCategoryWhite}>Enter your new project details</p>
+                              <h4 className="Updatedetails">Create Project</h4>
+                              <p className="Updatedetails">Enter your new project details</p>
                             </GridItem>
                               <div className={classes.close}>
                                 <a onClick={close}>&times;</a>
