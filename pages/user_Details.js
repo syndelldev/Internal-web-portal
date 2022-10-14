@@ -172,16 +172,16 @@ function UserDetail({UserDetail}) {
     const hashedPassword = bcrypt.hashSync(result.password, 10)
     console.log(hashedPassword)
 
-    let addUser = axios.post(`${server}/api/admin/`, {
+    let addUser = await axios.post(`${server}/api/admin/`, {
       role_id:result.role_id, username:result.name, password:hashedPassword, email:result.email, PhoneNum:result.PhoneNum, /*DOB:startDate,*/ department:result.department, position:result.position, status:result.status, role:result.role 
     })
     console.log(addUser)
-    if(addUser){
-      alert("sucess")
-    }
-    else{
-      alert("error")
-    }
+    // if(addUser){
+    //   alert("sucess")
+    // }
+    // else{
+    //   alert("error")
+    // }
     if(!toast.isActive(toastId.current)) {
       toastId.current = toast.success('User Created Successfully ! 🎉', {
           position: "top-right",
