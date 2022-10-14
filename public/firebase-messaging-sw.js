@@ -13,10 +13,15 @@ firebase.initializeApp({
 const messaging = firebase.messaging();
 
 //background notifications will be received here
-// firebase.messaging().setBackgroundMessageHandler((payload)=>{
-//   const { title, body } = JSON.parse(payload.data.notification);
-//   var options = {
-//     body,
-//   };
-//   registration.showNotification(title, options);
-// })
+messaging.onBackgroundMessage(function (payload){
+  console.log('Received background message ', payload);
+
+  const notificationTitle = payload.notification.title;
+  const notificationOptions = {
+    body: payload.notification.body,
+  };
+
+  self.registration.showNotification(notificationTitle, notificationOptions);
+
+});
+

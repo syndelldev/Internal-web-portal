@@ -33,7 +33,7 @@ import 'react-date-range/dist/theme/default.css'; // theme css file
 
 import "firebase/messaging";
 import firebase from "firebase/app";
-import { firebaseCloudMessaging } from "../utils/firebase";
+import { firebaseCloudMessaging, onMessageListener } from "../utils/firebase";
 
 const ReactQuill = dynamic(
   async () => {
@@ -120,42 +120,13 @@ export async function getServerSideProps(context){
   return{ props: { project_details, user_project, User_name } }
 }
 
+
 function Dashboard( { project_details, user_project, User_name } ) {
 
   const useStyles = makeStyles(styles);
   const classes = useStyles();
 
   const [cookies, setCookie] = useCookies(['name']);
-
-  //Notification Start
-  useEffect(()=>{
-    setToken();
-    // Event listener that listens for the push notification event in the background
-    // console.log(navigator)
-    // if ("serviceWorker" in navigator){
-    //     navigator.serviceWorker.addEventListener("message", (event) => {
-    //         console.log("event for the service worker", event);
-    //     });
-    // }
-    // Calls the getMessage() function if the token is there
-    async function setToken() {
-        try{
-            const token = await firebaseCloudMessaging.init();
-            if (token){
-                console.log("token : ", token);
-                getMessage();
-            }
-        }
-        catch(error){
-            console.log(error);
-        }
-      }
-    })
-    // Handles the click function on the toast showing push notification
-  const handleClickPushNotification = (url) => {
-    router.push(url);
-  };
-  //Notification End
 
   // const [project_details, setproject_details] = useState([])
   //Fetch API According Role Start
@@ -329,10 +300,11 @@ function Dashboard( { project_details, user_project, User_name } ) {
   const { register,  watch, handleSubmit, formState: { errors }, setValue } = useForm(); 
   const router = useRouter();
 
+  const [notification, setNotification] = useState({title: '', body: ''});
+  console.log(notification)  
+  
   const onSubmit = async (result) =>{
     
-    // console.log("result");
-    console.log(result.start.toDateString());
     const p_start = result.start.toDateString();
     const p_end = result.end.toDateString();
     
@@ -344,62 +316,14 @@ function Dashboard( { project_details, user_project, User_name } ) {
       })
       const data=await res.json()
       
-      const  getMessage = async() => {
-        console.log("Notification Function")
-        const messaging = firebase.messaging();
-        console.log('messaging', messaging);
+      // onMessageListener()
+      // .then((payload) => {
+      //   setNotification({title: result.project_title, body: result.project_title});     
+      // })
+      // .catch((err) => console.log('failed: ', err));
 
-
-        console.log('persons', selected)
-        console.log('insertedProjectId : ', data.insertId)
-        
-        var getInsertedProject = await axios.post(`${server}/api/notification/`,{ProjectId:data.insertId}, {
-          // headers:{
-          //   'Content-Type': 'application/json',
-          //   'Authorization': 'eIRduI7lC7YlC0Uagaiy3W:APA91bFtpxqXFiWMA9oXTHLSuOJdUVpkjar4mJpK72JFRk9riFy5IQbYuAorr1xKvQ4UXuhwpAl_g5q9fVGwKjPFSZ-D76mqdItZFskIglXrpktUbJANehCNa0RZsPSeTVDP0ibQWvwV'
-          // }
-        })
-        console.log('insertedProject', getInsertedProject.data)
-        // messaging.onMessage((payload)=>{
-        //   console.log("Test")
-        //   const { title, body } = JSON.parse(message.data.notification);
-        //   var options = {
-        //     body,
-        //   };
-        //   console.log(self.registration)
-        //   self.registration.showNotification(title, body);
-          
-
-        //   toast.info(
-        //     <div>
-        //       <p>{message.notification.title}</p>
-        //       <p>{message.notification.body}</p>
-        //     </div>,
-        //     {
-        //       autoClose: false,
-        //       theme:"colored",
-        //     }
-        //   )
-        // })
-
-        selected.map((person)=>{
-          toast.info(
-          <div key={person.id}>
-            <p>{person.value},</p>
-            {getInsertedProject.data.map((project)=>{
-              return(
-                <p>You Added in {project.project_title} project </p>
-              )
-            })}
-          </div>,
-          {
-            autoClose: false,
-            theme:"colored",
-          }
-          )
-        })
-      }
-      getMessage();
+      
+      // getMessage();
 
 
       if(res.status==200)
@@ -434,6 +358,69 @@ function Dashboard( { project_details, user_project, User_name } ) {
         }
     }
   }
+
+  //Notification Start
+  useEffect(()=>{
+    setToken();
+    // Event listener that listens for the push notification event in the background
+    // console.log(navigator)
+    // if ("serviceWorker" in navigator){
+    //     navigator.serviceWorker.addEventListener("message", (event) => {
+    //         console.log("event for the service worker", event);
+    //     });
+    // }
+    // Calls the getMessage() function if the token is there
+    async function setToken() {
+        try{
+            const token = await firebaseCloudMessaging.init();
+            if (token){
+                console.log("token : ", token);
+                getMessage();
+            }
+        }
+        catch(error){
+            console.log(error);
+        }
+      }
+    })
+    const  getMessage = async() => {
+      //   console.log('messaging', messaging);
+  
+        console.log('persons', selected)
+        // console.log('insertedProjectId : ', data.insertId)
+        
+        // var getInsertedProject = await axios.post(`${server}/api/notification/`,{ProjectId:data.insertId}, {
+        //   headers:{
+        //     'Content-Type': 'application/json',
+        //     'Authorization': 'eIRduI7lC7YlC0Uagaiy3W:APA91bFtpxqXFiWMA9oXTHLSuOJdUVpkjar4mJpK72JFRk9riFy5IQbYuAorr1xKvQ4UXuhwpAl_g5q9fVGwKjPFSZ-D76mqdItZFskIglXrpktUbJANehCNa0RZsPSeTVDP0ibQWvwV'
+        //   }
+        // })
+        // var insertedProject = getInsertedProject.data;
+        // console.log('insertedProject', insertedProject)
+  
+        const messaging = firebase.messaging();
+        console.log('messaging', messaging)
+  
+        const handleClickPushNotification = (url) => {
+          router.push(url);
+          setNotification({title: insertedProject[0].project_title, body: selected});
+        };
+  
+        // insertedProject.map(result=>{
+        //   setNotification({title: insertedProject[0].project_title, body: selected});  
+        //   toast.info(
+        //     <div key={result.project_id} onchange={handleClickPushNotification}>
+        //       <p>{result.project_id}</p>
+        //       <p>{result.project_title}</p>
+        //     </div>,
+        //     {
+        //       autoClose: false,
+        //       theme:"colored",
+        //     }
+        //   ) 
+        // })
+      }
+  //Notification End
 
   const [uoptions, setOptions] = useState([]);
   useEffect(() =>{
@@ -679,7 +666,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
           key: 'selection'
         }
       ]);
-      console.log("state");
+      // console.log("state");
       // console.log(state[0].startDate);
       // console.log(state[0].endDate);
       
@@ -718,7 +705,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
   return (
     <>
 
-      <div className="buttonalign" hidden={cookies.Role_id == "2"} >
+      <div className="buttonalign" hidden={cookies.Role_id == "2"} >{/*hidden={cookies.Role_id == "2"}*/}
         <GridContainer>
           <GridItem>
             <Popup trigger={<div><button className="bttn-design" onClick={ ()=> userId(cookies.Id)}>Add Project</button></div>} className="popupReact" modal>
@@ -892,7 +879,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
 
                             </CardBody>
                             <CardFooter>
-                                <Button color="primary" type="submit">Add Project</Button>
+                                <Button color="primary" type="submit" onClick={()=>{getMessage()}}>Add Project</Button>
                                 <Button className="button" onClick={() => { close(); }}> Cancel </Button>
                             </CardFooter>
                           </Card>

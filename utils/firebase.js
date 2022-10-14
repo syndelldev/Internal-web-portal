@@ -43,5 +43,14 @@ const firebaseCloudMessaging = {
         }
     }
 }
+
+export const onMessageListener = () =>
+  new Promise((resolve) => {
+    const messaging = firebase.messaging();
+    messaging.onMessage((payload) => {
+      resolve(payload);
+    });
+});
+
 export { firebaseCloudMessaging };
 
