@@ -661,6 +661,14 @@ h5.project-comments{
   color:#00155c;
   font-weight: 600;
 }
+span.comment-box {
+  box-shadow: rgb(0 21 92 / 62%) 0px 3px 8px;
+  border-radius: 20px;
+  border: 2px solid #000;
+  display: flex;
+  padding: 10px;
+  margin-top: 10px;
+}
 p.save-btn{
   text-align: center;
   margin-top: 20px;

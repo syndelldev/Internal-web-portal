@@ -1221,7 +1221,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
                                         <span className="comment-box">
                                           <GridContainer className="comment-box">
                                             <GridItem className="comment-box"> 
-                                              <span>{m.username}</span>
+                                              <span className="name">{m.username}</span>
                                             </GridItem>
                                                 
                                             <GridItem className="comment-box">
@@ -1350,7 +1350,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
                 return(
                   <tr key={project.project_id} onClick={()=>{toggle(project.project_id)}} className="expand_dropdown">
                     <td className="project-title-table">{project.project_title}</td>
-                    <td className="project-priority-table"><p className={project.project_priority}>{project.project_priority}</p></td>
+                    <td className="priority-data"><p className={project.project_priority}>{project.project_priority}</p></td>
                     <td className="project-priority-person">
                     {person.length>2 ? (
                         <span>
