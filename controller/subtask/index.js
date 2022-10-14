@@ -3,7 +3,7 @@ import { executeQuery } from "../../config/db";
 
 const getAllTask = async (req,res) =>{
     try{
-        let taskData=await executeQuery(" SELECT * FROM `tbl_subtask` ");
+        let taskData=await executeQuery(" SELECT * FROM `tbl_subtask` where `task_delete`='no' ORDER BY FIELD(`task_priority`,'high','medium','low')");
         res.send(taskData);
     }
     catch(err){

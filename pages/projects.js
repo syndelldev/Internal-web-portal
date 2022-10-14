@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { useState } from "react";
 import { useRouter } from 'next/router';
 import { makeStyles } from "@material-ui/core/styles";
@@ -27,15 +27,21 @@ import axios from "axios";
 import dynamic from "next/dynamic";
 import 'react-quill/dist/quill.snow.css';
 import "react-quill/dist/quill.bubble.css";
+import { DateRangePicker } from 'react-date-range';
+import 'react-date-range/dist/styles.css'; // main css file
+import 'react-date-range/dist/theme/default.css'; // theme css file
 
-// import PushNotificationLayout from "../components/Notification/PushNotificationLayout.js";
-// import * as firebase from "firebase/app";
-// import "@firebase/messaging";
-import "firebase/messaging";
-import firebase from "firebase/app";
-import { firebaseCloudMessaging } from "../utils/firebase";
 
-const ReactQuill = dynamic(import('react-quill'), { ssr: false });
+const ReactQuill = dynamic(
+  async () => {
+    const { default: RQ } = await import("react-quill");
+
+    return ({ forwardedRef, ...props }) => <RQ ref={forwardedRef} {...props} />;
+  },
+  {
+    ssr: false
+  }
+);
 
 const styles = {
   cardCategoryWhite: {
@@ -93,78 +99,61 @@ const styles = {
 };
 
 export async function getServerSideProps(context){
-  // const res = await fetch(`${server}/api/project`);
-  // const project_details = await res.json();
+  const res = await fetch(`${server}/api/project`);
+  const project_details = await res.json();
 
-  // const res1 = await fetch(`${server}/api/user_dashboard`, {
-  //   headers: {
-  //     'Access-Control-Allow-Credentials': true,
-  //     Cookie: context.req.headers.cookie
-  //   },
-  // })
-  // const user_project = await res1.json()
-  // console.log(user_project)
+  const response = await fetch(`${server}/api/user_dashboard`, {
+    headers: {
+      'Access-Control-Allow-Credentials': true,
+      Cookie: context.req.headers.cookie
+    },
+  })
+  const user_project = await response.json()
+  console.log(user_project)
 
-  const response = await fetch(`${server}/api/admin`)
-  const User_name = await response.json();
+  const resp = await fetch(`${server}/api/admin`)
+  const User_name = await resp.json();
 
-  return{ props: { User_name } }
+  return{ props: { project_details, user_project, User_name } }
 }
 
-function Dashboard( { User_name , children } ) {
-  
+function Dashboard( { project_details, user_project, User_name } ) {
+
   const useStyles = makeStyles(styles);
   const classes = useStyles();
 
   const [cookies, setCookie] = useCookies(['name']);
-  // console.log(cookies.name)
-  const [project_details, setproject_details] = useState([])
+
+  //Notification Start
+  const createNotification = (project_id) => {
+    console.log(project_id)
+    toast.info('Notification !', {
+      position: "top-right",
+      autoClose:false,
+      theme: "colored",
+      hideProgressBar: true,
+    });
+  }
+  //Notification End
+
+  // const [project_details, setproject_details] = useState([])
   //Fetch API According Role Start
-  if(cookies.Role_id==1 || cookies.Role_id==3){    
-    useEffect(async()=>{
-      const res = await fetch(`${server}/api/project`);
-      const project_details = await res.json();
-      setproject_details(project_details)
-    })
+  if(cookies.Role_id==1 || cookies.Role_id==3){
+    var project_details = project_details;
+    // useEffect(async()=>{
+    //   const res = await fetch(`${server}/api/project`);
+    //   const project_details = await res.json();
+    //   setproject_details(project_details)
+    // })
   }
   else if(cookies.Role_id==2){
-    useEffect(async()=>{
-      const res = await fetch(`${server}/api/user_dashboard`);
-      const project_details = await res.json();
-      setproject_details(project_details)
-    })
+    var project_details = user_project;
+    // useEffect(async()=>{
+    //   const res = await fetch(`${server}/api/user_dashboard`);
+    //   const project_details = await res.json();
+    //   setproject_details(project_details)
+    // })
   }
-
-  useEffect(()=>{
-    setToken();
-    // Event listener that listens for the push notification event in the background
-    // console.log(navigator)
-    // if ("serviceWorker" in navigator){
-    //     navigator.serviceWorker.addEventListener("message", (event) => {
-    //         console.log("event for the service worker", event);
-    //     });
-    // }
-    // Calls the getMessage() function if the token is there
-    async function setToken() {
-        try{
-            const token = await firebaseCloudMessaging.init();
-            if (token){
-                console.log("token : ", token);
-                getMessage();
-                onSubmit();
-            }
-        }
-        catch(error){
-            console.log(error);
-        }
-      }
-    })
-
-  // Handles the click function on the toast showing push notification
-  const handleClickPushNotification = (url) => {
-      router.push(url);
-  };
-
 
   //Fetch API According Role End
   const [addStartDate, setStart_Date] = useState();
@@ -287,7 +276,7 @@ function Dashboard( { User_name , children } ) {
 
     if( uoption.project_title=="" || uoption.project_description=="" ||  uoption.project_department=="" || uoption.project_language=="" || allMember=="" || startDate=="" || endDate=="" || uoption.project_priority=="" || uoption.project_status=="" ){
       if(! toast.isActive(toastId.current)) {
-        toastId.current = toast.error('Please fill all the required fields', {
+        toastId.current = toast.error('Please fill all the required fields!', {
             position: "top-right",
             autoClose:5000,
             theme: "colored",
@@ -304,7 +293,7 @@ function Dashboard( { User_name , children } ) {
       body: JSON.stringify({ project_id:uoption.project_id, project_person: allMember, project_status:uoption.project_status , project_department:uoption.project_department ,  project_title: uoption.project_title , project_description:uoption.project_description , project_language:uoption.project_language, project_comment:uoption.project_comment, project_priority:uoption.project_priority, project_start: startDate , project_deadline: endDate }),
     });
     if(!toast.isActive(toastId.current)) {
-      toastId.current = toast.success('Updated Successfully ! 🎉', {
+      toastId.current = toast.success('Updated Successfully !', {
           position: "top-right",
           autoClose:1000,
           theme: "colored",
@@ -319,13 +308,10 @@ function Dashboard( { User_name , children } ) {
   const { register,  watch, handleSubmit, formState: { errors }, setValue } = useForm(); 
   const router = useRouter();
 
-
-  const [notification, setNotification] = useState({title: '', body: ''});
-  // console.log('notification', notification)
-  // const [insertedProject, setinsertedProject] = useState([])
   const onSubmit = async (result) =>{
-    setNotification({title: result.project_title, body: selected})
-    // console.log(result);
+    
+    console.log("result");
+    console.log(result.start.toDateString());
     const p_start = result.start.toDateString();
     const p_end = result.end.toDateString();
     
@@ -336,80 +322,7 @@ function Dashboard( { User_name , children } ) {
         body:JSON.stringify({project_person:selected,project_department:result.project_department,project_status:result.project_status , project_title:result.project_title, project_description:result.project_description, project_language:result.project_language, project_comment:result.project_comment, project_priority:result.project_priority, project_start: p_start , project_deadline: p_end , projectAdded_by: cookies }),
       })
       const data=await res.json()
-      console.log(data)
       
-      const  getMessage = async() => {
-        console.log("Notification Function")
-        const messaging = firebase.messaging();
-        console.log('messaging', messaging);
-
-
-        // console.log('persons', selected)
-        // console.log('insertedProjectId : ', data.insertId)
-        
-        var getInsertedProject = await axios.post(`${server}/api/notification/`,{ProjectId:data.insertId}, {
-          headers:{
-            'Content-Type': 'application/json',
-            'Authorization': 'eIRduI7lC7YlC0Uagaiy3W:APA91bFtpxqXFiWMA9oXTHLSuOJdUVpkjar4mJpK72JFRk9riFy5IQbYuAorr1xKvQ4UXuhwpAl_g5q9fVGwKjPFSZ-D76mqdItZFskIglXrpktUbJANehCNa0RZsPSeTVDP0ibQWvwV'
-          }
-        })
-        console.log('insertedProject', getInsertedProject.data)
-        // messaging.onBackgroundMessage((payload)=>{
-        //   console.log('payload', payload);
-        //   console.log('[firebase-messaging-sw.js] Received background message ', payload);
-        //   // const { title, body } = JSON.parse(message.data.notification);
-        //   // var options = {
-        //   //   body,
-        //   // };
-        //   // self.registration.showNotification(title, body);
-        //   // toast.info(
-        //   //   <div>
-        //   //     <p>{title}</p>
-        //   //     <p>{body}</p>
-        //   //   </div>
-        //   // )
-        // })
-        // messaging.onMessage((payload)=>{
-        //   console.log("Test")
-        //   const { title, body } = JSON.parse(message.data.notification);
-        //   var options = {
-        //     body,
-        //   };
-        //   console.log(self.registration)
-        //   self.registration.showNotification(title, body);
-          
-
-        //   toast.info(
-        //     <div>
-        //       <p>{message.notification.title}</p>
-        //       <p>{message.notification.body}</p>
-        //     </div>,
-        //     {
-        //       autoClose: false,
-        //       theme:"colored",
-        //     }
-        //   )
-        // })
-
-        selected.map((person)=>{
-          toast.info(
-          <div key={person.id}>
-            <p>{person.value},</p>
-            {getInsertedProject.data.map((project)=>{
-              return(
-                <p>You Added in {project.project_title} project </p>
-              )
-            })}
-          </div>,
-          {
-            autoClose: false,
-            theme:"colored",
-          }
-          )
-        })
-      }
-      getMessage();
-
       if(res.status==200)
       {
         // alert("success");
@@ -419,12 +332,11 @@ function Dashboard( { User_name , children } ) {
               autoClose:1000,
               theme: "colored",
               hideProgressBar: true,
-              // onClose: () => router.push(`${server}/admin/project_module`)
+              onClose: () => router.push(`${server}/admin/project_module`)
               });
           }
-          console.log(selected)
-        // router.reload(`${server}/admin/project_module`);
-
+  
+        router.reload(`${server}/admin/project_module`);
       }
       else
       {
@@ -444,57 +356,6 @@ function Dashboard( { User_name , children } ) {
 
     }
   }
-  
-  //Notification Start
-
-  // useEffect(()=>{
-  //   setToken();
-  //   console.log(navigator.serviceWorker)
-  //   // Event listener that listens for the push notification event in the background
-  //   // console.log(navigator)
-  //   if (navigator.serviceWorker){
-  //       navigator.serviceWorker.addEventListener("message", (event) => {
-  //           console.log("event for the service worker", event);
-  //       });
-  //   }
-  //   // Calls the getMessage() function if the token is there
-  //   async function setToken() {
-  //       try{
-  //           const token = await firebaseCloudMessaging.init();
-  //           if (token){
-  //               console.log("token : ", token);
-  //               getMessage();
-  //           }
-  //       }
-  //       catch(error){
-  //           console.log(error);
-  //       }
-  //     }
-  //   })
-
-  // // Handles the click function on the toast showing push notification
-  // const handleClickPushNotification = (url) => {
-  //     router.push(url);
-  // };
-  // Get the push notification message and triggers a toast to display it
-
-  // function getMessage(){
-  //   console.log('persons', selected)
-  //   console.log('insertedProjectId : ', insertedProjectId)
-    
-  //   selected.map((msg)=>{
-  //     toast.info(
-  //       <div>
-  //         <h5>{msg.label}</h5>
-  //         <h5 className="Project-title">{msg.value}</h5>
-  //       </div>,
-  //       {
-  //         autoClose: false,
-  //       }
-  //     )
-  //   })
-  // }
-  //Notification End  
 
   const [uoptions, setOptions] = useState([]);
   useEffect(() =>{
@@ -503,13 +364,13 @@ function Dashboard( { User_name , children } ) {
       const getUsername = [];
 
       User_name.map((user)=>{
-        getUsername.push( {'label' :user.id, 'value' :user.username} );
+        getUsername.push( {'label' :user.username, 'value' :user.username} );
       });
       setOptions(getUsername);
     }
     u_data();
   },[]);
-  
+
   // project Running block open and close onclick
   const [projectRunning, setprojectRunning] = useState([]);
   const project_running = (project) => {
@@ -575,28 +436,92 @@ function Dashboard( { User_name , children } ) {
     
     const sendMessage = async (project_id) => {
       const date = new Date().toLocaleString();
-      // console.log("date");
-      // console.log(date);
+      console.log("date");
+      console.log(date);
   
       var addComment = await axios.post(`${server}/api/comment/addProjectComments`, {  username: cookies.name, message: value , project_id: project_id, created_D: date });
-      // console.log(addComment)
-      // console.log(cookies.name)
-      router.reload(`${server}/user/projects`);
-    }
+
+      if(!toast.isActive(toastId.current)) {
+        toastId.current = toast.success('Comment added successfully!', {
+            position: "top-right",
+            autoClose:1000,
+            theme: "colored",
+            hideProgressBar: true,
+          });
+      }
   
-    const [ value, setValues ] = useState("");
-    const modules = {
-      toolbar: [
-        [{ 'font': [] }],
-        [{ 'size': ['small', false, 'large', 'huge'] }],
-        ['bold', 'italic', 'underline'],
-        [{'list': 'ordered'}, {'list': 'bullet'}],
-        [{ 'align': [] }],
-        [{ 'color': [] }, { 'background': [] }],
-        ['clean'],
-        ['link', 'image', 'video']
-      ]
+      // router.reload(`${server}/projects`);
     }
+    
+    const [ value, setValues ] = useState("");
+    const quillRef = useRef(null);
+
+    const imageHandler = () => {
+
+      const input = document.createElement('input');
+      input.setAttribute('type', 'file');
+      input.setAttribute('accept', 'image/*');
+      input.click();
+
+      input.onchange = async () => {
+          let data = null;
+          const file = input.files ? input.files[0] : null;
+
+          if (/^image\//.test(file.type)) {          
+          const formData = new FormData();
+
+          formData.append('image', file);
+          formData.getAll('image');
+
+          const res = await fetch(`${server}/api/upload`,{ 
+              method: 'POST',
+              body: formData,
+          });
+          data = await res.json();
+          console.log(data);
+          console.log(data.files.image.newFilename);
+
+          // Save current cursor 
+          const range = quillRef.current.getEditor().getSelection();
+          const quill = quillRef.current.getEditor();
+          quill.insertEmbed( range.index, "image", `${server}/upload_img/${data.files.image.newFilename}${data.files.image.originalFilename}`);
+          quillRef.current.getEditor().setSelection(range.index + 1);
+
+      }else{
+
+        if(! toast.isActive(toastId.current)) {
+          toastId.current = toast.error('Please upload only image', {
+              position: "top-right",
+              autoClose:5000,
+              theme: "colored",
+              closeOnClick: true,
+              hideProgressBar: true,
+            });
+        }
+  
+      }
+    }
+  }
+
+  const modules = useMemo(() => ({
+      toolbar: {
+          container: [
+              [{ 'font': [] }],
+              [{ 'size': ['small', false, 'large', 'huge'] }],
+              ['bold', 'italic', 'underline'],
+              [{'list': 'ordered'}, {'list': 'bullet'}],
+              [{ 'align': [] }],
+              [{ 'color': [] }, { 'background': [] }],
+              ['clean'],
+              ['link'],
+              ['image'],
+              ['video']
+          ],
+          handlers: {
+            image: imageHandler
+          }
+      },
+    }), []);
   
     const [commentEdit, setEditComment] = useState();
   
@@ -611,7 +536,7 @@ function Dashboard( { User_name , children } ) {
           setEditComment(commentId.data[0].comment);
           console.log("edit");
           console.log(commentEdit);
-          console.log(commentId.data[0].comment);
+          console.log(commentId.data[0].comment);        
         }
       }
       
@@ -620,17 +545,100 @@ function Dashboard( { User_name , children } ) {
         console.log(comment);
         console.log(id);
         var comments = await axios.post(`${server}/api/comment/updateComment`, { comment_id: id, user: cookies.name, comment:comment });
-        router.reload(`${server}/user/projects`);
-      }
-      // console.log("set comment");
-      // console.log(commentEdit);  
-      
 
+        if(!toast.isActive(toastId.current)) {
+          toastId.current = toast.success('Comment updated successfully!', {
+              position: "top-right",
+              autoClose:1000,
+              theme: "colored",
+              hideProgressBar: true
+            });
+        }
+        router.reload(`${server}/projects`);
+      }
+
+      const [dateRange, setDateRange] = useState([null, null]);
+      const [startDates, endDates] = dateRange;
+      const [dateDetails, setDateDetails] = useState();
+      const [dateDataDisplay, setData] = useState(false);
+
+    
+      // const date_Range = async() =>{
+      //   if(startDates != null && endDates != null){
+      //     console.log(dateRange);
+
+      //     const res = await fetch(`${server}/api/project/dateRange`,{
+      //       method: "POST",
+      //       headers: { "Content-Type": "application/json" },
+      //       body:JSON.stringify({ dateStart: startDates, dateEnd: endDates }),
+      //     })
+      //     const date_Data=await res.json()
+          
+      //     if(res.status==200)
+      //     {
+      //       setDateDetails(date_Data);
+      //       setData(true);
+      //     }
+              
+      //   }else{
+    
+      //     if(! toast.isActive(toastId.current)) {
+      //       toastId.current = toast.error('Please select dates range!', {
+      //           position: "top-right",
+      //           autoClose:2000,
+      //           theme: "colored",
+      //           closeOnClick: true,
+      //           hideProgressBar: true,
+      //         });
+      //     }
+      //   }
+      // }
+
+      const [state, setState] = useState([
+        {
+          startDate: new Date(),
+          endDate: new Date(),
+          key: 'selection'
+        }
+      ]);
+      console.log("state");
+      // console.log(state[0].startDate);
+      // console.log(state[0].endDate);
+      
+      const date_Range = async() =>{
+        if(state[0].startDate != null && state[0].endDate != null){
+          console.log(dateRange);
+
+          const res = await fetch(`${server}/api/project/dateRange`,{
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body:JSON.stringify({ dateStart: state[0].startDate, dateEnd: state[0].endDate }),
+          })
+          const date_Data=await res.json()
+          
+          if(res.status==200)
+          {
+            setDateDetails(date_Data);
+            setData(true);
+          }
+              
+        }else{
+    
+          if(! toast.isActive(toastId.current)) {
+            toastId.current = toast.error('Please select dates range!', {
+                position: "top-right",
+                autoClose:2000,
+                theme: "colored",
+                closeOnClick: true,
+                hideProgressBar: true,
+              });
+          }
+        }
+      }
+
+      
   return (
     <>
-    {/* <PushNotificationLayout>
-      <h2>Test</h2>
-    </PushNotificationLayout> */}
 
       <div className="buttonalign" hidden={cookies.Role_id == "2"} >
         <GridContainer>
@@ -640,7 +648,7 @@ function Dashboard( { User_name , children } ) {
               <div>
                 <GridContainer>
                   <GridItem xs={12} sm={12} md={12}>
-                    <form onSubmit={handleSubmit(onSubmit)}>          
+                    <form onSubmit={handleSubmit(onSubmit)}>              
                       <Card>
                         <CardHeader color="primary">
                           <GridContainer>
@@ -654,9 +662,7 @@ function Dashboard( { User_name , children } ) {
                           </GridContainer>
 
                           </CardHeader>
-                          
                             <CardBody>
-                              
                               <GridContainer>
                                 <GridItem xs={12} sm={12} md={12}>                      
                                   <div className="form-group">
@@ -805,7 +811,7 @@ function Dashboard( { User_name , children } ) {
                                 </div> 
                                 </GridItem>
                               </GridContainer><br/>
-                              
+
                             </CardBody>
                             <CardFooter>
                                 <Button color="primary" type="submit">Add Project</Button>
@@ -854,18 +860,137 @@ function Dashboard( { User_name , children } ) {
         </GridContainer>
       </div>
       {/* <div className="Project-title">Projects</div> */}
-      <div className="main_task_title">
+  <div className="main_task_title">
            <div className="Project-title">Projects</div>
-      <button className="bttn-design" onClick={()=> 
+    <GridContainer>
+      <GridItem>
+        <button className="bttn-design" onClick={()=> 
           {  project_running("running"), closeOnHold("running"), setrunning_title(true), project_OnHold("on hold"), closeTaskToDo("on hold"), setonhold_title(true)
           project_Completed("completed"), closeCompleted("completed"), setcompleted_title(true) }}
-          >Expand All</button><button className="bttn-design" onClick={()=> 
+          >Expand All</button>
+
+        <button className="bttn-design" onClick={()=> 
           {  project_running("running"), closeOnHold("running"), setrunning_title(false), project_OnHold("on hold"), closeTaskToDo("on hold"), setonhold_title(false)
           project_Completed("completed"), closeCompleted("completed"), setcompleted_title(false) }}
           >Collapse All</button>
-       </div>
+        </GridItem>
 
+      <GridItem>
+        {/* <DatePicker
+          selectsRange={true}
+          startDate={startDates}
+          endDate={endDates}
+          onChange={(update) => {
+            setDateRange(update);
+          }}
+          isClearable={true}
+          dateFormat="dd-MM-yyyy"
+        /> */}
+
+        <DateRangePicker
+          onChange={item => setState([item.selection])}
+          showSelectionPreview={true}
+          moveRangeOnFirstSelection={false}
+          months={2}
+          ranges={state}
+          direction="horizontal"
+          preventSnapRefocus={true}
+          calendarFocus="backwards"
+        />
+
+        <button onClick={() => date_Range()}>enter</button>
+      </GridItem>
+    </GridContainer>
+  </div>
+
+{dateDataDisplay ? (
+  <span>
+    <h3>Projects List</h3>
+    <table className="project-data" >
+      <tr className="project-data-title">
+            <th  className="status">Project Name</th>
+            <th className="Priority">Priority</th>
+            <th className="assignee">Assignee</th>
+          </tr>
+          {dateDetails.map((project)=>{
+            if(project.project_delete == "no"){
+                var person = project.project_person.split(",");
+                return(
+                  <tr key={project.project_id} onClick={()=>{toggle(project.project_id)}} className="expand_dropdown">
+                    <td className="project-title-table">{project.project_title}</td>
+                    <td className="priority-data"><p className={project.project_priority}>{project.project_priority}</p></td>
+                    <td className="project-priority-person">
+                      {person.length>2 ? (
+                        <>
+                          <div className="chip">
+                            <span>{person[0]}</span>
+                          </div>
+                          <div className="chip">
+                            <span>{person[1]}</span>
+                          </div>
+                            {/* Edit popUp Start*/}
+                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} className="popupReact"  position="left">
+                            {close => (
+                              <div className="popup-align">
+                                <Card>
+                                  <CardBody>
+                                    <CardHeader>
+                                      <GridContainer>
+                                        <GridItem>
+                                          <strong>Assignee</strong>
+                                        </GridItem>
+                                        <GridItem>
+                                          <div className={classes.close}>
+                                            <a onClick={close}>&times;</a>
+                                          </div>
+                                        </GridItem>
+                                      </GridContainer>
+                                    </CardHeader>
+
+                                    <GridContainer>
+                                      <GridItem>
+                                        {person.map((user)=>{
+                                          return(
+                                            <span>
+                                              <span className="members" title={user}>{user}</span>
+                                            </span>
+                                          )
+                                        })}
+                                      </GridItem>
+                                    </GridContainer>
+                                  </CardBody>
+                                </Card>
+                              </div>
+                            )}
+                            </Popup>
+                            {/*Edit popup End*/}
+                        </>
+                      ):(
+                        <span>
+                          {person.map((user)=>{
+                            return(
+                              <div className="chip">
+                                <span className="members" title={user}>{user}</span>
+                              </div>
+                            )
+                          })}
+                        </span>
+                      )}
+                    </td>
+                  </tr>
+                )
+            }
+          })}
+        </table>
+
+  </span>
+) 
+: ("")
+
+}
     <GridContainer>
+
+
     
     {/***** Running Project start *****/}
    
@@ -1130,9 +1255,15 @@ function Dashboard( { User_name , children } ) {
                                 <GridContainer>
                                     <GridItem>
                                       <form>
-                                        <h5 className="project-comments">Comments</h5>
-                                        <ReactQuill modules={modules} theme="snow" onChange={setValues} />
-                                        <div onClick={()=> {sendMessage(project.project_id)}}><p className="save-btn">Save</p></div>
+                                        <h5 className="projectPriority">Comments</h5>
+                                          <ReactQuill
+                                          forwardedRef={quillRef}
+                                            modules={modules}
+                                            // value={value}
+                                            theme="snow" 
+                                            onChange={setValues} 
+                                          />
+                                        <button className="btn btn-primary" onClick={()=> {sendMessage(project.project_id), close()} }>Save</button>
                                       </form>
                                     </GridItem>
                                   </GridContainer>
@@ -1172,7 +1303,7 @@ function Dashboard( { User_name , children } ) {
                                   <GridContainer>
                                     <GridItem xs={12} sm={12} md={12} >
                                       <form>
-                                        <ReactQuill modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
+                                        <ReactQuill forwardedRef={quillRef} modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
                                       </form>
                                     </GridItem>
                                   </GridContainer>
@@ -1513,8 +1644,13 @@ function Dashboard( { User_name , children } ) {
                                     <GridItem>
                                       <form>
                                         <h5 className="projectPriority">Comments</h5>
-                                        <ReactQuill modules={modules} theme="snow" onChange={setValues} />
-                                        <div onClick={()=> sendMessage(project.project_id)}>Save</div>
+                                          <ReactQuill
+                                          forwardedRef={quillRef}
+                                            modules={modules} 
+                                            theme="snow" 
+                                            onChange={setValues} 
+                                          />
+                                        <button className="btn btn-primary" onClick={()=> {sendMessage(project.project_id), close()} }>Save</button>
                                       </form>
                                     </GridItem>
                                   </GridContainer>
@@ -1554,7 +1690,7 @@ function Dashboard( { User_name , children } ) {
                                   <GridContainer>
                                     <GridItem xs={12} sm={12} md={12} >
                                       <form>
-                                        <ReactQuill modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
+                                        <ReactQuill forwardedRef={quillRef} modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
                                       </form>
                                     </GridItem>
                                   </GridContainer>
@@ -1895,15 +2031,13 @@ function Dashboard( { User_name , children } ) {
                                     <GridItem>
                                       <form>
                                         <h5 className="projectPriority">Comments</h5>
-                                        <ReactQuill modules={modules} theme="snow" onChange={setValues} />
-                                        <div onClick={()=> sendMessage(project.project_id)}>Save</div>
+                                          <ReactQuill forwardedRef={quillRef} modules={modules} theme="snow" onChange={setValues} />
+                                        <button className="btn btn-primary" onClick={()=> {sendMessage(project.project_id), close()} }>Save</button>
                                       </form>
                                     </GridItem>
                                   </GridContainer>
 
                                   {comments.map((m)=>{
-                                    // console.log("comments");
-                                    // console.log(comments);
                                       return(
                                         <span>
                                           <GridContainer>
@@ -1936,7 +2070,7 @@ function Dashboard( { User_name , children } ) {
                                   <GridContainer>
                                     <GridItem xs={12} sm={12} md={12} >
                                       <form>
-                                        <ReactQuill modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
+                                        <ReactQuill forwardedRef={quillRef} modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
                                       </form>
                                     </GridItem>
                                   </GridContainer>
@@ -2014,8 +2148,7 @@ function Dashboard( { User_name , children } ) {
     ):("")}
     {/***** Completed Project End *****/}
         {/***** Project End *****/}
-        <ToastContainer/>
-        { children }
+        <ToastContainer limit={1}/>
       </GridContainer>
     </>
   );
