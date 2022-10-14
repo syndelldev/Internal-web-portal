@@ -131,23 +131,12 @@ function Dashboard( { project_details, user_project, User_name } ) {
   }
   //Notification End
 
-  // const [project_details, setproject_details] = useState([])
   //Fetch API According Role Start
   if(cookies.Role_id==1 || cookies.Role_id==3){
     var project_details = project_details;
-    // useEffect(async()=>{
-    //   const res = await fetch(`${server}/api/project`);
-    //   const project_details = await res.json();
-    //   setproject_details(project_details)
-    // })
   }
   else if(cookies.Role_id==2){
     var project_details = user_project;
-    // useEffect(async()=>{
-    //   const res = await fetch(`${server}/api/user_dashboard`);
-    //   const project_details = await res.json();
-    //   setproject_details(project_details)
-    // })
   }
 
   //Fetch API According Role End
@@ -219,7 +208,6 @@ function Dashboard( { project_details, user_project, User_name } ) {
 
     const response = await fetch(`${server}/api/project/update/${id}`)
     const update_data = await response.json();
-    // console.log(update_data[0]);
 
     const udata = update_data[0];
 
@@ -256,19 +244,15 @@ function Dashboard( { project_details, user_project, User_name } ) {
   for(var i=0; i<projectMember.length; i++){
     allSelectedMember.push({'label' :projectMember[i] , 'value' : projectMember[i]});
   }
-  // console.log("projectMember", projectMember)
 
   const toastId = React.useRef(null);
   const updateProject = async() =>{
-    // e.preventDefault()
     const allMember = [];
+
     for(var i=0; i<updateSelected.length; i++){
           allMember.push(updateSelected[i].value);
     }
   
-    // console.log("all users");
-    // console.log( allMember );
-
     if( uoption.project_title=="" || uoption.project_description=="" ||  uoption.project_department=="" || uoption.project_language=="" || allMember=="" || startDate=="" || endDate=="" || uoption.project_priority=="" || uoption.project_status=="" ){
       if(! toast.isActive(toastId.current)) {
         toastId.current = toast.error('Please fill all the required fields!', {
@@ -319,7 +303,6 @@ function Dashboard( { project_details, user_project, User_name } ) {
       
       if(res.status==200)
       {
-        // alert("success");
         if(!toast.isActive(toastId.current)) {
           toastId.current = toast.success('Project added Successfully ! 🎉', {
               position: "top-right",
@@ -425,7 +408,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
       var comment = await axios.post(`${server}/api/comment/getProjectComment`, { project_id: project_id });
       setcomments(comment.data)
     }
-    
+    // add comment
     const sendMessage = async (project_id) => {
       const date = new Date().toLocaleString();
       console.log("date");
@@ -441,13 +424,14 @@ function Dashboard( { project_details, user_project, User_name } ) {
             hideProgressBar: true,
           });
       }
-  
-      // router.reload(`${server}/projects`);
     }
-    
+
+    // get and set comment values in editor
     const [ value, setValues ] = useState("");
+    // quill ref
     const quillRef = useRef(null);
 
+    // Upload image in project public/upload_img folder and show image in editor
     const imageHandler = () => {
 
       const input = document.createElement('input');
@@ -465,6 +449,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
           formData.append('image', file);
           formData.getAll('image');
 
+          // upload image API
           const res = await fetch(`${server}/api/upload`,{ 
               method: 'POST',
               body: formData,
@@ -476,11 +461,13 @@ function Dashboard( { project_details, user_project, User_name } ) {
           // Save current cursor 
           const range = quillRef.current.getEditor().getSelection();
           const quill = quillRef.current.getEditor();
+          // show uploaded image in editor
           quill.insertEmbed( range.index, "image", `${server}/upload_img/${data.files.image.newFilename}${data.files.image.originalFilename}`);
           quillRef.current.getEditor().setSelection(range.index + 1);
 
       }else{
 
+        // only upload images toast error
         if(! toast.isActive(toastId.current)) {
           toastId.current = toast.error('Please upload only image', {
               position: "top-right",
@@ -495,6 +482,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
     }
   }
 
+  // quill modules
   const modules = useMemo(() => ({
       toolbar: {
           container: [
@@ -516,7 +504,8 @@ function Dashboard( { project_details, user_project, User_name } ) {
     }), []);
   
     const [commentEdit, setEditComment] = useState();
-  
+
+    // comment ID API
       const editComment = async( id ) =>{
         console.log("id");
         console.log(id);
@@ -531,7 +520,8 @@ function Dashboard( { project_details, user_project, User_name } ) {
           console.log(commentId.data[0].comment);        
         }
       }
-      
+
+      // update comment API
       const updateComment = async(id, comment) =>{
         console.log("update");
         console.log(comment);
@@ -549,11 +539,16 @@ function Dashboard( { project_details, user_project, User_name } ) {
         router.reload(`${server}/projects`);
       }
 
+      // date range
       const [dateRange, setDateRange] = useState([null, null]);
+      // startdate and enddate get value
       const [startDates, endDates] = dateRange;
+      // get selected dates projects list
       const [dateDetails, setDateDetails] = useState();
+      // onclick show data
       const [dateDataDisplay, setData] = useState(false);
     
+      // daterange function onClick
       const date_Range = async() =>{
         if(startDates != null && endDates != null){
           console.log(dateRange);
@@ -572,7 +567,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
           }
               
         }else{
-    
+          // select startDate and endDate toast error
           if(! toast.isActive(toastId.current)) {
             toastId.current = toast.error('Please select dates range!', {
                 position: "top-right",
@@ -842,6 +837,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
     </GridContainer>
   </div>
 
+{/* selected daterange projects list data start */}
 {dateDataDisplay ? (
   <span>
     <h3>Projects List</h3>
@@ -927,13 +923,11 @@ function Dashboard( { project_details, user_project, User_name } ) {
 : ("")
 
 }
+{/* selected daterange projects list data end */}
+
     <GridContainer>
-
-
     
-    {/***** Running Project start *****/}
-   
-
+{/***** Running Project start *****/}
 <Card className="task_title_status">
       <GridContainer >
         <GridItem xs={12} sm={12} md={12} >

@@ -418,8 +418,8 @@ const closeTaskCompleted = async(task) =>{
   }
 }
 
+// status update function only for user
 const updateStatus = async(t_status) =>{
-  console.log(t_status);
 
   const res = await fetch(`${server}/api/subtask/update_taskStatus`,{
     method: "PUT",
@@ -438,9 +438,12 @@ const updateStatus = async(t_status) =>{
 }
 
 const [comments, setcomments] = useState([]);
+// get and set comment values in editor
 const [ u_Comment, setCommentValue ] = useState("");
-
+// quill ref
 const quillRef = useRef(null);
+
+// Upload image in project public/upload_img folder and show image in editor
 const imageHandler = () => {
 
   const input = document.createElement('input');
@@ -458,6 +461,7 @@ const imageHandler = () => {
       formData.append('image', file);
       formData.getAll('image');
 
+      // upload image API
       const res = await fetch(`${server}/api/upload`,{ 
           method: 'POST',
           body: formData,
@@ -469,11 +473,13 @@ const imageHandler = () => {
       // Save current cursor 
       const range = quillRef.current.getEditor().getSelection();
       const quill = quillRef.current.getEditor();
+      // show uploaded image in editor
       quill.insertEmbed( range.index, "image", `${server}/upload_img/${data.files.image.newFilename}${data.files.image.originalFilename}`);
       quillRef.current.getEditor().setSelection(range.index + 1);
 
   }else{
 
+    // only upload images toast error
     if(! toast.isActive(toastId.current)) {
       toastId.current = toast.error('Please upload only image', {
           position: "top-right",
@@ -488,6 +494,7 @@ const imageHandler = () => {
 }
 }
 
+// quill modules
 const modules = useMemo(() => ({
   toolbar: {
       container: [
@@ -508,6 +515,7 @@ const modules = useMemo(() => ({
   },
 }), []);
 
+// add comments
 const sendMessage = async (task_id) => {
   const date = new Date().toLocaleString();
   console.log("date");
@@ -533,6 +541,7 @@ console.log(u_Comment);
 
 const [commentEdit, setEditComment] = useState();
 
+// comment ID API
 const editComment = async( id ) =>{
   console.log("id");
   console.log(id);
@@ -546,6 +555,7 @@ const editComment = async( id ) =>{
   }
 }
 
+// update comment API
 const updateComment = async(id, comment) =>{
   var comment = await axios.post(`${server}/api/comment/updateComment`, { comment_id: id, user: cookies.name, comment:comment });
 
@@ -626,11 +636,16 @@ const updateComment = async(id, comment) =>{
     // router.reload(`${server}/tasks`);
   }
 
+  // date range
   const [dateRange, setDateRange] = useState([null, null]);
+  // startdate and enddate get value
   const [startDates, endDates] = dateRange;
+  // get selected dates projects list
   const [dateDetails, setDateDetails] = useState();
+  // onclick show data
   const [dateDataDisplay, setData] = useState(false);
 
+  // daterange function onClick
   const date_Range = async() =>{
     if(startDates != null && endDates != null){
       console.log(dateRange);
@@ -649,7 +664,7 @@ const updateComment = async(id, comment) =>{
       }
           
     }else{
-
+      // select startDate and endDate toast error
       if(! toast.isActive(toastId.current)) {
         toastId.current = toast.error('Please select dates range!', {
             position: "top-right",
@@ -920,6 +935,7 @@ const updateComment = async(id, comment) =>{
 
 </GridContainer>
 
+{/* selected daterange projects list data start */}
 {dateDataDisplay ? (
   <span>
     <h3>Tasks List</h3>
@@ -1004,6 +1020,7 @@ const updateComment = async(id, comment) =>{
 ) 
 : ("")
 }
+{/* selected daterange projects list data end */}
 
   <GridContainer>
     <Card>
