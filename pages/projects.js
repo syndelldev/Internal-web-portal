@@ -25,11 +25,6 @@ import { MdDelete } from 'react-icons/md';
 import { useCookies } from 'react-cookie';
 import axios from "axios";
 import dynamic from "next/dynamic";
-import 'react-quill/dist/quill.snow.css';
-import "react-quill/dist/quill.bubble.css";
-import { DateRangePicker } from 'react-date-range';
-import 'react-date-range/dist/styles.css'; // main css file
-import 'react-date-range/dist/theme/default.css'; // theme css file
 
 
 const ReactQuill = dynamic(
@@ -179,7 +174,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
     console.log(id);
 
     const res = await fetch(`${server}/api/project/${id}`);
-    router.push(`${server}/admin/project_module`);
+    router.push(`${server}/projects`);
   }
 
   const [uoption, setUpdate] = React.useState({ 
@@ -293,15 +288,14 @@ function Dashboard( { project_details, user_project, User_name } ) {
       body: JSON.stringify({ project_id:uoption.project_id, project_person: allMember, project_status:uoption.project_status , project_department:uoption.project_department ,  project_title: uoption.project_title , project_description:uoption.project_description , project_language:uoption.project_language, project_comment:uoption.project_comment, project_priority:uoption.project_priority, project_start: startDate , project_deadline: endDate }),
     });
     if(!toast.isActive(toastId.current)) {
-      toastId.current = toast.success('Updated Successfully !', {
+      toastId.current = toast.success('Project updated successfully !', {
           position: "top-right",
           autoClose:1000,
           theme: "colored",
           hideProgressBar: true,
-          onClose: () => router.push(`${server}/projects`)
           });
       }
-      // router.reload(`${server}/projects`);
+      router.reload(`${server}/projects`);
   }
 }
 
@@ -332,11 +326,9 @@ function Dashboard( { project_details, user_project, User_name } ) {
               autoClose:1000,
               theme: "colored",
               hideProgressBar: true,
-              onClose: () => router.push(`${server}/admin/project_module`)
               });
           }
-  
-        router.reload(`${server}/admin/project_module`);
+        router.reload(`${server}/projects`);
       }
       else
       {
@@ -566,7 +558,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
         if(startDates != null && endDates != null){
           console.log(dateRange);
 
-          const res = await fetch(`${server}/api/project/dateRange`,{
+          const res = await fetch(`${server}/api/project/dateRange_Projects`,{
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body:JSON.stringify({ dateStart: startDates, dateEnd: endDates }),

@@ -270,11 +270,9 @@ function Dashboard( { project_details , User_name , allTask, userTask } ) {
             autoClose:1000,
             theme: "colored",
             hideProgressBar: true,
-            onClose: () => router.push(`${server}/admin/subtask_module`)
           });
         }
         router.reload(`${server}/tasks`);
-  
     }
   }
   
@@ -319,10 +317,8 @@ function Dashboard( { project_details , User_name , allTask, userTask } ) {
             autoClose:1000,
             theme: "colored",
             hideProgressBar: true,
-            onClose: () => router.push(`${server}/tasks`)
             });
         }
-
       router.reload(`${server}/tasks`);
     }
     else
@@ -559,7 +555,6 @@ const updateComment = async(id, comment) =>{
         autoClose:1000,
         theme: "colored",
         hideProgressBar: true,
-        onClose: () => router.push(`${server}/tasks`)
       });
   }
   router.reload(`${server}/tasks`);
@@ -630,6 +625,43 @@ const updateComment = async(id, comment) =>{
     console.log(updateTime)
     // router.reload(`${server}/tasks`);
   }
+
+  const [dateRange, setDateRange] = useState([null, null]);
+  const [startDates, endDates] = dateRange;
+  const [dateDetails, setDateDetails] = useState();
+  const [dateDataDisplay, setData] = useState(false);
+
+  const date_Range = async() =>{
+    if(startDates != null && endDates != null){
+      console.log(dateRange);
+
+      const res = await fetch(`${server}/api/project/dateRange_Tasks`,{
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body:JSON.stringify({ dateStart: startDates, dateEnd: endDates, user: cookies.name }),
+      })
+      const date_Data=await res.json()
+      
+      if(res.status==200)
+      {
+        setDateDetails(date_Data);
+        setData(true);
+      }
+          
+    }else{
+
+      if(! toast.isActive(toastId.current)) {
+        toastId.current = toast.error('Please select dates range!', {
+            position: "top-right",
+            autoClose:2000,
+            theme: "colored",
+            closeOnClick: true,
+            hideProgressBar: true,
+          });
+      }
+    }
+  }
+
 
   return (
     <div>
@@ -870,9 +902,108 @@ const updateComment = async(id, comment) =>{
   </div>
 
   <GridItem>
+
+    <DatePicker
+      monthsShown={2}
+        selectsRange={true}
+        startDate={startDates}
+        endDate={endDates}
+        onChange={(update) => {
+          setDateRange(update);
+        }}
+        isClearable={true}
+        dateFormat="dd/MM/yyyy"
+    />
+    <button onClick={() => date_Range()}>enter</button>
+
   </GridItem>
 
 </GridContainer>
+
+{dateDataDisplay ? (
+  <span>
+    <h3>Tasks List</h3>
+    <table className="project-data" >
+      <tr className="project-data-title">
+            <th  className="status">Task Name</th>
+            <th className="Priority">Priority</th>
+            <th className="assignee">Assignee</th>
+          </tr>
+          {dateDetails.map((task)=>{
+            if(task.task_delete == "no"){
+                var person = task.task_person.split(",");
+                return(
+                  <tr key={task.task_id} onClick={()=>{toggle(task.task_id)}} className="expand_dropdown">
+                    <td className="project-title-table">{task.task_title}</td>
+                    <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
+                    <td className="project-priority-person">
+                      {person.length>2 ? (
+                        <>
+                          <div className="chip">
+                            <span>{person[0]}</span>
+                          </div>
+                          <div className="chip">
+                            <span>{person[1]}</span>
+                          </div>
+                            {/* Edit popUp Start*/}
+                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} className="popupReact"  position="left">
+                            {close => (
+                              <div className="popup-align">
+                                <Card>
+                                  <CardBody>
+                                    <CardHeader>
+                                      <GridContainer>
+                                        <GridItem>
+                                          <strong>Assignee</strong>
+                                        </GridItem>
+                                        <GridItem>
+                                          <div className={classes.close}>
+                                            <a onClick={close}>&times;</a>
+                                          </div>
+                                        </GridItem>
+                                      </GridContainer>
+                                    </CardHeader>
+
+                                    <GridContainer>
+                                      <GridItem>
+                                        {person.map((user)=>{
+                                          return(
+                                            <span>
+                                              <span className="members" title={user}>{user}</span>
+                                            </span>
+                                          )
+                                        })}
+                                      </GridItem>
+                                    </GridContainer>
+                                  </CardBody>
+                                </Card>
+                              </div>
+                            )}
+                            </Popup>
+                            {/*Edit popup End*/}
+                        </>
+                      ):(
+                        <span>
+                          {person.map((user)=>{
+                            return(
+                              <div className="chip">
+                                <span className="members" title={user}>{user}</span>
+                              </div>
+                            )
+                          })}
+                        </span>
+                      )}
+                    </td>
+                  </tr>
+                )
+            }
+          })}
+        </table>
+
+  </span>
+) 
+: ("")
+}
 
   <GridContainer>
     <Card>
