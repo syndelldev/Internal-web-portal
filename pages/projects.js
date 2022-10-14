@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { useRouter } from 'next/router';
 import { makeStyles } from "@material-ui/core/styles";
@@ -27,21 +27,8 @@ import axios from "axios";
 import dynamic from "next/dynamic";
 import 'react-quill/dist/quill.snow.css';
 import "react-quill/dist/quill.bubble.css";
-import { DateRangePicker } from 'react-date-range';
-import 'react-date-range/dist/styles.css'; // main css file
-import 'react-date-range/dist/theme/default.css'; // theme css file
 
-
-const ReactQuill = dynamic(
-  async () => {
-    const { default: RQ } = await import("react-quill");
-
-    return ({ forwardedRef, ...props }) => <RQ ref={forwardedRef} {...props} />;
-  },
-  {
-    ssr: false
-  }
-);
+const ReactQuill = dynamic(import('react-quill'), { ssr: false });
 
 const styles = {
   cardCategoryWhite: {
@@ -99,25 +86,25 @@ const styles = {
 };
 
 export async function getServerSideProps(context){
-  const res = await fetch(`${server}/api/project`);
-  const project_details = await res.json();
+  // const res = await fetch(`${server}/api/project`);
+  // const project_details = await res.json();
 
-  const response = await fetch(`${server}/api/user_dashboard`, {
-    headers: {
-      'Access-Control-Allow-Credentials': true,
-      Cookie: context.req.headers.cookie
-    },
-  })
-  const user_project = await response.json()
-  console.log(user_project)
+  // const res1 = await fetch(`${server}/api/user_dashboard`, {
+  //   headers: {
+  //     'Access-Control-Allow-Credentials': true,
+  //     Cookie: context.req.headers.cookie
+  //   },
+  // })
+  // const user_project = await res1.json()
+  // console.log(user_project)
 
-  const resp = await fetch(`${server}/api/admin`)
-  const User_name = await resp.json();
+  const response = await fetch(`${server}/api/admin`)
+  const User_name = await response.json();
 
-  return{ props: { project_details, user_project, User_name } }
+  return{ props: { User_name } }
 }
 
-function Dashboard( { project_details, user_project, User_name } ) {
+function Dashboard( { User_name } ) {
 
   const useStyles = makeStyles(styles);
   const classes = useStyles();
@@ -136,23 +123,21 @@ function Dashboard( { project_details, user_project, User_name } ) {
   }
   //Notification End
 
-  // const [project_details, setproject_details] = useState([])
+  const [project_details, setproject_details] = useState([])
   //Fetch API According Role Start
-  if(cookies.Role_id==1 || cookies.Role_id==3){
-    var project_details = project_details;
-    // useEffect(async()=>{
-    //   const res = await fetch(`${server}/api/project`);
-    //   const project_details = await res.json();
-    //   setproject_details(project_details)
-    // })
+  if(cookies.Role_id==1 || cookies.Role_id==3){    
+    useEffect(async()=>{
+      const res = await fetch(`${server}/api/project`);
+      const project_details = await res.json();
+      setproject_details(project_details)
+    })
   }
   else if(cookies.Role_id==2){
-    var project_details = user_project;
-    // useEffect(async()=>{
-    //   const res = await fetch(`${server}/api/user_dashboard`);
-    //   const project_details = await res.json();
-    //   setproject_details(project_details)
-    // })
+    useEffect(async()=>{
+      const res = await fetch(`${server}/api/user_dashboard`);
+      const project_details = await res.json();
+      setproject_details(project_details)
+    })
   }
 
   //Fetch API According Role End
@@ -276,7 +261,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
 
     if( uoption.project_title=="" || uoption.project_description=="" ||  uoption.project_department=="" || uoption.project_language=="" || allMember=="" || startDate=="" || endDate=="" || uoption.project_priority=="" || uoption.project_status=="" ){
       if(! toast.isActive(toastId.current)) {
-        toastId.current = toast.error('Please fill all the required fields!', {
+        toastId.current = toast.error('Please fill all the required fields', {
             position: "top-right",
             autoClose:5000,
             theme: "colored",
@@ -293,7 +278,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
       body: JSON.stringify({ project_id:uoption.project_id, project_person: allMember, project_status:uoption.project_status , project_department:uoption.project_department ,  project_title: uoption.project_title , project_description:uoption.project_description , project_language:uoption.project_language, project_comment:uoption.project_comment, project_priority:uoption.project_priority, project_start: startDate , project_deadline: endDate }),
     });
     if(!toast.isActive(toastId.current)) {
-      toastId.current = toast.success('Updated Successfully !', {
+      toastId.current = toast.success('Updated Successfully ! 🎉', {
           position: "top-right",
           autoClose:1000,
           theme: "colored",
@@ -440,88 +425,24 @@ function Dashboard( { project_details, user_project, User_name } ) {
       console.log(date);
   
       var addComment = await axios.post(`${server}/api/comment/addProjectComments`, {  username: cookies.name, message: value , project_id: project_id, created_D: date });
-
-      if(!toast.isActive(toastId.current)) {
-        toastId.current = toast.success('Comment added successfully!', {
-            position: "top-right",
-            autoClose:1000,
-            theme: "colored",
-            hideProgressBar: true,
-          });
-      }
-  
-      // router.reload(`${server}/projects`);
+      console.log(addComment)
+      console.log(cookies.name)
+      router.reload(`${server}/user/projects`);
     }
-    
+  
     const [ value, setValues ] = useState("");
-    const quillRef = useRef(null);
-
-    const imageHandler = () => {
-
-      const input = document.createElement('input');
-      input.setAttribute('type', 'file');
-      input.setAttribute('accept', 'image/*');
-      input.click();
-
-      input.onchange = async () => {
-          let data = null;
-          const file = input.files ? input.files[0] : null;
-
-          if (/^image\//.test(file.type)) {          
-          const formData = new FormData();
-
-          formData.append('image', file);
-          formData.getAll('image');
-
-          const res = await fetch(`${server}/api/upload`,{ 
-              method: 'POST',
-              body: formData,
-          });
-          data = await res.json();
-          console.log(data);
-          console.log(data.files.image.newFilename);
-
-          // Save current cursor 
-          const range = quillRef.current.getEditor().getSelection();
-          const quill = quillRef.current.getEditor();
-          quill.insertEmbed( range.index, "image", `${server}/upload_img/${data.files.image.newFilename}${data.files.image.originalFilename}`);
-          quillRef.current.getEditor().setSelection(range.index + 1);
-
-      }else{
-
-        if(! toast.isActive(toastId.current)) {
-          toastId.current = toast.error('Please upload only image', {
-              position: "top-right",
-              autoClose:5000,
-              theme: "colored",
-              closeOnClick: true,
-              hideProgressBar: true,
-            });
-        }
-  
-      }
+    const modules = {
+      toolbar: [
+        [{ 'font': [] }],
+        [{ 'size': ['small', false, 'large', 'huge'] }],
+        ['bold', 'italic', 'underline'],
+        [{'list': 'ordered'}, {'list': 'bullet'}],
+        [{ 'align': [] }],
+        [{ 'color': [] }, { 'background': [] }],
+        ['clean'],
+        ['link', 'image', 'video']
+      ]
     }
-  }
-
-  const modules = useMemo(() => ({
-      toolbar: {
-          container: [
-              [{ 'font': [] }],
-              [{ 'size': ['small', false, 'large', 'huge'] }],
-              ['bold', 'italic', 'underline'],
-              [{'list': 'ordered'}, {'list': 'bullet'}],
-              [{ 'align': [] }],
-              [{ 'color': [] }, { 'background': [] }],
-              ['clean'],
-              ['link'],
-              ['image'],
-              ['video']
-          ],
-          handlers: {
-            image: imageHandler
-          }
-      },
-    }), []);
   
     const [commentEdit, setEditComment] = useState();
   
@@ -536,7 +457,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
           setEditComment(commentId.data[0].comment);
           console.log("edit");
           console.log(commentEdit);
-          console.log(commentId.data[0].comment);        
+          console.log(commentId.data[0].comment);
         }
       }
       
@@ -545,54 +466,14 @@ function Dashboard( { project_details, user_project, User_name } ) {
         console.log(comment);
         console.log(id);
         var comments = await axios.post(`${server}/api/comment/updateComment`, { comment_id: id, user: cookies.name, comment:comment });
-
-        if(!toast.isActive(toastId.current)) {
-          toastId.current = toast.success('Comment updated successfully!', {
-              position: "top-right",
-              autoClose:1000,
-              theme: "colored",
-              hideProgressBar: true
-            });
-        }
-        router.reload(`${server}/projects`);
+        router.reload(`${server}/user/projects`);
       }
-
-      const [dateRange, setDateRange] = useState([null, null]);
-      const [startDates, endDates] = dateRange;
-      const [dateDetails, setDateDetails] = useState();
-      const [dateDataDisplay, setData] = useState(false);
-    
-      const date_Range = async() =>{
-        if(startDates != null && endDates != null){
-          console.log(dateRange);
-
-          const res = await fetch(`${server}/api/project/dateRange`,{
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body:JSON.stringify({ dateStart: startDates, dateEnd: endDates }),
-          })
-          const date_Data=await res.json()
-          
-          if(res.status==200)
-          {
-            setDateDetails(date_Data);
-            setData(true);
-          }
-              
-        }else{
-    
-          if(! toast.isActive(toastId.current)) {
-            toastId.current = toast.error('Please select dates range!', {
-                position: "top-right",
-                autoClose:2000,
-                theme: "colored",
-                closeOnClick: true,
-                hideProgressBar: true,
-              });
-          }
-        }
-      }
+      // console.log("set comment");
+      // console.log(commentEdit);
       
+      
+      
+
   return (
     <>
 
@@ -609,8 +490,8 @@ function Dashboard( { project_details, user_project, User_name } ) {
                         <CardHeader color="primary">
                           <GridContainer>
                             <GridItem>
-                              <h4 className="Updatedetails">Create Project</h4>
-                              <p className="Updatedetails">Enter your new project details</p>
+                              <h4 className={classes.cardTitleWhite}>Create Project</h4>
+                              <p className={classes.cardCategoryWhite}>Enter your new project details</p>
                             </GridItem>
                               <div className={classes.close}>
                                 <a onClick={close}>&times;</a>
@@ -815,133 +696,32 @@ function Dashboard( { project_details, user_project, User_name } ) {
           </GridItem>
         </GridContainer>
       </div>
-      {/* <div className="Project-title">Projects</div> */}
-  <div className="main_task_title">
-           <div className="Project-title">Projects</div>
+    <GridContainer>
+    
+    {/***** Running Project start *****/}
+    <GridContainer>
+    <GridItem>
+      <div className="Project-title">Projects</div>
+    </GridItem>
+
     <GridContainer>
       <GridItem>
         <button className="bttn-design" onClick={()=> 
           {  project_running("running"), closeOnHold("running"), setrunning_title(true), project_OnHold("on hold"), closeTaskToDo("on hold"), setonhold_title(true)
           project_Completed("completed"), closeCompleted("completed"), setcompleted_title(true) }}
           >Expand All</button>
+      </GridItem>
 
+      <GridItem>
         <button className="bttn-design" onClick={()=> 
           {  project_running("running"), closeOnHold("running"), setrunning_title(false), project_OnHold("on hold"), closeTaskToDo("on hold"), setonhold_title(false)
           project_Completed("completed"), closeCompleted("completed"), setcompleted_title(false) }}
           >Collapse All</button>
-        </GridItem>
-
-      <GridItem>
-
-        <DatePicker
-          selectsRange={true}
-          startDate={startDates}
-          endDate={endDates}
-          onChange={(update) => {
-            setDateRange(update);
-          }}
-          isClearable={true}
-          dateFormat="dd-MM-yyyy"
-        />
-        <button onClick={() => date_Range()}>enter</button>
-
       </GridItem>
     </GridContainer>
-  </div>
+  </GridContainer>
 
-{dateDataDisplay ? (
-  <span>
-    <h3>Projects List</h3>
-    <table className="project-data" >
-      <tr className="project-data-title">
-            <th  className="status">Project Name</th>
-            <th className="Priority">Priority</th>
-            <th className="assignee">Assignee</th>
-          </tr>
-          {dateDetails.map((project)=>{
-            if(project.project_delete == "no"){
-                var person = project.project_person.split(",");
-                return(
-                  <tr key={project.project_id} onClick={()=>{toggle(project.project_id)}} className="expand_dropdown">
-                    <td className="project-title-table">{project.project_title}</td>
-                    <td className="priority-data"><p className={project.project_priority}>{project.project_priority}</p></td>
-                    <td className="project-priority-person">
-                      {person.length>2 ? (
-                        <>
-                          <div className="chip">
-                            <span>{person[0]}</span>
-                          </div>
-                          <div className="chip">
-                            <span>{person[1]}</span>
-                          </div>
-                            {/* Edit popUp Start*/}
-                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} className="popupReact"  position="left">
-                            {close => (
-                              <div className="popup-align">
-                                <Card>
-                                  <CardBody>
-                                    <CardHeader>
-                                      <GridContainer>
-                                        <GridItem>
-                                          <strong>Assignee</strong>
-                                        </GridItem>
-                                        <GridItem>
-                                          <div className={classes.close}>
-                                            <a onClick={close}>&times;</a>
-                                          </div>
-                                        </GridItem>
-                                      </GridContainer>
-                                    </CardHeader>
-
-                                    <GridContainer>
-                                      <GridItem>
-                                        {person.map((user)=>{
-                                          return(
-                                            <span>
-                                              <span className="members" title={user}>{user}</span>
-                                            </span>
-                                          )
-                                        })}
-                                      </GridItem>
-                                    </GridContainer>
-                                  </CardBody>
-                                </Card>
-                              </div>
-                            )}
-                            </Popup>
-                            {/*Edit popup End*/}
-                        </>
-                      ):(
-                        <span>
-                          {person.map((user)=>{
-                            return(
-                              <div className="chip">
-                                <span className="members" title={user}>{user}</span>
-                              </div>
-                            )
-                          })}
-                        </span>
-                      )}
-                    </td>
-                  </tr>
-                )
-            }
-          })}
-        </table>
-
-  </span>
-) 
-: ("")
-
-}
-    <GridContainer>
-
-
-    
-    {/***** Running Project start *****/}
-   
-
-<Card className="task_title_status">
+    <Card className="task_title_status">
       <GridContainer >
         <GridItem xs={12} sm={12} md={12} >
           <div onClick={()=> {  project_running("running") , closeOnHold("running") , setrunning_title(!running_title) }} className="task_title" > Project In progress {running_title ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
@@ -964,7 +744,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
                 return(
                   <tr key={project.project_id} onClick={()=>{toggle(project.project_id)}} className="expand_dropdown">
                     <td className="project-title-table">{project.project_title}</td>
-                    <td className="priority-data"><p className={project.project_priority}>{project.project_priority}</p></td>
+                    <td className="project-priority-table">{project.project_priority}</td>
                     <td className="project-priority-person">
                       {person.length>2 ? (
                         <>
@@ -975,7 +755,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
                             <span>{person[1]}</span>
                           </div>
                             {/* Edit popUp Start*/}
-                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>Load more</span></div></a>} className="popupReact"  position="left">
+                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} className="popupReact"  position="left">
                             {close => (
                               <div className="popup-align">
                                 <Card>
@@ -1043,7 +823,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
                                       </div>
                                     </GridContainer>
                                   </CardHeader>
-                                  <CardBody className="Project-sidebar">
+                                  <CardBody>
 
                                   <GridContainer>
                                     <GridItem xs={12} sm={12} md={12}>                      
@@ -1197,19 +977,13 @@ function Dashboard( { project_details, user_project, User_name } ) {
                                   </CardFooter>
                                 </div>
 
-                                <CardBody className="Project-sidebar-comments">
+                                <CardBody>
                                 <GridContainer>
                                     <GridItem>
                                       <form>
-                                        <h5 className="project-comments">Comments</h5>
-                                          <ReactQuill
-                                          forwardedRef={quillRef}
-                                            modules={modules}
-                                            // value={value}
-                                            theme="snow" 
-                                            onChange={setValues} 
-                                          />
-                                        <button className="btn btn-primary" onClick={()=> {sendMessage(project.project_id), close()} }>Save</button>
+                                        <h5 className="projectPriority">Comments</h5>
+                                        <ReactQuill modules={modules} theme="snow" onChange={setValues} />
+                                        <div onClick={()=> {sendMessage(project.project_id)}}>Save</div>
                                       </form>
                                     </GridItem>
                                   </GridContainer>
@@ -1218,13 +992,13 @@ function Dashboard( { project_details, user_project, User_name } ) {
                                     // console.log("comments");
                                     // console.log(comments);
                                       return(
-                                        <span className="comment-box">
-                                          <GridContainer className="comment-box">
-                                            <GridItem className="comment-box"> 
-                                              <span className="name">{m.username}</span>
+                                        <span className="model-update">
+                                          <GridContainer>
+                                            <GridItem>
+                                              <span>{m.username}</span>
                                             </GridItem>
                                                 
-                                            <GridItem className="comment-box">
+                                            <GridItem>
                                             <span><p>{m.creation_time}</p></span>
                                             </GridItem>
                                           </GridContainer>
@@ -1249,7 +1023,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
                                   <GridContainer>
                                     <GridItem xs={12} sm={12} md={12} >
                                       <form>
-                                        <ReactQuill forwardedRef={quillRef} modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
+                                        <ReactQuill modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
                                       </form>
                                     </GridItem>
                                   </GridContainer>
@@ -1350,7 +1124,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
                 return(
                   <tr key={project.project_id} onClick={()=>{toggle(project.project_id)}} className="expand_dropdown">
                     <td className="project-title-table">{project.project_title}</td>
-                    <td className="priority-data"><p className={project.project_priority}>{project.project_priority}</p></td>
+                    <td className="project-priority-table">{project.project_priority}</td>
                     <td className="project-priority-person">
                     {person.length>2 ? (
                         <span>
@@ -1361,7 +1135,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
                             <span>{person[1]}</span>
                           </div>
                             {/* Edit popUp Start*/}
-                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>Load more</span></div></a>} position="left">
+                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} position="left">
                             {close => (
                               <div className="popup-align">
                                 <Card>
@@ -1589,14 +1363,9 @@ function Dashboard( { project_details, user_project, User_name } ) {
                                 <GridContainer>
                                     <GridItem>
                                       <form>
-                                        <h5 className="project-comments">Comments</h5>
-                                          <ReactQuill
-                                          forwardedRef={quillRef}
-                                            modules={modules} 
-                                            theme="snow" 
-                                            onChange={setValues} 
-                                          />
-                                        <button className="btn btn-primary" onClick={()=> {sendMessage(project.project_id), close()} }>Save</button>
+                                        <h5 className="projectPriority">Comments</h5>
+                                        <ReactQuill modules={modules} theme="snow" onChange={setValues} />
+                                        <div onClick={()=> sendMessage(project.project_id)}>Save</div>
                                       </form>
                                     </GridItem>
                                   </GridContainer>
@@ -1605,7 +1374,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
                                     // console.log("comments");
                                     // console.log(comments);
                                       return(
-                                        <span>
+                                        <span className="model-update">
                                           <GridContainer>
                                             <GridItem>
                                               <span>{m.username}</span>
@@ -1636,7 +1405,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
                                   <GridContainer>
                                     <GridItem xs={12} sm={12} md={12} >
                                       <form>
-                                        <ReactQuill forwardedRef={quillRef} modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
+                                        <ReactQuill modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
                                       </form>
                                     </GridItem>
                                   </GridContainer>
@@ -1738,7 +1507,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
                 return(
                   <tr key={project.project_id} onClick={()=>{toggle(project.project_id)}} className="expand_dropdown">
                     <td className="project-title-table">{project.project_title}</td>
-                    <td  className="priority-data"><p className={project.project_priority}>{project.project_priority}</p></td>
+                    <td  className="project-priority-table">{project.project_priority}</td>
                     <td className="project-priority-person">
                     {person.length>2 ? (
                         <>
@@ -1749,7 +1518,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
                             <span>{person[1]}</span>
                           </div>
                             {/* Edit popUp Start*/}
-                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>Load more</span></div></a>} className="popupReact" position="left">
+                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} className="popupReact" position="left">
                             {close => (
                               <div className="popup-align">
                                 <Card>
@@ -1976,16 +1745,18 @@ function Dashboard( { project_details, user_project, User_name } ) {
                                 <GridContainer>
                                     <GridItem>
                                       <form>
-                                        <h5 className="project-comments">Comments</h5>
-                                          <ReactQuill forwardedRef={quillRef} modules={modules} theme="snow" onChange={setValues} />
-                                        <button className="btn btn-primary" onClick={()=> {sendMessage(project.project_id), close()} }>Save</button>
+                                        <h5 className="projectPriority">Comments</h5>
+                                        <ReactQuill modules={modules} theme="snow" onChange={setValues} />
+                                        <div onClick={()=> sendMessage(project.project_id)}>Save</div>
                                       </form>
                                     </GridItem>
                                   </GridContainer>
 
                                   {comments.map((m)=>{
+                                    // console.log("comments");
+                                    // console.log(comments);
                                       return(
-                                        <span className="comment-box">
+                                        <span className="model-update">
                                           <GridContainer>
                                             <GridItem>
                                               <span>{m.username}</span>
@@ -2016,7 +1787,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
                                   <GridContainer>
                                     <GridItem xs={12} sm={12} md={12} >
                                       <form>
-                                        <ReactQuill forwardedRef={quillRef} modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
+                                        <ReactQuill modules={modules} theme="snow" onChange={setEditComment} value={commentEdit} />
                                       </form>
                                     </GridItem>
                                   </GridContainer>
@@ -2094,7 +1865,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
     ):("")}
     {/***** Completed Project End *****/}
         {/***** Project End *****/}
-        <ToastContainer limit={1}/>
+        <ToastContainer limit={2}/>
       </GridContainer>
     </>
   );
