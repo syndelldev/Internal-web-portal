@@ -406,19 +406,19 @@ function Dashboard( { project_details, user_project, User_name } ) {
           setNotification({title: insertedProject[0].project_title, body: selected});
         };
   
-        // insertedProject.map(result=>{
-        //   setNotification({title: insertedProject[0].project_title, body: selected});  
-        //   toast.info(
-        //     <div key={result.project_id} onchange={handleClickPushNotification}>
-        //       <p>{result.project_id}</p>
-        //       <p>{result.project_title}</p>
-        //     </div>,
-        //     {
-        //       autoClose: false,
-        //       theme:"colored",
-        //     }
-        //   ) 
-        // })
+        insertedProject.map(result=>{
+          setNotification({title: insertedProject[0].project_title, body: selected});  
+          toast.info(
+            <div key={result.project_id} onchange={handleClickPushNotification}>
+              <p>{result.project_id}</p>
+              <p>{result.project_title}</p>
+            </div>,
+            {
+              autoClose: false,
+              theme:"colored",
+            }
+          ) 
+        })
       }
   //Notification End
 

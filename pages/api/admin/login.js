@@ -12,20 +12,20 @@ async function login(req,res){
             res.status(200).json(loginQuery);
             
             
-            //console.log(loginQuery)
+            console.log(loginQuery)
 
-            var dbpassword = loginQuery[0].password;
+            // var dbpassword = loginQuery[0].password;
             //console.log(dbpassword)
             //console.log(password)
 
-            if(dbpassword == req.body.password)
-            {
-                console.log("Sucess")
-            }
-            else 
-            {
-                console.log("Fail")
-            }
+            // if(dbpassword == req.body.password)
+            // {
+            //     console.log("Sucess")
+            // }
+            // else 
+            // {
+            //     console.log("Fail")
+            // }
             
         }
         catch(err){

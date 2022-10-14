@@ -45,29 +45,30 @@ function UserDetail({UserDetail}) {
   const { register,  watch, handleSubmit, formState: { errors }, setValue, control } = useForm({mode: "onBlur"}); 
 
   //Status Active
-  const [value, setvalue] = useState('Active');
+  // const [value, setvalue] = useState('Active');
 
   
   //Delete User
-  const deleteUser = async(id) =>{
+  const deleteUser = async(id, status) =>{
+    console.log(status)
 
-    let delUser = await axios.put(`${server}/api/admin/${id}`,{status:value})
+    if(status=='Active'){
+      var result = 'Inactive'
+    }
+    else if(status=='Inactive'){
+      var result = 'Active'
+    }
+
+    let delUser = await axios.put(`${server}/api/admin/${id}`,{status:result})
     router.push("/user_Details");
   
     //console.log(delUser);
-    console.log(value)
-
-    if(value==='Active'){
-      setvalue('Inactive')
-    }
-    else if(value==='Inactive'){
-      setvalue('Active')
-    }
+    
   }
 
-  const onSubmit = async(data) =>{
-    //console.log(data);
-  }
+  // const onSubmit = async(data) =>{
+  //   //console.log(data);
+  // }
   const router = useRouter();
   const useStyles = makeStyles(styles);
   const classes = useStyles();
@@ -174,16 +175,23 @@ function UserDetail({UserDetail}) {
     let addUser = axios.post(`${server}/api/admin/`, {
       role_id:result.role_id, username:result.name, password:hashedPassword, email:result.email, PhoneNum:result.PhoneNum, /*DOB:startDate,*/ department:result.department, position:result.position, status:result.status, role:result.role 
     })
+    console.log(addUser)
+    if(addUser){
+      alert("sucess")
+    }
+    else{
+      alert("error")
+    }
     if(!toast.isActive(toastId.current)) {
       toastId.current = toast.success('User Created Successfully ! 🎉', {
           position: "top-right",
           autoClose:1000,
           theme: "colored",
           hideProgressBar: true,
-          onClose: () => router.push(`${server}/user_Details`)
+          // onClose: () => router.push(`${server}/user_Details`)
           });
       }
-      router.reload(`${server}/user_Details`);
+      // router.reload(`${server}/user_Details`);
   }
   //Add User API End
   return (
@@ -236,7 +244,7 @@ function UserDetail({UserDetail}) {
                             <GridContainer>  
                               <GridItem xs={12} sm={12} md={12}>
                                 <div className="form-group">
-                                  <input type="text" className="form-control signup-input" placeholder="Email" {...register('email', { required: 'Please enter your email', pattern: {value: /^[a-zA-Z0-9]+@+syndelltech+.+[A-z]$/ , message: 'Please enter a valid email ex:email@syndelltech.in',},} )} />
+                                  <input type="text" className="form-control signup-input" placeholder="Email" {...register('email', { required: 'Please enter your email', pattern: {value: /^[a-zA-Z0-9+_.-]+@+syndelltech+.+[A-z]$/ , message: 'Please enter a valid email ex:email@syndelltech.in',},} )} />
                                   <div className="error-msg">{errors.email && <p>{errors.email.message}</p>}</div>
                                 </div> 
                               </GridItem>
@@ -349,7 +357,7 @@ function UserDetail({UserDetail}) {
                           </CardBody>
 
                           <CardFooter>
-                            <Button color="primary" type="submit" onClick={()=>{AddUser()}}>Add User</Button>
+                            <Button color="primary" type="submit" >Add User</Button>
                           </CardFooter>
 
                         </Card>
@@ -390,7 +398,7 @@ function UserDetail({UserDetail}) {
                         <div>
                           <label className="switch">
                             <a>
-                              <input type="checkbox" name="status" value={user.status} defaultChecked={user.status === 'Active'}  onClick={()=>deleteUser(user.id)} />
+                              <input type="checkbox" name="status" value={user.status} defaultChecked={user.status == 'Active'}  onClick={()=>deleteUser(user.id, user.status)} />
                               <span className="slider round" ></span>
                             </a> 
                           </label>
@@ -527,7 +535,7 @@ function UserDetail({UserDetail}) {
 
                                       </CardBody>
                                       <CardFooter>
-                                        <Button color="primary" type="submit" onClick={()=>{UpdateUser(user.id)}}>Update User</Button>
+                                        <Button color="primary" type="submit" onClick={()=>{UpdateUser(user.id, user.status)}}>Update User</Button>
                                       </CardFooter>
                                     </Card>
                                     </form>
