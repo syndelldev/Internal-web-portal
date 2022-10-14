@@ -25,7 +25,6 @@ import { MdDelete } from 'react-icons/md';
 import { useCookies } from 'react-cookie';
 import axios from "axios";
 import dynamic from "next/dynamic";
-import { list } from "tar";
 
 
 const ReactQuill = dynamic(
@@ -546,6 +545,8 @@ function Dashboard( { project_details, user_project, User_name } ) {
       const [startDates, endDates] = dateRange;
       // get selected dates projects list
       const [dateDetails, setDateDetails] = useState();
+      // get selected dates projects list for user
+      const [date_uData, setDate_uDetails] = useState();
       // onclick show data
       const [dateDataDisplay, setData] = useState(false);
     
@@ -554,41 +555,36 @@ function Dashboard( { project_details, user_project, User_name } ) {
         if(startDates != null && endDates != null){
           console.log(dateRange);
 
-          if(cookies.Role_id == 1){
-            const res = await fetch(`${server}/api/project/dateRange_Projects`,{
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body:JSON.stringify({ dateStart: startDates, dateEnd: endDates }),
-            })
-            const date_Data=await res.json()
-            
-            if(res.status==200)
-            {
-              // set all projects list for admin
-              setDateDetails(date_Data);
-              // display data onClick
-              setData(true);
-            }
-          }else{
-            const response = await fetch(`${server}/api/project/dateRange_ProjectsUser`,{
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body:JSON.stringify({ dateStart: startDates, dateEnd: endDates, user: cookies.name }),
-            })
-            const date_uData=await response.json()
-            console.log("user data");
-            console.log(date_uData);
-            
-            if(response.status==200)
-            {
-              // set all projects list for user
-              setDateDetails(date_uData);
-              // display data onClick
-              setData(true);
-            }
+          const res = await fetch(`${server}/api/project/dateRange_Projects`,{
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body:JSON.stringify({ dateStart: startDates, dateEnd: endDates }),
+          })
+          const date_Data=await res.json()
+          
+          if(res.status==200)
+          {
+            setDateDetails(date_Data);
+            setData(true);
           }
+
+          const response = await fetch(`${server}/api/project/dateRange_ProjectsUser`,{
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body:JSON.stringify({ dateStart: startDates, dateEnd: endDates, user: cookies.name }),
+          })
+          const date_uData=await response.json()
+          // console.log("user data");
+          // console.log(date_uData);
+          
+          if(response.status==200)
+          {
+            setDate_uDetails(date_uData);
+            setData(true);
+          }
+              
         }else{
-          // select startDate and endDate can't be empty toast error
+          // select startDate and endDate toast error
           if(! toast.isActive(toastId.current)) {
             toastId.current = toast.error('Please select dates range!', {
                 position: "top-right",
@@ -600,7 +596,16 @@ function Dashboard( { project_details, user_project, User_name } ) {
           }
         }
       }
-
+      
+      if(cookies.Role_id==1 || cookies.Role_id==3){
+        var project_list = dateDetails;
+        console.log(project_list);
+      }
+      else if(cookies.Role_id==2){
+        var project_list = date_uData;
+        console.log(project_list);
+      }
+    
       
   return (
     <span>
