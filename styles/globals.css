@@ -135,7 +135,12 @@ span.copyright a {
   color: white;
 
 }
-
+.MuiGrid-root.jss577.MuiGrid-item h4{
+  color: #fff;
+}
+p.Updatedetails,h4.Updatedetails {
+  margin: 0px;
+}
 .buttonpopup5{
   background-color: #ddd;
   color:black;

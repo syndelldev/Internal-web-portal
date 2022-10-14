@@ -432,8 +432,8 @@ useEffect(() =>{
                                   <CardHeader color="primary">
                                     <GridContainer>
                                       <GridItem>
-                                        <h4 className={classes.cardTitleWhite}>Edit Project</h4>
-                                        <p className={classes.cardCategoryWhite}>Update your project details</p>
+                                        <h4 className="Updatedetails">Edit Project</h4>
+                                        <p className="Updatedetails">Update your project details</p>
                                       </GridItem>
                                       <div className={classes.close}>
                                         <a onClick={close}>&times;</a>
