@@ -300,11 +300,12 @@ function Dashboard( { project_details, user_project, User_name } ) {
   const { register,  watch, handleSubmit, formState: { errors }, setValue } = useForm(); 
   const router = useRouter();
 
-  const [notification, setNotification] = useState({title: '', body: ''});
-  console.log(notification)  
+  const [notificationtitle, setNotificationtitle] = useState("");
+  const [notificationbody, setNotificationbody] = useState("");
   
+
   const onSubmit = async (result) =>{
-    
+
     const p_start = result.start.toDateString();
     const p_end = result.end.toDateString();
     
@@ -315,16 +316,14 @@ function Dashboard( { project_details, user_project, User_name } ) {
         body:JSON.stringify({project_person:selected,project_department:result.project_department,project_status:result.project_status , project_title:result.project_title, project_description:result.project_description, project_language:result.project_language, project_comment:result.project_comment, project_priority:result.project_priority, project_start: p_start , project_deadline: p_end , projectAdded_by: cookies }),
       })
       const data=await res.json()
+      console.log(data)
       
-      // onMessageListener()
-      // .then((payload) => {
-      //   setNotification({title: result.project_title, body: result.project_title});     
-      // })
-      // .catch((err) => console.log('failed: ', err));
-
       
-      // getMessage();
 
+      // const handleClickPushNotification = (url) => {
+      //   router.push(url); 
+      // };
+      
 
       if(res.status==200)
       {
@@ -338,8 +337,24 @@ function Dashboard( { project_details, user_project, User_name } ) {
               // onClose: () => router.push(`${server}/projects`)
               });
           }
-  
+          
         // router.reload(`${server}/projects`);
+        // setNotificationtitle(result.project_title)
+        // setNotificationbody(selected)
+        // console.log(notificationtitle)
+        // console.log(notificationbody)
+        
+        toast.info(
+          <div>
+            <p>{result.project_title}</p>
+            <p>{selected}</p>
+          </div>,
+          {
+            autoClose: false,
+            theme:"colored",
+          }
+        )
+
       }
       else
       {
@@ -358,7 +373,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
         }
     }
   }
-
+  
   //Notification Start
   useEffect(()=>{
     setToken();
@@ -383,43 +398,23 @@ function Dashboard( { project_details, user_project, User_name } ) {
         }
       }
     })
-    const  getMessage = async() => {
-      //   console.log('messaging', messaging);
+
+      const  getMessage = async() => {
   
         console.log('persons', selected)
-        // console.log('insertedProjectId : ', data.insertId)
-        
-        // var getInsertedProject = await axios.post(`${server}/api/notification/`,{ProjectId:data.insertId}, {
-        //   headers:{
-        //     'Content-Type': 'application/json',
-        //     'Authorization': 'eIRduI7lC7YlC0Uagaiy3W:APA91bFtpxqXFiWMA9oXTHLSuOJdUVpkjar4mJpK72JFRk9riFy5IQbYuAorr1xKvQ4UXuhwpAl_g5q9fVGwKjPFSZ-D76mqdItZFskIglXrpktUbJANehCNa0RZsPSeTVDP0ibQWvwV'
-        //   }
-        // })
+
+        // var getInsertedProject = await axios.post(`${server}/api/notification/`,{ProjectId:insertedProject})
         // var insertedProject = getInsertedProject.data;
-        // console.log('insertedProject', insertedProject)
+        // console.log('insertedProject', getInsertedProject.data)
   
         const messaging = firebase.messaging();
-        console.log('messaging', messaging)
+        // console.log('messaging', messaging)
   
-        const handleClickPushNotification = (url) => {
-          router.push(url);
-          setNotification({title: insertedProject[0].project_title, body: selected});
-        };
+        
   
-        insertedProject.map(result=>{
-          setNotification({title: insertedProject[0].project_title, body: selected});  
-          toast.info(
-            <div key={result.project_id} onchange={handleClickPushNotification}>
-              <p>{result.project_id}</p>
-              <p>{result.project_title}</p>
-            </div>,
-            {
-              autoClose: false,
-              theme:"colored",
-            }
-          ) 
-        })
+        
       }
+    
   //Notification End
 
   const [uoptions, setOptions] = useState([]);
@@ -879,7 +874,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
 
                             </CardBody>
                             <CardFooter>
-                                <Button color="primary" type="submit" onClick={()=>{getMessage()}}>Add Project</Button>
+                                <Button color="primary" type="submit" >Add Project</Button>
                                 <Button className="button" onClick={() => { close(); }}> Cancel </Button>
                             </CardFooter>
                           </Card>

@@ -38,7 +38,7 @@ async function addProject(req,res){
                             // userid.push(memberId);
                             console.log(memberId);
                             var rightsQuery = await executeQuery("INSERT INTO `tbl_rights` ( `user_id`,`project_id`,`module_id`,`view_rights`, `edit_rights` ) VALUES (?,?,1,1,1)", [ memberId,  addUserQuery.insertId ]);    
-                            console.log(rightsQuery)
+                            // console.log(rightsQuery)
                         }
                         console.log(memberId)
 
