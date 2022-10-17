@@ -609,8 +609,8 @@ function Dashboard( { project_details, user_project, User_name } ) {
                         <CardHeader color="primary">
                           <GridContainer>
                             <GridItem>
-                              <h4 className={classes.cardTitleWhite}>Create Project</h4>
-                              <p className={classes.cardCategoryWhite}>Enter your new project details</p>
+                              <h4 className="Updatedetails">Create Project</h4>
+                              <p className="Updatedetails">Enter your new project details</p>
                             </GridItem>
                               <div className={classes.close}>
                                 <a onClick={close}>&times;</a>
@@ -975,7 +975,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
                             <span>{person[1]}</span>
                           </div>
                             {/* Edit popUp Start*/}
-                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} className="popupReact"  position="left">
+                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>Load more</span></div></a>} className="popupReact"  position="left">
                             {close => (
                               <div className="popup-align">
                                 <Card>
@@ -1361,7 +1361,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
                             <span>{person[1]}</span>
                           </div>
                             {/* Edit popUp Start*/}
-                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} position="left">
+                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>Load more</span></div></a>} position="left">
                             {close => (
                               <div className="popup-align">
                                 <Card>
@@ -1749,7 +1749,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
                             <span>{person[1]}</span>
                           </div>
                             {/* Edit popUp Start*/}
-                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} className="popupReact" position="left">
+                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>Load more</span></div></a>} className="popupReact" position="left">
                             {close => (
                               <div className="popup-align">
                                 <Card>
