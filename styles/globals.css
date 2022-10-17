@@ -561,6 +561,9 @@ h1.user-welcome {
   font-size: 40px;
   text-align: center;
   font-family: sans-serif;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 .user
 {
