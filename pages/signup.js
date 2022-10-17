@@ -42,6 +42,7 @@ function SignIn({ user_Department }){
     const handleSelect = async(data) => {
 
         setProject(data);
+        // fetch designation from selected department
         const designation = await axios.post(`${server}/api/user/user_designation`, { department: data });
         const d_Designation = designation.data;
         console.log(d_Designation);

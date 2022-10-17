@@ -188,10 +188,9 @@ function UserDetail({UserDetail}) {
           autoClose:1000,
           theme: "colored",
           hideProgressBar: true,
-          // onClose: () => router.push(`${server}/user_Details`)
           });
       }
-      // router.reload(`${server}/user_Details`);
+      router.reload(`${server}/user_Details`);
   }
   //Add User API End
   return (
@@ -221,15 +220,6 @@ function UserDetail({UserDetail}) {
                             </GridContainer>
                           </CardHeader>
                           <CardBody><br/>
-
-                            <GridContainer>  
-                              <GridItem xs={12} sm={12} md={12}>
-                                <div className="form-group">
-                                  <input type="hidden" className="form-control signup-input" placeholder="role_id" value={2} {...register('role_id', { required: 'Please enter your role_id'} )} />
-                                  <div className="error-msg">{errors.role_id && <p>{errors.role_id.message}</p>}</div>
-                                </div> 
-                              </GridItem>
-                            </GridContainer><br/>
 
                             <GridContainer>
                               <GridItem xs={12} sm={12} md={12}>
