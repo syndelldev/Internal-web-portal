@@ -74,9 +74,11 @@ function UserDetail({UserDetail, user_Department}) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
 
+  // user will be redirected to their dashboard
   if(cookies.Role_id==2 || cookies.Role_id==""){
     router.push(`${server}/dashboard`);
   }else if(cookies == ""){
+    // redirected to login page if you are not logged in
     router.push(`${server}/login`);
   }
 
