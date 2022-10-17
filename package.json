@@ -83,6 +83,7 @@
     "serverless-mysql": "^1.5.4",
     "socket.io": "^4.5.2",
     "socket.io-client": "^4.5.2",
+    "styled-components": "^5.3.6",
     "tar": "^6.1.11",
     "timepicker-ui": "^2.5.0",
     "uuid": "^9.0.0",

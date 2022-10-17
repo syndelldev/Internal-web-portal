@@ -118,43 +118,57 @@ export default function Sidebar(props) {
           <div className={classes.sidebarWrapper}>
             <div className="makeStyles-sidebarWrapper-36">
                 <ul className="MuiList-root makeStyles-list-22 MuiList-padding"><br/>
-                <a className=" makeStyles-item-15" href="/dashboard">
-                  <div className="MuiButtonBase-root MuiListItem-root makeStyles-itemLink-16undefined MuiListItem-gutters MuiListItem-button" tabIndex="0" role="button" aria-disabled="false">
-                    <img src={`${server}/dash.png`} alt="smiley" className="dashboard-image" />
-                    <div className="MuiListItemText-root makeStyles-itemText-19">Dashboard</div>
-                    <span className="MuiTouchRipple-root"></span>
-                  </div>
-                </a>
-                <a className=" makeStyles-item-15" href="/projects">
-                  <div className="MuiButtonBase-root MuiListItem-root makeStyles-itemLink-16undefined MuiListItem-gutters MuiListItem-button" tabIndex="0" role="button" aria-disabled="false">
-                    {/* <span className="material-icons MuiIcon-root makeStyles-itemIcon-17  makeStyles-whiteFont-21" aria-hidden="true">content_paste</span> */}
-                    <img src={`${server}/Project.png`} alt="smiley" className="dashboard-image" />
-                    <div className="MuiListItemText-root makeStyles-itemText-19">Projects</div>
-                    <span className="MuiTouchRipple-root"></span>
-                  </div>
-                </a>
-                <a className=" makeStyles-item-15" href="/tasks">
-                  <div className="MuiButtonBase-root MuiListItem-root makeStyles-itemLink-16undefined MuiListItem-gutters MuiListItem-button" tabIndex="0" role="button" aria-disabled="false">
-                  <img src={`${server}/Task.png`} alt="smiley" className="dashboard-image" />
-                    <div className="MuiListItemText-root makeStyles-itemText-19">Tasks</div>
-                    <span className="MuiTouchRipple-root"></span>
-                  </div>
-                </a>
-           
-                <a className=" makeStyles-item-15" href="/user_Rights" hidden={cookies.Role_id == "2"}>
-                  <div className="MuiButtonBase-root MuiListItem-root makeStyles-itemLink-16undefined MuiListItem-gutters MuiListItem-button" tabIndex="0" role="button" aria-disabled="false">
-                  <img src={`${server}/user rights.png`} alt="smiley" className="dashboard-image" />
-                    <div className="MuiListItemText-root makeStyles-itemText-19">User Rights</div>
-                    <span className="MuiTouchRipple-root"></span>
-                  </div>
-                </a>
-                <a className=" makeStyles-item-15" href="/user_Details" hidden={cookies.Role_id != "1"}>
-                  <div className="MuiButtonBase-root MuiListItem-root makeStyles-itemLink-16undefined MuiListItem-gutters MuiListItem-button" tabIndex="0" role="button" aria-disabled="false">
-                  <img src={`${server}/User Details.png`} alt="smiley" className="dashboard-image" />
-                    <div className="MuiListItemText-root makeStyles-itemText-19">User Details</div>
-                    <span className="MuiTouchRipple-root"></span>
-                  </div>
-                </a>
+
+                <Link href="/dashboard">
+                  <a className=" makeStyles-item-15" >
+                    <div className="MuiButtonBase-root MuiListItem-root makeStyles-itemLink-16undefined MuiListItem-gutters MuiListItem-button" tabIndex="0" role="button" aria-disabled="false">
+                      <img src={`${server}/dash.png`} alt="smiley" className="dashboard-image" />
+                      <div className="MuiListItemText-root makeStyles-itemText-19">Dashboard</div>
+                      <span className="MuiTouchRipple-root"></span>
+                    </div>
+                  </a>
+                </Link>
+
+                <Link href="/projects">
+                  <a className=" makeStyles-item-15">
+                    <div className="MuiButtonBase-root MuiListItem-root makeStyles-itemLink-16undefined MuiListItem-gutters MuiListItem-button" tabIndex="0" role="button" aria-disabled="false">
+                      {/* <span className="material-icons MuiIcon-root makeStyles-itemIcon-17  makeStyles-whiteFont-21" aria-hidden="true">content_paste</span> */}
+                      <img src={`${server}/Project.png`} alt="smiley" className="dashboard-image" />
+                      <div className="MuiListItemText-root makeStyles-itemText-19">Projects</div>
+                      <span className="MuiTouchRipple-root"></span>
+                    </div>
+                  </a>
+                </Link>
+
+                <Link href="/tasks">
+                  <a className=" makeStyles-item-15">
+                    <div className="MuiButtonBase-root MuiListItem-root makeStyles-itemLink-16undefined MuiListItem-gutters MuiListItem-button" tabIndex="0" role="button" aria-disabled="false">
+                    <img src={`${server}/Task.png`} alt="smiley" className="dashboard-image" />
+                      <div className="MuiListItemText-root makeStyles-itemText-19">Tasks</div>
+                      <span className="MuiTouchRipple-root"></span>
+                    </div>
+                  </a>
+                </Link>
+
+                <Link href="/user_Rights">
+                  <a className=" makeStyles-item-15" hidden={cookies.Role_id == "2"}>
+                    <div className="MuiButtonBase-root MuiListItem-root makeStyles-itemLink-16undefined MuiListItem-gutters MuiListItem-button" tabIndex="0" role="button" aria-disabled="false">
+                    <img src={`${server}/user rights.png`} alt="smiley" className="dashboard-image" />
+                      <div className="MuiListItemText-root makeStyles-itemText-19">User Rights</div>
+                      <span className="MuiTouchRipple-root"></span>
+                    </div>
+                  </a>
+                </Link>
+
+                <Link href="/user_Details">
+                  <a className=" makeStyles-item-15"  hidden={cookies.Role_id != "1"}>
+                    <div className="MuiButtonBase-root MuiListItem-root makeStyles-itemLink-16undefined MuiListItem-gutters MuiListItem-button" tabIndex="0" role="button" aria-disabled="false">
+                    <img src={`${server}/User Details.png`} alt="smiley" className="dashboard-image" />
+                      <div className="MuiListItemText-root makeStyles-itemText-19">User Details</div>
+                      <span className="MuiTouchRipple-root"></span>
+                    </div>
+                  </a>
+                </Link>
 
                 </ul>
             </div>

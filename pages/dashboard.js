@@ -23,6 +23,7 @@ import { FiEdit } from "react-icons/fi";
 import { BiArchiveIn } from 'react-icons/bi';
 import Button from "components/CustomButtons/Button.js";
 
+
 const styles = {
   cardCategoryWhite: {
     color: "rgba(0,0,0,.62)",
@@ -329,7 +330,7 @@ useEffect(() =>{
 
       </div>
     <h4 className="project_status">Projects</h4>
-
+    
     <GridContainer>
       {project_running.map((status)=>{
         const MySQLDate  = status.project_deadline;
@@ -337,11 +338,11 @@ useEffect(() =>{
         if(date>today)
         {
           On_track.push(status.project_id);
-          console.log("On_track",On_track)
+          // console.log("On_track",On_track)
         }
         else{
           Off_track.push(status.project_id);
-          console.log("Off_track",Off_track)
+          // console.log("Off_track",Off_track)
         }
       })}
     </GridContainer>
