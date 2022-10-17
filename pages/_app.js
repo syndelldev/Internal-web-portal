@@ -15,11 +15,14 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React  from "react";
 import ReactDOM from "react-dom";
 import App from "next/app";
 import Head from "next/head";
 import Router from "next/router";
+import { useRouter } from 'next/router';
+import { useState,useEffect  } from "react";
+import Link from "next/link";
 
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -51,20 +54,36 @@ Router.events.on("routeChangeError", () => {
   document.body.classList.remove("body-page-transition");
 });
 
-function MyApp({ Component, pageProps }) {
-  // console.log("Token")
-  // const messaging = firebase.messaging()
-  // messaging.requestPermission().then(()=>{
-  //   return messaging.getToken()
-  // }).then(token=>{
-  //   console.log('Token :', token)
-  // }).catch(()=>{
-  //   console.log('error')
-  // })
+function Loading(){
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  console.log(loading)
+  useEffect(()=>{
+    const handleStart = (url) => (url !== router.asPath) && setLoading(true);
+    const handleComplete = (url) => (url === router.asPath) && setTimeout(() =>{setLoading(false)},5000);
 
+    router.events.on('routeChangeStart', handleStart)
+    router.events.on('routeChangeComplete', handleComplete)
+    router.events.on('routeChangeError',  handleComplete)
+
+    return () => {
+      router.events.off('routeChangeStart', handleStart)
+      router.events.off('routeChangeComplete', handleComplete)
+      router.events.off('routeChangeError', handleComplete)
+    }
+  })
+  return loading && (
+    <div className='spinner-wrapper'>
+      <div className="spinner"></div>
+    </div>
+  )
+}
+function MyApp({ Component, pageProps }) {
   const Layout = Component.layout || (({ children }) => <>{children}</>);
   return (
-    <React.Fragment>
+    <>  
+      <Loading />    
+      <React.Fragment>
         <Head>
           <meta
             name="viewport"
@@ -73,14 +92,16 @@ function MyApp({ Component, pageProps }) {
           <title>Automation Tool</title>
           <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
         </Head>
-        <body>
-          <Layout>
-            <CookiesProvider>
-              <Component {...pageProps} />
-            </CookiesProvider>
-          </Layout>
-        </body>
-      </React.Fragment>
+          <body>
+            <Layout>
+              <CookiesProvider>
+                
+                <Component {...pageProps} />
+              </CookiesProvider>
+            </Layout>
+          </body>
+      </React.Fragment> 
+    </>
   )
 }
 
