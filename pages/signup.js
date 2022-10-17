@@ -39,22 +39,20 @@ function SignIn({ user_Department }){
     const [u_Designation, setDesignation] = useState([]);
     const [user_Designation, set_uDesignation] = useState([]);
 
-    useEffect(() =>{
-        async() =>{
-         
-            const designation = await axios.post(`${server}/api/user/user_designation`, { department: p_selected[0] });
-            const data = designation.data;
+    const handleSelect = async(data) => {
+        console.log("data");
+        setProject(data);
+        
+        const designation = await axios.post(`${server}/api/user/user_designation`, { department: data[0] });
+        const d_Designation = designation.data;
+        console.log(d_Designation);
 
-            const getDesignation = [];    
-            data.map((department)=>{
-              getDesignation.push( {'label': department.designation_name , 'value': department.designation_name} );
-            });
-            setDesignation(getDesignation);
-           
-            console.log("123");
-            console.log(u_Designation);
-        }
-    });
+        const getDesignation = [];    
+        d_Designation.map((department)=>{
+            getDesignation.push( {'label': department.designation_name , 'value': department.designation_name} );
+        });
+        setDesignation(getDesignation);
+    }
 
     const [startDate, setStartDate] = useState();
     const [phonenum, setphonenum] = useState()
@@ -217,15 +215,15 @@ function SignIn({ user_Department }){
                         options={u_Department}
                         // value={p_selected}
                         selectionLimit="1"
-                        onChange={setProject}
-                        onRemove={setProject}
+                        onChange={handleSelect}
+                        onRemove={handleSelect}
                         onSearch={function noRefCheck(){}}
-                        onSelect={setProject}
+                        onSelect={handleSelect}
                         placeholder="User Department"
                         showArrow={true}
                       />
 
-                      {/* <Multiselect
+                      <Multiselect
                         displayValue="value"
                         options={u_Designation}
                         value={user_Designation}
@@ -236,7 +234,7 @@ function SignIn({ user_Department }){
                         onSelect={set_uDesignation}
                         placeholder="User Designation"
                         showArrow={true}
-                      /> */}
+                      />
 
                             <div className="form-group">
                                 <label htmlFor="position" className='form-label label' >Position</label><br/>
