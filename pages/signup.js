@@ -7,6 +7,7 @@ import { server } from 'config';
 import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input'
 import { ToastContainer, toast } from 'react-toastify';
 import bcrypt from 'bcryptjs'
+import Multiselect from "multiselect-react-dropdown";
 
 export async function getServerSideProps(context){
 
@@ -20,7 +21,23 @@ function SignIn({ user_Department }){
     const { register, watch, handleSubmit, formState: { errors }, setValue, control } = useForm({mode: "onBlur"}); 
     const router = useRouter();
     
-    //const notify = () => toast("Wow so easy!");
+    const [u_Department, setDepartment] = useState([]);
+    useEffect(() =>{
+        const u_data = async() =>{
+      
+          const getDepartment = [];    
+          user_Department.map((department)=>{
+            getDepartment.push( {'label': department.department_name , 'value': department.department_name} );
+          });
+          setDepartment(getDepartment);
+        }
+        u_data();
+      },[]);
+
+    const [p_selected, setProject] = useState([]);
+
+      console.log(p_selected[0]);
+
 
 
     const [startDate, setStartDate] = useState();
@@ -175,6 +192,21 @@ function SignIn({ user_Department }){
                                         )
                                     })}
                                 </select>
+
+                      <Multiselect
+                        displayValue="value"
+                        options={u_Department}
+                        value={p_selected}
+                        selectionLimit="1"
+                        onChange={setProject}
+                        onRemove={setProject}
+                        onSearch={function noRefCheck(){}}
+                        onSelect={setProject}
+                        placeholder="User Department"
+                        showArrow={true}
+                      />
+
+
                                 <span className='icon-eyes'><IoMdArrowDropdown /></span>
                                 <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>
                             </div>

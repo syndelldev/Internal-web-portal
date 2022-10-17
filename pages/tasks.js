@@ -722,15 +722,13 @@ const updateComment = async(id, comment) =>{
                     <GridItem xs={12} sm={12} md={12}>
                     <div className="form-group" {...register('project_name')}>
                       
-                      <span>Project</span><span className="required">*</span>
+                    <span>Project</span><span className="required">*</span>
                       <Multiselect
                         displayValue="value"
                         options={project_list}
                         value={p_selected}
-                        // singleSelect={true}
                         selectionLimit="1"
                         onChange={setProject}
-                        // onKeyPressFn={function noRefCheck(){}}
                         onRemove={setProject}
                         onSearch={function noRefCheck(){}}
                         onSelect={setProject}
