@@ -1235,7 +1235,7 @@ const updateComment = async(id, comment) =>{
                                 <GridItem xs={12} sm={12} md={6}>
                                   <div className="form-group">
                                   <span>Task Language</span><span className="required">*</span>
-                                    <select id="Task_created_by" className="form-control signup-input" disabled={cookies.Role_id == "2"} name="task_language" value={uoption.task_language} onChange={handleChange} >
+                                    {/* <select id="Task_created_by" className="form-control signup-input" disabled={cookies.Role_id == "2"} name="task_language" value={uoption.task_language} onChange={handleChange} >
                                       <option value="" disabled selected>Select Language</option>
                                       {language.map((language)=>{
                                           return(
@@ -1243,8 +1243,8 @@ const updateComment = async(id, comment) =>{
                                           )
                                         }
                                       )}
-                                    </select>
-                                    <Multiselect
+                                    </select> */}
+                                  <Multiselect
                                     displayValue="value"
                                     options={u_Language}
                                     value={u_Language}
@@ -1256,9 +1256,9 @@ const updateComment = async(id, comment) =>{
                                     placeholder="User Designation"
                                     showArrow={true}
                                     selectedValues={u_Language}
-                                /><br />
+                                  /><br />
 
-                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                    {/* <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span> */}
                                   </div> 
                                 </GridItem>
                               </GridContainer><br/>
