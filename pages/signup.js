@@ -6,7 +6,8 @@ import DatePicker from "react-datepicker";
 import { server } from 'config';
 import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input'
 import { ToastContainer, toast } from 'react-toastify';
-import bcrypt from 'bcryptjs'
+import bcrypt from 'bcryptjs';
+import axios from "axios";
 import Multiselect from "multiselect-react-dropdown";
 
 export async function getServerSideProps(context){
@@ -22,6 +23,7 @@ function SignIn({ user_Department }){
     const router = useRouter();
     
     const [u_Department, setDepartment] = useState([]);
+    const [p_selected, setProject] = useState([]);
     useEffect(() =>{
         const u_data = async() =>{
       
@@ -34,14 +36,32 @@ function SignIn({ user_Department }){
         u_data();
       },[]);
 
-    const [p_selected, setProject] = useState([]);
+    const [u_Designation, setDesignation] = useState([]);
+    const [user_Designation, set_uDesignation] = useState([]);
 
-      console.log(p_selected[0]);
+    useEffect(() =>{
+        const u_data = async() =>{
+         
+            const designation = await axios.post(`${server}/api/user/user_designation`, { department: p_selected[0] });
+            const data = designation.data;
 
+            const getDepartment = [];    
+            data.map((department)=>{
+              getDepartment.push( {'label': department.designation_name , 'value': department.designation_name} );
+            });
+            setDesignation(getDepartment);
+           
+            console.log("123");
+            console.log(p_selected);
+        }
+        u_data();
+    },[]);
 
+    console.log("list");
+    console.log("list");
+    console.log(user_Designation[0]);
 
     const [startDate, setStartDate] = useState();
-    console.log(startDate)
     const [phonenum, setphonenum] = useState()
 
     //Password Hide & Show Toggle
@@ -193,6 +213,10 @@ function SignIn({ user_Department }){
                                     })}
                                 </select>
 
+                                <span className='icon-eyes'><IoMdArrowDropdown /></span>
+                                <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>
+                            </div>
+
                       <Multiselect
                         displayValue="value"
                         options={u_Department}
@@ -206,10 +230,18 @@ function SignIn({ user_Department }){
                         showArrow={true}
                       />
 
-
-                                <span className='icon-eyes'><IoMdArrowDropdown /></span>
-                                <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>
-                            </div>
+                      <Multiselect
+                        displayValue="value"
+                        options={u_Designation}
+                        value={user_Designation}
+                        selectionLimit="1"
+                        onChange={set_uDesignation}
+                        onRemove={set_uDesignation}
+                        onSearch={function noRefCheck(){}}
+                        onSelect={set_uDesignation}
+                        placeholder="User Designation"
+                        showArrow={true}
+                      />
 
                             <div className="form-group">
                                 <label htmlFor="position" className='form-label label' >Position</label><br/>

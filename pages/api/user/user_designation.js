@@ -5,11 +5,13 @@ const handler=nc();
 
 async function userDesignation(req,res) {
     
-    console.log(req.body);
+    console.log("userDesignation");
+    console.log(req.body.department);
+    console.log("userDesignation");
 
     try{
-        // let userDesignation = await executeQuery("SELECT * FROM `tbl_designation` where `designation_department`= ? order by `designation_department` ", [ req.body.department.value ]);
-        // res.status(200).json(userDepartment);
+        let userDesignation = await executeQuery("SELECT * FROM `tbl_designation` where `designation_department`= ? order by `designation_department` ", [ req.body.department.value ]);
+        res.status(200).json(userDesignation);
         console.log("user task");
         console.log(userDesignation)
     }
