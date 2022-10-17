@@ -202,15 +202,12 @@ function Dashboard( { project_details , User_name , allTask, userTask, language,
   useEffect(() =>{
     const u_data = async() =>{
   
-      const getUsername = [];
-  
-      console.log("123");
-      console.log(User_name);
-  
-      language.map((user)=>{
-        getUsername.push( {'label' :user.username, 'value' :user.username} );
+      const getLanguage = [];
+   
+      language.map((language)=>{
+        getLanguage.push( {'label' :language.language_name, 'value' :language.language_name} );
       });
-      setOptions(getUsername);
+      setAllLanguage(getLanguage);
     }
     u_data();
   },[]);
@@ -1248,7 +1245,7 @@ const updateComment = async(id, comment) =>{
                                   <span>Task Language</span><span className="required">*</span>
                                   <Multiselect
                                     displayValue="value"
-                                    options={u_Language}
+                                    options={all_Language}
                                     value={u_Language}
                                     selectionLimit="1"
                                     onChange={setLanguage}
@@ -1258,7 +1255,7 @@ const updateComment = async(id, comment) =>{
                                     placeholder="User Designation"
                                     showArrow={true}
                                     selectedValues={u_Language}
-                                  /><br />
+                                  />
 
                                   </div> 
                                 </GridItem>
