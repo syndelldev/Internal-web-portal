@@ -623,8 +623,8 @@ function Dashboard( { project_details, user_project, User_name } ) {
                         <CardHeader color="primary">
                           <GridContainer>
                             <GridItem>
-                              <h4 className={classes.cardTitleWhite}>Create Project</h4>
-                              <p className={classes.cardCategoryWhite}>Enter your new project details</p>
+                              <h4 className="Updatedetails">Create Project</h4>
+                              <p className="Updatedetails">Enter your new project details</p>
                             </GridItem>
                               <div className={classes.close}>
                                 <a onClick={close}>&times;</a>
@@ -989,7 +989,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
                             <span>{person[1]}</span>
                           </div>
                             {/* Edit popUp Start*/}
-                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} className="popupReact"  position="left">
+                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>Load more</span></div></a>} className="popupReact"  position="left">
                             {close => (
                               <div className="popup-align">
                                 <Card>
@@ -1215,7 +1215,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
                                 <GridContainer>
                                     <GridItem>
                                       <form>
-                                        <h5 className="projectPriority">Comments</h5>
+                                        <h5 className="project-comments">Comments</h5>
                                           <ReactQuill
                                           forwardedRef={quillRef}
                                             modules={modules}
@@ -1232,13 +1232,13 @@ function Dashboard( { project_details, user_project, User_name } ) {
                                     // console.log("comments");
                                     // console.log(comments);
                                       return(
-                                        <span>
-                                          <GridContainer>
-                                            <GridItem>
-                                              <span>{m.username}</span>
+                                        <span className="comment-box">
+                                          <GridContainer className="comment-box">
+                                            <GridItem className="comment-box"> 
+                                              <span className="name">{m.username}</span>
                                             </GridItem>
                                                 
-                                            <GridItem>
+                                            <GridItem className="comment-box">
                                             <span><p>{m.creation_time}</p></span>
                                             </GridItem>
                                           </GridContainer>
@@ -1364,7 +1364,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
                 return(
                   <tr key={project.project_id} onClick={()=>{toggle(project.project_id)}} className="expand_dropdown">
                     <td className="project-title-table">{project.project_title}</td>
-                    <td className="project-priority-table"><p className={project.project_priority}>{project.project_priority}</p></td>
+                    <td className="priority-data"><p className={project.project_priority}>{project.project_priority}</p></td>
                     <td className="project-priority-person">
                     {person.length>2 ? (
                         <span>
@@ -1375,7 +1375,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
                             <span>{person[1]}</span>
                           </div>
                             {/* Edit popUp Start*/}
-                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} position="left">
+                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>Load more</span></div></a>} position="left">
                             {close => (
                               <div className="popup-align">
                                 <Card>
@@ -1603,7 +1603,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
                                 <GridContainer>
                                     <GridItem>
                                       <form>
-                                        <h5 className="projectPriority">Comments</h5>
+                                        <h5 className="project-comments">Comments</h5>
                                           <ReactQuill
                                           forwardedRef={quillRef}
                                             modules={modules} 
@@ -1763,7 +1763,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
                             <span>{person[1]}</span>
                           </div>
                             {/* Edit popUp Start*/}
-                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} className="popupReact" position="left">
+                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>Load more</span></div></a>} className="popupReact" position="left">
                             {close => (
                               <div className="popup-align">
                                 <Card>
@@ -1990,7 +1990,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
                                 <GridContainer>
                                     <GridItem>
                                       <form>
-                                        <h5 className="projectPriority">Comments</h5>
+                                        <h5 className="project-comments">Comments</h5>
                                           <ReactQuill forwardedRef={quillRef} modules={modules} theme="snow" onChange={setValues} />
                                         <button className="btn btn-primary" onClick={()=> {sendMessage(project.project_id), close()} }>Save</button>
                                       </form>
@@ -1999,7 +1999,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
 
                                   {comments.map((m)=>{
                                       return(
-                                        <span>
+                                        <span className="comment-box">
                                           <GridContainer>
                                             <GridItem>
                                               <span>{m.username}</span>

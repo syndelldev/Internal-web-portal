@@ -408,7 +408,7 @@ useEffect(() =>{
                     return(
                       <tr key={project.project_id} className="expand_dropdown">
                         <td className="project-title-table">{project.project_title}</td>
-                        <td className="project-priority-table">{project.project_priority}</td>
+                        <td className="priority-data"><p className={project.project_priority}>{project.project_priority}</p></td>
                         <td className="project-priority-person">
                           {person.map((project_person) => {
                             return(
@@ -432,8 +432,8 @@ useEffect(() =>{
                                   <CardHeader color="primary">
                                     <GridContainer>
                                       <GridItem>
-                                        <h4 className={classes.cardTitleWhite}>Edit Project</h4>
-                                        <p className={classes.cardCategoryWhite}>Update your project details</p>
+                                        <h4 className="Updatedetails">Edit Project</h4>
+                                        <p className="Updatedetails">Update your project details</p>
                                       </GridItem>
                                       <div className={classes.close}>
                                         <a onClick={close}>&times;</a>
@@ -592,8 +592,8 @@ useEffect(() =>{
                                 
                                 <div hidden={cookies.Role_id == "2"}>
                                   <CardFooter>
-                                    <Button color="primary" onClick={()=> { updateProject(project.project_id); } }>Save</Button>
-                                    <Button className="button" onClick={() => { close(); }}> Cancel </Button>
+                                    <Button color="primary" onClick={()=> { updateProject(project.project_id); } } className="save-btn">Save</Button>
+                                    <Button className="save-btn" onClick={() => { close(); }}> Cancel </Button>
                                   </CardFooter>
                                 </div>
 

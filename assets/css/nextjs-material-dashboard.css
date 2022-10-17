@@ -253,7 +253,7 @@ footer ul li a:hover {
   border-radius: 8px 0 0 8px;
   text-align: center;
   top: 120px;
-  /* .badge-primary-background-color: #9c27b0; */
+  .badge-primary-background-color: #9c27b0;
 }
 
 .fixed-plugin .SocialMediaShareButton,
@@ -614,19 +614,97 @@ button.addproject{
 .makeStyles-cardTitleWhite-560,p.makeStyles-cardCategoryWhite-559{
   color: #fff!important;
 }
-
-  /* css added by Pradeep */
-  .main_task_title{
-    margin: 30px -15px 0;
+/* css added by Pradeep */
+.main_task_title {
+  margin: 30px -15px 0;
+}
+.quill strong img {
+  max-width: 100px;
+  max-height: 100px;
+  margin: 0 10px;
+}
+.btn-primary {
+  background-color: #00155c !important;
+  border: 1px solid #00155c !important;
+}
+.project-data .content .content-inner .time-main,
+.project-data .content .content-inner .comment-main {
+  height: 250px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  margin: 15px 0 15px 15px;
+  padding: 15px;
+  scrollbar-width: thin;
+  /* width: 100%; */
+  /* min-width: 450px; */
+}
+.content-inner {
+  display: flex;
+  width: 200%;
+}
+.content .content-inner .time-main,
+.content .content-inner .comment-main {
+  border-radius: 10px;
+  border: 1px solid #777777;
+  /* width: 100%; */
+  min-width: 400px;
+}
+.project-data .content .content-inner .name {
+  color: #00155c;
+}
+.project-data .content .content-inner .time-main::-webkit-scrollbar,
+.project-data .content .content-inner .comment-main::-webkit-scrollbar {
+  /* for debugging */
+  background-color: #16171c1f;
+  width: 10px;
+  height: 50px;
+  margin-right: 5px;
+}
+.project-data .content .content-inner .time-main::-webkit-scrollbar,
+.project-data .content .content-inner .comment-main::-webkit-scrollbar {
+  max-height: 50%;
+  height: 50%;
+}
+.time-main p,
+.comment-main p,
+.comment-main p .ql-editor p {
+  margin: 0;
+  font-weight: 500;
+}
+.time-main .MuiGrid-container .MuiGrid-item {
+  display: flex;
+}
+.time-main .MuiGrid-container .MuiGrid-item p {
+  margin-right: 20px;
+}
+.ql-editor {
+  padding: 12px 0 !important;
+}
+.ql-editor p {
+  margin: 0;
+  font-weight: 500;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-size: 16px;
+}
+.MuiGrid-container .model-update{
+  border: 1px solid #777777;
+  border-radius: 10px;
+  display: inline-flex;
+}
+@media (max-width: 767px) {
+  .content-inner {
+    display: unset !important;
+    width: auto !important;
   }
-  .quill strong img{
-    max-width: 100px;
-    max-height: 100px;
-    margin: 0 10px;
+  .content .content-inner .time-main, .content .content-inner .comment-main{
+    min-width: 0 !important;
+    margin: 15px 0 !important;
   }
-  .btn-primary{
-    background-color: #00155c!important;
-    border: 1px solid #00155c!important;
+}
+@media (max-width: 1265px) and (min-width: 768px) {
+  .content .content-inner .time-main,
+  .content .content-inner .comment-main {
+    min-width: 330px !important;
   }
-  
-  /* end added css by Pradeep */
+}
+/* end added css by Pradeep */

@@ -135,7 +135,7 @@ function SignIn({ user_Department }){
                             </div>
                             <div className="form-group">
                                 <label htmlFor="email" className='form-label label' >Email</label>
-                                <input type="text" className="form-control signup-input" name="email" placeholder="Email@syndelltech.in" {...register('email', { required: 'Please enter your email', pattern: {value: /^[a-zA-Z0-9]+@+syndelltech+.+[A-z]$/ , message: 'Please enter a valid email ex:email@syndelltech.in',},} )} />
+                                <input type="text" className="form-control signup-input" name="email" placeholder="Email@syndelltech.in" {...register('email', { required: 'Please enter your email', pattern: {value: /^[a-zA-Z0-9+_.-]+@+syndelltech+.+[A-z]$/ , message: 'Please enter a valid email ex:email@syndelltech.in',},} )} />
                                 <div className="error-msg">{errors.email && <p>{errors.email.message}</p>}</div>
                             </div>
                             <div className="form-group">

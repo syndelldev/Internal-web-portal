@@ -135,7 +135,12 @@ span.copyright a {
   color: white;
 
 }
-
+.MuiGrid-root.jss577.MuiGrid-item h4{
+  color: #fff;
+}
+p.Updatedetails,h4.Updatedetails {
+  margin: 0px;
+}
 .buttonpopup5{
   background-color: #ddd;
   color:black;
@@ -267,7 +272,7 @@ a.icon-edit-delete {
     left:100% !important;
     height:100% !important;
     transition: transform .2s ease-in-out !important;*/
-    transform: translateX(76%);
+    transform: translateX(70%);
 }
 td.project-edit-table a {
   color: #000;
@@ -286,8 +291,17 @@ td.project-edit-table a {
   font-weight: 900;
 }
 td.project-edit-table {
+display: flex;
   transform: translate(50%,60%);
   float: left;
+}
+.save-btn{
+  box-shadow: 0 2px 2px 0 rgb(0 21 92 / 14%), 0 3px 1px -2px rgb(0 21 92 / 20%), 0 1px 5px 0 rgb(0 21 92 / 12%);
+  background-color: #00155c;
+}
+.save-btn span.MuiButton-label {
+ 
+  color: #fff!important;
 }
 /* .icon-edit-delete{
   display: flex;
@@ -656,6 +670,14 @@ h5.project-comments{
   color:#00155c;
   font-weight: 600;
 }
+span.comment-box {
+  box-shadow: rgb(0 21 92 / 62%) 0px 3px 8px;
+  border-radius: 20px;
+  border: 2px solid #000;
+  display: flex;
+  padding: 10px;
+  margin-top: 10px;
+}
 p.save-btn{
   text-align: center;
   margin-top: 20px;
@@ -765,4 +787,6 @@ p.save-btn{
   h4.projectTitle{
 font-size: 17px!important;
   }}
+
+  
 

@@ -900,11 +900,12 @@ const updateComment = async(id, comment) =>{
 </GridContainer>
 </div>
 
-<div className="Project-title">Tasks</div>
+
 
 <GridContainer>
 
   <div className="main_task_title">
+  <div className="Project-title">Tasks</div>
     <GridContainer>
       <GridItem>
         <button className="bttn-design" onClick={()=>{taskToDo("task_toDo") ,  settodo_title(true), taskOnHold("taskOn_hold") , setonhold_title(true), taskRunning("task_Running") , setrunning_title(true), taskCompleted("task_completed") , setcompleted_title(true) }}>Expand All</button>
@@ -1025,7 +1026,7 @@ const updateComment = async(id, comment) =>{
     <Card>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-          <div className="taskToDo" onClick={()=> { taskToDo("task_toDo") , closeTaskToDo("task_toDo"), settodo_title(!todo_title) }}>Task to do {todo_title ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
+          <div className="task_title" onClick={()=> { taskToDo("task_toDo") , closeTaskToDo("task_toDo"), settodo_title(!todo_title) }}>Task to do {todo_title ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
         </GridItem>
       </GridContainer>
     </Card>
@@ -1522,7 +1523,7 @@ const updateComment = async(id, comment) =>{
     <Card>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-          <div className="taskOn_hold" onClick={()=> { taskOnHold("taskOn_hold") , closeTaskOnHold("taskOn_hold"), setonhold_title(!onhold_title) }}>Task on hold {onhold_title ? <FaArrowUp/>:<FaArrowDown/>}</div>
+          <div className="taskOn_hold task_title" onClick={()=> { taskOnHold("taskOn_hold") , closeTaskOnHold("taskOn_hold"), setonhold_title(!onhold_title) }}>Task on hold {onhold_title ? <FaArrowUp/>:<FaArrowDown/>}</div>
         </GridItem>
       </GridContainer>
     </Card>
@@ -2019,7 +2020,7 @@ const updateComment = async(id, comment) =>{
     <Card>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-          <div className="taskRunning" onClick={()=> { taskRunning("task_Running") , closeTaskRunning("task_Running"),setrunning_title(!running_title) }}>Task Running {running_title ? <FaArrowUp/>:<FaArrowDown/>} </div>
+          <div className="taskRunning task_title" onClick={()=> { taskRunning("task_Running") , closeTaskRunning("task_Running"),setrunning_title(!running_title) }}>Task Running {running_title ? <FaArrowUp/>:<FaArrowDown/>} </div>
         </GridItem>
       </GridContainer>
     </Card>
@@ -2517,7 +2518,7 @@ const updateComment = async(id, comment) =>{
     <Card>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-          <div className="taskCompleted" onClick={()=> { taskCompleted("task_completed") , closeTaskCompleted("task_completed") , setcompleted_title(!completed_title)}}>Task completed {completed_title ? <FaArrowUp/>:<FaArrowDown/>} </div>
+          <div className="taskCompleted task_title" onClick={()=> { taskCompleted("task_completed") , closeTaskCompleted("task_completed") , setcompleted_title(!completed_title)}}>Task completed {completed_title ? <FaArrowUp/>:<FaArrowDown/>} </div>
         </GridItem>
       </GridContainer>
     </Card>
