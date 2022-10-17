@@ -653,7 +653,8 @@ button.addproject{
   color: #00155c;
 }
 .project-data .content .content-inner .time-main::-webkit-scrollbar,
-.project-data .content .content-inner .comment-main::-webkit-scrollbar {
+.project-data .content .content-inner .comment-main::-webkit-scrollbar,
+.form-comment-section::-webkit-scrollbar {
   /* for debugging */
   background-color: #16171c1f;
   width: 10px;
@@ -661,9 +662,11 @@ button.addproject{
   margin-right: 5px;
 }
 .project-data .content .content-inner .time-main::-webkit-scrollbar,
-.project-data .content .content-inner .comment-main::-webkit-scrollbar {
+.project-data .content .content-inner .comment-main::-webkit-scrollbar,
+.form-comment-section::-webkit-scrollbar {
   max-height: 50%;
   height: 50%;
+  border-radius: 10px;
 }
 .time-main p,
 .comment-main p,
@@ -686,17 +689,36 @@ button.addproject{
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   font-size: 16px;
 }
-.MuiGrid-container .model-update{
+/* .MuiGrid-container .model-update {
   border: 1px solid #777777;
   border-radius: 10px;
   display: inline-flex;
+} */
+.form-comment-section {
+  border: 1px solid #ced4da;
+  padding: 10px;
+  border-radius: 10px;
+  height: 200px;
+  overflow-y: auto;
+}
+.form-comment-section .fcs-name {
+  font-weight: 700;
+  font-size: 16px;
+  color: #00155c;
+}
+.form-time {
+  border: 1px solid #ced4da;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 30px;
 }
 @media (max-width: 767px) {
   .content-inner {
     display: unset !important;
     width: auto !important;
   }
-  .content .content-inner .time-main, .content .content-inner .comment-main{
+  .content .content-inner .time-main,
+  .content .content-inner .comment-main {
     min-width: 0 !important;
     margin: 15px 0 !important;
   }
