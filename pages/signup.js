@@ -40,26 +40,21 @@ function SignIn({ user_Department }){
     const [user_Designation, set_uDesignation] = useState([]);
 
     useEffect(() =>{
-        const u_data = async() =>{
+        async() =>{
          
             const designation = await axios.post(`${server}/api/user/user_designation`, { department: p_selected[0] });
             const data = designation.data;
 
-            const getDepartment = [];    
+            const getDesignation = [];    
             data.map((department)=>{
-              getDepartment.push( {'label': department.designation_name , 'value': department.designation_name} );
+              getDesignation.push( {'label': department.designation_name , 'value': department.designation_name} );
             });
-            setDesignation(getDepartment);
+            setDesignation(getDesignation);
            
             console.log("123");
-            console.log(p_selected);
+            console.log(u_Designation);
         }
-        u_data();
-    },[]);
-
-    console.log("list");
-    console.log("list");
-    console.log(user_Designation[0]);
+    });
 
     const [startDate, setStartDate] = useState();
     const [phonenum, setphonenum] = useState()
@@ -220,7 +215,7 @@ function SignIn({ user_Department }){
                       <Multiselect
                         displayValue="value"
                         options={u_Department}
-                        value={p_selected}
+                        // value={p_selected}
                         selectionLimit="1"
                         onChange={setProject}
                         onRemove={setProject}
@@ -230,7 +225,7 @@ function SignIn({ user_Department }){
                         showArrow={true}
                       />
 
-                      <Multiselect
+                      {/* <Multiselect
                         displayValue="value"
                         options={u_Designation}
                         value={user_Designation}
@@ -241,7 +236,7 @@ function SignIn({ user_Department }){
                         onSelect={set_uDesignation}
                         placeholder="User Designation"
                         showArrow={true}
-                      />
+                      /> */}
 
                             <div className="form-group">
                                 <label htmlFor="position" className='form-label label' >Position</label><br/>
