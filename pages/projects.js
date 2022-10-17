@@ -3108,7 +3108,7 @@ function Dashboard({ User_name }) {
                                               // console.log(comments);
                                               return (
                                                 <span className="single-comment">
-                                                  <GridContainer style={{ justifyContent: 'space-between' }}>
+                                                  <GridContainer style={{ justifyContent: 'space-between'  }}>
                                                     <GridItem>
                                                       <span className="fcs-name">{m.username}</span>
                                                     </GridItem>
