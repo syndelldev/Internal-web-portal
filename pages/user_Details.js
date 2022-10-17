@@ -32,6 +32,7 @@ import { useForm, Controller  } from 'react-hook-form';
 import PhoneInput from 'react-phone-number-input'
 import bcrypt from 'bcryptjs'
 import Multiselect from "multiselect-react-dropdown";
+import { useCookies } from "react-cookie";
 
 export async function getServerSideProps(context){
   const res = await fetch(`${server}/api/admin`)
@@ -45,11 +46,11 @@ export async function getServerSideProps(context){
 
 function UserDetail({UserDetail, user_Department}) {
   // console.log(UserDetail);
-  const { register,  watch, handleSubmit, formState: { errors }, setValue, control } = useForm({mode: "onBlur"}); 
+  const { register,  watch, handleSubmit, formState: { errors }, setValue, control } = useForm({mode: "onBlur"});
+  const [cookies, setCookie] = useCookies(['name']);
 
   //Status Active
   // const [value, setvalue] = useState('Active');
-
   
   //Delete User
   const deleteUser = async(id, status) =>{
@@ -63,10 +64,7 @@ function UserDetail({UserDetail, user_Department}) {
     }
 
     let delUser = await axios.put(`${server}/api/admin/${id}`,{status:result})
-    router.push("/user_Details");
-  
-    //console.log(delUser);
-    
+    router.push(`${server}/user_Details`);
   }
 
   // const onSubmit = async(data) =>{
@@ -75,16 +73,20 @@ function UserDetail({UserDetail, user_Department}) {
   const router = useRouter();
   const useStyles = makeStyles(styles);
   const classes = useStyles();
-  
-  //Update API Start
 
+  if(cookies.Role_id==2 || cookies.Role_id==""){
+    router.push(`${server}/dashboard`);
+  }else if(cookies == ""){
+    router.push(`${server}/login`);
+  }
+
+  //Update API Start
   const [userdata, setuserdata] = useState({
     role_id:"",
     username: "",
     password: "",
     email: "",
     mobile_no: "",
-    //dob: "",
     department: "",
     position: "",
     status: "",
@@ -130,11 +132,47 @@ function UserDetail({UserDetail, user_Department}) {
   const [pwd, setPwd] = useState('');
   const [isRevealPwd, setIsRevealPwd] = useState(false);
 
+    // store department value
+    const [u_Department, setDepartment] = useState([]);
+    // get selected department
+    const [p_selected, setProject] = useState([]);
+    useEffect(() =>{
+        const u_data = async() =>{
+      
+          const getDepartment = [];    
+          user_Department.map((department)=>{
+            getDepartment.push( {'label': department.department_name , 'value': department.department_name} );
+          });
+          setDepartment(getDepartment);
+        }
+        u_data();
+      },[]);
+  
+    // get user designation options from selected department
+    const [u_Designation, setDesignation] = useState([]);
+    // set designation for user
+    const [user_Designation, set_uDesignation] = useState([]);
+  
+    // set department and get designation options from selected dropdown
+    const handleSelect = async(data) => {
+        setProject(data);
+        // fetch designation from selected department
+        const designation = await axios.post(`${server}/api/user/user_designation`, { department: data });
+        const d_Designation = designation.data;
+        console.log(d_Designation);
+  
+        const getDesignation = [];    
+        d_Designation.map((department)=>{
+            getDesignation.push( {'label': department.designation_name , 'value': department.designation_name} );
+        });
+        setDesignation(getDesignation);
+    }
+
   //Update User API
   const toastId = React.useRef(null);
   const UpdateUser = async (id) =>{
 
-    if( userdata.username == "" || userdata.password == "" || userdata.email == "" || userdata.mobile_no == "" || userdata.department == "" || userdata.position == "" || userdata.status == "" || userdata.role == "" ){
+    if( userdata.username == "" || userdata.password == "" || userdata.email == "" || userdata.mobile_no == "" || p_selected == "" || user_Designation == "" || userdata.status == "" || userdata.role == "" ){
       if(! toast.isActive(toastId.current)){
         toastId.current = toast.error('Please fill all the required fields', {
             position: "top-right",
@@ -148,7 +186,7 @@ function UserDetail({UserDetail, user_Department}) {
     else{
       // let data = await axios.put(`${server}/api/admin/${id}`, userdata);
       let data = await axios.put(`${server}/api/admin/${id}`, {
-        role_id:role_id_type , username:userdata.username, password:userdata.password, email:userdata.email, mobile_no:userdata.mobile_no, department:userdata.department, position:userdata.position, status:userdata.status, role:userdata.role
+        role_id:role_id_type , username:userdata.username, password:userdata.password, email:userdata.email, mobile_no:userdata.mobile_no, department:p_selected, position:user_Designation, status:userdata.status, role:userdata.role
       });
       console.log(data)
       console.log(userdata)
@@ -167,53 +205,20 @@ function UserDetail({UserDetail, user_Department}) {
   }
   //Update API End
 
-  // store department value
-  const [u_Department, setDepartment] = useState([]);
-  // get selected department
-  const [p_selected, setProject] = useState([]);
-  useEffect(() =>{
-      const u_data = async() =>{
-    
-        const getDepartment = [];    
-        user_Department.map((department)=>{
-          getDepartment.push( {'label': department.department_name , 'value': department.department_name} );
-        });
-        setDepartment(getDepartment);
-      }
-      u_data();
-    },[]);
-
-  // get user designation options from selected department
-  const [u_Designation, setDesignation] = useState([]);
-  // set designation for user
-  const [user_Designation, set_uDesignation] = useState([]);
-
-  // set department and get designation options from selected dropdown
-  const handleSelect = async(data) => {
-      setProject(data);
-      // fetch designation from selected department
-      const designation = await axios.post(`${server}/api/user/user_designation`, { department: data });
-      const d_Designation = designation.data;
-      console.log(d_Designation);
-
-      const getDesignation = [];    
-      d_Designation.map((department)=>{
-          getDesignation.push( {'label': department.designation_name , 'value': department.designation_name} );
-      });
-      setDesignation(getDesignation);
-  }
-
-
   //Add User API Start
   const [phonenum, setphonenum] = useState()
   const AddUser = async (result) =>{
     console.log(result);
 
     const hashedPassword = bcrypt.hashSync(result.password, 10)
-    console.log(hashedPassword)
+    console.log(hashedPassword);
+    var department = p_selected[0].value;
+    var designation = user_Designation[0].value;
+    console.log("result");
+    console.log(department);
 
     let addUser = await axios.post(`${server}/api/admin/`, {
-      role_id:result.role_id, username:result.name, password:hashedPassword, email:result.email, PhoneNum:result.PhoneNum, /*DOB:startDate,*/ department:result.department, position:result.position, status:result.status, role:result.role 
+      role_id:result.role_id, username:result.name, password:hashedPassword, email:result.email, PhoneNum:result.PhoneNum, department:department, position:designation, status:result.status, role:result.role 
     })
 
     if(!toast.isActive(toastId.current)) {
@@ -322,17 +327,6 @@ function UserDetail({UserDetail, user_Department}) {
                                     showArrow={true}
                                 />
 
-                                  {/* <select name="Department" id="Department" className="form-control signup-input" {...register('department', {required:true ,message:'Please select atleast one option', })}>
-                                    <option value="" disabled selected>Select Your Department...</option>
-                                    <option value="HR">HR</option>
-                                    <option value="UI & UX">UI & UX</option>
-                                    <option value="Web Developer">Web Developer</option>
-                                    <option value="Content Writer">Content Writer</option>
-                                    <option value="Project Manager">Project Manager</option>
-                                    <option value="Mobile App Developer">Mobile App Developer</option>
-                                    <option value="SEO">SEO</option>
-                                  </select> */}
-                                  {/* <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span> */}
                                   <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>
                                 </div> 
                               </GridItem>
@@ -340,8 +334,7 @@ function UserDetail({UserDetail, user_Department}) {
                             
                             <GridContainer>
                               <GridItem xs={12} sm={12} md={12}>
-                                {/* <div className="form-group"> */}
-                                  <div>
+                                <div className="form-group">
                                 <Multiselect
                                     displayValue="value"
                                     options={u_Designation}
@@ -355,24 +348,6 @@ function UserDetail({UserDetail, user_Department}) {
                                     showArrow={true}
                                 />
 
-                                  {/* <select name="position" id="position" className="form-control signup-input" {...register('position', {required: "Please enter your department" ,message:'Please select atleast one option', })}>
-                                    <option value="" disabled selected>Select Your Position</option>
-                                    <option value="Jr. HR">Jr. HR</option>
-                                    <option value="Jr. UI & UX">Jr. UI & UX</option>
-                                    <option value="Jr. Web Development">Jr. Web Developer</option>
-                                    <option value="Jr. Content Writer">Jr. Content Writer</option>
-                                    <option value="Jr. Project Manager">Jr. Project Manager</option>
-                                    <option value="Jr. Mobile App Developer">Jr. Mobile App Developer</option>
-                                    <option value="Jr. SEO">Jr. SEO</option>
-                                    <option value="Sr. HR">Sr. HR</option>
-                                    <option value="Sr. UI & UX">Sr. UI & UX</option>
-                                    <option value="Sr. Web Developer">Sr. Web Developer</option>
-                                    <option value="Sr. Content Writer">Sr. Content Writer</option>
-                                    <option value="Sr. Project Manager">Sr. Project Manager</option>
-                                    <option value="Sr. Mobile App Developer">Sr. Mobile App Developer</option>
-                                    <option value="Sr. SEO">Sr. SEO</option>
-                                  </select> */}
-                                  {/* <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span> */}
                                   <div className="error-msg">{errors.position && <p>{errors.position.message}</p>}</div>
                                 </div>
                               </GridItem>
@@ -404,7 +379,6 @@ function UserDetail({UserDetail, user_Department}) {
                                 </div> 
                               </GridItem>
                             </GridContainer><br/>
-
                           </CardBody>
 
                           <CardFooter>
