@@ -194,19 +194,30 @@ function Dashboard( { project_details , User_name , allTask, userTask, language,
   const projectName = (project).split(",");
   // console.log(projectName);
 
-    selectedProject.push({'label' :projectName[0] , 'value' : projectName[0]});
-  // console.log(selectedProject[0]);
-
-  // const project_Name = [];
-  // project_Name.push(selectedProject[0]);
+  selectedProject.push({'label' :projectName[0] , 'value' : projectName[0]});
 
   const [updateSelected, setUpdateSelected] = React.useState([]);
+  const [all_Language, setAllLanguage] = useState([]);
+
+  useEffect(() =>{
+    const u_data = async() =>{
+  
+      const getUsername = [];
+  
+      console.log("123");
+      console.log(User_name);
+  
+      language.map((user)=>{
+        getUsername.push( {'label' :user.username, 'value' :user.username} );
+      });
+      setOptions(getUsername);
+    }
+    u_data();
+  },[]);
+  
   const [u_Language, setLanguage] = useState([]);
 
-
   const projectId = async(id) =>{
-    // console.log('update project id');
-    // console.log(id);
     var comment = await axios.post(`${server}/api/comment/userComments`, { task_id: id });
     setcomments(comment.data);
 
@@ -1235,15 +1246,6 @@ const updateComment = async(id, comment) =>{
                                 <GridItem xs={12} sm={12} md={6}>
                                   <div className="form-group">
                                   <span>Task Language</span><span className="required">*</span>
-                                    {/* <select id="Task_created_by" className="form-control signup-input" disabled={cookies.Role_id == "2"} name="task_language" value={uoption.task_language} onChange={handleChange} >
-                                      <option value="" disabled selected>Select Language</option>
-                                      {language.map((language)=>{
-                                          return(
-                                            <option value={`${language.language_name}`}>{language.language_name}</option>
-                                          )
-                                        }
-                                      )}
-                                    </select> */}
                                   <Multiselect
                                     displayValue="value"
                                     options={u_Language}
@@ -1258,7 +1260,6 @@ const updateComment = async(id, comment) =>{
                                     selectedValues={u_Language}
                                   /><br />
 
-                                    {/* <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span> */}
                                   </div> 
                                 </GridItem>
                               </GridContainer><br/>
