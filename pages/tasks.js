@@ -1244,6 +1244,20 @@ const updateComment = async(id, comment) =>{
                                         }
                                       )}
                                     </select>
+                                    <Multiselect
+                                    displayValue="value"
+                                    options={u_Language}
+                                    value={u_Language}
+                                    selectionLimit="1"
+                                    onChange={setLanguage}
+                                    onRemove={setLanguage}
+                                    onSearch={function noRefCheck(){}}
+                                    onSelect={setLanguage}
+                                    placeholder="User Designation"
+                                    showArrow={true}
+                                    selectedValues={u_Language}
+                                /><br />
+
                                     <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                                   </div> 
                                 </GridItem>
