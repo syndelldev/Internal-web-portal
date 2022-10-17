@@ -40,10 +40,9 @@ function SignIn({ user_Department }){
     const [user_Designation, set_uDesignation] = useState([]);
 
     const handleSelect = async(data) => {
-        console.log("data");
+
         setProject(data);
-        
-        const designation = await axios.post(`${server}/api/user/user_designation`, { department: data[0] });
+        const designation = await axios.post(`${server}/api/user/user_designation`, { department: data });
         const d_Designation = designation.data;
         console.log(d_Designation);
 
@@ -71,8 +70,9 @@ function SignIn({ user_Department }){
     //API call
     const onSubmit= async(result) =>{
 
-        const hashedPassword = bcrypt.hashSync(result.password, 10)
-        console.log(hashedPassword)
+        const hashedPassword = bcrypt.hashSync(result.password, 10);
+        console.log("department");
+        console.log(p_selected);
 
         const res = await fetch(`${server}/api/admin/signin/`,{
             method: "POST",
@@ -194,69 +194,40 @@ function SignIn({ user_Department }){
 
                             <div className="form-group">
                                 <label htmlFor="Department" className='form-label label' >Department</label><br/>
-                                {/*<input type="text" className="form-control signup-input" name="department" {...register('department',  { required: "Please enter your department", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })}  />
-                                <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>*/}
-                                
-                                <select name="Department" id="Department" className="form-control signup-input" {...register('department', {required: "Please enter your department" ,message:'Please select atleast one option', })}>
-                                    <option value="" disabled selected>Select Your Department</option>
-                                    {user_Department.map((department)=>{
-                                        return(
-                                            <option value={department.department_name}>{department.department_name}</option>
-                                        )
-                                    })}
-                                </select>
 
+                                <Multiselect
+                                    displayValue="value"
+                                    options={u_Department}
+                                    value={p_selected}
+                                    selectionLimit="1"
+                                    onChange={handleSelect}
+                                    onRemove={handleSelect}
+                                    onSearch={function noRefCheck(){}}
+                                    onSelect={handleSelect}
+                                    placeholder="Select User Department"
+                                    showArrow={true}
+                                /><br />
+                                
                                 <span className='icon-eyes'><IoMdArrowDropdown /></span>
                                 <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>
                             </div>
 
-                      <Multiselect
-                        displayValue="value"
-                        options={u_Department}
-                        // value={p_selected}
-                        selectionLimit="1"
-                        onChange={handleSelect}
-                        onRemove={handleSelect}
-                        onSearch={function noRefCheck(){}}
-                        onSelect={handleSelect}
-                        placeholder="User Department"
-                        showArrow={true}
-                      />
-
-                      <Multiselect
-                        displayValue="value"
-                        options={u_Designation}
-                        value={user_Designation}
-                        selectionLimit="1"
-                        onChange={set_uDesignation}
-                        onRemove={set_uDesignation}
-                        onSearch={function noRefCheck(){}}
-                        onSelect={set_uDesignation}
-                        placeholder="User Designation"
-                        showArrow={true}
-                      />
-
                             <div className="form-group">
                                 <label htmlFor="position" className='form-label label' >Position</label><br/>
-                                <select name="position" id="position" className="form-control signup-input" {...register('position', {required: "Please enter your department" ,message:'Please select atleast one option', })}>
-                                    <option value="">Select Your Position</option>
-                                    <option value="Junior HR">Junior HR</option>
-                                    <option value="Junior UI & UX">Junior UI & UX</option>
-                                    <option value="Junior Web development">Junior Web development</option>
-                                    <option value="Junior Content writer">Junior Content writer</option>
-                                    <option value="Junior Project manager">Junior Project manager</option>
-                                    <option value="Junior Mobile App developer">Junior Mobile App developer</option>
-                                    <option value="Junior SEO">Junior SEO</option>
-                                    <option value="Junior Tester">Junior Tester</option>
-                                    <option value="Senior HR">Senior HR</option>
-                                    <option value="Senior UI & UX">Senior UI & UX</option>
-                                    <option value="Senior Web development">Senior Web development</option>
-                                    <option value="Senior Content writer">Senior Content writer</option>
-                                    <option value="Senior Project manager">Senior Project manager</option>
-                                    <option value="Senior Mobile App developer">Senior Mobile App developer</option>
-                                    <option value="Senior SEO">Senior SEO</option>
-                                    <option value="Senior Tester">Senior Tester</option>
-                                </select>
+                                
+                                <Multiselect
+                                    displayValue="value"
+                                    options={u_Designation}
+                                    value={user_Designation}
+                                    selectionLimit="1"
+                                    onChange={set_uDesignation}
+                                    onRemove={set_uDesignation}
+                                    onSearch={function noRefCheck(){}}
+                                    onSelect={set_uDesignation}
+                                    placeholder="User Designation"
+                                    showArrow={true}
+                                /><br />
+
                                 <span className='icon-eyes'><IoMdArrowDropdown /></span>
                                 <div className="error-msg">{errors.position && <p>{errors.position.message}</p>}</div>
                             </div>
