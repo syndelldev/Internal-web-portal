@@ -201,6 +201,8 @@ function Dashboard( { project_details , User_name , allTask, userTask, language,
   // project_Name.push(selectedProject[0]);
 
   const [updateSelected, setUpdateSelected] = React.useState([]);
+  const [u_Language, setLanguage] = useState([]);
+
 
   const projectId = async(id) =>{
     // console.log('update project id');
@@ -213,21 +215,25 @@ function Dashboard( { project_details , User_name , allTask, userTask, language,
     console.log(update_data[0]);
 
     const udata = update_data[0];
-
     const selectedMember = (udata.task_person).split(",");
 
     const getAllname = [];
-
     selectedMember.map((user)=>{
       getAllname.push( {'label' :user, 'value' :user} );
     });
 
+    const getLanguage = [];
+    getLanguage.push( {'label' :udata.task_language, 'value' :udata.task_language} );
+
+    setLanguage(getLanguage);
     setUpdateSelected(getAllname);
     setUpdate(udata);
     setStartDate(new Date(udata.task_start));
     setEndDate(new Date(udata.task_deadline));
 
     }
+    console.log("language");
+    console.log(u_Language);
 
     const [p_selected, setProject] = useState([]);
     const [select_updateProject, setUpdateProject] = useState([]);
@@ -692,7 +698,7 @@ const updateComment = async(id, comment) =>{
 
           <Popup trigger={<div hidden={cookies.Role_id == "2"}><button className="bttn-design">Add Task</button></div>}  className="popupReact"  modal>
 
-          {close => (
+    {close => (
       <div>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
