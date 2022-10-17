@@ -31,16 +31,19 @@ import { ToastContainer, toast } from 'react-toastify';
 import { useForm, Controller  } from 'react-hook-form';
 import PhoneInput from 'react-phone-number-input'
 import bcrypt from 'bcryptjs'
+import Multiselect from "multiselect-react-dropdown";
 
 export async function getServerSideProps(context){
   const res = await fetch(`${server}/api/admin`)
   const UserDetail = await res.json()
   //console.log(UserDetail);
+  const response = await fetch(`${server}/api/user/user_department`);
+  const user_Department = await response.json();
 
-  return{ props: {UserDetail} }
+  return{ props: {UserDetail, user_Department} }
 } 
 
-function UserDetail({UserDetail}) {
+function UserDetail({UserDetail, user_Department}) {
   // console.log(UserDetail);
   const { register,  watch, handleSubmit, formState: { errors }, setValue, control } = useForm({mode: "onBlur"}); 
 
@@ -164,6 +167,43 @@ function UserDetail({UserDetail}) {
   }
   //Update API End
 
+  // store department value
+  const [u_Department, setDepartment] = useState([]);
+  // get selected department
+  const [p_selected, setProject] = useState([]);
+  useEffect(() =>{
+      const u_data = async() =>{
+    
+        const getDepartment = [];    
+        user_Department.map((department)=>{
+          getDepartment.push( {'label': department.department_name , 'value': department.department_name} );
+        });
+        setDepartment(getDepartment);
+      }
+      u_data();
+    },[]);
+
+  // get user designation options from selected department
+  const [u_Designation, setDesignation] = useState([]);
+  // set designation for user
+  const [user_Designation, set_uDesignation] = useState([]);
+
+  // set department and get designation options from selected dropdown
+  const handleSelect = async(data) => {
+      setProject(data);
+      // fetch designation from selected department
+      const designation = await axios.post(`${server}/api/user/user_designation`, { department: data });
+      const d_Designation = designation.data;
+      console.log(d_Designation);
+
+      const getDesignation = [];    
+      d_Designation.map((department)=>{
+          getDesignation.push( {'label': department.designation_name , 'value': department.designation_name} );
+      });
+      setDesignation(getDesignation);
+  }
+
+
   //Add User API Start
   const [phonenum, setphonenum] = useState()
   const AddUser = async (result) =>{
@@ -175,13 +215,7 @@ function UserDetail({UserDetail}) {
     let addUser = await axios.post(`${server}/api/admin/`, {
       role_id:result.role_id, username:result.name, password:hashedPassword, email:result.email, PhoneNum:result.PhoneNum, /*DOB:startDate,*/ department:result.department, position:result.position, status:result.status, role:result.role 
     })
-    console.log(addUser)
-    // if(addUser){
-    //   alert("sucess")
-    // }
-    // else{
-    //   alert("error")
-    // }
+
     if(!toast.isActive(toastId.current)) {
       toastId.current = toast.success('User Created Successfully ! 🎉', {
           position: "top-right",
@@ -275,7 +309,20 @@ function UserDetail({UserDetail}) {
                             <GridContainer>
                               <GridItem xs={12} sm={12} md={12}>
                                 <div className="form-group">
-                                  <select name="Department" id="Department" className="form-control signup-input" {...register('department', {required:true ,message:'Please select atleast one option', })}>
+                                <Multiselect
+                                    displayValue="value"
+                                    options={u_Department}
+                                    value={p_selected}
+                                    selectionLimit="1"
+                                    onChange={handleSelect}
+                                    onRemove={handleSelect}
+                                    onSearch={function noRefCheck(){}}
+                                    onSelect={handleSelect}
+                                    placeholder="Select User Department"
+                                    showArrow={true}
+                                />
+
+                                  {/* <select name="Department" id="Department" className="form-control signup-input" {...register('department', {required:true ,message:'Please select atleast one option', })}>
                                     <option value="" disabled selected>Select Your Department...</option>
                                     <option value="HR">HR</option>
                                     <option value="UI & UX">UI & UX</option>
@@ -284,8 +331,8 @@ function UserDetail({UserDetail}) {
                                     <option value="Project Manager">Project Manager</option>
                                     <option value="Mobile App Developer">Mobile App Developer</option>
                                     <option value="SEO">SEO</option>
-                                  </select>
-                                  <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                  </select> */}
+                                  {/* <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span> */}
                                   <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>
                                 </div> 
                               </GridItem>
@@ -293,8 +340,22 @@ function UserDetail({UserDetail}) {
                             
                             <GridContainer>
                               <GridItem xs={12} sm={12} md={12}>
-                                <div className="form-group">
-                                  <select name="position" id="position" className="form-control signup-input" {...register('position', {required: "Please enter your department" ,message:'Please select atleast one option', })}>
+                                {/* <div className="form-group"> */}
+                                  <div>
+                                <Multiselect
+                                    displayValue="value"
+                                    options={u_Designation}
+                                    value={user_Designation}
+                                    selectionLimit="1"
+                                    onChange={set_uDesignation}
+                                    onRemove={set_uDesignation}
+                                    onSearch={function noRefCheck(){}}
+                                    onSelect={set_uDesignation}
+                                    placeholder="User Designation"
+                                    showArrow={true}
+                                />
+
+                                  {/* <select name="position" id="position" className="form-control signup-input" {...register('position', {required: "Please enter your department" ,message:'Please select atleast one option', })}>
                                     <option value="" disabled selected>Select Your Position</option>
                                     <option value="Jr. HR">Jr. HR</option>
                                     <option value="Jr. UI & UX">Jr. UI & UX</option>
@@ -310,8 +371,8 @@ function UserDetail({UserDetail}) {
                                     <option value="Sr. Project Manager">Sr. Project Manager</option>
                                     <option value="Sr. Mobile App Developer">Sr. Mobile App Developer</option>
                                     <option value="Sr. SEO">Sr. SEO</option>
-                                  </select>
-                                  <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                  </select> */}
+                                  {/* <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span> */}
                                   <div className="error-msg">{errors.position && <p>{errors.position.message}</p>}</div>
                                 </div>
                               </GridItem>
@@ -433,14 +494,14 @@ function UserDetail({UserDetail}) {
                                           </GridItem>
                                         </GridContainer><br/>
 
-                                        <GridContainer>  
+                                        {/* <GridContainer>
                                           <GridItem xs={12} sm={12} md={12}>
                                             <div className="form-group">
                                               <input type={isRevealPwd ? 'text' : 'password'} className="form-control signup-input" name="password" placeholder="enter your password" value={userdata.password} onChange={handleChange} autoComplete="off"  />
                                               <span className='icon-eyes' onClick={() => setIsRevealPwd((prevState) => !prevState)} >{isRevealPwd ? <IoMdEyeOff /> : <IoMdEye/>}</span>
                                             </div> 
                                           </GridItem>
-                                        </GridContainer><br/>
+                                        </GridContainer><br/> */}
 
                                         <GridContainer>
                                           <GridItem xs={12} sm={12} md={6}>

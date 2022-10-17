@@ -14,7 +14,6 @@ async function userDesignation(req,res) {
         }else{
             let userDesignation = await executeQuery("SELECT * FROM `tbl_designation` where `designation_department`= ? order by `designation_department` ", [ "" ]);
             res.status(200).json(userDesignation);
-            console.log("else");
         }
     }
     catch(err){

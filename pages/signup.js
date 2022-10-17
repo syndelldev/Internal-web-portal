@@ -209,7 +209,7 @@ function SignIn({ user_Department }){
                                     showArrow={true}
                                 /><br />
                                 
-                                <span className='icon-eyes'><IoMdArrowDropdown /></span>
+                                {/* <span className='icon-eyes'><IoMdArrowDropdown /></span> */}
                                 <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>
                             </div>
 
@@ -229,7 +229,7 @@ function SignIn({ user_Department }){
                                     showArrow={true}
                                 /><br />
 
-                                <span className='icon-eyes'><IoMdArrowDropdown /></span>
+                                {/* <span className='icon-eyes'><IoMdArrowDropdown /></span> */}
                                 <div className="error-msg">{errors.position && <p>{errors.position.message}</p>}</div>
                             </div>
 
