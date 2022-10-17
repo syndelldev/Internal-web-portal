@@ -815,13 +815,6 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                     )                      
                   }
                   )}
-                  {/* <a href={`${server}/project_department/HR`}>HR</a>
-                  <a href={`${server}/project_department/UI & UX`}>UI & UX</a>
-                  <a href={`${server}/project_department/Web development`}>Web Developer</a>
-                  <a href={`${server}/project_department/Content writer`}>Content Writer</a>
-                  <a href={`${server}/project_department/Project manager`}>Project Manager</a>
-                  <a href={`${server}/project_department/Mobile App developer`}>Mobile App Developer</a>
-                  <a href={`${server}/project_department/SEO`}>SEO</a> */}
                 </div>
             </div>
           </GridItem>
