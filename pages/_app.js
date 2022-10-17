@@ -33,8 +33,6 @@ import "assets/css/nextjs-material-dashboard.css?v=1.1.0";
 import { CookiesProvider } from 'react-cookie';
 import 'react-quill/dist/quill.snow.css';
 
-// import { initializeApp } from "firebase/app";
-
 
 Router.events.on("routeChangeStart", (url) => {
   console.log(`Loading: ${url}`);
@@ -54,7 +52,7 @@ Router.events.on("routeChangeError", () => {
 });
 
 function MyApp({ Component, pageProps }) {
-  console.log("Token")
+  // console.log("Token")
   // const messaging = firebase.messaging()
   // messaging.requestPermission().then(()=>{
   //   return messaging.getToken()
