@@ -1231,12 +1231,12 @@ const updateComment = async(id, comment) =>{
                                   <span>Task Language</span><span className="required">*</span>
                                     <select id="Task_created_by" className="form-control signup-input" disabled={cookies.Role_id == "2"} name="task_language" value={uoption.task_language} onChange={handleChange} >
                                       <option value="" disabled selected>Select Language</option>
-                                      <option value="Wordpress">Wordpress</option>
-                                      <option value="Shopify">Shopify</option>
-                                      <option value="ReactJS">ReactJS</option>
-                                      <option value="Laravel">Laravel</option>
-                                      <option value="Android">Android</option>
-                                      <option value="Bubble">Bubble</option>
+                                      {language.map((language)=>{
+                                          return(
+                                            <option value={`${language.language_name}`}>{language.language_name}</option>
+                                          )
+                                        }
+                                      )}
                                     </select>
                                     <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                                   </div> 
