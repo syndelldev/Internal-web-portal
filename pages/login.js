@@ -4,20 +4,22 @@ import { useRouter } from 'next/router'
 import { useState } from "react";
 import { IoMdEye , IoMdEyeOff , IoMdMail } from "react-icons/io";
 import { server } from 'config';
-//import Cookies from 'js-cookie';
+import { useForm, Controller } from 'react-hook-form';
 import { useCookies } from 'react-cookie';
 import { ToastContainer, toast } from 'react-toastify';
 import bcrypt from 'bcryptjs'
 
 export default function home(){
 
-    //const { register,  watch, handleSubmit, formState: { errors }, control } = useForm(); 
+    const { register, watch, handleSubmit, formState: { errors }, setValue, control } = useForm({mode: "onBlur"}); 
     const [cookies, setCookie] = useCookies(['name']);
 
     const [email,setemail] = useState("");
     const [password,setpassword] = useState("");
 
     const [passwrong,setpasswrong] = useState("");
+    const [user,setuser] = useState("");
+    const [userstatus,setuserstatus] = useState("");
     const router = useRouter();
 
     //Password Hide and Show
@@ -27,22 +29,22 @@ export default function home(){
 
     console.log(email);
 
-    const login = async(e) => {
-        e.preventDefault();
+    const login = async(result) => {
+        console.log(result)
 
-        if (email == "") {
-            let text = "Enter your Email ID";
-            document.getElementById("erremail").innerHTML = text;
-        }
-        if (password == "") {
-            let text = "Enter your Password";
-            document.getElementById("errpassword").innerHTML = text;
-        }
+        // if (email == "") {
+        //     let text = "Enter your Email ID";
+        //     document.getElementById("erremail").innerHTML = text;
+        // }
+        // if (password == "") {
+        //     let text = "Enter your Password";
+        //     document.getElementById("errpassword").innerHTML = text;
+        // }
 
         const res = await fetch(`${server}/api/admin/login`,{
             method: "POST",
             headers: { "Content-Type": "application/json",},
-            body:JSON.stringify({email,password}),
+            body:JSON.stringify({email:result.email, password:result.password}),
         })
 
         const data=await res.json()
@@ -53,16 +55,18 @@ export default function home(){
         if(data != "")
         {
             var dbpass=data[0].password;
-            console.log(dbpass)
-            console.log(password)
+            console.log('dbpass', dbpass)
+            console.log('Input Password', result.password)
 
             var role = data[0].role
             console.log(role)
 
-            bcrypt.compare(password, dbpass, function(err, result){
-                if(result){
-                    console.log("success");
-
+            if(data[0].status == 'Active'){
+                // alert("sucess")
+            
+                bcrypt.compare(result.password, dbpass, function(err, result){
+                    if(result){
+                        console.log("success");
                         setCookie('name', data[0].username, { path:'/' , sameSite:true, });
                         setCookie('Id', data[0].id, { path:'/' , sameSite:true, });
                         setCookie('Role_id', data[0].role_id, { path:'/' , sameSite:true, });
@@ -73,41 +77,23 @@ export default function home(){
                                 position: "top-right",
                                 autoClose:1000,
                                 onClose: () => router.push(`${server}/dashboard`)
-                                });
+                            });
                         }      
-
-                }
-                else{
-                    //alert("password wrong")
-                    setpasswrong("Username and Password Not matched!")
-                }
-            })
-            
-            
-            // if(dbpass == password)
-            // {
-            //     setCookie('name', data[0].username, { path:'/' , sameSite:true, });
-            //     setCookie('Id', data[0].id, { path:'/' , sameSite:true, });
-            //     setCookie('Role_id', data[0].role_id, { path:'/' , sameSite:true, });
-
-            //     if(! toast.isActive(toastId.current)) 
-            //     {
-            //         toastId.current = toast.success('Login Successfully! 🎉', {
-            //             position: "top-right",
-            //             autoClose:1000,
-            //             onClose: () => router.push(`${server}/dashboard`)
-            //             });
-            //     }      
-               
-            // }
-            // else{
-            //     //alert("password wrong")
-            //     setpasswrong("Username and Password Not matched!")
-            // }
-            
+                    }
+                    else{
+                        //alert("password wrong")
+                        setpasswrong("Username and Password Not matched!")
+                    }
+                })
+            }
+            else{
+                // alert("User Deactive")
+                setuserstatus("User is Inactive")
+            }
         }
         else{
-            //alert("Failed")
+            // alert("Failed")
+            setuser("User Does not Exits! ")
         }
     }
 
@@ -119,19 +105,19 @@ export default function home(){
                 <div className='container login-container'>
                     <div className='login-div'>
                         <h2 className='login-title'>Automation Tool Login</h2>
-                        <form method='POST' className="login-main" onSubmit={login} >
+                        <form method='POST' className="login-main" onSubmit={handleSubmit(login)} >
                             <div id='personal-account'>
                                 <div className="form-group"  >
                                     <label htmlFor="ba-num"  className='form-label'>Email</label>
-                                    <input type="email" name="email" value={email} placeholder="Enter your email" onChange={e=>setemail(e.target.value)} className='form-control login-input' />
+                                    <input type="email" name="email" placeholder="Enter your email" className='form-control login-input' {...register('email', { required: 'Please enter your email', pattern: {value: /^[a-zA-Z0-9]+@+syndelltech+.+[A-z]$/ , message: 'Please enter a valid email ex:email@syndelltech.in',},} )} />
                                     <span className='icon-eyes'><IoMdMail /></span>
-                                    <span className='error-msg' id='erremail'></span>
+                                    <div className="error-msg">{errors.email && <p>{errors.email.message}</p>}</div>
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="pwd" className='form-label label'>Password</label>
-                                    <input type={isRevealPwd ? 'text' : 'password'} placeholder="Enter your password" name="password" value={password} onChange={e=>setpassword(e.target.value)}  className='form-control login-input' />
+                                    <input type={isRevealPwd ? 'text' : 'password'} placeholder="Enter your password" name="password" className='form-control login-input' {...register('password', { required: "Please enter your password",minLength: {value: 8, message: "Password must have at least 8 characters" }, pattern: {value: /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/, message: 'must include lower, upper, number, and special chars',} })}  />
                                     <span className='icon-eyes' onClick={() => setIsRevealPwd((prevState) => !prevState)} >{isRevealPwd ? <IoMdEyeOff /> : <IoMdEye/>}</span>
-                                    <span className='error-msg' id='errpassword'></span>
+                                    <div className="error-msg">{errors.password && <p>{errors.password.message}</p>}</div>
                                 </div>  
                                 <div className='login-head'>
                                     <div className='login-col'>
@@ -145,13 +131,15 @@ export default function home(){
                                 </div> 
 
                                 <p className='error-msg'>{passwrong}</p>
+                                <p className='error-msg'>{user}</p>
+                                <p className='error-msg'>{userstatus}</p>
                                 <div className="login-btn">
                                     <button type="submit" className="login-create-acc-btn">Login</button>  
                                 </div> 
                                 <div className='login-text'>
                                     {/* <p>Don&apos;t have an account? <a href='/signup'><span className='signup-text-login'>Sign Up</span></a></p> */}
-                                    <div> <p>Don&apos;t have an account?</p> </div>
-                                    <div> <p><a href='/signup' className='signup-text-login'>Sign Up</a></p> </div>
+                                    {/* <div> <p>Don&apos;t have an account?</p> </div> */}
+                                    {/* <div> <p><a href='/signup' className='signup-text-login'>Sign Up</a></p> </div> */}
                                 </div>
 
                             </div>
