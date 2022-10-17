@@ -1485,6 +1485,7 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                               {TimeData.length == 0 ? (
                                                 <>
                                                   <form
+                                                  className="form-time"
                                                     onSubmit={handleSubmit(
                                                       insert_time
                                                     )}
@@ -1560,7 +1561,7 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                                       </GridItem>
                                                     </GridContainer>
                                                     <button
-                                                      color="primary"
+                                                      className="btn btn-primary mt-2 text-white"
                                                       onClick={() => {
                                                         insert_time(
                                                           task.task_id
@@ -1629,7 +1630,7 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                                       </GridItem>
                                                     </GridContainer>
                                                     <Button
-                                                      color="primary"
+                                                      className="btn btn-primary mt-2 text-white"
                                                       onClick={() => {
                                                         update_tasktime(
                                                           task.task_id
@@ -1654,6 +1655,7 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                                 onChange={setCommentValue}
                                               />
                                               <div
+                                              className="btn btn-primary mt-2 mb-4"
                                                 onClick={() => {
                                                   sendMessage(task.task_id),
                                                     close();
@@ -1664,12 +1666,13 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                             </GridItem>
                                           </GridContainer>
 
+                                          <div className="form-comment-section">
                                           {comments.map((uComment) => {
                                             return (
-                                              <span>
+                                              <span className="single-comment">
                                                 <GridContainer>
                                                   <GridItem>
-                                                    <span>
+                                                    <span className="fcs-name">
                                                       {uComment.username}
                                                     </span>
                                                   </GridItem>
@@ -1688,6 +1691,7 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                                         trigger={
                                                           <span>
                                                             <button
+                                                            className="btn btn-primary"
                                                               onClick={() => {
                                                                 editComment(
                                                                   uComment.id
@@ -1774,9 +1778,11 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                                     </div>
                                                   </GridItem>
                                                 </GridContainer>
+                                                <hr />
                                               </span>
                                             );
                                           })}
+                                          </div>
                                         </CardBody>
                                       </Card>
                                     </form>
@@ -1856,9 +1862,15 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                               <>
                                 <GridContainer>
                                   <GridItem>
-                                    <input className="mr-3" value={task.task_id} type="hidden" />
+                                    <input
+                                      className="mr-3"
+                                      value={task.task_id}
+                                      type="hidden"
+                                    />
                                     {/* <p className="mr-3 name">{userdata.username} :</p> */}
-                                    <p className="mr-3">Estimate Time - {estimate}</p>
+                                    <p className="mr-3">
+                                      Estimate Time - {estimate}
+                                    </p>
                                     <p className="mr-3">Spent Time - {spent}</p>
                                   </GridItem>
                                 </GridContainer>
@@ -1871,7 +1883,9 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                     <p className="mr-3">
                                       Estimate Time - {userdata.estimate_time}
                                     </p>
-                                    <p className="mr-3">Spent Time - {userdata.spent_time} </p>
+                                    <p className="mr-3">
+                                      Spent Time - {userdata.spent_time}{" "}
+                                    </p>
                                   </GridItem>
                                 </GridContainer>
                               </>
@@ -2419,6 +2433,7 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                                 {TimeData.length == 0 ? (
                                                   <>
                                                     <form
+                                                    className="form-time"
                                                       onSubmit={handleSubmit(
                                                         insert_time
                                                       )}
@@ -2494,7 +2509,7 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                                         </GridItem>
                                                       </GridContainer>
                                                       <button
-                                                        color="primary"
+                                                        className="btn btn-primary mt-2 text-white"
                                                         onClick={() => {
                                                           insert_time(
                                                             task.task_id
@@ -2509,6 +2524,7 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                                 ) : (
                                                   <>
                                                     <form
+                                                    className="form-time"
                                                       onSubmit={update_tasktime}
                                                     >
                                                       <GridContainer>
@@ -2535,7 +2551,6 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                                               handleChangePanel
                                                             }
                                                           />
-                                                          <br />
                                                         </GridItem>
 
                                                         <GridItem
@@ -2560,7 +2575,7 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                                         </GridItem>
                                                       </GridContainer>
                                                       <Button
-                                                        color="primary"
+                                                        className="btn btn-primary mt-2 text-white"
                                                         onClick={() => {
                                                           update_tasktime(
                                                             task.task_id
@@ -2585,6 +2600,7 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                                   onChange={setCommentValue}
                                                 />
                                                 <div
+                                                className="btn btn-primary mt-2 mb-4"
                                                   onClick={() => {
                                                     sendMessage(task.task_id),
                                                       close();
@@ -2595,12 +2611,13 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                               </GridItem>
                                             </GridContainer>
 
+                                            <div className="form-comment-section">
                                             {comments.map((uComment) => {
                                               return (
-                                                <span>
+                                                <span className="single-comment">
                                                   <GridContainer>
                                                     <GridItem>
-                                                      <span>
+                                                      <span className="fcs-name">
                                                         {uComment.username}
                                                       </span>
                                                     </GridItem>
@@ -2621,6 +2638,7 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                                           trigger={
                                                             <span>
                                                               <button
+                                                              className="btn btn-primary"
                                                                 onClick={() => {
                                                                   editComment(
                                                                     uComment.id
@@ -2707,9 +2725,11 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                                       </div>
                                                     </GridItem>
                                                   </GridContainer>
+                                                  <hr />
                                                 </span>
                                               );
                                             })}
+                                            </div>
                                           </CardBody>
                                         </Card>
                                       </form>
@@ -2791,12 +2811,17 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                 <>
                                   <GridContainer>
                                     <GridItem>
-                                      <input className="mr-3"
+                                      <input
+                                        className="mr-3"
                                         value={task.task_id}
                                         type="hidden"
                                       />
-                                      <p className="mr-3">Estimate Time - {estimate}</p>
-                                      <p className="mr-3">Spent Time - {spent}</p>
+                                      <p className="mr-3">
+                                        Estimate Time - {estimate}
+                                      </p>
+                                      <p className="mr-3">
+                                        Spent Time - {spent}
+                                      </p>
                                     </GridItem>
                                   </GridContainer>
                                 </>
@@ -2804,7 +2829,9 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                 <>
                                   <GridContainer>
                                     <GridItem className="name-time-main">
-                                    <p className="mr-3 name">{userdata.username} :</p>
+                                      <p className="mr-3 name">
+                                        {userdata.username} :
+                                      </p>
                                       <input
                                         value={task.task_id}
                                         type="hidden"
@@ -2812,7 +2839,9 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                       <p className="mr-3">
                                         Estimate Time - {userdata.estimate_time}
                                       </p>
-                                      <p className="mr-3">Spent Time - {userdata.spent_time} </p>
+                                      <p className="mr-3">
+                                        Spent Time - {userdata.spent_time}{" "}
+                                      </p>
                                     </GridItem>
                                   </GridContainer>
                                 </>
@@ -2826,7 +2855,9 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                   <span>
                                     <GridContainer>
                                       <GridItem>
-                                        <p className="name">{dComment.username} :</p>
+                                        <p className="name">
+                                          {dComment.username} :
+                                        </p>
                                         <p>
                                           <ReactQuill
                                             value={dComment.comment}
@@ -3362,6 +3393,7 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                                 {TimeData.length == 0 ? (
                                                   <>
                                                     <form
+                                                    className="form-time"
                                                       onSubmit={handleSubmit(
                                                         insert_time
                                                       )}
@@ -3437,7 +3469,7 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                                         </GridItem>
                                                       </GridContainer>
                                                       <button
-                                                        color="primary"
+                                                        className="btn btn-primary mt-2 text-white"
                                                         onClick={() => {
                                                           insert_time(
                                                             task.task_id
@@ -3452,6 +3484,7 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                                 ) : (
                                                   <>
                                                     <form
+                                                    className="form-time"
                                                       onSubmit={update_tasktime}
                                                     >
                                                       <GridContainer>
@@ -3478,7 +3511,6 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                                               handleChangePanel
                                                             }
                                                           />
-                                                          <br />
                                                         </GridItem>
 
                                                         <GridItem
@@ -3503,7 +3535,7 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                                         </GridItem>
                                                       </GridContainer>
                                                       <Button
-                                                        color="primary"
+                                                        className="btn btn-primary mt-2 text-white"
                                                         onClick={() => {
                                                           update_tasktime(
                                                             task.task_id
@@ -3528,6 +3560,7 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                                   onChange={setCommentValue}
                                                 />
                                                 <div
+                                                className="btn btn-primary mt-2 mb-4"
                                                   onClick={() => {
                                                     sendMessage(task.task_id),
                                                       close();
@@ -3538,12 +3571,13 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                               </GridItem>
                                             </GridContainer>
 
+                                            <div className="form-comment-section">
                                             {comments.map((uComment) => {
                                               return (
-                                                <span>
+                                                <span className="single-comment">
                                                   <GridContainer>
                                                     <GridItem>
-                                                      <span>
+                                                      <span className="fcs-name">
                                                         {uComment.username}
                                                       </span>
                                                     </GridItem>
@@ -3564,6 +3598,7 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                                           trigger={
                                                             <span>
                                                               <button
+                                                              className="btn btn-primary"
                                                                 onClick={() => {
                                                                   editComment(
                                                                     uComment.id
@@ -3650,9 +3685,11 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                                       </div>
                                                     </GridItem>
                                                   </GridContainer>
+                                                  <hr />
                                                 </span>
                                               );
                                             })}
+                                            </div>
                                           </CardBody>
                                         </Card>
                                       </form>
@@ -3778,7 +3815,9 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                   <span>
                                     <GridContainer>
                                       <GridItem>
-                                        <p className="name">{dComment.username} :</p>
+                                        <p className="name">
+                                          {dComment.username} :
+                                        </p>
                                         <p>
                                           <ReactQuill
                                             className="quil-comment"
@@ -4317,6 +4356,7 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                                 {TimeData.length == 0 ? (
                                                   <>
                                                     <form
+                                                    className="form-time"
                                                       onSubmit={handleSubmit(
                                                         insert_time
                                                       )}
@@ -4392,7 +4432,7 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                                         </GridItem>
                                                       </GridContainer>
                                                       <button
-                                                        color="primary"
+                                                       className="btn btn-primary mt-2 text-white"
                                                         onClick={() => {
                                                           insert_time(
                                                             task.task_id
@@ -4407,6 +4447,7 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                                 ) : (
                                                   <>
                                                     <form
+                                                    className="form-time"
                                                       onSubmit={update_tasktime}
                                                     >
                                                       <GridContainer>
@@ -4458,7 +4499,7 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                                         </GridItem>
                                                       </GridContainer>
                                                       <Button
-                                                        color="primary"
+                                                        className="btn btn-primary mt-2 text-white"
                                                         onClick={() => {
                                                           update_tasktime(
                                                             task.task_id
@@ -4483,6 +4524,7 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                                   onChange={setCommentValue}
                                                 />
                                                 <div
+                                                className="btn btn-primary mt-2 mb-4"
                                                   onClick={() => {
                                                     sendMessage(task.task_id),
                                                       close();
@@ -4493,121 +4535,125 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                               </GridItem>
                                             </GridContainer>
 
-                                            {comments.map((uComment) => {
-                                              return (
-                                                <span>
-                                                  <GridContainer>
-                                                    <GridItem>
-                                                      <span>
-                                                        {uComment.username}
-                                                      </span>
-                                                    </GridItem>
-                                                  </GridContainer>
+                                            <div className="form-comment-section">
+                                              {comments.map((uComment) => {
+                                                return (
+                                                  <span className="single-comment">
+                                                    <GridContainer>
+                                                      <GridItem>
+                                                        <span className="fcs-name">
+                                                          {uComment.username}
+                                                        </span>
+                                                      </GridItem>
+                                                    </GridContainer>
 
-                                                  <GridContainer>
-                                                    <GridItem>
-                                                      <div>
-                                                        <ReactQuill
-                                                          value={
-                                                            uComment.comment
-                                                          }
-                                                          theme="bubble"
-                                                          readOnly
-                                                        />
+                                                    <GridContainer>
+                                                      <GridItem>
+                                                        <div>
+                                                          <ReactQuill
+                                                            value={
+                                                              uComment.comment
+                                                            }
+                                                            theme="bubble"
+                                                            readOnly
+                                                          />
 
-                                                        <Popup
-                                                          trigger={
-                                                            <span>
-                                                              <button
-                                                                onClick={() => {
-                                                                  editComment(
-                                                                    uComment.id
-                                                                  );
-                                                                }}
-                                                                disabled={
-                                                                  uComment.username !=
-                                                                  cookies.name
-                                                                }
-                                                              >
-                                                                Edit
-                                                              </button>
-                                                            </span>
-                                                          }
-                                                          className="popupReact"
-                                                          modal
-                                                        >
-                                                          {(close) => (
-                                                            <Card>
-                                                              <CardBody>
-                                                                <div
-                                                                  className={
-                                                                    classes.close
+                                                          <Popup
+                                                            trigger={
+                                                              <span>
+                                                                <button
+                                                                className="btn btn-primary"
+                                                                  onClick={() => {
+                                                                    editComment(
+                                                                      uComment.id
+                                                                    );
+                                                                  }}
+                                                                  disabled={
+                                                                    uComment.username !=
+                                                                    cookies.name
                                                                   }
                                                                 >
-                                                                  <a
-                                                                    onClick={
-                                                                      close
+                                                                  Edit
+                                                                </button>
+                                                              </span>
+                                                            }
+                                                            className="popupReact"
+                                                            modal
+                                                          >
+                                                            {(close) => (
+                                                              <Card>
+                                                                <CardBody>
+                                                                  <div
+                                                                    className={
+                                                                      classes.close
                                                                     }
                                                                   >
-                                                                    &times;
-                                                                  </a>
-                                                                </div>
-                                                                <GridContainer>
-                                                                  <GridItem
-                                                                    xs={12}
-                                                                    sm={12}
-                                                                    md={12}
-                                                                  >
-                                                                    <form>
-                                                                      <ReactQuill
-                                                                        modules={
-                                                                          modules
-                                                                        }
-                                                                        theme="snow"
-                                                                        onChange={
-                                                                          setEditComment
-                                                                        }
-                                                                        value={
+                                                                    <a
+                                                                      onClick={
+                                                                        close
+                                                                      }
+                                                                    >
+                                                                      &times;
+                                                                    </a>
+                                                                  </div>
+                                                                  <GridContainer>
+                                                                    <GridItem
+                                                                      xs={12}
+                                                                      sm={12}
+                                                                      md={12}
+                                                                    >
+                                                                      <form>
+                                                                        <ReactQuill
+                                                                          modules={
+                                                                            modules
+                                                                          }
+                                                                          theme="snow"
+                                                                          onChange={
+                                                                            setEditComment
+                                                                          }
+                                                                          value={
+                                                                            commentEdit
+                                                                          }
+                                                                        />
+                                                                      </form>
+                                                                    </GridItem>
+                                                                  </GridContainer>
+                                                                  <CardFooter>
+                                                                    <Button
+                                                                      color="primary"
+                                                                      type="submit"
+                                                                      onClick={() => {
+                                                                        updateComment(
+                                                                          uComment.id,
                                                                           commentEdit
-                                                                        }
-                                                                      />
-                                                                    </form>
-                                                                  </GridItem>
-                                                                </GridContainer>
-                                                                <CardFooter>
-                                                                  <Button
-                                                                    color="primary"
-                                                                    type="submit"
-                                                                    onClick={() => {
-                                                                      updateComment(
-                                                                        uComment.id,
-                                                                        commentEdit
-                                                                      ),
+                                                                        ),
+                                                                          close();
+                                                                      }}
+                                                                    >
+                                                                      Update
+                                                                    </Button>
+                                                                    <Button
+                                                                      className="button"
+                                                                      onClick={() => {
                                                                         close();
-                                                                    }}
-                                                                  >
-                                                                    Update
-                                                                  </Button>
-                                                                  <Button
-                                                                    className="button"
-                                                                    onClick={() => {
-                                                                      close();
-                                                                    }}
-                                                                  >
-                                                                    {" "}
-                                                                    Cancel{" "}
-                                                                  </Button>
-                                                                </CardFooter>
-                                                              </CardBody>
-                                                            </Card>
-                                                          )}
-                                                        </Popup>
-                                                      </div>
-                                                    </GridItem>
-                                                  </GridContainer>
-                                                </span>
-                                              );
-                                            })}
+                                                                      }}
+                                                                    >
+                                                                      {" "}
+                                                                      Cancel{" "}
+                                                                    </Button>
+                                                                  </CardFooter>
+                                                                </CardBody>
+                                                              </Card>
+                                                            )}
+                                                          </Popup>
+                                                        </div>
+                                                      </GridItem>
+                                                    </GridContainer>
+                                                    <hr />
+                                                  </span>
+                                                );
+                                              })}
+                                            </div>
                                           </CardBody>
                                         </Card>
                                       </form>
@@ -4675,11 +4721,13 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                             </Popup>
                           </td>
                         </tr>
-                        <div className={
-                              showTime == task.task_id
-                                ? "content show"
-                                : "content"
-                            }>
+                        <div
+                          className={
+                            showTime == task.task_id
+                              ? "content show"
+                              : "content"
+                          }
+                        >
                           <p className="content-inner">
                             {/*Time Modulule*/}
                             <p className="time-main">
