@@ -37,6 +37,7 @@ import "assets/css/nextjs-material-dashboard.css?v=1.1.0";
 import { CookiesProvider } from 'react-cookie';
 import 'react-quill/dist/quill.snow.css';
 
+import {Alert} from "components/Alert.jsx";
 
 Router.events.on("routeChangeStart", (url) => {
   console.log(`Loading: ${url}`);
@@ -61,7 +62,7 @@ function Loading(){
   console.log(loading)
   useEffect(()=>{
     const handleStart = (url) => (url !== router.asPath) && setLoading(true);
-    const handleComplete = (url) => (url === router.asPath) && setTimeout(() =>{setLoading(false)},5000);
+    const handleComplete = (url) => (url === router.asPath) && setTimeout(() =>{setLoading(false)},2000);
 
     router.events.on('routeChangeStart', handleStart)
     router.events.on('routeChangeComplete', handleComplete)
@@ -96,7 +97,7 @@ function MyApp({ Component, pageProps }) {
           <body>
             <Layout>
               <CookiesProvider>
-                
+                <Alert />
                 <Component {...pageProps} />
               </CookiesProvider>
             </Layout>

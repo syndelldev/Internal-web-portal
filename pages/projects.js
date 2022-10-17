@@ -99,6 +99,7 @@ const styles = {
   },
 };
 
+
 export async function getServerSideProps(context) {
   const res = await fetch(`${server}/api/project`);
   const project_details = await res.json();
@@ -128,9 +129,9 @@ function Dashboard({ project_details, user_project, User_name }) {
   //Notification Start
   const [options, setoptions] = useState({
     autoClose: false,
-    keepAfterRouteChange: false
+    keepAfterRouteChange: true
   });
-
+  console.log('options', options)
   function handleOptionChange(e) {
       const { name, checked } = e.target;
       setoptions(options => ({ ...options, [name]: checked }));
@@ -346,16 +347,15 @@ function Dashboard({ project_details, user_project, User_name }) {
       const data = await res.json()
       console.log(data);
 
-      toast.info(
-        <div>
-          <p>{result.project_title}</p>
-          {/* <p>{selected}</p> */}
-        </div>,
-        {
-          autoClose: false,
-          theme:"colored",
-        }
-      )
+      // toast.info(
+      //   <div>
+      //     <p>{result.project_title}</p>
+      //   </div>,
+      //   {
+      //     autoClose: false,
+      //     theme:"colored",
+      //   }
+      // )
 
       if (res.status == 200) {
         if (!toast.isActive(toastId.current)) {
@@ -663,7 +663,6 @@ function Dashboard({ project_details, user_project, User_name }) {
   return (
     <span>
           {/* <div>
-            <Alert />
             <button className="btn btn-success m-1" onClick={() => alertService.success('Success!!', options)}>Success</button>
             <button className="btn btn-danger m-1" onClick={() => alertService.error('Error :(', options)}>Error</button>
             <button className="btn btn-info m-1" onClick={() => alertService.info('Some info....', options)}>Info</button>
@@ -675,13 +674,13 @@ function Dashboard({ project_details, user_project, User_name }) {
                     <label htmlFor="autoClose">Auto close alert after three seconds</label>
                 </div>
                 <div className="form-check">
-                    <input type="checkbox" className="form-check-input" name="keepAfterRouteChange" id="keepAfterRouteChange" checked={options.keepAfterRouteChange} onChange={handleOptionChange} />
+                    <input type="checkbox" className="form-check-input" name="keepAfterRouteChange" id="keepAfterRouteChange" checked onChange={handleOptionChange} />
                     <label htmlFor="keepAfterRouteChange">Keep displaying after one route change</label>
                 </div>
             </div>
           </div> */}
 
-
+      <Alert/>
       <div className="buttonalign" hidden={cookies.Role_id == "2"} >
         <GridContainer>
           <GridItem>
@@ -864,7 +863,7 @@ function Dashboard({ project_details, user_project, User_name }) {
 
                           </CardBody>
                           <CardFooter>
-                            <Button color="primary" type="submit">Add Project</Button>
+                            <Button color="primary" type="submit" onClick={() => alertService.info('Some info....', options)} >Add Project</Button>
                             <Button className="button" onClick={() => { close(); }}> Cancel </Button>
                           </CardFooter>
                         </Card>
