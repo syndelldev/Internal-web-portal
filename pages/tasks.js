@@ -320,14 +320,15 @@ function Dashboard( { project_details , User_name , allTask, userTask, language,
     
     const p_start = result.start.toDateString();
     const p_end = result.end.toDateString();
-    console.log("result");
-    console.log(result.start.toDateString());
 
+    if(u_Language != ""){
+      var Language = u_Language[0].value;
+    }
   
     const res = await fetch(`${server}/api/subtask/add_subtask`,{
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body:JSON.stringify({task_person:selected, project_name:p_selected, task_status:result.task_status , task_title:result.task_title, task_description:result.task_description, task_language:result.task_language, task_createdBy:cookies.name , task_priority:result.task_priority, task_start: p_start , task_deadline: p_end }),
+      body:JSON.stringify({task_person:selected, project_name:p_selected, task_status:result.task_status , task_title:result.task_title, task_description:result.task_description, task_language:Language, task_createdBy:cookies.name , task_priority:result.task_priority, task_start: p_start , task_deadline: p_end }),
     })
     const data=await res.json()
 
@@ -792,17 +793,18 @@ const updateComment = async(id, comment) =>{
                     <GridItem xs={12} sm={12} md={6}>
                       <div className="form-group">
                       <span>Task Language</span><span className="required">*</span>
-                        <select name="Task_created_by" id="Task_created_by" className="form-control signup-input" {...register('task_language', {required:true ,message:'Please select atleast one option', })}>
-                          <option value="" disabled selected>Select Language</option>
-                          <option value="Wordpress">Wordpress</option>
-                          <option value="Shopify">Shopify</option>
-                          <option value="ReactJS">ReactJS</option>
-                          <option value="Laravel">Laravel</option>
-                          <option value="Android">Android</option>
-                          <option value="Bubble">Bubble</option>
-                        </select>
-                        <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                        {/* <div className="error-msg">{errors.task_language && <span>{errors.task_language.message}</span>}</div> */}
+                      <Multiselect
+                        displayValue="value"
+                        options={all_Language}
+                        value={u_Language}
+                        selectionLimit="1"
+                        onChange={setLanguage}
+                        onRemove={setLanguage}
+                        onSearch={function noRefCheck(){}}
+                        onSelect={setLanguage}
+                        placeholder="Task Language"
+                        showArrow={true}
+                      />
                       </div> 
                     </GridItem>
                   </GridContainer><br/>
@@ -1746,16 +1748,19 @@ const updateComment = async(id, comment) =>{
                                 <GridItem xs={12} sm={12} md={6}>
                                   <div className="form-group">
                                   <span>Task Language</span><span className="required">*</span>
-                                    <select id="Task_created_by" className="form-control signup-input" disabled={cookies.Role_id == "2"} name="task_language" value={uoption.task_language} onChange={handleChange} >
-                                      <option value="" disabled selected>Select Language</option>
-                                      <option value="Wordpress">Wordpress</option>
-                                      <option value="Shopify">Shopify</option>
-                                      <option value="ReactJS">ReactJS</option>
-                                      <option value="Laravel">Laravel</option>
-                                      <option value="Android">Android</option>
-                                      <option value="Bubble">Bubble</option>
-                                    </select>
-                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                  <Multiselect
+                                    displayValue="value"
+                                    options={all_Language}
+                                    value={u_Language}
+                                    selectionLimit="1"
+                                    onChange={setLanguage}
+                                    onRemove={setLanguage}
+                                    onSearch={function noRefCheck(){}}
+                                    onSelect={setLanguage}
+                                    placeholder="Task Language"
+                                    showArrow={true}
+                                    selectedValues={u_Language}
+                                  />
                                   </div> 
                                 </GridItem>
                               </GridContainer><br/>
@@ -2243,16 +2248,19 @@ const updateComment = async(id, comment) =>{
                                 <GridItem xs={12} sm={12} md={6}>
                                   <div className="form-group">
                                   <span>Task Language</span><span className="required">*</span>
-                                    <select id="Task_created_by" className="form-control signup-input" disabled={cookies.Role_id == "2"} name="task_language" value={uoption.task_language} onChange={handleChange} >
-                                      <option value="" disabled selected>Select Language</option>
-                                      <option value="Wordpress">Wordpress</option>
-                                      <option value="Shopify">Shopify</option>
-                                      <option value="ReactJS">ReactJS</option>
-                                      <option value="Laravel">Laravel</option>
-                                      <option value="Android">Android</option>
-                                      <option value="Bubble">Bubble</option>
-                                    </select>
-                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                  <Multiselect
+                                    displayValue="value"
+                                    options={all_Language}
+                                    value={u_Language}
+                                    selectionLimit="1"
+                                    onChange={setLanguage}
+                                    onRemove={setLanguage}
+                                    onSearch={function noRefCheck(){}}
+                                    onSelect={setLanguage}
+                                    placeholder="Task Language"
+                                    showArrow={true}
+                                    selectedValues={u_Language}
+                                  />
                                   </div> 
                                 </GridItem>
                               </GridContainer><br/>
@@ -2741,16 +2749,19 @@ const updateComment = async(id, comment) =>{
                                 <GridItem xs={12} sm={12} md={6}>
                                   <div className="form-group">
                                   <span>Task Language</span><span className="required">*</span>
-                                    <select id="Task_created_by" className="form-control signup-input" disabled={cookies.Role_id == "2"} name="task_language" value={uoption.task_language} onChange={handleChange} >
-                                      <option value="" disabled selected>Select Language</option>
-                                      <option value="Wordpress">Wordpress</option>
-                                      <option value="Shopify">Shopify</option>
-                                      <option value="ReactJS">ReactJS</option>
-                                      <option value="Laravel">Laravel</option>
-                                      <option value="Android">Android</option>
-                                      <option value="Bubble">Bubble</option>
-                                    </select>
-                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                  <Multiselect
+                                    displayValue="value"
+                                    options={all_Language}
+                                    value={u_Language}
+                                    selectionLimit="1"
+                                    onChange={setLanguage}
+                                    onRemove={setLanguage}
+                                    onSearch={function noRefCheck(){}}
+                                    onSelect={setLanguage}
+                                    placeholder="Task Language"
+                                    showArrow={true}
+                                    selectedValues={u_Language}
+                                  />
                                   </div> 
                                 </GridItem>
                               </GridContainer><br/>
