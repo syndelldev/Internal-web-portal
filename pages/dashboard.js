@@ -130,6 +130,8 @@ function Dashboard( { project_details, project_hold, project_completed, project_
 
   const { register,  watch, handleSubmit, formState: { errors }, setValue } = useForm(); 
   const router = useRouter();
+
+  // redirect page if cookies is not set
   useEffect(() => {
     if(!cookies.name){
       router.push(`${server}/login`);

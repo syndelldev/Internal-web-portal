@@ -12,7 +12,6 @@ async function updateProject(req,res){
  
             // console.log(req.body.project_person);
             // console.log(req.body);
-
            
             var members = req.body.project_person;
             var addUserQuery = await executeQuery("Update `tbl_project` set `project_title` = ?, `project_description` = ?, `project_language` = ?, `project_priority` = ?, `project_start` = ?, `project_deadline` = ? , `project_person`= ?, `project_status`=? where `project_id` = ?",

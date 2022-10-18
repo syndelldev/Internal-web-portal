@@ -139,6 +139,8 @@ function Dashboard( { project_details , User_name , allTask, userTask, language,
   const classes = useStyles();
   // get role from cookies
   const [cookies, setCookie] = useCookies(['name']);
+
+  // redirect page if cookies is not set
   useEffect(() => {
     if(!cookies.name){
       router.push(`${server}/login`);

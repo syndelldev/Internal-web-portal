@@ -127,12 +127,13 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
   const classes = useStyles();
 
   const [cookies, setCookie] = useCookies(['name']);
+
+  // redirect page if cookies is not set
   useEffect(() => {
     if(!cookies.name){
       router.push(`${server}/login`);
     }
   });
-
 
   //Notification Start
   const createNotification = (project_id) => {

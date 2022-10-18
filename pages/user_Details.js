@@ -48,6 +48,8 @@ function UserDetail({UserDetail, user_Department}) {
   // console.log(UserDetail);
   const { register,  watch, handleSubmit, formState: { errors }, setValue, control } = useForm({mode: "onBlur"});
   const [cookies, setCookie] = useCookies(['name']);
+
+  // redirect page if cookies is not set
   useEffect(() => {
     if(!cookies.name){
       router.push(`${server}/login`);

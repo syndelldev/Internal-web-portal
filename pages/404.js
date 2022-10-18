@@ -8,6 +8,7 @@ export default function FourOhFour() {
   const [cookies, setCookie] = useCookies('');
   const router = useRouter();
 
+  // redirect to dashboard page if cookies is set  
   if(cookies.name){
     router.push(`${server}/dashboard`);
   }

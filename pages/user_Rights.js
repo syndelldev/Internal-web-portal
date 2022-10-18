@@ -60,7 +60,8 @@ function UserRights({UserList,ModuleList}){
     const router = useRouter();
     const [cookies, setCookie] = useCookies(['name']);
 
-    useEffect(() => {
+  // redirect page if cookies is not set
+  useEffect(() => {
         if(!cookies.name){
           router.push(`${server}/login`);
         }else if(cookies.Role_id == "2"){
