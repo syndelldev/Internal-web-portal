@@ -327,10 +327,14 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
   
   }else{
 
+    if(u_Priority != ""){
+      var Priority = u_Priority[0].value;
+    }
+
     const res = await fetch(`${server}/api/project/update_project`,{
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ project_id:uoption.project_id, project_person: allMember, project_status:uoption.project_status , project_department:uoption.project_department ,  project_title: uoption.project_title , project_description:uoption.project_description , project_language:uoption.project_language, project_priority:uoption.project_priority, project_start: startDate , project_deadline: endDate }),
+      body: JSON.stringify({ project_id:uoption.project_id, project_person: allMember, project_status:uoption.project_status , project_department:uoption.project_department ,  project_title: uoption.project_title , project_description:uoption.project_description , project_language:uoption.project_language, project_priority:Priority, project_start: startDate , project_deadline: endDate }),
     });
     if(!toast.isActive(toastId.current)) {
       toastId.current = toast.success('Project updated successfully !', {
@@ -1254,18 +1258,18 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                       <div className="form-group">
                                       <span>Project Priority</span><span className="required">*</span>
                                       <Multiselect
-                                      displayValue="value"
-                                      options={all_Priority}
-                                      value={u_Priority}
-                                      selectedValues={u_Priority}
-                                      selectionLimit="1"
-                                      onChange={setDepartment}
-                                      onRemove={setDepartment}
-                                      onSearch={function noRefCheck(){}}
-                                      onSelect={setDepartment}
-                                      placeholder="Project Priority"
-                                      showArrow={true}
-                                  />
+                                        displayValue="value"
+                                        options={all_Priority}
+                                        value={u_Priority}
+                                        selectedValues={u_Priority}
+                                        selectionLimit="1"
+                                        onChange={setDepartment}
+                                        onRemove={setDepartment}
+                                        onSearch={function noRefCheck(){}}
+                                        onSelect={setDepartment}
+                                        placeholder="Project Priority"
+                                        showArrow={true}
+                                    />
 
                                         {/* <select name="project_priority" id="priority" className="form-control signup-input" value={uoption.project_priority} onChange={handleChange} disabled={cookies.Role_id == "2"}>
                                           <option value=""  disabled selected>Select Project Priority</option>
@@ -1657,13 +1661,20 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                     <GridItem xs={12} sm={12} md={6}>
                                       <div className="form-group">
                                       <span>Project Priority</span><span className="required">*</span>
-                                        <select name="project_priority" id="priority" className="form-control signup-input" value={uoption.project_priority} onChange={handleChange} disabled={cookies.Role_id == "2"}>
-                                          <option value=""  disabled selected>Select Project Priority</option>
-                                          <option value="High" className="High">High</option>
-                                          <option value="Medium" className="Medium">Medium</option>
-                                          <option value="Low"className="Low">Low</option>
-                                        </select>
-                                        <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                      <Multiselect
+                                        displayValue="value"
+                                        options={all_Priority}
+                                        value={u_Priority}
+                                        selectedValues={u_Priority}
+                                        selectionLimit="1"
+                                        onChange={setDepartment}
+                                        onRemove={setDepartment}
+                                        onSearch={function noRefCheck(){}}
+                                        onSelect={setDepartment}
+                                        placeholder="Project Priority"
+                                        showArrow={true}
+                                    />
+
                                       </div> 
                                     </GridItem>
                                   
@@ -2049,13 +2060,27 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                     <GridItem xs={12} sm={12} md={6}>
                                       <div className="form-group">
                                       <span>Project Priority</span><span className="required">*</span>
-                                        <select name="project_priority" id="priority" className="form-control signup-input" value={uoption.project_priority} onChange={handleChange} disabled={cookies.Role_id == "2"}>
+                                      <Multiselect
+                                        displayValue="value"
+                                        options={all_Priority}
+                                        value={u_Priority}
+                                        selectedValues={u_Priority}
+                                        selectionLimit="1"
+                                        onChange={setDepartment}
+                                        onRemove={setDepartment}
+                                        onSearch={function noRefCheck(){}}
+                                        onSelect={setDepartment}
+                                        placeholder="Project Priority"
+                                        showArrow={true}
+                                      />
+
+                                        {/* <select name="project_priority" id="priority" className="form-control signup-input" value={uoption.project_priority} onChange={handleChange} disabled={cookies.Role_id == "2"}>
                                           <option value=""  disabled selected>Select Project Priority</option>
                                           <option value="High" className="High">High</option>
                                           <option value="Medium" className="Medium">Medium</option>
                                           <option value="Low"className="Low">Low</option>
                                         </select>
-                                        <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                        <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span> */}
                                       </div> 
                                     </GridItem>
                                   
