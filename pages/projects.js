@@ -181,8 +181,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
     project_deadline: "",
     project_priority: "",
     project_status: "",
-    project_person: "",
-    project_comment: ""
+    project_person: ""
   });
 
   const [startDate, setStartDate] = useState();
@@ -230,22 +229,34 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
     setStartDate(new Date(udata.project_start));
     setEndDate(new Date(udata.project_deadline));
 
+  }
+
+  const [all_Language, setAllLanguage] = useState([]);
+  useEffect(() =>{
+    const u_data = async() =>{
+  
+      const getLanguage = [];
+      language.map((language)=>{
+        getLanguage.push( {'label' :language.language_name, 'value' :language.language_name} );
+      });
+      setAllLanguage(getLanguage);
     }
+    u_data();
+  },[]);
+
+  const [u_Language, setLanguage] = useState([]);
+  console.log("language");
+  console.log(u_Language);
 
   const [selected, setSelected] = useState([userID]);
 
-  const handleChange = ({ target: { name, value } }) =>{
-    console.log("name");
-    console.log([name]);
-  
+  const handleChange = ({ target: { name, value } }) =>{  
     setUpdate({ ...uoption, [name]: value });
   }
 
   var uMember = uoption.project_person;
-
   const allSelectedMember = [];
   const projectMember = (uMember).split(",");
-
 
   for(var i=0; i<projectMember.length; i++){
     allSelectedMember.push({'label' :projectMember[i] , 'value' : projectMember[i]});
@@ -275,7 +286,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
     const res = await fetch(`${server}/api/project/update_project`,{
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ project_id:uoption.project_id, project_person: allMember, project_status:uoption.project_status , project_department:uoption.project_department ,  project_title: uoption.project_title , project_description:uoption.project_description , project_language:uoption.project_language, project_comment:uoption.project_comment, project_priority:uoption.project_priority, project_start: startDate , project_deadline: endDate }),
+      body: JSON.stringify({ project_id:uoption.project_id, project_person: allMember, project_status:uoption.project_status , project_department:uoption.project_department ,  project_title: uoption.project_title , project_description:uoption.project_description , project_language:uoption.project_language, project_priority:uoption.project_priority, project_start: startDate , project_deadline: endDate }),
     });
     if(!toast.isActive(toastId.current)) {
       toastId.current = toast.success('Project updated successfully !', {
@@ -303,7 +314,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
       const res = await fetch(`${server}/api/project/addproject`,{
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body:JSON.stringify({project_person:selected,project_department:result.project_department,project_status:result.project_status , project_title:result.project_title, project_description:result.project_description, project_language:result.project_language, project_comment:result.project_comment, project_priority:result.project_priority, project_start: p_start , project_deadline: p_end , projectAdded_by: cookies }),
+        body:JSON.stringify({project_person:selected,project_department:result.project_department,project_status:result.project_status , project_title:result.project_title, project_description:result.project_description, project_language:result.project_language, project_priority:result.project_priority, project_start: p_start , project_deadline: p_end , projectAdded_by: cookies }),
       })
       const data=await res.json()
       
@@ -681,7 +692,20 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                 <GridItem xs={12} sm={12} md={6}>
                                   <div className="form-group">
                                   <span>Project Language</span><span className="required">*</span>
-                                    <select name="Project_created_by" id="Project_created_by" className="form-control signup-input" {...register('project_language', {required:true ,message:'Please select atleast one option', })}>
+                                  <Multiselect
+                                    displayValue="value"
+                                    options={all_Language}
+                                    value={u_Language}
+                                    selectionLimit="1"
+                                    onChange={setLanguage}
+                                    onRemove={setLanguage}
+                                    onSearch={function noRefCheck(){}}
+                                    onSelect={setLanguage}
+                                    placeholder="Task Language"
+                                    showArrow={true}
+                                  />
+
+                                    {/* <select name="Project_created_by" id="Project_created_by" className="form-control signup-input" {...register('project_language', {required:true ,message:'Please select atleast one option', })}>
                                       <option value="" disabled selected>Select Language</option>
                                       <option value="Wordpress">Wordpress</option>
                                       <option value="Shopify">Shopify</option>
@@ -690,7 +714,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                       <option value="Android">Android</option>
                                       <option value="Bubble">Bubble</option>
                                     </select>
-                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span> */}
                                     <div className="error-msg">{errors.project_language && <span>{errors.project_language.message}</span>}</div>
                                   </div> 
                                 </GridItem>
