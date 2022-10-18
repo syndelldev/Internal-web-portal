@@ -1149,6 +1149,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                           onSelect={setDepartment}
                                           placeholder="Project Department"
                                           showArrow={true}
+                                          disable={cookies.Role_id == "2"}
                                         />
                                         </div> 
                                     </GridItem>
@@ -1168,6 +1169,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                         onSelect={setLanguage}
                                         placeholder="Project Language"
                                         showArrow={true}
+                                        disable={cookies.Role_id == "2"}
                                       />
                                       </div> 
                                     </GridItem>
@@ -1539,6 +1541,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                           onSelect={setDepartment}
                                           placeholder="Project Department"
                                           showArrow={true}
+                                          disable={cookies.Role_id == "2"}
                                         />
                                         </div> 
                                     </GridItem>
@@ -1558,6 +1561,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                         onSelect={setLanguage}
                                         placeholder="Project Language"
                                         showArrow={true}
+                                        disable={cookies.Role_id == "2"}
                                       />
                                       </div> 
                                     </GridItem>
@@ -1931,6 +1935,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                           onSelect={setDepartment}
                                           placeholder="Project Department"
                                           showArrow={true}
+                                          disable={cookies.Role_id == "2"}
                                         />
                                         </div> 
                                     </GridItem>
@@ -1950,6 +1955,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                         onSelect={setLanguage}
                                         placeholder="Project Language"
                                         showArrow={true}
+                                        disable={cookies.Role_id == "2"}
                                       />
                                       </div> 
                                     </GridItem>

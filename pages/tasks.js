@@ -1257,6 +1257,7 @@ const updateComment = async(id, comment) =>{
                                     placeholder="Task Language"
                                     showArrow={true}
                                     selectedValues={u_Language}
+                                    disable={cookies.Role_id == "2"}
                                   />
 
                                   </div> 
@@ -1757,6 +1758,7 @@ const updateComment = async(id, comment) =>{
                                     placeholder="Task Language"
                                     showArrow={true}
                                     selectedValues={u_Language}
+                                    disable={cookies.Role_id == "2"}
                                   />
                                   </div> 
                                 </GridItem>
@@ -2257,6 +2259,7 @@ const updateComment = async(id, comment) =>{
                                     placeholder="Task Language"
                                     showArrow={true}
                                     selectedValues={u_Language}
+                                    disable={cookies.Role_id == "2"}
                                   />
                                   </div> 
                                 </GridItem>
@@ -2758,6 +2761,7 @@ const updateComment = async(id, comment) =>{
                                     placeholder="Task Language"
                                     showArrow={true}
                                     selectedValues={u_Language}
+                                    disable={cookies.Role_id == "2"}
                                   />
                                   </div> 
                                 </GridItem>

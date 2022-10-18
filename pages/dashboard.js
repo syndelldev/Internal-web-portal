@@ -523,6 +523,7 @@ useEffect(() =>{
                                           onSelect={setDepartment}
                                           placeholder="Project Department"
                                           showArrow={true}
+                                          disable={cookies.Role_id == "2"}
                                         />
                                         </div> 
                                     </GridItem>
@@ -542,6 +543,7 @@ useEffect(() =>{
                                         onSelect={setLanguage}
                                         placeholder="Project Language"
                                         showArrow={true}
+                                        disable={cookies.Role_id == "2"}                                        
                                       />
                                       <div className="error-msg">{errors.project_language && <span>{errors.project_language.message}</span>}</div>
                                       </div> 
