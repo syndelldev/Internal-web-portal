@@ -115,10 +115,13 @@ export async function getServerSideProps(context){
   const lang = await fetch(`${server}/api/language`)
   const language = await lang.json();
 
-  return{ props: { project_details, user_project, User_name, language, user_Department } }
+  const lang_department = await fetch(`${server}/api/languageDepartment`)
+  const languageDepartment = await lang_department.json();
+
+  return{ props: { project_details, user_project, User_name, language, user_Department, languageDepartment } }
 }
 
-function Dashboard( { project_details, user_project, User_name, language, user_Department } ) {
+function Dashboard( { project_details, user_project, User_name, language, user_Department, languageDepartment } ) {
 
   const useStyles = makeStyles(styles);
   const classes = useStyles();
@@ -243,10 +246,21 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
     }
     u_data();
   },[]);
-
   const [u_Language, setLanguage] = useState([]);
-  console.log("language");
-  console.log(u_Language);
+
+  const [all_Department, setAllDepartment] = useState([]);
+  useEffect(() =>{
+    const u_data = async() =>{
+  
+      const getDepartment = [];
+      languageDepartment.map((department)=>{
+        getDepartment.push( {'label' :department.language_department, 'value' :department.language_department} );
+      });
+      setAllDepartment(getDepartment);
+    }
+    u_data();
+  },[]);
+  const [u_Department, setDepartment] = useState([]);
 
   const [selected, setSelected] = useState([userID]);
 
@@ -309,12 +323,16 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
     console.log(result.start.toDateString());
     const p_start = result.start.toDateString();
     const p_end = result.end.toDateString();
+
+    if(u_Language != ""){
+      var Language = u_Language[0].value;
+    }
     
     if(result.project_title != ""){
       const res = await fetch(`${server}/api/project/addproject`,{
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body:JSON.stringify({project_person:selected,project_department:result.project_department,project_status:result.project_status , project_title:result.project_title, project_description:result.project_description, project_language:result.project_language, project_priority:result.project_priority, project_start: p_start , project_deadline: p_end , projectAdded_by: cookies }),
+        body:JSON.stringify({project_person:selected,project_department:result.project_department,project_status:result.project_status , project_title:result.project_title, project_description:result.project_description, project_language:Language, project_priority:result.project_priority, project_start: p_start , project_deadline: p_end , projectAdded_by: cookies }),
       })
       const data=await res.json()
       
@@ -674,7 +692,20 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                 <GridItem xs={12} sm={12} md={6}>
                                     <div className="form-group">
                                     <span>Project Department</span><span className="required">*</span>
-                                      <select name="Department" id="Department" className="form-control signup-input" {...register('project_department', {required:true ,message:'Please select atleast one option', })}>
+                                    <Multiselect
+                                      displayValue="value"
+                                      options={all_Department}
+                                      value={u_Department}
+                                      selectionLimit="1"
+                                      onChange={setDepartment}
+                                      onRemove={setDepartment}
+                                      onSearch={function noRefCheck(){}}
+                                      onSelect={setDepartment}
+                                      placeholder="Task Language"
+                                      showArrow={true}
+                                    />
+
+                                      {/* <select name="Department" id="Department" className="form-control signup-input" {...register('project_department', {required:true ,message:'Please select atleast one option', })}>
                                         <option value=""  disabled selected>Select Your Department...</option>
                                         <option value="HR">HR</option>
                                         <option value="UI & UX">UI & UX</option>
@@ -685,7 +716,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                         <option value="SEO">SEO</option>
                                       </select>
                                       <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                                      <div className="error-msg">{errors.project_department && <span>{errors.project_department.message}</span>}</div>
+                                      <div className="error-msg">{errors.project_department && <span>{errors.project_department.message}</span>}</div> */}
                                     </div> 
                                 </GridItem>
 
