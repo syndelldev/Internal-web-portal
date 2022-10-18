@@ -167,8 +167,7 @@ function Dashboard( { project_details , User_name , allTask, userTask, language,
     task_deadline: "",
     task_priority: "",
     task_status: "",
-    task_person: "",
-    task_comment: ""
+    task_person: ""
   });
 
   const handleChange = ({ target: { name, value } }) =>{
@@ -278,11 +277,15 @@ function Dashboard( { project_details , User_name , allTask, userTask, language,
           }
     
     }else{
-  
+
+      if(u_Language != ""){
+        var updated_Language = u_Language[0].value;
+      }
+
       const res = await fetch(`${server}/api/subtask/update_subtask`,{
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ task_id:uoption.task_id, project_name:u_project , task_person: allMember, task_status:uoption.task_status , task_department:uoption.task_department ,  task_title: uoption.task_title , task_description:uoption.task_description , task_language:uoption.task_language, task_comment:uoption.task_comment, task_priority:uoption.task_priority, task_start: startDate , task_deadline: endDate }),
+        body: JSON.stringify({ task_id:uoption.task_id, project_name:u_project , task_person: allMember, task_status:uoption.task_status , task_department:uoption.task_department ,  task_title: uoption.task_title , task_description:uoption.task_description , task_language:updated_Language, task_priority:uoption.task_priority, task_start: startDate , task_deadline: endDate }),
       });
       if(!toast.isActive(toastId.current)) {
         toastId.current = toast.success('Task updated Successfully!🎉', {
@@ -1252,7 +1255,7 @@ const updateComment = async(id, comment) =>{
                                     onRemove={setLanguage}
                                     onSearch={function noRefCheck(){}}
                                     onSelect={setLanguage}
-                                    placeholder="User Designation"
+                                    placeholder="Task Language"
                                     showArrow={true}
                                     selectedValues={u_Language}
                                   />
