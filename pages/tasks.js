@@ -353,15 +353,10 @@ function Dashboard( { project_details , User_name , allTask, userTask, language,
 }
 
 const [uoptions, setOptions] = useState([]);
-
 useEffect(() =>{
   const u_data = async() =>{
 
     const getUsername = [];
-
-    console.log("123");
-    console.log(User_name);
-
     User_name.map((user)=>{
       getUsername.push( {'label' :user.username, 'value' :user.username} );
     });
@@ -372,15 +367,10 @@ useEffect(() =>{
 const [selected, setSelected] = useState([]);
 
 const [project_list, setLists] = useState([]);
-
 useEffect(() =>{
   const u_data = async() =>{
 
     const getUsername = [];
-
-    console.log("123");
-    console.log(User_name);
-
     project_details.map((project)=>{
       getUsername.push( {'label' :project.project_title , 'value' :project.project_title } );
     });
