@@ -31,8 +31,6 @@ import { MdDelete } from 'react-icons/md';
 import { ToastContainer, toast } from 'react-toastify';
 import axios from "axios";
 import dynamic from "next/dynamic";
-import 'react-quill/dist/quill.snow.css';
-import "react-quill/dist/quill.bubble.css";
 
 // import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 // import Accordion from "@material-ui/core/Accordion";

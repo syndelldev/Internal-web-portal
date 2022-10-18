@@ -26,7 +26,6 @@ import { useCookies } from 'react-cookie';
 import axios from "axios";
 import dynamic from "next/dynamic";
 
-
 const ReactQuill = dynamic(
   async () => {
     const { default: RQ } = await import("react-quill");
