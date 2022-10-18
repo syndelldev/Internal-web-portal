@@ -733,7 +733,7 @@ p.save-btn{
 /* ccs added by pradeep */
 /* expand and collapse btn css */
 .bttn-design{
-  margin-left: 15px;
+  /*margin-left: 15px;*/
   margin-top: 30px;
 }
 /* end css added by pradeep */
@@ -767,16 +767,16 @@ p.save-btn{
     font-size: 17px!important;
   }
   .MuiGrid-grid-md-4{
-    max-width: 55.333333%!important;
-    flex-basis:50%!important
+    max-width: 100%!important;
+    flex-basis:100%!important
     }
- }
+ }/*
  @media only screen and (max-width: 1080px) and (min-width: 960px) {
   .MuiGrid-grid-md-4{
     max-width: 55.333333%!important;
     flex-basis:50% !important;
     }
-}
+}*/
 @media only screen and (min-width: 960px) {
   h4.projectTitle{
 font-size: 17px!important;
