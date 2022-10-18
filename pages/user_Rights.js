@@ -66,7 +66,7 @@ function UserRights({UserList,ModuleList}){
         }else if(cookies.Role_id == "2"){
           router.push(`${server}/dashboard`);
         }
-      });
+    });
     
     const [user, setuser] = useState(1)
     const [module, setmodule] = useState(1)
