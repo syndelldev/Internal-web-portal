@@ -120,10 +120,13 @@ export async function getServerSideProps(context){
   const pri = await fetch(`${server}/api/priority`)
   const priority = await pri.json();
 
-  return{ props: { project_details, user_project, User_name, language, user_Department, languageDepartment, priority } }
+  const stat = await fetch(`${server}/api/projectStatus`)
+  const status = await stat.json();
+
+  return{ props: { project_details, user_project, User_name, language, user_Department, languageDepartment, priority, status } }
 }
 
-function Dashboard( { project_details, user_project, User_name, language, user_Department, languageDepartment, priority } ) {
+function Dashboard( { project_details, user_project, User_name, language, user_Department, languageDepartment, priority, status } ) {
 
   const useStyles = makeStyles(styles);
   const classes = useStyles();
@@ -259,6 +262,20 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
     u_data();
   },[]);
   const [u_Priority, setPriority] = useState([]);
+
+  const [all_Status, setAllStatus] = useState([]);
+  useEffect(() =>{
+    const u_data = async() =>{
+  
+      const getStatus = [];
+      status.map((priority)=>{
+        getStatus.push( {'label' :priority.priority_name, 'value' :priority.priority_name} );
+      });
+      setAllStatus(getStatus);
+    }
+    u_data();
+  },[]);
+  const [u_Status, setStatus] = useState([]);
 
   const projectId = async(id) =>{
 
