@@ -268,8 +268,8 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
     const u_data = async() =>{
   
       const getStatus = [];
-      status.map((priority)=>{
-        getStatus.push( {'label' :priority.priority_name, 'value' :priority.priority_name} );
+      status.map((status)=>{
+        getStatus.push( {'label' :status.projectstatus_name, 'value' :status.projectstatus_name} );
       });
       setAllStatus(getStatus);
     }
@@ -299,6 +299,10 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
     const getPriority = [];
     getPriority.push( {'label' :udata.project_priority, 'value' :udata.project_priority} );
 
+    const getStatus = [];
+    getStatus.push( {'label' :udata.project_status, 'value' :udata.project_status} );
+
+    setStatus(getStatus);
     setLanguage(getLanguage);
     setDepartment(getDepartment);
     setPriority(getPriority);
@@ -381,21 +385,21 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
 
     if(u_Department != ""){
       var Department = u_Department[0].value;
-      console.log("department");
-      console.log(Department);
     }
 
     if(u_Priority != ""){
       var Priority = u_Priority[0].value;
-      console.log("priority");
-      console.log(Priority);
+    }
+
+    if(u_Status != ""){
+      var Status = u_Status[0].value;
     }
 
     if(result.project_title != ""){
       const res = await fetch(`${server}/api/project/addproject`,{
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body:JSON.stringify({project_person:selected,project_department:Department,project_status:result.project_status , project_title:result.project_title, project_description:result.project_description, project_language:Language, project_priority:Priority, project_start: p_start , project_deadline: p_end , projectAdded_by: cookies }),
+        body:JSON.stringify({project_person:selected,project_department:Department,project_status:Status, project_title:result.project_title, project_description:result.project_description, project_language:Language, project_priority:Priority, project_start: p_start , project_deadline: p_end , projectAdded_by: cookies }),
       })
       const data=await res.json();
       
@@ -863,13 +867,26 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                 <GridItem xs={12} sm={12} md={6}>
                                     <div className="form-group">
                                       <span>Project Status</span><span className="required">*</span>
-                                      <select name="Status" id="Status" className="form-control signup-input" {...register('project_status', {required:true ,message:'Please select atleast one option', })}>
+                                      <Multiselect
+                                          displayValue="value"
+                                          options={all_Status}
+                                          value={u_Status}
+                                          selectionLimit="1"
+                                          onChange={setStatus}
+                                          onRemove={setStatus}
+                                          onSearch={function noRefCheck(){}}
+                                          onSelect={setStatus}
+                                          placeholder="Project Status"
+                                          showArrow={true}
+                                      />
+                                      
+                                      {/* <select name="Status" id="Status" className="form-control signup-input" {...register('project_status', {required:true ,message:'Please select atleast one option', })}>
                                         <option value=""  disabled selected>Select Project Status</option>
                                         <option value="on hold">On hold</option>
                                         <option value="running">Running</option>
                                         <option value="completed">Completed</option>
                                       </select>
-                                      <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                      <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span> */}
                                       {/* <div className="error-msg">{errors.status && <p>{errors.status.message}</p>}</div> */}
                                     </div> 
                                 </GridItem>
@@ -1305,13 +1322,27 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                     <GridItem xs={12} sm={12} md={6}>
                                         <div className="form-group">
                                           <span>Project Status</span><span className="required">*</span>
-                                            <select name="project_status" id="Status" className="form-control signup-input" value={uoption.project_status} onChange={handleChange} disabled={cookies.Role_id == "2"} >
+                                          <Multiselect
+                                              displayValue="value"
+                                              options={all_Status}
+                                              value={u_Status}
+                                              selectedValues={u_Status}
+                                              selectionLimit="1"
+                                              onChange={setStatus}
+                                              onRemove={setStatus}
+                                              onSearch={function noRefCheck(){}}
+                                              onSelect={setStatus}
+                                              placeholder="Project Status"
+                                              showArrow={true}
+                                          />
+
+                                            {/* <select name="project_status" id="Status" className="form-control signup-input" value={uoption.project_status} onChange={handleChange} disabled={cookies.Role_id == "2"} >
                                               <option value=""  disabled selected>Select Project Status</option>
                                               <option value="on hold">On hold</option>
                                               <option value="running">Running</option>
                                               <option value="completed">Completed</option>
                                             </select>
-                                          <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                          <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span> */}
                                         </div> 
                                     </GridItem>
                                   </GridContainer><br/>
@@ -1702,13 +1733,27 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                     <GridItem xs={12} sm={12} md={6}>
                                         <div className="form-group">
                                           <span>Project Status</span><span className="required">*</span>
-                                            <select name="project_status" id="Status" className="form-control signup-input" value={uoption.project_status} onChange={handleChange} disabled={cookies.Role_id == "2"} >
+                                          <Multiselect
+                                              displayValue="value"
+                                              options={all_Status}
+                                              value={u_Status}
+                                              selectedValues={u_Status}
+                                              selectionLimit="1"
+                                              onChange={setStatus}
+                                              onRemove={setStatus}
+                                              onSearch={function noRefCheck(){}}
+                                              onSelect={setStatus}
+                                              placeholder="Project Status"
+                                              showArrow={true}
+                                          />
+
+                                            {/* <select name="project_status" id="Status" className="form-control signup-input" value={uoption.project_status} onChange={handleChange} disabled={cookies.Role_id == "2"} >
                                               <option value=""  disabled selected>Select Project Status</option>
                                               <option value="on hold">On hold</option>
                                               <option value="running">Running</option>
                                               <option value="completed">Completed</option>
                                             </select>
-                                          <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                          <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span> */}
                                         </div> 
                                     </GridItem>
                                   </GridContainer><br/>
@@ -2108,13 +2153,27 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                     <GridItem xs={12} sm={12} md={6}>
                                         <div className="form-group">
                                           <span>Project Status</span><span className="required">*</span>
-                                            <select name="project_status" id="Status" className="form-control signup-input" value={uoption.project_status} onChange={handleChange} disabled={cookies.Role_id == "2"} >
+                                          <Multiselect
+                                              displayValue="value"
+                                              options={all_Status}
+                                              value={u_Status}
+                                              selectedValues={u_Status}
+                                              selectionLimit="1"
+                                              onChange={setStatus}
+                                              onRemove={setStatus}
+                                              onSearch={function noRefCheck(){}}
+                                              onSelect={setStatus}
+                                              placeholder="Project Status"
+                                              showArrow={true}
+                                          />
+
+                                            {/* <select name="project_status" id="Status" className="form-control signup-input" value={uoption.project_status} onChange={handleChange} disabled={cookies.Role_id == "2"} >
                                               <option value=""  disabled selected>Select Project Status</option>
                                               <option value="on hold">On hold</option>
                                               <option value="running">Running</option>
                                               <option value="completed">Completed</option>
                                             </select>
-                                          <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                          <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span> */}
                                         </div> 
                                     </GridItem>
                                   </GridContainer><br/>
