@@ -25,11 +25,6 @@ import { MdDelete } from 'react-icons/md';
 import { useCookies } from 'react-cookie';
 import axios from "axios";
 import dynamic from "next/dynamic";
-import 'react-quill/dist/quill.snow.css';
-import "react-quill/dist/quill.bubble.css";
-import { DateRangePicker } from 'react-date-range';
-import 'react-date-range/dist/styles.css'; // main css file
-import 'react-date-range/dist/theme/default.css'; // theme css file
 
 
 const ReactQuill = dynamic(
@@ -114,15 +109,31 @@ export async function getServerSideProps(context){
   const resp = await fetch(`${server}/api/admin`)
   const User_name = await resp.json();
 
-  return{ props: { project_details, user_project, User_name } }
+  const department = await fetch(`${server}/api/user/user_department`);
+  const user_Department = await department.json();
+
+  const lang = await fetch(`${server}/api/language`)
+  const language = await lang.json();
+
+  const lang_department = await fetch(`${server}/api/languageDepartment`)
+  const languageDepartment = await lang_department.json();
+
+  return{ props: { project_details, user_project, User_name, language, user_Department, languageDepartment } }
 }
 
-function Dashboard( { project_details, user_project, User_name } ) {
+function Dashboard( { project_details, user_project, User_name, language, user_Department, languageDepartment } ) {
 
   const useStyles = makeStyles(styles);
   const classes = useStyles();
 
   const [cookies, setCookie] = useCookies(['name']);
+
+  // redirect page if cookies is not set
+  useEffect(() => {
+    if(!cookies.name){
+      router.push(`${server}/login`);
+    }
+  });
 
   //Notification Start
   const createNotification = (project_id) => {
@@ -136,23 +147,12 @@ function Dashboard( { project_details, user_project, User_name } ) {
   }
   //Notification End
 
-  // const [project_details, setproject_details] = useState([])
   //Fetch API According Role Start
   if(cookies.Role_id==1 || cookies.Role_id==3){
     var project_details = project_details;
-    // useEffect(async()=>{
-    //   const res = await fetch(`${server}/api/project`);
-    //   const project_details = await res.json();
-    //   setproject_details(project_details)
-    // })
   }
   else if(cookies.Role_id==2){
     var project_details = user_project;
-    // useEffect(async()=>{
-    //   const res = await fetch(`${server}/api/user_dashboard`);
-    //   const project_details = await res.json();
-    //   setproject_details(project_details)
-    // })
   }
 
   //Fetch API According Role End
@@ -179,7 +179,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
     console.log(id);
 
     const res = await fetch(`${server}/api/project/${id}`);
-    router.push(`${server}/admin/project_module`);
+    router.push(`${server}/projects`);
   }
 
   const [uoption, setUpdate] = React.useState({ 
@@ -191,8 +191,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
     project_deadline: "",
     project_priority: "",
     project_status: "",
-    project_person: "",
-    project_comment: ""
+    project_person: ""
   });
 
   const [startDate, setStartDate] = useState();
@@ -216,7 +215,34 @@ function Dashboard( { project_details, user_project, User_name } ) {
   }
   const add_user = [];
   add_user.push(userID);
-  // console.log(userID)
+  
+  const [all_Language, setAllLanguage] = useState([]);
+  useEffect(() =>{
+    const u_data = async() =>{
+  
+      const getLanguage = [];
+      language.map((language)=>{
+        getLanguage.push( {'label' :language.language_name, 'value' :language.language_name} );
+      });
+      setAllLanguage(getLanguage);
+    }
+    u_data();
+  },[]);
+  const [u_Language, setLanguage] = useState([]);
+
+  const [all_Department, setAllDepartment] = useState([]);
+  useEffect(() =>{
+    const u_data = async() =>{
+  
+      const getDepartment = [];
+      languageDepartment.map((department)=>{
+        getDepartment.push( {'label' :department.language_department, 'value' :department.language_department} );
+      });
+      setAllDepartment(getDepartment);
+    }
+    u_data();
+  },[]);
+  const [u_Department, setDepartment] = useState([]);
 
   const projectId = async(id) =>{
     console.log('update project id');
@@ -224,7 +250,6 @@ function Dashboard( { project_details, user_project, User_name } ) {
 
     const response = await fetch(`${server}/api/project/update/${id}`)
     const update_data = await response.json();
-    // console.log(update_data[0]);
 
     const udata = update_data[0];
 
@@ -236,44 +261,43 @@ function Dashboard( { project_details, user_project, User_name } ) {
       getAllname.push( {'label' :user, 'value' :user} );
     });
 
+    const getLanguage = [];
+    getLanguage.push( {'label' :udata.project_language, 'value' :udata.project_language} );
+
+    const getDepartment = [];
+    getDepartment.push( {'label' :udata.project_department, 'value' :udata.project_department} );
+
+    setLanguage(getLanguage);
+    setDepartment(getDepartment);
     setUpdateSelected(getAllname);
     setUpdate(udata);
     setStartDate(new Date(udata.project_start));
     setEndDate(new Date(udata.project_deadline));
 
-    }
+  }
 
   const [selected, setSelected] = useState([userID]);
 
-  const handleChange = ({ target: { name, value } }) =>{
-    console.log("name");
-    console.log([name]);
-  
+  const handleChange = ({ target: { name, value } }) =>{  
     setUpdate({ ...uoption, [name]: value });
   }
 
   var uMember = uoption.project_person;
-
   const allSelectedMember = [];
   const projectMember = (uMember).split(",");
-
 
   for(var i=0; i<projectMember.length; i++){
     allSelectedMember.push({'label' :projectMember[i] , 'value' : projectMember[i]});
   }
-  // console.log("projectMember", projectMember)
 
   const toastId = React.useRef(null);
   const updateProject = async() =>{
-    // e.preventDefault()
     const allMember = [];
+
     for(var i=0; i<updateSelected.length; i++){
           allMember.push(updateSelected[i].value);
     }
   
-    // console.log("all users");
-    // console.log( allMember );
-
     if( uoption.project_title=="" || uoption.project_description=="" ||  uoption.project_department=="" || uoption.project_language=="" || allMember=="" || startDate=="" || endDate=="" || uoption.project_priority=="" || uoption.project_status=="" ){
       if(! toast.isActive(toastId.current)) {
         toastId.current = toast.error('Please fill all the required fields!', {
@@ -290,18 +314,17 @@ function Dashboard( { project_details, user_project, User_name } ) {
     const res = await fetch(`${server}/api/project/update_project`,{
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ project_id:uoption.project_id, project_person: allMember, project_status:uoption.project_status , project_department:uoption.project_department ,  project_title: uoption.project_title , project_description:uoption.project_description , project_language:uoption.project_language, project_comment:uoption.project_comment, project_priority:uoption.project_priority, project_start: startDate , project_deadline: endDate }),
+      body: JSON.stringify({ project_id:uoption.project_id, project_person: allMember, project_status:uoption.project_status , project_department:uoption.project_department ,  project_title: uoption.project_title , project_description:uoption.project_description , project_language:uoption.project_language, project_priority:uoption.project_priority, project_start: startDate , project_deadline: endDate }),
     });
     if(!toast.isActive(toastId.current)) {
-      toastId.current = toast.success('Updated Successfully !', {
+      toastId.current = toast.success('Project updated successfully !', {
           position: "top-right",
           autoClose:1000,
           theme: "colored",
           hideProgressBar: true,
-          onClose: () => router.push(`${server}/projects`)
           });
       }
-      // router.reload(`${server}/projects`);
+      router.reload(`${server}/projects`);
   }
 }
 
@@ -314,29 +337,34 @@ function Dashboard( { project_details, user_project, User_name } ) {
     console.log(result.start.toDateString());
     const p_start = result.start.toDateString();
     const p_end = result.end.toDateString();
-    
+
+    if(u_Language != ""){
+      var Language = u_Language[0].value;
+    }
+
+    if(u_Department != ""){
+      var Department = u_Department[0].value;
+    }
+
     if(result.project_title != ""){
       const res = await fetch(`${server}/api/project/addproject`,{
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body:JSON.stringify({project_person:selected,project_department:result.project_department,project_status:result.project_status , project_title:result.project_title, project_description:result.project_description, project_language:result.project_language, project_comment:result.project_comment, project_priority:result.project_priority, project_start: p_start , project_deadline: p_end , projectAdded_by: cookies }),
+        body:JSON.stringify({project_person:selected,project_department:Department,project_status:result.project_status , project_title:result.project_title, project_description:result.project_description, project_language:Language, project_priority:result.project_priority, project_start: p_start , project_deadline: p_end , projectAdded_by: cookies }),
       })
-      const data=await res.json()
+      const data=await res.json();
       
       if(res.status==200)
       {
-        // alert("success");
         if(!toast.isActive(toastId.current)) {
           toastId.current = toast.success('Project added Successfully ! 🎉', {
               position: "top-right",
               autoClose:1000,
               theme: "colored",
               hideProgressBar: true,
-              onClose: () => router.push(`${server}/admin/project_module`)
               });
-          }
-  
-        router.reload(`${server}/admin/project_module`);
+        }
+        router.reload(`${server}/projects`);
       }
       else
       {
@@ -433,7 +461,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
       var comment = await axios.post(`${server}/api/comment/getProjectComment`, { project_id: project_id });
       setcomments(comment.data)
     }
-    
+    // add comment
     const sendMessage = async (project_id) => {
       const date = new Date().toLocaleString();
       console.log("date");
@@ -449,13 +477,14 @@ function Dashboard( { project_details, user_project, User_name } ) {
             hideProgressBar: true,
           });
       }
-  
-      // router.reload(`${server}/projects`);
     }
-    
+
+    // get and set comment values in editor
     const [ value, setValues ] = useState("");
+    // quill ref
     const quillRef = useRef(null);
 
+    // Upload image in project public/upload_img folder and show image in editor
     const imageHandler = () => {
 
       const input = document.createElement('input');
@@ -473,6 +502,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
           formData.append('image', file);
           formData.getAll('image');
 
+          // upload image API
           const res = await fetch(`${server}/api/upload`,{ 
               method: 'POST',
               body: formData,
@@ -484,11 +514,13 @@ function Dashboard( { project_details, user_project, User_name } ) {
           // Save current cursor 
           const range = quillRef.current.getEditor().getSelection();
           const quill = quillRef.current.getEditor();
+          // show uploaded image in editor
           quill.insertEmbed( range.index, "image", `${server}/upload_img/${data.files.image.newFilename}${data.files.image.originalFilename}`);
           quillRef.current.getEditor().setSelection(range.index + 1);
 
       }else{
 
+        // only upload images toast error
         if(! toast.isActive(toastId.current)) {
           toastId.current = toast.error('Please upload only image', {
               position: "top-right",
@@ -503,6 +535,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
     }
   }
 
+  // quill modules
   const modules = useMemo(() => ({
       toolbar: {
           container: [
@@ -524,7 +557,8 @@ function Dashboard( { project_details, user_project, User_name } ) {
     }), []);
   
     const [commentEdit, setEditComment] = useState();
-  
+
+    // comment ID API
       const editComment = async( id ) =>{
         console.log("id");
         console.log(id);
@@ -539,7 +573,8 @@ function Dashboard( { project_details, user_project, User_name } ) {
           console.log(commentId.data[0].comment);        
         }
       }
-      
+
+      // update comment API
       const updateComment = async(id, comment) =>{
         console.log("update");
         console.log(comment);
@@ -557,16 +592,23 @@ function Dashboard( { project_details, user_project, User_name } ) {
         router.reload(`${server}/projects`);
       }
 
+      // date range
       const [dateRange, setDateRange] = useState([null, null]);
+      // startdate and enddate get value
       const [startDates, endDates] = dateRange;
+      // get selected dates projects list
       const [dateDetails, setDateDetails] = useState();
+      // get selected dates projects list for user
+      const [date_uData, setDate_uDetails] = useState();
+      // onclick show data
       const [dateDataDisplay, setData] = useState(false);
     
+      // daterange function onClick
       const date_Range = async() =>{
         if(startDates != null && endDates != null){
           console.log(dateRange);
 
-          const res = await fetch(`${server}/api/project/dateRange`,{
+          const res = await fetch(`${server}/api/project/dateRange_Projects`,{
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body:JSON.stringify({ dateStart: startDates, dateEnd: endDates }),
@@ -578,9 +620,24 @@ function Dashboard( { project_details, user_project, User_name } ) {
             setDateDetails(date_Data);
             setData(true);
           }
+
+          const response = await fetch(`${server}/api/project/dateRange_ProjectsUser`,{
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body:JSON.stringify({ dateStart: startDates, dateEnd: endDates, user: cookies.name }),
+          })
+          const date_uData=await response.json()
+          // console.log("user data");
+          // console.log(date_uData);
+          
+          if(response.status==200)
+          {
+            setDate_uDetails(date_uData);
+            setData(true);
+          }
               
         }else{
-    
+          // select startDate and endDate toast error
           if(! toast.isActive(toastId.current)) {
             toastId.current = toast.error('Please select dates range!', {
                 position: "top-right",
@@ -593,8 +650,18 @@ function Dashboard( { project_details, user_project, User_name } ) {
         }
       }
       
+      if(cookies.Role_id==1 || cookies.Role_id==3){
+        var project_list = dateDetails;
+        console.log(project_list);
+      }
+      else if(cookies.Role_id==2){
+        var project_list = date_uData;
+        console.log(project_list);
+      }
+    
+      
   return (
-    <>
+    <span>
 
       <div className="buttonalign" hidden={cookies.Role_id == "2"} >
         <GridContainer>
@@ -643,35 +710,37 @@ function Dashboard( { project_details, user_project, User_name } ) {
                                 <GridItem xs={12} sm={12} md={6}>
                                     <div className="form-group">
                                     <span>Project Department</span><span className="required">*</span>
-                                      <select name="Department" id="Department" className="form-control signup-input" {...register('project_department', {required:true ,message:'Please select atleast one option', })}>
-                                        <option value=""  disabled selected>Select Your Department...</option>
-                                        <option value="HR">HR</option>
-                                        <option value="UI & UX">UI & UX</option>
-                                        <option value="Web Developer">Web Developer</option>
-                                        <option value="Content Writer">Content Writer</option>
-                                        <option value="Project Manager">Project Manager</option>
-                                        <option value="Mobile App Developer">Mobile App Developer</option>
-                                        <option value="SEO">SEO</option>
-                                      </select>
-                                      <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                                      <div className="error-msg">{errors.project_department && <span>{errors.project_department.message}</span>}</div>
+                                    <Multiselect
+                                      displayValue="value"
+                                      options={all_Department}
+                                      value={u_Department}
+                                      selectionLimit="1"
+                                      onChange={setDepartment}
+                                      onRemove={setDepartment}
+                                      onSearch={function noRefCheck(){}}
+                                      onSelect={setDepartment}
+                                      placeholder="Project Department"
+                                      showArrow={true}
+                                    />
                                     </div> 
                                 </GridItem>
 
                                 <GridItem xs={12} sm={12} md={6}>
                                   <div className="form-group">
                                   <span>Project Language</span><span className="required">*</span>
-                                    <select name="Project_created_by" id="Project_created_by" className="form-control signup-input" {...register('project_language', {required:true ,message:'Please select atleast one option', })}>
-                                      <option value="" disabled selected>Select Language</option>
-                                      <option value="Wordpress">Wordpress</option>
-                                      <option value="Shopify">Shopify</option>
-                                      <option value="ReactJS">ReactJS</option>
-                                      <option value="Laravel">Laravel</option>
-                                      <option value="Android">Android</option>
-                                      <option value="Bubble">Bubble</option>
-                                    </select>
-                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                                    <div className="error-msg">{errors.project_language && <span>{errors.project_language.message}</span>}</div>
+                                  <Multiselect
+                                    displayValue="value"
+                                    options={all_Language}
+                                    value={u_Language}
+                                    selectionLimit="1"
+                                    onChange={setLanguage}
+                                    onRemove={setLanguage}
+                                    onSearch={function noRefCheck(){}}
+                                    onSelect={setLanguage}
+                                    placeholder="Project Language"
+                                    showArrow={true}
+                                  />
+                                  <div className="error-msg">{errors.project_language && <span>{errors.project_language.message}</span>}</div>
                                   </div> 
                                 </GridItem>
                               </GridContainer><br/>
@@ -787,14 +856,14 @@ function Dashboard( { project_details, user_project, User_name } ) {
             <div className="department_dropdown">
             <button className="dropdown_button">Project Departments</button>
                 <div className="department-link">
-                  <a href={`${server}/projects`}>All</a>
-                  <a href={`${server}/project_department/HR`}>HR</a>
-                  <a href={`${server}/project_department/UI & UX`}>UI & UX</a>
-                  <a href={`${server}/project_department/Web development`}>Web Developer</a>
-                  <a href={`${server}/project_department/Content writer`}>Content Writer</a>
-                  <a href={`${server}/project_department/Project manager`}>Project Manager</a>
-                  <a href={`${server}/project_department/Mobile App developer`}>Mobile App Developer</a>
-                  <a href={`${server}/project_department/SEO`}>SEO</a>
+                  {user_Department.map((department)=>{
+                    return(
+                      <span>
+                        <a href={`${server}/project_department/${department.department_name}`}>{department.department_name}</a>
+                      </span>
+                    )                      
+                  }
+                  )}
                 </div>
             </div>
           </GridItem>
@@ -803,13 +872,14 @@ function Dashboard( { project_details, user_project, User_name } ) {
             <div className="department_dropdown">
               <button className="dropdown_button">Project Languages</button>
                   <div className="department-link">
-                    <a href={`${server}/projects`}>All</a>
-                    <a href={`${server}/project_language/Wordpress`}>Wordpress</a>
-                    <a href={`${server}/project_language/Shopify`}>Shopify</a>
-                    <a href={`${server}/project_language/ReactJS`}>ReactJS</a>
-                    <a href={`${server}/project_language/Laravel`}>Laravel</a>
-                    <a href={`${server}/project_language/Android`}>Android</a>
-                    <a href={`${server}/project_language/Bubble`}>Bubble</a>
+                    {language.map((language)=>{
+                      return(
+                        <span>
+                          <a href={`${server}/project_language/${language.language_name}`}>{language.language_name}</a>
+                        </span>
+                      )
+                    }
+                    )}
                   </div>
             </div>
           </GridItem>
@@ -817,7 +887,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
       </div>
       {/* <div className="Project-title">Projects</div> */}
   <div className="main_task_title">
-           <div className="Project-title">Projects</div>
+    <div className="Project-title">Projects</div>
     <GridContainer>
       <GridItem>
         <button className="bttn-design" onClick={()=> 
@@ -834,6 +904,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
       <GridItem>
 
         <DatePicker
+        monthsShown={2}
           selectsRange={true}
           startDate={startDates}
           endDate={endDates}
@@ -841,7 +912,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
             setDateRange(update);
           }}
           isClearable={true}
-          dateFormat="dd-MM-yyyy"
+          dateFormat="dd/MM/yyyy"
         />
         <button onClick={() => date_Range()}>enter</button>
 
@@ -849,6 +920,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
     </GridContainer>
   </div>
 
+{/* selected daterange projects list data start */}
 {dateDataDisplay ? (
   <span>
     <h3>Projects List</h3>
@@ -934,17 +1006,15 @@ function Dashboard( { project_details, user_project, User_name } ) {
 : ("")
 
 }
+{/* selected daterange projects list data end */}
+
     <GridContainer>
-
-
     
-    {/***** Running Project start *****/}
-   
-
+{/***** Running Project start *****/}
 <Card className="task_title_status">
       <GridContainer >
         <GridItem xs={12} sm={12} md={12} >
-          <div onClick={()=> {  project_running("running") , closeOnHold("running") , setrunning_title(!running_title) }} className="task_title" > Project In progress {running_title ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
+          <div onClick={()=> {  project_running("running") , closeOnHold("running") , setrunning_title(!running_title) }} className="task_title" > Project In Progress {running_title ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
         </GridItem>
       </GridContainer>
     </Card>
@@ -1067,34 +1137,38 @@ function Dashboard( { project_details, user_project, User_name } ) {
                                     <GridItem xs={12} sm={12} md={6}>
                                         <div className="form-group">
                                         <span>Project Department</span><span className="required">*</span>
-                                          <select id="Department" name="project_department" className="form-control signup-input" value={uoption.project_department} onChange={handleChange} disabled={cookies.Role_id == "2"} >
-                                            <option value=""  disabled selected>Select Your Department...</option>
-                                            <option value="HR">HR</option>
-                                            <option value="UI & UX">UI & UX</option>
-                                            <option value="Testing">Testing</option>
-                                            <option value="Web development">Web Development</option>
-                                            <option value="Content writer">Content Writer</option>
-                                            <option value="Project manager">Project Manager</option>
-                                            <option value="Mobile App developer">Mobile App Developer</option>
-                                            <option value="SEO">SEO</option>
-                                          </select>
-                                          <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                        <Multiselect
+                                          displayValue="value"
+                                          options={all_Department}
+                                          value={u_Department}
+                                          selectedValues={u_Department}
+                                          selectionLimit="1"
+                                          onChange={setDepartment}
+                                          onRemove={setDepartment}
+                                          onSearch={function noRefCheck(){}}
+                                          onSelect={setDepartment}
+                                          placeholder="Project Department"
+                                          showArrow={true}
+                                        />
                                         </div> 
                                     </GridItem>
 
                                     <GridItem xs={12} sm={12} md={6}>
                                       <div className="form-group">
                                       <span>Project Language</span><span className="required">*</span>
-                                        <select name="project_language" id="Project_created_by" className="form-control signup-input"  value={uoption.project_language} onChange={handleChange} disabled={cookies.Role_id == "2"} >
-                                          <option value="" disabled selected>Select Language</option>
-                                          <option value="Wordpress">Wordpress</option>
-                                          <option value="Shopify">Shopify</option>
-                                          <option value="ReactJS">ReactJS</option>
-                                          <option value="Laravel">Laravel</option>
-                                          <option value="Android">Android</option>
-                                          <option value="Bubble">Bubble</option>
-                                        </select>
-                                        <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                      <Multiselect
+                                        displayValue="value"
+                                        options={all_Language}
+                                        value={u_Language}
+                                        selectedValues={u_Language}
+                                        selectionLimit="1"
+                                        onChange={setLanguage}
+                                        onRemove={setLanguage}
+                                        onSearch={function noRefCheck(){}}
+                                        onSelect={setLanguage}
+                                        placeholder="Project Language"
+                                        showArrow={true}
+                                      />
                                       </div> 
                                     </GridItem>
                                   </GridContainer><br/>
@@ -1453,34 +1527,38 @@ function Dashboard( { project_details, user_project, User_name } ) {
                                     <GridItem xs={12} sm={12} md={6}>
                                         <div className="form-group">
                                         <span>Project Department</span><span className="required">*</span>
-                                          <select id="Department" name="project_department" className="form-control signup-input" value={uoption.project_department} onChange={handleChange} disabled={cookies.Role_id == "2"} >
-                                            <option value=""  disabled selected>Select Your Department...</option>
-                                            <option value="HR">HR</option>
-                                            <option value="UI & UX">UI & UX</option>
-                                            <option value="Testing">Testing</option>
-                                            <option value="Web development">Web Development</option>
-                                            <option value="Content writer">Content Writer</option>
-                                            <option value="Project manager">Project Manager</option>
-                                            <option value="Mobile App developer">Mobile App Developer</option>
-                                            <option value="SEO">SEO</option>
-                                          </select>
-                                          <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                        <Multiselect
+                                          displayValue="value"
+                                          options={all_Department}
+                                          value={u_Department}
+                                          selectedValues={u_Department}
+                                          selectionLimit="1"
+                                          onChange={setDepartment}
+                                          onRemove={setDepartment}
+                                          onSearch={function noRefCheck(){}}
+                                          onSelect={setDepartment}
+                                          placeholder="Project Department"
+                                          showArrow={true}
+                                        />
                                         </div> 
                                     </GridItem>
 
                                     <GridItem xs={12} sm={12} md={6}>
                                       <div className="form-group">
                                       <span>Project Language</span><span className="required">*</span>
-                                        <select name="project_language" id="Project_created_by" className="form-control signup-input"  value={uoption.project_language} onChange={handleChange} disabled={cookies.Role_id == "2"} >
-                                          <option value="" disabled selected>Select Language</option>
-                                          <option value="Wordpress">Wordpress</option>
-                                          <option value="Shopify">Shopify</option>
-                                          <option value="ReactJS">ReactJS</option>
-                                          <option value="Laravel">Laravel</option>
-                                          <option value="Android">Android</option>
-                                          <option value="Bubble">Bubble</option>
-                                        </select>
-                                        <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                      <Multiselect
+                                        displayValue="value"
+                                        options={all_Language}
+                                        value={u_Language}
+                                        selectedValues={u_Language}
+                                        selectionLimit="1"
+                                        onChange={setLanguage}
+                                        onRemove={setLanguage}
+                                        onSearch={function noRefCheck(){}}
+                                        onSelect={setLanguage}
+                                        placeholder="Project Language"
+                                        showArrow={true}
+                                      />
                                       </div> 
                                     </GridItem>
                                   </GridContainer><br/>
@@ -1841,34 +1919,38 @@ function Dashboard( { project_details, user_project, User_name } ) {
                                     <GridItem xs={12} sm={12} md={6}>
                                         <div className="form-group">
                                         <span>Project Department</span><span className="required">*</span>
-                                          <select id="Department" name="project_department" className="form-control signup-input" value={uoption.project_department} onChange={handleChange} disabled={cookies.Role_id == "2"} >
-                                            <option value=""  disabled selected>Select Your Department...</option>
-                                            <option value="HR">HR</option>
-                                            <option value="UI & UX">UI & UX</option>
-                                            <option value="Testing">Testing</option>
-                                            <option value="Web development">Web Development</option>
-                                            <option value="Content writer">Content Writer</option>
-                                            <option value="Project manager">Project Manager</option>
-                                            <option value="Mobile App developer">Mobile App Developer</option>
-                                            <option value="SEO">SEO</option>
-                                          </select>
-                                          <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                        <Multiselect
+                                          displayValue="value"
+                                          options={all_Department}
+                                          value={u_Department}
+                                          selectedValues={u_Department}
+                                          selectionLimit="1"
+                                          onChange={setDepartment}
+                                          onRemove={setDepartment}
+                                          onSearch={function noRefCheck(){}}
+                                          onSelect={setDepartment}
+                                          placeholder="Project Department"
+                                          showArrow={true}
+                                        />
                                         </div> 
                                     </GridItem>
 
                                     <GridItem xs={12} sm={12} md={6}>
                                       <div className="form-group">
                                       <span>Project Language</span><span className="required">*</span>
-                                        <select name="project_language" id="Project_created_by" className="form-control signup-input"  value={uoption.project_language} onChange={handleChange} disabled={cookies.Role_id == "2"} >
-                                          <option value="" disabled selected>Select Language</option>
-                                          <option value="Wordpress">Wordpress</option>
-                                          <option value="Shopify">Shopify</option>
-                                          <option value="ReactJS">ReactJS</option>
-                                          <option value="Laravel">Laravel</option>
-                                          <option value="Android">Android</option>
-                                          <option value="Bubble">Bubble</option>
-                                        </select>
-                                        <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                      <Multiselect
+                                        displayValue="value"
+                                        options={all_Language}
+                                        value={u_Language}
+                                        selectedValues={u_Language}
+                                        selectionLimit="1"
+                                        onChange={setLanguage}
+                                        onRemove={setLanguage}
+                                        onSearch={function noRefCheck(){}}
+                                        onSelect={setLanguage}
+                                        placeholder="Project Language"
+                                        showArrow={true}
+                                      />
                                       </div> 
                                     </GridItem>
                                   </GridContainer><br/>
@@ -2096,7 +2178,7 @@ function Dashboard( { project_details, user_project, User_name } ) {
         {/***** Project End *****/}
         <ToastContainer limit={1}/>
       </GridContainer>
-    </>
+    </span>
   );
 }
 

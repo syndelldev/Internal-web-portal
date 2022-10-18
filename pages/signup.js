@@ -6,17 +6,55 @@ import DatePicker from "react-datepicker";
 import { server } from 'config';
 import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input'
 import { ToastContainer, toast } from 'react-toastify';
-import bcrypt from 'bcryptjs'
+import bcrypt from 'bcryptjs';
+import axios from "axios";
+import Multiselect from "multiselect-react-dropdown";
 
-function SignIn(){
+export async function getServerSideProps(context){
+
+    const res = await fetch(`${server}/api/user/user_department`);
+    const user_Department = await res.json();
+    
+    return{ props: {user_Department} }
+}
+
+function SignIn({ user_Department }){
     const { register, watch, handleSubmit, formState: { errors }, setValue, control } = useForm({mode: "onBlur"}); 
     const router = useRouter();
     
-    //const notify = () => toast("Wow so easy!");
+    const [u_Department, setDepartment] = useState([]);
+    const [p_selected, setProject] = useState([]);
+    useEffect(() =>{
+        const u_data = async() =>{
+      
+          const getDepartment = [];    
+          user_Department.map((department)=>{
+            getDepartment.push( {'label': department.department_name , 'value': department.department_name} );
+          });
+          setDepartment(getDepartment);
+        }
+        u_data();
+      },[]);
 
+    const [u_Designation, setDesignation] = useState([]);
+    const [user_Designation, set_uDesignation] = useState([]);
+
+    const handleSelect = async(data) => {
+
+        setProject(data);
+        // fetch designation from selected department
+        const designation = await axios.post(`${server}/api/user/user_designation`, { department: data });
+        const d_Designation = designation.data;
+        console.log(d_Designation);
+
+        const getDesignation = [];    
+        d_Designation.map((department)=>{
+            getDesignation.push( {'label': department.designation_name , 'value': department.designation_name} );
+        });
+        setDesignation(getDesignation);
+    }
 
     const [startDate, setStartDate] = useState();
-    console.log(startDate)
     const [phonenum, setphonenum] = useState()
 
     //Password Hide & Show Toggle
@@ -33,8 +71,9 @@ function SignIn(){
     //API call
     const onSubmit= async(result) =>{
 
-        const hashedPassword = bcrypt.hashSync(result.password, 10)
-        console.log(hashedPassword)
+        const hashedPassword = bcrypt.hashSync(result.password, 10);
+        console.log("department");
+        console.log(p_selected);
 
         const res = await fetch(`${server}/api/admin/signin/`,{
             method: "POST",
@@ -156,46 +195,41 @@ function SignIn(){
 
                             <div className="form-group">
                                 <label htmlFor="Department" className='form-label label' >Department</label><br/>
-                                {/*<input type="text" className="form-control signup-input" name="department" {...register('department',  { required: "Please enter your department", pattern: {value: /^[aA-zZ\s]+$/ , message: 'Only characters allow',} })}  />
-                                <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>*/}
+
+                                <Multiselect
+                                    displayValue="value"
+                                    options={u_Department}
+                                    value={p_selected}
+                                    selectionLimit="1"
+                                    onChange={handleSelect}
+                                    onRemove={handleSelect}
+                                    onSearch={function noRefCheck(){}}
+                                    onSelect={handleSelect}
+                                    placeholder="Select User Department"
+                                    showArrow={true}
+                                /><br />
                                 
-                                <select name="Department" id="Department" className="form-control signup-input" {...register('department', {required: "Please enter your department" ,message:'Please select atleast one option', })}>
-                                    <option value="">Select Your Department</option>
-                                    <option value="HR">HR</option>
-                                    <option value="UI & UX">UI & UX</option>
-                                    <option value="Web development">Web development</option>
-                                    <option value="Content writer">Content writer</option>
-                                    <option value="Project manager">Project manager</option>
-                                    <option value="Mobile App developer">Mobile App developer</option>
-                                    <option value="SEO">SEO</option>
-                                    <option value="Testing Department">Testing Department</option>
-                                </select>
-                                <span className='icon-eyes'><IoMdArrowDropdown /></span>
+                                {/* <span className='icon-eyes'><IoMdArrowDropdown /></span> */}
                                 <div className="error-msg">{errors.department && <p>{errors.department.message}</p>}</div>
                             </div>
 
                             <div className="form-group">
                                 <label htmlFor="position" className='form-label label' >Position</label><br/>
-                                <select name="position" id="position" className="form-control signup-input" {...register('position', {required: "Please enter your department" ,message:'Please select atleast one option', })}>
-                                    <option value="">Select Your Position</option>
-                                    <option value="Junior HR">Junior HR</option>
-                                    <option value="Junior UI & UX">Junior UI & UX</option>
-                                    <option value="Junior Web development">Junior Web development</option>
-                                    <option value="Junior Content writer">Junior Content writer</option>
-                                    <option value="Junior Project manager">Junior Project manager</option>
-                                    <option value="Junior Mobile App developer">Junior Mobile App developer</option>
-                                    <option value="Junior SEO">Junior SEO</option>
-                                    <option value="Junior Tester">Junior Tester</option>
-                                    <option value="Senior HR">Senior HR</option>
-                                    <option value="Senior UI & UX">Senior UI & UX</option>
-                                    <option value="Senior Web development">Senior Web development</option>
-                                    <option value="Senior Content writer">Senior Content writer</option>
-                                    <option value="Senior Project manager">Senior Project manager</option>
-                                    <option value="Senior Mobile App developer">Senior Mobile App developer</option>
-                                    <option value="Senior SEO">Senior SEO</option>
-                                    <option value="Senior Tester">Senior Tester</option>
-                                </select>
-                                <span className='icon-eyes'><IoMdArrowDropdown /></span>
+                                
+                                <Multiselect
+                                    displayValue="value"
+                                    options={u_Designation}
+                                    value={user_Designation}
+                                    selectionLimit="1"
+                                    onChange={set_uDesignation}
+                                    onRemove={set_uDesignation}
+                                    onSearch={function noRefCheck(){}}
+                                    onSelect={set_uDesignation}
+                                    placeholder="User Designation"
+                                    showArrow={true}
+                                /><br />
+
+                                {/* <span className='icon-eyes'><IoMdArrowDropdown /></span> */}
                                 <div className="error-msg">{errors.position && <p>{errors.position.message}</p>}</div>
                             </div>
 

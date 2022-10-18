@@ -125,14 +125,27 @@ export async function getServerSideProps(context){
   })
   const userTask = await u_task.json();
 
-  return{ props: {project_details, User_name, allTask, userTask} }
+  const department = await fetch(`${server}/api/user/user_department`);
+  const user_Department = await department.json();
+
+  const lang = await fetch(`${server}/api/language`)
+  const language = await lang.json();
+
+  return{ props: {project_details, User_name, allTask, userTask, language, user_Department} }
 }
 
-function Dashboard( { project_details , User_name , allTask, userTask } ) {
+function Dashboard( { project_details , User_name , allTask, userTask, language, user_Department } ) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   // get role from cookies
   const [cookies, setCookie] = useCookies(['name']);
+
+  // redirect page if cookies is not set
+  useEffect(() => {
+    if(!cookies.name){
+      router.push(`${server}/login`);
+    }
+  });
     
   if(cookies.Role_id == "2"){
     var allTask = userTask;
@@ -161,8 +174,7 @@ function Dashboard( { project_details , User_name , allTask, userTask } ) {
     task_deadline: "",
     task_priority: "",
     task_status: "",
-    task_person: "",
-    task_comment: ""
+    task_person: ""
   });
 
   const handleChange = ({ target: { name, value } }) =>{
@@ -188,17 +200,27 @@ function Dashboard( { project_details , User_name , allTask, userTask } ) {
   const projectName = (project).split(",");
   // console.log(projectName);
 
-    selectedProject.push({'label' :projectName[0] , 'value' : projectName[0]});
-  // console.log(selectedProject[0]);
-
-  // const project_Name = [];
-  // project_Name.push(selectedProject[0]);
+  selectedProject.push({'label' :projectName[0] , 'value' : projectName[0]});
 
   const [updateSelected, setUpdateSelected] = React.useState([]);
+  const [all_Language, setAllLanguage] = useState([]);
+
+  useEffect(() =>{
+    const u_data = async() =>{
+  
+      const getLanguage = [];
+   
+      language.map((language)=>{
+        getLanguage.push( {'label' :language.language_name, 'value' :language.language_name} );
+      });
+      setAllLanguage(getLanguage);
+    }
+    u_data();
+  },[]);
+  
+  const [u_Language, setLanguage] = useState([]);
 
   const projectId = async(id) =>{
-    // console.log('update project id');
-    // console.log(id);
     var comment = await axios.post(`${server}/api/comment/userComments`, { task_id: id });
     setcomments(comment.data);
 
@@ -207,21 +229,25 @@ function Dashboard( { project_details , User_name , allTask, userTask } ) {
     console.log(update_data[0]);
 
     const udata = update_data[0];
-
     const selectedMember = (udata.task_person).split(",");
 
     const getAllname = [];
-
     selectedMember.map((user)=>{
       getAllname.push( {'label' :user, 'value' :user} );
     });
 
+    const getLanguage = [];
+    getLanguage.push( {'label' :udata.task_language, 'value' :udata.task_language} );
+
+    setLanguage(getLanguage);
     setUpdateSelected(getAllname);
     setUpdate(udata);
     setStartDate(new Date(udata.task_start));
     setEndDate(new Date(udata.task_deadline));
 
     }
+    console.log("language");
+    console.log(u_Language);
 
     const [p_selected, setProject] = useState([]);
     const [select_updateProject, setUpdateProject] = useState([]);
@@ -258,11 +284,15 @@ function Dashboard( { project_details , User_name , allTask, userTask } ) {
           }
     
     }else{
-  
+
+      if(u_Language != ""){
+        var updated_Language = u_Language[0].value;
+      }
+
       const res = await fetch(`${server}/api/subtask/update_subtask`,{
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ task_id:uoption.task_id, project_name:u_project , task_person: allMember, task_status:uoption.task_status , task_department:uoption.task_department ,  task_title: uoption.task_title , task_description:uoption.task_description , task_language:uoption.task_language, task_comment:uoption.task_comment, task_priority:uoption.task_priority, task_start: startDate , task_deadline: endDate }),
+        body: JSON.stringify({ task_id:uoption.task_id, project_name:u_project , task_person: allMember, task_status:uoption.task_status , task_department:uoption.task_department ,  task_title: uoption.task_title , task_description:uoption.task_description , task_language:updated_Language, task_priority:uoption.task_priority, task_start: startDate , task_deadline: endDate }),
       });
       if(!toast.isActive(toastId.current)) {
         toastId.current = toast.success('Task updated Successfully!🎉', {
@@ -270,11 +300,9 @@ function Dashboard( { project_details , User_name , allTask, userTask } ) {
             autoClose:1000,
             theme: "colored",
             hideProgressBar: true,
-            onClose: () => router.push(`${server}/admin/subtask_module`)
           });
         }
         router.reload(`${server}/tasks`);
-  
     }
   }
   
@@ -299,14 +327,15 @@ function Dashboard( { project_details , User_name , allTask, userTask } ) {
     
     const p_start = result.start.toDateString();
     const p_end = result.end.toDateString();
-    console.log("result");
-    console.log(result.start.toDateString());
 
+    if(u_Language != ""){
+      var Language = u_Language[0].value;
+    }
   
     const res = await fetch(`${server}/api/subtask/add_subtask`,{
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body:JSON.stringify({task_person:selected, project_name:p_selected, task_status:result.task_status , task_title:result.task_title, task_description:result.task_description, task_language:result.task_language, task_createdBy:cookies.name , task_priority:result.task_priority, task_start: p_start , task_deadline: p_end }),
+      body:JSON.stringify({task_person:selected, project_name:p_selected, task_status:result.task_status , task_title:result.task_title, task_description:result.task_description, task_language:Language, task_createdBy:cookies.name , task_priority:result.task_priority, task_start: p_start , task_deadline: p_end }),
     })
     const data=await res.json()
 
@@ -319,10 +348,8 @@ function Dashboard( { project_details , User_name , allTask, userTask } ) {
             autoClose:1000,
             theme: "colored",
             hideProgressBar: true,
-            onClose: () => router.push(`${server}/tasks`)
             });
         }
-
       router.reload(`${server}/tasks`);
     }
     else
@@ -333,15 +360,10 @@ function Dashboard( { project_details , User_name , allTask, userTask } ) {
 }
 
 const [uoptions, setOptions] = useState([]);
-
 useEffect(() =>{
   const u_data = async() =>{
 
     const getUsername = [];
-
-    console.log("123");
-    console.log(User_name);
-
     User_name.map((user)=>{
       getUsername.push( {'label' :user.username, 'value' :user.username} );
     });
@@ -352,15 +374,10 @@ useEffect(() =>{
 const [selected, setSelected] = useState([]);
 
 const [project_list, setLists] = useState([]);
-
 useEffect(() =>{
   const u_data = async() =>{
 
     const getUsername = [];
-
-    console.log("123");
-    console.log(User_name);
-
     project_details.map((project)=>{
       getUsername.push( {'label' :project.project_title , 'value' :project.project_title } );
     });
@@ -422,8 +439,8 @@ const closeTaskCompleted = async(task) =>{
   }
 }
 
+// status update function only for user
 const updateStatus = async(t_status) =>{
-  console.log(t_status);
 
   const res = await fetch(`${server}/api/subtask/update_taskStatus`,{
     method: "PUT",
@@ -442,13 +459,12 @@ const updateStatus = async(t_status) =>{
 }
 
 const [comments, setcomments] = useState([]);
-
+// get and set comment values in editor
 const [ u_Comment, setCommentValue ] = useState("");
-
-
-
+// quill ref
 const quillRef = useRef(null);
 
+// Upload image in project public/upload_img folder and show image in editor
 const imageHandler = () => {
 
   const input = document.createElement('input');
@@ -466,6 +482,7 @@ const imageHandler = () => {
       formData.append('image', file);
       formData.getAll('image');
 
+      // upload image API
       const res = await fetch(`${server}/api/upload`,{ 
           method: 'POST',
           body: formData,
@@ -477,11 +494,13 @@ const imageHandler = () => {
       // Save current cursor 
       const range = quillRef.current.getEditor().getSelection();
       const quill = quillRef.current.getEditor();
+      // show uploaded image in editor
       quill.insertEmbed( range.index, "image", `${server}/upload_img/${data.files.image.newFilename}${data.files.image.originalFilename}`);
       quillRef.current.getEditor().setSelection(range.index + 1);
 
   }else{
 
+    // only upload images toast error
     if(! toast.isActive(toastId.current)) {
       toastId.current = toast.error('Please upload only image', {
           position: "top-right",
@@ -496,6 +515,7 @@ const imageHandler = () => {
 }
 }
 
+// quill modules
 const modules = useMemo(() => ({
   toolbar: {
       container: [
@@ -516,8 +536,7 @@ const modules = useMemo(() => ({
   },
 }), []);
 
-
-
+// add comments
 const sendMessage = async (task_id) => {
   const date = new Date().toLocaleString();
   console.log("date");
@@ -543,6 +562,7 @@ console.log(u_Comment);
 
 const [commentEdit, setEditComment] = useState();
 
+// comment ID API
 const editComment = async( id ) =>{
   console.log("id");
   console.log(id);
@@ -556,6 +576,7 @@ const editComment = async( id ) =>{
   }
 }
 
+// update comment API
 const updateComment = async(id, comment) =>{
   var comment = await axios.post(`${server}/api/comment/updateComment`, { comment_id: id, user: cookies.name, comment:comment });
 
@@ -565,7 +586,6 @@ const updateComment = async(id, comment) =>{
         autoClose:1000,
         theme: "colored",
         hideProgressBar: true,
-        onClose: () => router.push(`${server}/tasks`)
       });
   }
   router.reload(`${server}/tasks`);
@@ -637,6 +657,48 @@ const updateComment = async(id, comment) =>{
     // router.reload(`${server}/tasks`);
   }
 
+  // date range
+  const [dateRange, setDateRange] = useState([null, null]);
+  // startdate and enddate get value
+  const [startDates, endDates] = dateRange;
+  // get selected dates projects list
+  const [dateDetails, setDateDetails] = useState();
+  // onclick show data
+  const [dateDataDisplay, setData] = useState(false);
+
+  // daterange function onClick
+  const date_Range = async() =>{
+    if(startDates != null && endDates != null){
+      console.log(dateRange);
+
+      const res = await fetch(`${server}/api/project/dateRange_Tasks`,{
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body:JSON.stringify({ dateStart: startDates, dateEnd: endDates, user: cookies.name }),
+      })
+      const date_Data=await res.json()
+      
+      if(res.status==200)
+      {
+        setDateDetails(date_Data);
+        setData(true);
+      }
+          
+    }else{
+      // select startDate and endDate toast error
+      if(! toast.isActive(toastId.current)) {
+        toastId.current = toast.error('Please select dates range!', {
+            position: "top-right",
+            autoClose:2000,
+            theme: "colored",
+            closeOnClick: true,
+            hideProgressBar: true,
+          });
+      }
+    }
+  }
+
+
   return (
     <div>
     <div className="buttonalign" hidden={cookies.Role_id == "2"}>
@@ -645,7 +707,7 @@ const updateComment = async(id, comment) =>{
 
           <Popup trigger={<div hidden={cookies.Role_id == "2"}><button className="bttn-design">Add Task</button></div>}  className="popupReact"  modal>
 
-          {close => (
+    {close => (
       <div>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
@@ -681,14 +743,13 @@ const updateComment = async(id, comment) =>{
                     <GridItem xs={12} sm={12} md={12}>
                     <div className="form-group" {...register('project_name')}>
                       
-                      <span>Project</span><span className="required">*</span>
+                    <span>Project</span><span className="required">*</span>
                       <Multiselect
                         displayValue="value"
                         options={project_list}
                         value={p_selected}
-                        singleSelect={true}
+                        selectionLimit="1"
                         onChange={setProject}
-                        // onKeyPressFn={function noRefCheck(){}}
                         onRemove={setProject}
                         onSearch={function noRefCheck(){}}
                         onSelect={setProject}
@@ -729,17 +790,18 @@ const updateComment = async(id, comment) =>{
                     <GridItem xs={12} sm={12} md={6}>
                       <div className="form-group">
                       <span>Task Language</span><span className="required">*</span>
-                        <select name="Task_created_by" id="Task_created_by" className="form-control signup-input" {...register('task_language', {required:true ,message:'Please select atleast one option', })}>
-                          <option value="" disabled selected>Select Language</option>
-                          <option value="Wordpress">Wordpress</option>
-                          <option value="Shopify">Shopify</option>
-                          <option value="ReactJS">ReactJS</option>
-                          <option value="Laravel">Laravel</option>
-                          <option value="Android">Android</option>
-                          <option value="Bubble">Bubble</option>
-                        </select>
-                        <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                        {/* <div className="error-msg">{errors.task_language && <span>{errors.task_language.message}</span>}</div> */}
+                      <Multiselect
+                        displayValue="value"
+                        options={all_Language}
+                        value={u_Language}
+                        selectionLimit="1"
+                        onChange={setLanguage}
+                        onRemove={setLanguage}
+                        onSearch={function noRefCheck(){}}
+                        onSelect={setLanguage}
+                        placeholder="Task Language"
+                        showArrow={true}
+                      />
                       </div> 
                     </GridItem>
                   </GridContainer><br/>
@@ -830,14 +892,14 @@ const updateComment = async(id, comment) =>{
             <div className="department_dropdown">
             <button className="dropdown_button">Project Departments</button>
                 <div className="department-link">
-                  <a href={`${server}/projects`}>All</a>
-                  <a href={`${server}/project_department/HR`}>HR</a>
-                  <a href={`${server}/project_department/UI & UX`}>UI & UX</a>
-                  <a href={`${server}/project_department/Web development`}>Web Developer</a>
-                  <a href={`${server}/project_department/Content writer`}>Content Writer</a>
-                  <a href={`${server}/project_department/Project manager`}>Project Manager</a>
-                  <a href={`${server}/project_department/Mobile App developer`}>Mobile App Developer</a>
-                  <a href={`${server}/project_department/SEO`}>SEO</a>
+                {user_Department.map((department)=>{
+                    return(
+                      <span>
+                        <a href={`${server}/project_department/${department.department_name}`}>{department.department_name}</a>
+                      </span>
+                    )                      
+                  }
+                )}
                 </div>
             </div>
           </GridItem>
@@ -846,13 +908,14 @@ const updateComment = async(id, comment) =>{
             <div className="department_dropdown">
               <button className="dropdown_button">Project Languages</button>
                   <div className="department-link">
-                    <a href={`${server}/projects`}>All</a>
-                    <a href={`${server}/project_language/Wordpress`}>Wordpress</a>
-                    <a href={`${server}/project_language/Shopify`}>Shopify</a>
-                    <a href={`${server}/project_language/ReactJS`}>ReactJS</a>
-                    <a href={`${server}/project_language/Laravel`}>Laravel</a>
-                    <a href={`${server}/project_language/Android`}>Android</a>
-                    <a href={`${server}/project_language/Bubble`}>Bubble</a>
+                  {language.map((language)=>{
+                      return(
+                        <span>
+                          <a href={`${server}/project_language/${language.language_name}`}>{language.language_name}</a>
+                        </span>
+                      )
+                    }
+                  )}
                   </div>
             </div>
           </GridItem>
@@ -877,9 +940,110 @@ const updateComment = async(id, comment) =>{
   </div>
 
   <GridItem>
+
+    <DatePicker
+      monthsShown={2}
+        selectsRange={true}
+        startDate={startDates}
+        endDate={endDates}
+        onChange={(update) => {
+          setDateRange(update);
+        }}
+        isClearable={true}
+        dateFormat="dd/MM/yyyy"
+    />
+    <button onClick={() => date_Range()}>enter</button>
+
   </GridItem>
 
 </GridContainer>
+
+{/* selected daterange projects list data start */}
+{dateDataDisplay ? (
+  <span>
+    <h3>Tasks List</h3>
+    <table className="project-data" >
+      <tr className="project-data-title">
+            <th  className="status">Task Name</th>
+            <th className="Priority">Priority</th>
+            <th className="assignee">Assignee</th>
+          </tr>
+          {dateDetails.map((task)=>{
+            if(task.task_delete == "no"){
+                var person = task.task_person.split(",");
+                return(
+                  <tr key={task.task_id} onClick={()=>{toggle(task.task_id)}} className="expand_dropdown">
+                    <td className="project-title-table">{task.task_title}</td>
+                    <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
+                    <td className="project-priority-person">
+                      {person.length>2 ? (
+                        <>
+                          <div className="chip">
+                            <span>{person[0]}</span>
+                          </div>
+                          <div className="chip">
+                            <span>{person[1]}</span>
+                          </div>
+                            {/* Edit popUp Start*/}
+                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} className="popupReact"  position="left">
+                            {close => (
+                              <div className="popup-align">
+                                <Card>
+                                  <CardBody>
+                                    <CardHeader>
+                                      <GridContainer>
+                                        <GridItem>
+                                          <strong>Assignee</strong>
+                                        </GridItem>
+                                        <GridItem>
+                                          <div className={classes.close}>
+                                            <a onClick={close}>&times;</a>
+                                          </div>
+                                        </GridItem>
+                                      </GridContainer>
+                                    </CardHeader>
+
+                                    <GridContainer>
+                                      <GridItem>
+                                        {person.map((user)=>{
+                                          return(
+                                            <span>
+                                              <span className="members" title={user}>{user}</span>
+                                            </span>
+                                          )
+                                        })}
+                                      </GridItem>
+                                    </GridContainer>
+                                  </CardBody>
+                                </Card>
+                              </div>
+                            )}
+                            </Popup>
+                            {/*Edit popup End*/}
+                        </>
+                      ):(
+                        <span>
+                          {person.map((user)=>{
+                            return(
+                              <div className="chip">
+                                <span className="members" title={user}>{user}</span>
+                              </div>
+                            )
+                          })}
+                        </span>
+                      )}
+                    </td>
+                  </tr>
+                )
+            }
+          })}
+        </table>
+
+  </span>
+) 
+: ("")
+}
+{/* selected daterange projects list data end */}
 
   <GridContainer>
     <Card>
@@ -910,16 +1074,66 @@ const updateComment = async(id, comment) =>{
                     <td className="project-title-table">{task.project_name}</td>
                     <td><h4 className="projectTitle">{task.task_title}</h4></td>
                     <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
-                    <td className="assignee-data">
-                    {person.map((task_person) => {
-                      return(
-                        <div className="chip">
-                          <span title={task_person}>{task_person}</span>
-                        </div>
-                      )
-                      })
-                    }
+
+                    <td className="project-priority-person">
+                      {person.length>2 ? (
+                        <>
+                          <div className="chip">
+                            <span>{person[0]}</span>
+                          </div>
+                          <div className="chip">
+                            <span>{person[1]}</span>
+                          </div>
+                            {/* Edit popUp Start*/}
+                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} className="popupReact"  position="left">
+                            {close => (
+                              <div className="popup-align">
+                                <Card>
+                                  <CardBody>
+                                    <CardHeader>
+                                      <GridContainer>
+                                        <GridItem>
+                                          <strong>Assignee</strong>
+                                        </GridItem>
+                                        <GridItem>
+                                          <div className={classes.close}>
+                                            <a onClick={close}>&times;</a>
+                                          </div>
+                                        </GridItem>
+                                      </GridContainer>
+                                    </CardHeader>
+
+                                    <GridContainer>
+                                      <GridItem>
+                                        {person.map((user)=>{
+                                          return(
+                                            <span>
+                                              <span className="members" title={user}>{user}</span>
+                                            </span>
+                                          )
+                                        })}
+                                      </GridItem>
+                                    </GridContainer>
+                                  </CardBody>
+                                </Card>
+                              </div>
+                            )}
+                            </Popup>
+                            {/*Edit popup End*/}
+                        </>
+                        ):(
+                        <span>
+                          {person.map((user)=>{
+                            return(
+                              <div className="chip">
+                                <span className="members" title={user}>{user}</span>
+                              </div>
+                            )
+                          })}
+                        </span>
+                      )}
                     </td>
+
                     <td className="project-edit-table">
                       <Popup trigger={<div><a className="bttn-design1" onClick={()=> { projectId(task.task_id) }  }><FiEdit/></a></div>}  className="popupReact" modal nested>
                       {close => (
@@ -1031,16 +1245,20 @@ const updateComment = async(id, comment) =>{
                                 <GridItem xs={12} sm={12} md={6}>
                                   <div className="form-group">
                                   <span>Task Language</span><span className="required">*</span>
-                                    <select id="Task_created_by" className="form-control signup-input" disabled={cookies.Role_id == "2"} name="task_language" value={uoption.task_language} onChange={handleChange} >
-                                      <option value="" disabled selected>Select Language</option>
-                                      <option value="Wordpress">Wordpress</option>
-                                      <option value="Shopify">Shopify</option>
-                                      <option value="ReactJS">ReactJS</option>
-                                      <option value="Laravel">Laravel</option>
-                                      <option value="Android">Android</option>
-                                      <option value="Bubble">Bubble</option>
-                                    </select>
-                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                  <Multiselect
+                                    displayValue="value"
+                                    options={all_Language}
+                                    value={u_Language}
+                                    selectionLimit="1"
+                                    onChange={setLanguage}
+                                    onRemove={setLanguage}
+                                    onSearch={function noRefCheck(){}}
+                                    onSelect={setLanguage}
+                                    placeholder="Task Language"
+                                    showArrow={true}
+                                    selectedValues={u_Language}
+                                  />
+
                                   </div> 
                                 </GridItem>
                               </GridContainer><br/>
@@ -1356,16 +1574,66 @@ const updateComment = async(id, comment) =>{
                       <td className="project-title-table">{task.project_name}</td>
                       <td><h4 className="projectTitle">{task.task_title}</h4></td>
                       <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
-                      <td className="assignee-data">
-                      {person.map((task_person) => {
-                        return(
+
+                      <td className="project-priority-person">
+                      {person.length>2 ? (
+                        <>
                           <div className="chip">
-                            <span>{task_person}</span>
+                            <span>{person[0]}</span>
                           </div>
-                        )
-                        })
-                      }
-                      </td>
+                          <div className="chip">
+                            <span>{person[1]}</span>
+                          </div>
+                            {/* Edit popUp Start*/}
+                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} className="popupReact"  position="left">
+                            {close => (
+                              <div className="popup-align">
+                                <Card>
+                                  <CardBody>
+                                    <CardHeader>
+                                      <GridContainer>
+                                        <GridItem>
+                                          <strong>Assignee</strong>
+                                        </GridItem>
+                                        <GridItem>
+                                          <div className={classes.close}>
+                                            <a onClick={close}>&times;</a>
+                                          </div>
+                                        </GridItem>
+                                      </GridContainer>
+                                    </CardHeader>
+
+                                    <GridContainer>
+                                      <GridItem>
+                                        {person.map((user)=>{
+                                          return(
+                                            <span>
+                                              <span className="members" title={user}>{user}</span>
+                                            </span>
+                                          )
+                                        })}
+                                      </GridItem>
+                                    </GridContainer>
+                                  </CardBody>
+                                </Card>
+                              </div>
+                            )}
+                            </Popup>
+                            {/*Edit popup End*/}
+                        </>
+                        ):(
+                        <span>
+                          {person.map((user)=>{
+                            return(
+                              <div className="chip">
+                                <span className="members" title={user}>{user}</span>
+                              </div>
+                            )
+                          })}
+                        </span>
+                      )}
+                    </td>
+
                       <td className="project-edit-table">
                       <Popup trigger={<div><a className="bttn-design1" onClick={()=> { projectId(task.task_id) }  }><FiEdit/></a></div>}  className="popupReact" modal nested>
                       {close => (
@@ -1477,16 +1745,19 @@ const updateComment = async(id, comment) =>{
                                 <GridItem xs={12} sm={12} md={6}>
                                   <div className="form-group">
                                   <span>Task Language</span><span className="required">*</span>
-                                    <select id="Task_created_by" className="form-control signup-input" disabled={cookies.Role_id == "2"} name="task_language" value={uoption.task_language} onChange={handleChange} >
-                                      <option value="" disabled selected>Select Language</option>
-                                      <option value="Wordpress">Wordpress</option>
-                                      <option value="Shopify">Shopify</option>
-                                      <option value="ReactJS">ReactJS</option>
-                                      <option value="Laravel">Laravel</option>
-                                      <option value="Android">Android</option>
-                                      <option value="Bubble">Bubble</option>
-                                    </select>
-                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                  <Multiselect
+                                    displayValue="value"
+                                    options={all_Language}
+                                    value={u_Language}
+                                    selectionLimit="1"
+                                    onChange={setLanguage}
+                                    onRemove={setLanguage}
+                                    onSearch={function noRefCheck(){}}
+                                    onSelect={setLanguage}
+                                    placeholder="Task Language"
+                                    showArrow={true}
+                                    selectedValues={u_Language}
+                                  />
                                   </div> 
                                 </GridItem>
                               </GridContainer><br/>
@@ -1803,16 +2074,66 @@ const updateComment = async(id, comment) =>{
                     <td className="project-title-table">{task.project_name}</td>
                     <td><h4 className="projectTitle">{task.task_title}</h4></td>
                     <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
-                    <td className="assignee-data">
-                    {person.map((task_person) => {
-                      return(
-                        <div className="chip">
-                          <span>{task_person}</span>
-                        </div>
-                      )
-                      })
-                    }
+
+                    <td className="project-priority-person">
+                      {person.length>2 ? (
+                        <>
+                          <div className="chip">
+                            <span>{person[0]}</span>
+                          </div>
+                          <div className="chip">
+                            <span>{person[1]}</span>
+                          </div>
+                            {/* Edit popUp Start*/}
+                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} className="popupReact"  position="left">
+                            {close => (
+                              <div className="popup-align">
+                                <Card>
+                                  <CardBody>
+                                    <CardHeader>
+                                      <GridContainer>
+                                        <GridItem>
+                                          <strong>Assignee</strong>
+                                        </GridItem>
+                                        <GridItem>
+                                          <div className={classes.close}>
+                                            <a onClick={close}>&times;</a>
+                                          </div>
+                                        </GridItem>
+                                      </GridContainer>
+                                    </CardHeader>
+
+                                    <GridContainer>
+                                      <GridItem>
+                                        {person.map((user)=>{
+                                          return(
+                                            <span>
+                                              <span className="members" title={user}>{user}</span>
+                                            </span>
+                                          )
+                                        })}
+                                      </GridItem>
+                                    </GridContainer>
+                                  </CardBody>
+                                </Card>
+                              </div>
+                            )}
+                            </Popup>
+                            {/*Edit popup End*/}
+                        </>
+                        ):(
+                        <span>
+                          {person.map((user)=>{
+                            return(
+                              <div className="chip">
+                                <span className="members" title={user}>{user}</span>
+                              </div>
+                            )
+                          })}
+                        </span>
+                      )}
                     </td>
+
                     <td className="project-edit-table">
                       <Popup trigger={<div><a className="bttn-design1" onClick={()=> { projectId(task.task_id) }  }><FiEdit/></a></div>}  className="popupReact" modal nested>
                       {close => (
@@ -1924,16 +2245,19 @@ const updateComment = async(id, comment) =>{
                                 <GridItem xs={12} sm={12} md={6}>
                                   <div className="form-group">
                                   <span>Task Language</span><span className="required">*</span>
-                                    <select id="Task_created_by" className="form-control signup-input" disabled={cookies.Role_id == "2"} name="task_language" value={uoption.task_language} onChange={handleChange} >
-                                      <option value="" disabled selected>Select Language</option>
-                                      <option value="Wordpress">Wordpress</option>
-                                      <option value="Shopify">Shopify</option>
-                                      <option value="ReactJS">ReactJS</option>
-                                      <option value="Laravel">Laravel</option>
-                                      <option value="Android">Android</option>
-                                      <option value="Bubble">Bubble</option>
-                                    </select>
-                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                  <Multiselect
+                                    displayValue="value"
+                                    options={all_Language}
+                                    value={u_Language}
+                                    selectionLimit="1"
+                                    onChange={setLanguage}
+                                    onRemove={setLanguage}
+                                    onSearch={function noRefCheck(){}}
+                                    onSelect={setLanguage}
+                                    placeholder="Task Language"
+                                    showArrow={true}
+                                    selectedValues={u_Language}
+                                  />
                                   </div> 
                                 </GridItem>
                               </GridContainer><br/>
@@ -2251,16 +2575,66 @@ const updateComment = async(id, comment) =>{
                     <td className="project-title-table">{task.project_name}</td>
                     <td><h4 className="projectTitle">{task.task_title}</h4></td>
                     <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
-                    <td className="assignee-data">
-                    {person.map((task_person) => {
-                      return(
-                        <div className="chip">
-                          <span>{task_person}</span>
-                        </div>
-                      )
-                      })
-                    }
+
+                    <td className="project-priority-person">
+                      {person.length>2 ? (
+                        <>
+                          <div className="chip">
+                            <span>{person[0]}</span>
+                          </div>
+                          <div className="chip">
+                            <span>{person[1]}</span>
+                          </div>
+                            {/* Edit popUp Start*/}
+                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} className="popupReact"  position="left">
+                            {close => (
+                              <div className="popup-align">
+                                <Card>
+                                  <CardBody>
+                                    <CardHeader>
+                                      <GridContainer>
+                                        <GridItem>
+                                          <strong>Assignee</strong>
+                                        </GridItem>
+                                        <GridItem>
+                                          <div className={classes.close}>
+                                            <a onClick={close}>&times;</a>
+                                          </div>
+                                        </GridItem>
+                                      </GridContainer>
+                                    </CardHeader>
+
+                                    <GridContainer>
+                                      <GridItem>
+                                        {person.map((user)=>{
+                                          return(
+                                            <span>
+                                              <span className="members" title={user}>{user}</span>
+                                            </span>
+                                          )
+                                        })}
+                                      </GridItem>
+                                    </GridContainer>
+                                  </CardBody>
+                                </Card>
+                              </div>
+                            )}
+                            </Popup>
+                            {/*Edit popup End*/}
+                        </>
+                        ):(
+                        <span>
+                          {person.map((user)=>{
+                            return(
+                              <div className="chip">
+                                <span className="members" title={user}>{user}</span>
+                              </div>
+                            )
+                          })}
+                        </span>
+                      )}
                     </td>
+
                     <td className="project-edit-table">
                       <Popup trigger={<div><a className="bttn-design1" onClick={()=> { projectId(task.task_id) }  }><FiEdit/></a></div>}  className="popupReact" modal nested>
                       {close => (
@@ -2372,16 +2746,19 @@ const updateComment = async(id, comment) =>{
                                 <GridItem xs={12} sm={12} md={6}>
                                   <div className="form-group">
                                   <span>Task Language</span><span className="required">*</span>
-                                    <select id="Task_created_by" className="form-control signup-input" disabled={cookies.Role_id == "2"} name="task_language" value={uoption.task_language} onChange={handleChange} >
-                                      <option value="" disabled selected>Select Language</option>
-                                      <option value="Wordpress">Wordpress</option>
-                                      <option value="Shopify">Shopify</option>
-                                      <option value="ReactJS">ReactJS</option>
-                                      <option value="Laravel">Laravel</option>
-                                      <option value="Android">Android</option>
-                                      <option value="Bubble">Bubble</option>
-                                    </select>
-                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                  <Multiselect
+                                    displayValue="value"
+                                    options={all_Language}
+                                    value={u_Language}
+                                    selectionLimit="1"
+                                    onChange={setLanguage}
+                                    onRemove={setLanguage}
+                                    onSearch={function noRefCheck(){}}
+                                    onSelect={setLanguage}
+                                    placeholder="Task Language"
+                                    showArrow={true}
+                                    selectedValues={u_Language}
+                                  />
                                   </div> 
                                 </GridItem>
                               </GridContainer><br/>
