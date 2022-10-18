@@ -722,8 +722,10 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                     onSelect={setProject}
                                     placeholder="Project List"
                                     showArrow={true}
+                                    {...register("project_name", {
+                                      required: "Please Select Project",
+                                    })}
                                   />
-
                                   <div className="error-msg">{errors.project_name && <span>{errors.project_name.message}</span>}</div>
                                 </div>
                               </GridItem>
