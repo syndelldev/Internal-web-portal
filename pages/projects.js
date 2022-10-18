@@ -117,10 +117,13 @@ export async function getServerSideProps(context){
   const lang_department = await fetch(`${server}/api/languageDepartment`)
   const languageDepartment = await lang_department.json();
 
-  return{ props: { project_details, user_project, User_name, language, user_Department, languageDepartment } }
+  const pri = await fetch(`${server}/api/priority`)
+  const priority = await pri.json();
+
+  return{ props: { project_details, user_project, User_name, language, user_Department, languageDepartment, priority } }
 }
 
-function Dashboard( { project_details, user_project, User_name, language, user_Department, languageDepartment } ) {
+function Dashboard( { project_details, user_project, User_name, language, user_Department, languageDepartment, priority } ) {
 
   const useStyles = makeStyles(styles);
   const classes = useStyles();
@@ -243,17 +246,27 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
   },[]);
   const [u_Department, setDepartment] = useState([]);
 
+  const [all_Priority, setAllPriority] = useState([]);
+  useEffect(() =>{
+    const u_data = async() =>{
+  
+      const getPriority = [];
+      priority.map((priority)=>{
+        getPriority.push( {'label' :priority.priority_name, 'value' :priority.priority_name} );
+      });
+      setAllPriority(getPriority);
+    }
+    u_data();
+  },[]);
+  const [u_Priority, setPriority] = useState([]);
+
   const projectId = async(id) =>{
-    console.log('update project id');
-    console.log(id);
 
     const response = await fetch(`${server}/api/project/update/${id}`)
     const update_data = await response.json();
 
     const udata = update_data[0];
-
     const selectedMember = (udata.project_person).split(",");
-
     const getAllname = [];
 
     selectedMember.map((user)=>{
@@ -266,8 +279,12 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
     const getDepartment = [];
     getDepartment.push( {'label' :udata.project_department, 'value' :udata.project_department} );
 
+    const getPriority = [];
+    getPriority.push( {'label' :udata.project_priority, 'value' :udata.project_priority} );
+
     setLanguage(getLanguage);
     setDepartment(getDepartment);
+    setPriority(getPriority);
     setUpdateSelected(getAllname);
     setUpdate(udata);
     setStartDate(new Date(udata.project_start));
@@ -345,11 +362,15 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
       var Department = u_Department[0].value;
     }
 
+    if(u_Priority != ""){
+      var Priority = u_Priority[0].value;
+    }
+
     if(result.project_title != ""){
       const res = await fetch(`${server}/api/project/addproject`,{
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body:JSON.stringify({project_person:selected,project_department:Department,project_status:result.project_status , project_title:result.project_title, project_description:result.project_description, project_language:Language, project_priority:result.project_priority, project_start: p_start , project_deadline: p_end , projectAdded_by: cookies }),
+        body:JSON.stringify({project_person:selected,project_department:Department,project_status:result.project_status , project_title:result.project_title, project_description:result.project_description, project_language:Language, project_priority:Priority, project_start: p_start , project_deadline: p_end , projectAdded_by: cookies }),
       })
       const data=await res.json();
       
@@ -790,13 +811,26 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                 <GridItem xs={12} sm={12} md={6}>
                                   <div className="form-group">
                                   <span>Project Priority</span><span className="required">*</span>
-                                    <select name="priority" id="priority" className="form-control signup-input" {...register('project_priority', {required:true ,message:'Please select atleast one option', })}>
+                                  <Multiselect
+                                      displayValue="value"
+                                      options={all_Priority}
+                                      value={u_Priority}
+                                      selectionLimit="1"
+                                      onChange={setDepartment}
+                                      onRemove={setDepartment}
+                                      onSearch={function noRefCheck(){}}
+                                      onSelect={setDepartment}
+                                      placeholder="Project Priority"
+                                      showArrow={true}
+                                  />
+
+                                    {/* <select name="priority" id="priority" className="form-control signup-input" {...register('project_priority', {required:true ,message:'Please select atleast one option', })}>
                                       <option value=""  disabled selected>Select Project Priority</option>
                                       <option value="High" className="high">High</option>
                                       <option value="Medium" className="medium">Medium</option>
                                       <option value="Low"className="low">Low</option>
                                     </select>
-                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span> */}
                                     <div className="error-msg">{errors.project_priority && <span>{errors.project_priority.message}</span>}</div>
                                   </div> 
                                 </GridItem>
@@ -1219,13 +1253,27 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                     <GridItem xs={12} sm={12} md={6}>
                                       <div className="form-group">
                                       <span>Project Priority</span><span className="required">*</span>
-                                        <select name="project_priority" id="priority" className="form-control signup-input" value={uoption.project_priority} onChange={handleChange} disabled={cookies.Role_id == "2"}>
+                                      <Multiselect
+                                      displayValue="value"
+                                      options={all_Priority}
+                                      value={u_Priority}
+                                      selectedValues={u_Priority}
+                                      selectionLimit="1"
+                                      onChange={setDepartment}
+                                      onRemove={setDepartment}
+                                      onSearch={function noRefCheck(){}}
+                                      onSelect={setDepartment}
+                                      placeholder="Project Priority"
+                                      showArrow={true}
+                                  />
+
+                                        {/* <select name="project_priority" id="priority" className="form-control signup-input" value={uoption.project_priority} onChange={handleChange} disabled={cookies.Role_id == "2"}>
                                           <option value=""  disabled selected>Select Project Priority</option>
                                           <option value="High" className="High">High</option>
                                           <option value="Medium" className="Medium">Medium</option>
                                           <option value="Low"className="Low">Low</option>
                                         </select>
-                                        <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                        <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span> */}
                                       </div> 
                                     </GridItem>
                                   
