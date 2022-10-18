@@ -23,8 +23,8 @@ import { FiEdit } from "react-icons/fi";
 import { BiArchiveIn } from 'react-icons/bi';
 import Button from "components/CustomButtons/Button.js";
 
-import { alertService } from 'services';
-import {Alert} from "components/Alert.jsx";
+// import { alertService } from 'services';
+// import {Alert} from "components/Alert.jsx";
 
 
 

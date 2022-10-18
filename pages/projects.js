@@ -662,7 +662,7 @@ function Dashboard({ project_details, user_project, User_name }) {
 
   return (
     <span>
-          {/* <div>
+          <div>
             <button className="btn btn-success m-1" onClick={() => alertService.success('Success!!', options)}>Success</button>
             <button className="btn btn-danger m-1" onClick={() => alertService.error('Error :(', options)}>Error</button>
             <button className="btn btn-info m-1" onClick={() => alertService.info('Some info....', options)}>Info</button>
@@ -678,9 +678,9 @@ function Dashboard({ project_details, user_project, User_name }) {
                     <label htmlFor="keepAfterRouteChange">Keep displaying after one route change</label>
                 </div>
             </div>
-          </div> */}
+          </div>
 
-      <Alert/>
+      {/* <Alert/> */}
       <div className="buttonalign" hidden={cookies.Role_id == "2"} >
         <GridContainer>
           <GridItem>
@@ -852,14 +852,14 @@ function Dashboard({ project_details, user_project, User_name }) {
                                 </div>
                               </GridItem>
                             </GridContainer><br />
-                            <div className="form-check">
+                            {/* <div className="form-check">
                               <input type="checkbox" className="form-check-input" name="autoClose" id="autoClose" checked={options.autoClose} onChange={handleOptionChange} />
                               <label htmlFor="autoClose">Auto close alert after three seconds</label>
                             </div>
                             <div className="form-check">
                                 <input type="checkbox" className="form-check-input" name="keepAfterRouteChange" id="keepAfterRouteChange" checked={options.keepAfterRouteChange} onChange={handleOptionChange} />
                                 <label htmlFor="keepAfterRouteChange">Keep displaying after one route change</label>
-                            </div>
+                            </div> */}
 
                           </CardBody>
                           <CardFooter>
