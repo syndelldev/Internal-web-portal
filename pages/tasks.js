@@ -696,7 +696,7 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                       required: "Please enter task title",
                                     })}
                                   />
-                                  {/* <div className="error-msg">{errors.task_title && <span>{errors.task_title.message}</span>}</div> */}
+                                  <div className="error-msg">{errors.task_title && <span>{errors.task_title.message}</span>}</div>
                                 </div>
                               </GridItem>
                             </GridContainer>
@@ -724,7 +724,7 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                     showArrow={true}
                                   />
 
-                                  {/* <div className="error-msg">{errors.project_name && <span>{errors.project_name.message}</span>}</div> */}
+                                  <div className="error-msg">{errors.project_name && <span>{errors.project_name.message}</span>}</div>
                                 </div>
                               </GridItem>
                             </GridContainer>
@@ -742,7 +742,7 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                       required: "Description is required",
                                     })}
                                   />
-                                  {/* <div className="error-msg">{errors.task_description && <span>{errors.task_description.message}</span>}</div> */}
+                                  <div className="error-msg">{errors.task_description && <span>{errors.task_description.message}</span>}</div>
                                 </div>
                               </GridItem>
                             </GridContainer>
@@ -773,7 +773,7 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                   <span className="icon-eyes adduser-dropdown">
                                     <IoMdArrowDropdown />
                                   </span>
-                                  {/* <div className="error-msg">{errors.task_priority && <span>{errors.task_priority.message}</span>}</div> */}
+                                  <div className="error-msg">{errors.task_priority && <span>{errors.task_priority.message}</span>}</div>
                                 </div>
                               </GridItem>
 
@@ -804,7 +804,7 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                   <span className="icon-eyes adduser-dropdown">
                                     <IoMdArrowDropdown />
                                   </span>
-                                  {/* <div className="error-msg">{errors.task_language && <span>{errors.task_language.message}</span>}</div> */}
+                                  <div className="error-msg">{errors.task_language && <span>{errors.task_language.message}</span>}</div>
                                 </div>
                               </GridItem>
                             </GridContainer>
@@ -831,7 +831,7 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                     dateFormat="dd-MM-yyyy"
                                     minDate={new Date()}
                                   />
-                                  {/* <div className="error-msg">{errors.task_start && <span>{errors.task_start.message}</span>}</div> */}
+                                  <div className="error-msg">{errors.task_start && <span>{errors.task_start.message}</span>}</div>
                                 </div>
                               </GridItem>
 
@@ -855,7 +855,7 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                     dateFormat="dd-MM-yyyy"
                                     minDate={startDate}
                                   />
-                                  {/* <div className="error-msg">{errors.task_deadline && <span>{errors.task_deadline.message}</span>}</div> */}
+                                  <div className="error-msg">{errors.task_deadline && <span>{errors.task_deadline.message}</span>}</div>
                                 </div>
                               </GridItem>
                             </GridContainer>
@@ -880,7 +880,7 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                     showArrow={true}
                                   />
 
-                                  {/* <div className="error-msg">{errors.task_person && <span>{errors.task_person.message}</span>}</div> */}
+                                  <div className="error-msg">{errors.task_person && <span>{errors.task_person.message}</span>}</div>
                                 </div>
                               </GridItem>
                             </GridContainer>
@@ -895,7 +895,7 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                     placeholder="Comment"
                                     {...register("task_comment")}
                                   />
-                                  {/* <div className="error-msg">{errors.position && <span>{errors.position.message}</span>}</div> */}
+                                  <div className="error-msg">{errors.position && <span>{errors.position.message}</span>}</div>
                                 </div>
                               </GridItem>
                             </GridContainer>
@@ -1111,7 +1111,7 @@ function Dashboard({ project_details, User_name, allTask, userTask }) {
                                                   type="text"
                                                   className="form-control signup-input"
                                                   disabled={
-                                                    cookies.Role_id == "2"
+                                                    cookies.Role_id == "2" || cookies.Role_id == "3"
                                                   }
                                                   placeholder="Task Title"
                                                   name="task_title"

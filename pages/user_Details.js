@@ -413,7 +413,7 @@ function UserDetail({UserDetail}) {
                               <div>
                                 <GridContainer>
                                   <GridItem xs={12} sm={12} md={12}>
-                                    <form onSubmit={handleSubmit(UpdateUser)} method="POST">
+                                    <form onSubmit={handleSubmit(UpdateUser)} method="POST" className="update_userdata">
                                     <Card>
                                       <CardHeader color="primary">
                                       <GridContainer>
