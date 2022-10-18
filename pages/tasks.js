@@ -139,6 +139,11 @@ function Dashboard( { project_details , User_name , allTask, userTask, language,
   const classes = useStyles();
   // get role from cookies
   const [cookies, setCookie] = useCookies(['name']);
+  useEffect(() => {
+    if(!cookies.name){
+      router.push(`${server}/login`);
+    }
+  });
     
   if(cookies.Role_id == "2"){
     var allTask = userTask;

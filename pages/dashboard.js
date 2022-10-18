@@ -130,12 +130,18 @@ function Dashboard( { project_details, project_hold, project_completed, project_
 
   const { register,  watch, handleSubmit, formState: { errors }, setValue } = useForm(); 
   const router = useRouter();
+  useEffect(() => {
+    if(!cookies.name){
+      router.push(`${server}/login`);
+    }
+  });
 
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   const [cookies, setCookie] = useCookies('');
   const [trackdate,settrackdate] = useState("")
-  const [users, setusers] = useState([])
+  const [users, setusers] = useState([]);
+
   const deleteProject = async(id) =>{
     console.log('delete');
     console.log(id);

@@ -48,6 +48,13 @@ function UserDetail({UserDetail, user_Department}) {
   // console.log(UserDetail);
   const { register,  watch, handleSubmit, formState: { errors }, setValue, control } = useForm({mode: "onBlur"});
   const [cookies, setCookie] = useCookies(['name']);
+  useEffect(() => {
+    if(!cookies.name){
+      router.push(`${server}/login`);
+    }else if(cookies.Role_id != "1"){
+      router.push(`${server}/dashboard`);
+    }
+  });
 
   //Status Active
   // const [value, setvalue] = useState('Active');

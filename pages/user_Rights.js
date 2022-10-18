@@ -17,6 +17,7 @@ import TableCell from "@material-ui/core/TableCell";
 
 import axios from "axios";
 import { server } from 'config';
+import { useCookies } from "react-cookie";
 
 const styles = {
     cardCategoryWhite: {
@@ -57,7 +58,16 @@ function UserRights({UserList,ModuleList}){
     const useStyles = makeStyles(styles);
     const classes = useStyles();
     const router = useRouter();
+    const [cookies, setCookie] = useCookies(['name']);
 
+    useEffect(() => {
+        if(!cookies.name){
+          router.push(`${server}/login`);
+        }else if(cookies.Role_id == "2"){
+          router.push(`${server}/dashboard`);
+        }
+      });
+    
     const [user, setuser] = useState(1)
     const [module, setmodule] = useState(1)
     const changeUser = (e) => {
