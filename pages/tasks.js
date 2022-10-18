@@ -129,10 +129,13 @@ export async function getServerSideProps(context){
   const lang = await fetch(`${server}/api/language`)
   const language = await lang.json();
 
-  return{ props: {project_details, User_name, allTask, userTask, language, user_Department} }
+  const pri = await fetch(`${server}/api/priority`)
+  const priority = await pri.json();
+
+  return{ props: {project_details, User_name, allTask, userTask, language, user_Department, priority} }
 }
 
-function Dashboard( { project_details , User_name , allTask, userTask, language, user_Department } ) {
+function Dashboard( { project_details , User_name , allTask, userTask, language, user_Department, priority } ) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   // get role from cookies
@@ -215,8 +218,21 @@ function Dashboard( { project_details , User_name , allTask, userTask, language,
     }
     u_data();
   },[]);
-  
   const [u_Language, setLanguage] = useState([]);
+
+  const [all_Priority, setAllPriority] = useState([]);
+  useEffect(() =>{
+    const u_data = async() =>{
+  
+      const getPriority = [];
+      priority.map((priority)=>{
+        getPriority.push( {'label' :priority.priority_name, 'value' :priority.priority_name} );
+      });
+      setAllPriority(getPriority);
+    }
+    u_data();
+  },[]);
+  const [u_Priority, setPriority] = useState([]);
 
   const projectId = async(id) =>{
     var comment = await axios.post(`${server}/api/comment/userComments`, { task_id: id });
@@ -237,7 +253,11 @@ function Dashboard( { project_details , User_name , allTask, userTask, language,
     const getLanguage = [];
     getLanguage.push( {'label' :udata.task_language, 'value' :udata.task_language} );
 
+    const getPriority = [];
+    getPriority.push( {'label' :udata.task_priority, 'value' :udata.task_priority} );
+
     setLanguage(getLanguage);
+    setPriority(getPriority);
     setUpdateSelected(getAllname);
     setUpdate(udata);
     setStartDate(new Date(udata.task_start));
@@ -287,10 +307,14 @@ function Dashboard( { project_details , User_name , allTask, userTask, language,
         var updated_Language = u_Language[0].value;
       }
 
+      if(u_Priority != ""){
+        var Priority = u_Priority[0].value;
+      }
+
       const res = await fetch(`${server}/api/subtask/update_subtask`,{
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ task_id:uoption.task_id, project_name:u_project , task_person: allMember, task_status:uoption.task_status , task_department:uoption.task_department ,  task_title: uoption.task_title , task_description:uoption.task_description , task_language:updated_Language, task_priority:uoption.task_priority, task_start: startDate , task_deadline: endDate }),
+        body: JSON.stringify({ task_id:uoption.task_id, project_name:u_project , task_person: allMember, task_status:uoption.task_status , task_department:uoption.task_department ,  task_title: uoption.task_title , task_description:uoption.task_description , task_language:updated_Language, task_priority:Priority, task_start: startDate , task_deadline: endDate }),
       });
       if(!toast.isActive(toastId.current)) {
         toastId.current = toast.success('Task updated Successfully!🎉', {
@@ -329,11 +353,15 @@ function Dashboard( { project_details , User_name , allTask, userTask, language,
     if(u_Language != ""){
       var Language = u_Language[0].value;
     }
-  
+
+    if(u_Priority != ""){
+      var Priority = u_Priority[0].value;
+    }
+
     const res = await fetch(`${server}/api/subtask/add_subtask`,{
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body:JSON.stringify({task_person:selected, project_name:p_selected, task_status:result.task_status , task_title:result.task_title, task_description:result.task_description, task_language:Language, task_createdBy:cookies.name , task_priority:result.task_priority, task_start: p_start , task_deadline: p_end }),
+      body:JSON.stringify({task_person:selected, project_name:p_selected, task_status:result.task_status , task_title:result.task_title, task_description:result.task_description, task_language:Language, task_createdBy:cookies.name , task_priority:Priority, task_start: p_start , task_deadline: p_end }),
     })
     const data=await res.json()
 
@@ -774,13 +802,26 @@ const updateComment = async(id, comment) =>{
                     <GridItem xs={12} sm={12} md={6}>
                       <div className="form-group">
                       <span>Task Priority</span><span className="required">*</span>
-                        <select name="priority" id="priority" className="form-control signup-input" {...register('task_priority', {required:true ,message:'Please select atleast one option', })}>
+                      <Multiselect
+                          displayValue="value"
+                          options={all_Priority}
+                          value={u_Priority}
+                          selectionLimit="1"
+                          onChange={setPriority}
+                          onRemove={setPriority}
+                          onSearch={function noRefCheck(){}}
+                          onSelect={setPriority}
+                          placeholder="Task Priority"
+                          showArrow={true}
+                      />
+
+                        {/* <select name="priority" id="priority" className="form-control signup-input" {...register('task_priority', {required:true ,message:'Please select atleast one option', })}>
                           <option value=""  disabled selected>Select Task Priority</option>
                           <option value="High">High</option>
                           <option value="Medium">Medium</option>
                           <option value="Low">Low</option>
                         </select>
-                        <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                        <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span> */}
                         {/* <div className="error-msg">{errors.task_priority && <span>{errors.task_priority.message}</span>}</div> */}
                       </div> 
                     </GridItem>
@@ -1230,13 +1271,27 @@ const updateComment = async(id, comment) =>{
                                 <GridItem xs={12} sm={12} md={6}>
                                   <div className="form-group">
                                   <span>Task Priority</span><span className="required">*</span>
-                                    <select id="priority" className="form-control signup-input" disabled={cookies.Role_id == "2"} name="task_priority" value={uoption.task_priority} onChange={handleChange}  >
+                                  <Multiselect
+                                      displayValue="value"
+                                      options={all_Priority}
+                                      value={u_Priority}
+                                      selectedValues={u_Priority}
+                                      selectionLimit="1"
+                                      onChange={setPriority}
+                                      onRemove={setPriority}
+                                      onSearch={function noRefCheck(){}}
+                                      onSelect={setPriority}
+                                      placeholder="Task Priority"
+                                      showArrow={true}
+                                  />
+
+                                    {/* <select id="priority" className="form-control signup-input" disabled={cookies.Role_id == "2"} name="task_priority" value={uoption.task_priority} onChange={handleChange}  >
                                       <option value=""  disabled selected>Select Task Priority</option>
                                       <option value="High">High</option>
                                       <option value="Medium">Medium</option>
                                       <option value="Low">Low</option>
                                     </select>
-                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span> */}
                                   </div> 
                                 </GridItem>
 
@@ -1730,13 +1785,27 @@ const updateComment = async(id, comment) =>{
                                 <GridItem xs={12} sm={12} md={6}>
                                   <div className="form-group">
                                   <span>Task Priority</span><span className="required">*</span>
-                                    <select id="priority" className="form-control signup-input" disabled={cookies.Role_id == "2"} name="task_priority" value={uoption.task_priority} onChange={handleChange}  >
+                                  <Multiselect
+                                      displayValue="value"
+                                      options={all_Priority}
+                                      value={u_Priority}
+                                      selectedValues={u_Priority}
+                                      selectionLimit="1"
+                                      onChange={setPriority}
+                                      onRemove={setPriority}
+                                      onSearch={function noRefCheck(){}}
+                                      onSelect={setPriority}
+                                      placeholder="Task Priority"
+                                      showArrow={true}
+                                  />
+
+                                    {/* <select id="priority" className="form-control signup-input" disabled={cookies.Role_id == "2"} name="task_priority" value={uoption.task_priority} onChange={handleChange}  >
                                       <option value=""  disabled selected>Select Task Priority</option>
                                       <option value="High">High</option>
                                       <option value="Medium">Medium</option>
                                       <option value="Low">Low</option>
                                     </select>
-                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span> */}
                                   </div> 
                                 </GridItem>
 
@@ -2230,13 +2299,27 @@ const updateComment = async(id, comment) =>{
                                 <GridItem xs={12} sm={12} md={6}>
                                   <div className="form-group">
                                   <span>Task Priority</span><span className="required">*</span>
-                                    <select id="priority" className="form-control signup-input" disabled={cookies.Role_id == "2"} name="task_priority" value={uoption.task_priority} onChange={handleChange}  >
+                                  <Multiselect
+                                      displayValue="value"
+                                      options={all_Priority}
+                                      value={u_Priority}
+                                      selectedValues={u_Priority}
+                                      selectionLimit="1"
+                                      onChange={setPriority}
+                                      onRemove={setPriority}
+                                      onSearch={function noRefCheck(){}}
+                                      onSelect={setPriority}
+                                      placeholder="Task Priority"
+                                      showArrow={true}
+                                  />
+
+                                    {/* <select id="priority" className="form-control signup-input" disabled={cookies.Role_id == "2"} name="task_priority" value={uoption.task_priority} onChange={handleChange}  >
                                       <option value=""  disabled selected>Select Task Priority</option>
                                       <option value="High">High</option>
                                       <option value="Medium">Medium</option>
                                       <option value="Low">Low</option>
                                     </select>
-                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span> */}
                                   </div> 
                                 </GridItem>
 
@@ -2731,13 +2814,27 @@ const updateComment = async(id, comment) =>{
                                 <GridItem xs={12} sm={12} md={6}>
                                   <div className="form-group">
                                   <span>Task Priority</span><span className="required">*</span>
-                                    <select id="priority" className="form-control signup-input" disabled={cookies.Role_id == "2"} name="task_priority" value={uoption.task_priority} onChange={handleChange}  >
+                                  <Multiselect
+                                      displayValue="value"
+                                      options={all_Priority}
+                                      value={u_Priority}
+                                      selectedValues={u_Priority}
+                                      selectionLimit="1"
+                                      onChange={setPriority}
+                                      onRemove={setPriority}
+                                      onSearch={function noRefCheck(){}}
+                                      onSelect={setPriority}
+                                      placeholder="Task Priority"
+                                      showArrow={true}
+                                  />
+
+                                    {/* <select id="priority" className="form-control signup-input" disabled={cookies.Role_id == "2"} name="task_priority" value={uoption.task_priority} onChange={handleChange}  >
                                       <option value=""  disabled selected>Select Task Priority</option>
                                       <option value="High">High</option>
                                       <option value="Medium">Medium</option>
                                       <option value="Low">Low</option>
                                     </select>
-                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span> */}
                                   </div> 
                                 </GridItem>
 

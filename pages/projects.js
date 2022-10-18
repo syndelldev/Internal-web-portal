@@ -364,10 +364,14 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
 
     if(u_Department != ""){
       var Department = u_Department[0].value;
+      console.log("department");
+      console.log(Department);
     }
 
     if(u_Priority != ""){
       var Priority = u_Priority[0].value;
+      console.log("priority");
+      console.log(Priority);
     }
 
     if(result.project_title != ""){
@@ -820,10 +824,10 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                       options={all_Priority}
                                       value={u_Priority}
                                       selectionLimit="1"
-                                      onChange={setDepartment}
-                                      onRemove={setDepartment}
+                                      onChange={setPriority}
+                                      onRemove={setPriority}
                                       onSearch={function noRefCheck(){}}
-                                      onSelect={setDepartment}
+                                      onSelect={setPriority}
                                       placeholder="Project Priority"
                                       showArrow={true}
                                   />
@@ -1263,10 +1267,10 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                         value={u_Priority}
                                         selectedValues={u_Priority}
                                         selectionLimit="1"
-                                        onChange={setDepartment}
-                                        onRemove={setDepartment}
+                                        onChange={setPriority}
+                                        onRemove={setPriority}
                                         onSearch={function noRefCheck(){}}
-                                        onSelect={setDepartment}
+                                        onSelect={setPriority}
                                         placeholder="Project Priority"
                                         showArrow={true}
                                     />
@@ -1667,10 +1671,10 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                         value={u_Priority}
                                         selectedValues={u_Priority}
                                         selectionLimit="1"
-                                        onChange={setDepartment}
-                                        onRemove={setDepartment}
+                                        onChange={setPriority}
+                                        onRemove={setPriority}
                                         onSearch={function noRefCheck(){}}
-                                        onSelect={setDepartment}
+                                        onSelect={setPriority}
                                         placeholder="Project Priority"
                                         showArrow={true}
                                     />
@@ -2066,10 +2070,10 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                         value={u_Priority}
                                         selectedValues={u_Priority}
                                         selectionLimit="1"
-                                        onChange={setDepartment}
-                                        onRemove={setDepartment}
+                                        onChange={setPriority}
+                                        onRemove={setPriority}
                                         onSearch={function noRefCheck(){}}
-                                        onSelect={setDepartment}
+                                        onSelect={setPriority}
                                         placeholder="Project Priority"
                                         showArrow={true}
                                       />
