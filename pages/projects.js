@@ -208,32 +208,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
   }
   const add_user = [];
   add_user.push(userID);
-  // console.log(userID)
-
-  const projectId = async(id) =>{
-    console.log('update project id');
-    console.log(id);
-
-    const response = await fetch(`${server}/api/project/update/${id}`)
-    const update_data = await response.json();
-
-    const udata = update_data[0];
-
-    const selectedMember = (udata.project_person).split(",");
-
-    const getAllname = [];
-
-    selectedMember.map((user)=>{
-      getAllname.push( {'label' :user, 'value' :user} );
-    });
-
-    setUpdateSelected(getAllname);
-    setUpdate(udata);
-    setStartDate(new Date(udata.project_start));
-    setEndDate(new Date(udata.project_deadline));
-
-  }
-
+  
   const [all_Language, setAllLanguage] = useState([]);
   useEffect(() =>{
     const u_data = async() =>{
@@ -261,6 +236,38 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
     u_data();
   },[]);
   const [u_Department, setDepartment] = useState([]);
+
+  const projectId = async(id) =>{
+    console.log('update project id');
+    console.log(id);
+
+    const response = await fetch(`${server}/api/project/update/${id}`)
+    const update_data = await response.json();
+
+    const udata = update_data[0];
+
+    const selectedMember = (udata.project_person).split(",");
+
+    const getAllname = [];
+
+    selectedMember.map((user)=>{
+      getAllname.push( {'label' :user, 'value' :user} );
+    });
+
+    const getLanguage = [];
+    getLanguage.push( {'label' :udata.project_language, 'value' :udata.project_language} );
+
+    const getDepartment = [];
+    getDepartment.push( {'label' :udata.project_department, 'value' :udata.project_department} );
+
+    setLanguage(getLanguage);
+    setDepartment(getDepartment);
+    setUpdateSelected(getAllname);
+    setUpdate(udata);
+    setStartDate(new Date(udata.project_start));
+    setEndDate(new Date(udata.project_deadline));
+
+  }
 
   const [selected, setSelected] = useState([userID]);
 
@@ -327,14 +334,18 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
     if(u_Language != ""){
       var Language = u_Language[0].value;
     }
-    
+
+    if(u_Department != ""){
+      var Department = u_Department[0].value;
+    }
+
     if(result.project_title != ""){
       const res = await fetch(`${server}/api/project/addproject`,{
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body:JSON.stringify({project_person:selected,project_department:result.project_department,project_status:result.project_status , project_title:result.project_title, project_description:result.project_description, project_language:Language, project_priority:result.project_priority, project_start: p_start , project_deadline: p_end , projectAdded_by: cookies }),
+        body:JSON.stringify({project_person:selected,project_department:Department,project_status:result.project_status , project_title:result.project_title, project_description:result.project_description, project_language:Language, project_priority:result.project_priority, project_start: p_start , project_deadline: p_end , projectAdded_by: cookies }),
       })
-      const data=await res.json()
+      const data=await res.json();
       
       if(res.status==200)
       {
@@ -345,7 +356,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
               theme: "colored",
               hideProgressBar: true,
               });
-          }
+        }
         router.reload(`${server}/projects`);
       }
       else
@@ -701,22 +712,9 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                       onRemove={setDepartment}
                                       onSearch={function noRefCheck(){}}
                                       onSelect={setDepartment}
-                                      placeholder="Task Language"
+                                      placeholder="Project Department"
                                       showArrow={true}
                                     />
-
-                                      {/* <select name="Department" id="Department" className="form-control signup-input" {...register('project_department', {required:true ,message:'Please select atleast one option', })}>
-                                        <option value=""  disabled selected>Select Your Department...</option>
-                                        <option value="HR">HR</option>
-                                        <option value="UI & UX">UI & UX</option>
-                                        <option value="Web Developer">Web Developer</option>
-                                        <option value="Content Writer">Content Writer</option>
-                                        <option value="Project Manager">Project Manager</option>
-                                        <option value="Mobile App Developer">Mobile App Developer</option>
-                                        <option value="SEO">SEO</option>
-                                      </select>
-                                      <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                                      <div className="error-msg">{errors.project_department && <span>{errors.project_department.message}</span>}</div> */}
                                     </div> 
                                 </GridItem>
 
@@ -732,21 +730,10 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                     onRemove={setLanguage}
                                     onSearch={function noRefCheck(){}}
                                     onSelect={setLanguage}
-                                    placeholder="Task Language"
+                                    placeholder="Project Language"
                                     showArrow={true}
                                   />
-
-                                    {/* <select name="Project_created_by" id="Project_created_by" className="form-control signup-input" {...register('project_language', {required:true ,message:'Please select atleast one option', })}>
-                                      <option value="" disabled selected>Select Language</option>
-                                      <option value="Wordpress">Wordpress</option>
-                                      <option value="Shopify">Shopify</option>
-                                      <option value="ReactJS">ReactJS</option>
-                                      <option value="Laravel">Laravel</option>
-                                      <option value="Android">Android</option>
-                                      <option value="Bubble">Bubble</option>
-                                    </select>
-                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span> */}
-                                    <div className="error-msg">{errors.project_language && <span>{errors.project_language.message}</span>}</div>
+                                  <div className="error-msg">{errors.project_language && <span>{errors.project_language.message}</span>}</div>
                                   </div> 
                                 </GridItem>
                               </GridContainer><br/>
@@ -1143,34 +1130,38 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                     <GridItem xs={12} sm={12} md={6}>
                                         <div className="form-group">
                                         <span>Project Department</span><span className="required">*</span>
-                                          <select id="Department" name="project_department" className="form-control signup-input" value={uoption.project_department} onChange={handleChange} disabled={cookies.Role_id == "2"} >
-                                            <option value=""  disabled selected>Select Your Department...</option>
-                                            <option value="HR">HR</option>
-                                            <option value="UI & UX">UI & UX</option>
-                                            <option value="Testing">Testing</option>
-                                            <option value="Web development">Web Development</option>
-                                            <option value="Content writer">Content Writer</option>
-                                            <option value="Project manager">Project Manager</option>
-                                            <option value="Mobile App developer">Mobile App Developer</option>
-                                            <option value="SEO">SEO</option>
-                                          </select>
-                                          <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                        <Multiselect
+                                          displayValue="value"
+                                          options={all_Department}
+                                          value={u_Department}
+                                          selectedValues={u_Department}
+                                          selectionLimit="1"
+                                          onChange={setDepartment}
+                                          onRemove={setDepartment}
+                                          onSearch={function noRefCheck(){}}
+                                          onSelect={setDepartment}
+                                          placeholder="Project Department"
+                                          showArrow={true}
+                                        />
                                         </div> 
                                     </GridItem>
 
                                     <GridItem xs={12} sm={12} md={6}>
                                       <div className="form-group">
                                       <span>Project Language</span><span className="required">*</span>
-                                        <select name="project_language" id="Project_created_by" className="form-control signup-input"  value={uoption.project_language} onChange={handleChange} disabled={cookies.Role_id == "2"} >
-                                          <option value="" disabled selected>Select Language</option>
-                                          <option value="Wordpress">Wordpress</option>
-                                          <option value="Shopify">Shopify</option>
-                                          <option value="ReactJS">ReactJS</option>
-                                          <option value="Laravel">Laravel</option>
-                                          <option value="Android">Android</option>
-                                          <option value="Bubble">Bubble</option>
-                                        </select>
-                                        <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                      <Multiselect
+                                        displayValue="value"
+                                        options={all_Language}
+                                        value={u_Language}
+                                        selectedValues={u_Language}
+                                        selectionLimit="1"
+                                        onChange={setLanguage}
+                                        onRemove={setLanguage}
+                                        onSearch={function noRefCheck(){}}
+                                        onSelect={setLanguage}
+                                        placeholder="Project Language"
+                                        showArrow={true}
+                                      />
                                       </div> 
                                     </GridItem>
                                   </GridContainer><br/>
@@ -1529,34 +1520,38 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                     <GridItem xs={12} sm={12} md={6}>
                                         <div className="form-group">
                                         <span>Project Department</span><span className="required">*</span>
-                                          <select id="Department" name="project_department" className="form-control signup-input" value={uoption.project_department} onChange={handleChange} disabled={cookies.Role_id == "2"} >
-                                            <option value=""  disabled selected>Select Your Department...</option>
-                                            <option value="HR">HR</option>
-                                            <option value="UI & UX">UI & UX</option>
-                                            <option value="Testing">Testing</option>
-                                            <option value="Web development">Web Development</option>
-                                            <option value="Content writer">Content Writer</option>
-                                            <option value="Project manager">Project Manager</option>
-                                            <option value="Mobile App developer">Mobile App Developer</option>
-                                            <option value="SEO">SEO</option>
-                                          </select>
-                                          <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                        <Multiselect
+                                          displayValue="value"
+                                          options={all_Department}
+                                          value={u_Department}
+                                          selectedValues={u_Department}
+                                          selectionLimit="1"
+                                          onChange={setDepartment}
+                                          onRemove={setDepartment}
+                                          onSearch={function noRefCheck(){}}
+                                          onSelect={setDepartment}
+                                          placeholder="Project Department"
+                                          showArrow={true}
+                                        />
                                         </div> 
                                     </GridItem>
 
                                     <GridItem xs={12} sm={12} md={6}>
                                       <div className="form-group">
                                       <span>Project Language</span><span className="required">*</span>
-                                        <select name="project_language" id="Project_created_by" className="form-control signup-input"  value={uoption.project_language} onChange={handleChange} disabled={cookies.Role_id == "2"} >
-                                          <option value="" disabled selected>Select Language</option>
-                                          <option value="Wordpress">Wordpress</option>
-                                          <option value="Shopify">Shopify</option>
-                                          <option value="ReactJS">ReactJS</option>
-                                          <option value="Laravel">Laravel</option>
-                                          <option value="Android">Android</option>
-                                          <option value="Bubble">Bubble</option>
-                                        </select>
-                                        <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                      <Multiselect
+                                        displayValue="value"
+                                        options={all_Language}
+                                        value={u_Language}
+                                        selectedValues={u_Language}
+                                        selectionLimit="1"
+                                        onChange={setLanguage}
+                                        onRemove={setLanguage}
+                                        onSearch={function noRefCheck(){}}
+                                        onSelect={setLanguage}
+                                        placeholder="Project Language"
+                                        showArrow={true}
+                                      />
                                       </div> 
                                     </GridItem>
                                   </GridContainer><br/>
@@ -1917,34 +1912,38 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                     <GridItem xs={12} sm={12} md={6}>
                                         <div className="form-group">
                                         <span>Project Department</span><span className="required">*</span>
-                                          <select id="Department" name="project_department" className="form-control signup-input" value={uoption.project_department} onChange={handleChange} disabled={cookies.Role_id == "2"} >
-                                            <option value=""  disabled selected>Select Your Department...</option>
-                                            <option value="HR">HR</option>
-                                            <option value="UI & UX">UI & UX</option>
-                                            <option value="Testing">Testing</option>
-                                            <option value="Web development">Web Development</option>
-                                            <option value="Content writer">Content Writer</option>
-                                            <option value="Project manager">Project Manager</option>
-                                            <option value="Mobile App developer">Mobile App Developer</option>
-                                            <option value="SEO">SEO</option>
-                                          </select>
-                                          <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                        <Multiselect
+                                          displayValue="value"
+                                          options={all_Department}
+                                          value={u_Department}
+                                          selectedValues={u_Department}
+                                          selectionLimit="1"
+                                          onChange={setDepartment}
+                                          onRemove={setDepartment}
+                                          onSearch={function noRefCheck(){}}
+                                          onSelect={setDepartment}
+                                          placeholder="Project Department"
+                                          showArrow={true}
+                                        />
                                         </div> 
                                     </GridItem>
 
                                     <GridItem xs={12} sm={12} md={6}>
                                       <div className="form-group">
                                       <span>Project Language</span><span className="required">*</span>
-                                        <select name="project_language" id="Project_created_by" className="form-control signup-input"  value={uoption.project_language} onChange={handleChange} disabled={cookies.Role_id == "2"} >
-                                          <option value="" disabled selected>Select Language</option>
-                                          <option value="Wordpress">Wordpress</option>
-                                          <option value="Shopify">Shopify</option>
-                                          <option value="ReactJS">ReactJS</option>
-                                          <option value="Laravel">Laravel</option>
-                                          <option value="Android">Android</option>
-                                          <option value="Bubble">Bubble</option>
-                                        </select>
-                                        <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                      <Multiselect
+                                        displayValue="value"
+                                        options={all_Language}
+                                        value={u_Language}
+                                        selectedValues={u_Language}
+                                        selectionLimit="1"
+                                        onChange={setLanguage}
+                                        onRemove={setLanguage}
+                                        onSearch={function noRefCheck(){}}
+                                        onSelect={setLanguage}
+                                        placeholder="Project Language"
+                                        showArrow={true}
+                                      />
                                       </div> 
                                     </GridItem>
                                   </GridContainer><br/>
