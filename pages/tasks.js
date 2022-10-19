@@ -272,6 +272,10 @@ function Dashboard( { project_details , User_name , allTask, userTask, language,
       getAllname.push( {'label' :user, 'value' :user} );
     });
 
+    // set project name from database for update project name
+    const getProject = [];
+    getProject.push( {'label' :udata.project_name, 'value' :udata.project_name} );
+
     // set language name from database for update language
     const getLanguage = [];
     getLanguage.push( {'label' :udata.task_language, 'value' :udata.task_language} );
@@ -297,12 +301,7 @@ function Dashboard( { project_details , User_name , allTask, userTask, language,
     setEndDate(new Date(udata.task_deadline));
 
     }
-    console.log("language");
-    console.log(u_Language);
-
     const [p_selected, setProject] = useState([]);
-    const [select_updateProject, setUpdateProject] = useState([]);
-
 
     const toastId = React.useRef(null);
     const updateProject = async() =>{
@@ -323,7 +322,7 @@ function Dashboard( { project_details , User_name , allTask, userTask, language,
         console.log("project");
         console.log(u_project);
   
-      if( uoption.task_id == ""  ||  u_project  == ""  || allMember  == ""  || uoption.task_status == ""  || uoption.task_department == ""  || uoption.task_title == ""  || uoption.task_description == ""  ||  uoption.task_language == ""  || uoption.task_priority == ""  || startDate == ""  || endDate == "" ){
+      if( uoption.task_id == ""  ||  u_project  == ""  || allMember  == ""  || u_Status == "" || uoption.task_title == ""  || uoption.task_description == ""  ||  u_Language == ""  || u_Priority == ""  || startDate == ""  || endDate == "" ){
         if(! toast.isActive(toastId.current)) {
           toastId.current = toast.error('Please fill all the required fields', {
               position: "top-right",
@@ -336,18 +335,25 @@ function Dashboard( { project_details , User_name , allTask, userTask, language,
     
     }else{
 
-      if(u_Language != ""){
-        var updated_Language = u_Language[0].value;
-      }
+    // get selected language
+    if(u_Language != ""){
+      var Language = u_Language[0].value;
+    }
 
-      if(u_Priority != ""){
-        var Priority = u_Priority[0].value;
-      }
+    // get selected priority
+    if(u_Priority != ""){
+      var Priority = u_Priority[0].value;
+    }
+
+    // get selected status
+    if(u_Status != ""){
+      var Status = u_Status[0].value;
+    }
 
       const res = await fetch(`${server}/api/subtask/update_subtask`,{
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ task_id:uoption.task_id, project_name:u_project , task_person: allMember, task_status:uoption.task_status , task_department:uoption.task_department ,  task_title: uoption.task_title , task_description:uoption.task_description , task_language:updated_Language, task_priority:Priority, task_start: startDate , task_deadline: endDate }),
+        body: JSON.stringify({ task_id:uoption.task_id, project_name:u_project , task_person: allMember, task_status: Status, task_title: uoption.task_title , task_description:uoption.task_description , task_language: Language, task_priority: Priority, task_start: startDate , task_deadline: endDate }),
       });
       if(!toast.isActive(toastId.current)) {
         toastId.current = toast.success('Task updated Successfully!🎉', {
@@ -802,7 +808,7 @@ const updateComment = async(id, comment) =>{
                     <GridItem xs={12} sm={12} md={12}>
                     <div className="form-group" {...register('project_name')}>
                       
-                    <span>Project</span><span className="required">*</span>
+                    <span>Project name</span><span className="required">*</span>
                       <Multiselect
                         displayValue="value"
                         options={project_list}
