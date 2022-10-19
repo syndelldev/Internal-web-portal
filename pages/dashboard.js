@@ -122,19 +122,39 @@ export async function getServerSideProps(context){
   })
   const project_comp = await u_completed.json();
 
-  return{ props: { project_details, project_hold, project_completed, project_running, User_name, project_runn, project_h, project_comp } }
+  const lang = await fetch(`${server}/api/language`)
+  const language = await lang.json();
+
+  const lang_department = await fetch(`${server}/api/languageDepartment`)
+  const languageDepartment = await lang_department.json();
+
+  const pri = await fetch(`${server}/api/priority`)
+  const priority = await pri.json();
+
+  const stat = await fetch(`${server}/api/projectStatus`)
+  const status = await stat.json();
+
+  return{ props: { project_details, project_hold, project_completed, project_running, User_name, project_runn, project_h, project_comp, language, languageDepartment, priority, status } }
 }
 
-function Dashboard( { project_details, project_hold, project_completed, project_running, User_name, project_runn, project_h, project_comp } ) {
+function Dashboard( { project_details, project_hold, project_completed, project_running, User_name, project_runn, project_h, project_comp, language, languageDepartment, priority, status } ) {
 
   const { register,  watch, handleSubmit, formState: { errors }, setValue } = useForm(); 
   const router = useRouter();
+
+  // redirect page if cookies is not set
+  useEffect(() => {
+    if(!cookies.name){
+      router.push(`${server}/login`);
+    }
+  });
 
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   const [cookies, setCookie] = useCookies('');
   const [trackdate,settrackdate] = useState("")
-  const [users, setusers] = useState([])
+  const [users, setusers] = useState([]);
+
   const deleteProject = async(id) =>{
     console.log('delete');
     console.log(id);
@@ -194,11 +214,72 @@ function Dashboard( { project_details, project_hold, project_completed, project_
 
   const add_user = [];
   add_user.push(userID);
-  console.log(userID)
+
+  // language dropdown options
+  const [all_Language, setAllLanguage] = useState([]);
+  useEffect(() =>{
+    const u_data = async() =>{
+  
+      const getLanguage = [];
+      language.map((language)=>{
+        getLanguage.push( {'label' :language.language_name, 'value' :language.language_name} );
+      });
+      setAllLanguage(getLanguage);
+    }
+    u_data();
+  },[]);
+  // set and get selected value of language
+  const [u_Language, setLanguage] = useState([]);
+
+  // department dropdown options
+  const [all_Department, setAllDepartment] = useState([]);
+  useEffect(() =>{
+    const u_data = async() =>{
+  
+      const getDepartment = [];
+      languageDepartment.map((department)=>{
+        getDepartment.push( {'label' :department.language_department, 'value' :department.language_department} );
+      });
+      setAllDepartment(getDepartment);
+    }
+    u_data();
+  },[]);
+  // set and get selected value of department
+  const [u_Department, setDepartment] = useState([]);
+
+  // priority dropdown options
+  const [all_Priority, setAllPriority] = useState([]);
+  useEffect(() =>{
+    const u_data = async() =>{
+  
+      const getPriority = [];
+      priority.map((priority)=>{
+        getPriority.push( {'label' :priority.priority_name, 'value' :priority.priority_name} );
+      });
+      setAllPriority(getPriority);
+    }
+    u_data();
+  },[]);
+  // set and get selected value of priority
+  const [u_Priority, setPriority] = useState([]);
+
+  // status dropdown options
+  const [all_Status, setAllStatus] = useState([]);
+  useEffect(() =>{
+    const u_data = async() =>{
+  
+      const getStatus = [];
+      status.map((status)=>{
+        getStatus.push( {'label' :status.projectstatus_name, 'value' :status.projectstatus_name} );
+      });
+      setAllStatus(getStatus);
+    }
+    u_data();
+  },[]);
+  // set and get selected value of status
+  const [u_Status, setStatus] = useState([]);
 
   const projectId = async(id) =>{
-    console.log('update project id');
-    console.log(id);
 
     const response = await fetch(`${server}/api/project/update/${id}`)
     const update_data = await response.json();
@@ -210,6 +291,26 @@ function Dashboard( { project_details, project_hold, project_completed, project_
       getAllname.push( {'label' :user, 'value' :user} );
     });
 
+    // set language name from database for update language
+    const getLanguage = [];
+    getLanguage.push( {'label' :udata.project_language, 'value' :udata.project_language} );
+
+    // set department name from database for update department
+    const getDepartment = [];
+    getDepartment.push( {'label' :udata.project_department, 'value' :udata.project_department} );
+
+    // set priority from database for update priority
+    const getPriority = [];
+    getPriority.push( {'label' :udata.project_priority, 'value' :udata.project_priority} );
+
+    // set status from database for update status
+    const getStatus = [];
+    getStatus.push( {'label' :udata.project_status, 'value' :udata.project_status} );
+
+    setStatus(getStatus);
+    setLanguage(getLanguage);
+    setDepartment(getDepartment);
+    setPriority(getPriority);
     setUpdateSelected(getAllname);
     setUpdate(udata);
     setStartDate(new Date(udata.project_start));
@@ -254,21 +355,40 @@ function Dashboard( { project_details, project_hold, project_completed, project_
   
   }else{
 
+    // get selected language
+    if(u_Language != ""){
+      var Language = u_Language[0].value;
+    }
+
+    // get selected department
+    if(u_Department != ""){
+      var Department = u_Department[0].value;
+    }
+
+    // get selected priority
+    if(u_Priority != ""){
+      var Priority = u_Priority[0].value;
+    }
+
+    // get selected status
+    if(u_Status != ""){
+      var Status = u_Status[0].value;
+    }
+
     const res = await fetch(`${server}/api/project/update_project`,{
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ project_id:uoption.project_id, project_person: allMember, project_status:uoption.project_status , project_department:uoption.project_department ,  project_title: uoption.project_title , project_description:uoption.project_description , project_language:uoption.project_language, project_comment:uoption.project_comment, project_priority:uoption.project_priority, project_start: startDate , project_deadline: endDate }),
+      body: JSON.stringify({ project_id:uoption.project_id, project_person: allMember, project_status: Status , project_department: Department ,  project_title: uoption.project_title , project_description:uoption.project_description , project_language: Language, project_priority: Priority, project_start: startDate , project_deadline: endDate }),
     });
     if(!toast.isActive(toastId.current)) {
-      toastId.current = toast.success('Updated Successfully ! 🎉', {
+      toastId.current = toast.success('Project Updated Successfully!🎉', {
           position: "top-right",
           autoClose:1000,
           theme: "colored",
-          hideProgressBar: true,
-          onClose: () => router.push(`${server}/projects`)
+          hideProgressBar: true
           });
       }
-      router.reload(`${server}/projects`);
+      router.reload(`${server}/dashboard`);
   }
 }
 
@@ -487,34 +607,39 @@ useEffect(() =>{
                                     <GridItem xs={12} sm={12} md={6}>
                                         <div className="form-group">
                                         <span>Project Department</span><span className="required">*</span>
-                                          <select id="Department" name="project_department" className="form-control signup-input" value={uoption.project_department} onChange={handleChange} disabled={cookies.Role_id == "2"} >
-                                            <option value=""  disabled selected>Select Your Department...</option>
-                                            <option value="HR">HR</option>
-                                            <option value="UI & UX">UI & UX</option>
-                                            <option value="Testing">Testing</option>
-                                            <option value="Web development">Web Development</option>
-                                            <option value="Content writer">Content Writer</option>
-                                            <option value="Project manager">Project Manager</option>
-                                            <option value="Mobile App developer">Mobile App Developer</option>
-                                            <option value="SEO">SEO</option>
-                                          </select>
-                                          <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                        <Multiselect
+                                          displayValue="value"
+                                          options={all_Department}
+                                          value={u_Department}
+                                          selectedValues={u_Department}
+                                          selectionLimit="1"
+                                          onChange={setDepartment}
+                                          onRemove={setDepartment}
+                                          onSearch={function noRefCheck(){}}
+                                          onSelect={setDepartment}
+                                          placeholder="Project Department"
+                                          showArrow={true}
+                                        />
                                         </div> 
                                     </GridItem>
 
                                     <GridItem xs={12} sm={12} md={6}>
                                       <div className="form-group">
                                       <span>Project Language</span><span className="required">*</span>
-                                        <select name="project_language" id="Project_created_by" className="form-control signup-input"  value={uoption.project_language} onChange={handleChange} disabled={cookies.Role_id == "2"} >
-                                          <option value="" disabled selected>Select Language</option>
-                                          <option value="Wordpress">Wordpress</option>
-                                          <option value="Shopify">Shopify</option>
-                                          <option value="ReactJS">ReactJS</option>
-                                          <option value="Laravel">Laravel</option>
-                                          <option value="Android">Android</option>
-                                          <option value="Bubble">Bubble</option>
-                                        </select>
-                                      <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                      <Multiselect
+                                        displayValue="value"
+                                        options={all_Language}
+                                        value={u_Language}
+                                        selectedValues={u_Language}
+                                        selectionLimit="1"
+                                        onChange={setLanguage}
+                                        onRemove={setLanguage}
+                                        onSearch={function noRefCheck(){}}
+                                        onSelect={setLanguage}
+                                        placeholder="Project Language"
+                                        showArrow={true}
+                                      />
+                                      <div className="error-msg">{errors.project_language && <span>{errors.project_language.message}</span>}</div>
                                       </div> 
                                     </GridItem>
                                   </GridContainer><br/>
@@ -566,26 +691,38 @@ useEffect(() =>{
                                     <GridItem xs={12} sm={12} md={6}>
                                       <div className="form-group">
                                       <span>Project Priority</span><span className="required">*</span>
-                                        <select name="project_priority" id="priority" className="form-control signup-input" value={uoption.project_priority} onChange={handleChange} disabled={cookies.Role_id == "2"}>
-                                          <option value=""  disabled selected>Select Project Priority</option>
-                                          <option value="High" className="High">High</option>
-                                          <option value="Medium" className="Medium">Medium</option>
-                                          <option value="Low"className="Low">Low</option>
-                                        </select>
-                                        <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                      <Multiselect
+                                        displayValue="value"
+                                        options={all_Priority}
+                                        value={u_Priority}
+                                        selectedValues={u_Priority}
+                                        selectionLimit="1"
+                                        onChange={setPriority}
+                                        onRemove={setPriority}
+                                        onSearch={function noRefCheck(){}}
+                                        onSelect={setPriority}
+                                        placeholder="Project Priority"
+                                        showArrow={true}
+                                    />
                                       </div> 
                                     </GridItem>
                                   
                                     <GridItem xs={12} sm={12} md={6}>
                                         <div className="form-group">
                                           <span>Project Status</span><span className="required">*</span>
-                                            <select name="project_status" id="Status" className="form-control signup-input" disabled={cookies.Role_id == "2"} value={uoption.project_status} onChange={handleChange}>
-                                              <option value=""  disabled selected>Select Project Status</option>
-                                              <option value="on hold">On hold</option>
-                                              <option value="running">Running</option>
-                                              <option value="completed">Completed</option>
-                                            </select>
-                                          <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                          <Multiselect
+                                              displayValue="value"
+                                              options={all_Status}
+                                              value={u_Status}
+                                              selectedValues={u_Status}
+                                              selectionLimit="1"
+                                              onChange={setStatus}
+                                              onRemove={setStatus}
+                                              onSearch={function noRefCheck(){}}
+                                              onSelect={setStatus}
+                                              placeholder="Project Status"
+                                              showArrow={true}
+                                          />
                                         </div> 
                                     </GridItem>
                                   </GridContainer><br/>
@@ -679,6 +816,7 @@ useEffect(() =>{
       </>
     ):("")}
 
+    <ToastContainer limit={1}/>
     </>
   );
 }

@@ -69,9 +69,9 @@ const projectStatus = async (req,res) => {
     console.log(req.query.language);
 
     try{
-        let projectStatus1 = await executeQuery("SELECT * FROM `tbl_project` WHERE project_status='running' ");
-        // let projectStatus2 = await executeQuery("SELECT * FROM `tbl_project` WHERE project_status='on hold' ");
-        // let projectStatus3 = await executeQuery("SELECT * FROM `tbl_project` WHERE project_status='completed' ");
+        let projectStatus1 = await executeQuery("SELECT * FROM `tbl_project` WHERE project_status='Running' ");
+        // let projectStatus2 = await executeQuery("SELECT * FROM `tbl_project` WHERE project_status='On hold' ");
+        // let projectStatus3 = await executeQuery("SELECT * FROM `tbl_project` WHERE project_status='Completed' ");
         // let projectStatus = await executeQuery("Select COUNT(`project_id`)as 'project_total' ,`project_status`,`project_deadline` from `tbl_project` group by `project_status`; ");
         res.status(200).json(projectStatus);
     }
