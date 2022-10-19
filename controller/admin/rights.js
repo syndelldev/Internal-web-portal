@@ -50,6 +50,11 @@ const ProjectById = async (req,res) =>{
     else if(req.body.edit==0 || req.body.edit==1)
     {
         console.log("Update edit_rights")
+        if(req.body.edit==1)
+        {
+            let data = await executeQuery(" UPDATE `tbl_rights` SET  view_rights=1  WHERE `user_id`=? AND `project_id`=? ", [ req.body.userid, req.body.projectid])
+            console.log(data) 
+        }
         let data = await executeQuery(" UPDATE `tbl_rights` SET  edit_rights=?  WHERE `user_id`=? AND `project_id`=? ", [req.body.edit, req.body.userid, req.body.projectid])
         console.log(data)
     }

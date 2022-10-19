@@ -26,8 +26,6 @@ import styles from "assets/jss/nextjs-material-dashboard/components/headerLinksS
 import { server } from 'config';
 import { useCookies } from 'react-cookie';
 
-//axios.defaults.withCredentials=true;
-
 export default function AdminNavbarLinks({useravtar}) {
 
   
@@ -112,7 +110,7 @@ export default function AdminNavbarLinks({useravtar}) {
         </Button>
         </div>*/}
         
-      {/*<Button
+      {/* <Button
         color={size.width > 959 ? "transparent" : "white"}
         justIcon={size.width > 959}
         simple={!(size.width > 959)}
@@ -123,8 +121,8 @@ export default function AdminNavbarLinks({useravtar}) {
         <Hidden mdUp implementation="css">
           <p className={classes.linkText}>Dashboard</p>
         </Hidden>
-      </Button>*/}
-      {/*<div className={classes.manager}>
+      </Button> */}
+      <div className={classes.manager}>
         <Button
           color={size.width > 959 ? "transparent" : "white"}
           justIcon={size.width > 959}
@@ -142,7 +140,7 @@ export default function AdminNavbarLinks({useravtar}) {
             </p>
           </Hidden>
         </Button>
-        {/*<Poppers
+        <Poppers
           open={Boolean(openNotification)}
           anchorEl={openNotification}
           transition
@@ -201,7 +199,7 @@ export default function AdminNavbarLinks({useravtar}) {
             </Grow>
           )}
             </Poppers>
-        </div>*/}
+        </div>
       <div className={classes.manager}>
       
         <Button

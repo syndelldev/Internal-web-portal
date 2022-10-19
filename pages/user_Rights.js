@@ -2,6 +2,7 @@ import Modules from "../layouts/Modules";
 import { makeStyles } from "@material-ui/core/styles";
 import React,{ useState,useEffect } from "react";
 import { useRouter } from 'next/router';
+import { IoMdArrowDropdown } from "react-icons/io";
 
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -130,6 +131,7 @@ function UserRights({UserList,ModuleList}){
                                                 )
                                             })}
                                         </select>
+                                        <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                                     </div>
                                 </GridItem>
                                 <GridItem xs={12} sm={12} md={3}>
@@ -141,6 +143,7 @@ function UserRights({UserList,ModuleList}){
                                                 )
                                             })}
                                         </select>
+                                        <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                                     </div>
                                 </GridItem>
                             </GridContainer><br/>

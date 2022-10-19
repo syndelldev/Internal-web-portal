@@ -176,22 +176,16 @@ function UserDetail({UserDetail}) {
       role_id:result.role_id, username:result.name, password:hashedPassword, email:result.email, PhoneNum:result.PhoneNum, /*DOB:startDate,*/ department:result.department, position:result.position, status:result.status, role:result.role 
     })
     console.log(addUser)
-    // if(addUser){
-    //   alert("sucess")
-    // }
-    // else{
-    //   alert("error")
-    // }
     if(!toast.isActive(toastId.current)) {
       toastId.current = toast.success('User Created Successfully ! 🎉', {
           position: "top-right",
           autoClose:1000,
           theme: "colored",
           hideProgressBar: true,
-          // onClose: () => router.push(`${server}/user_Details`)
+          onClose: () => router.push(`${server}/user_Details`)
           });
       }
-      // router.reload(`${server}/user_Details`);
+      router.reload(`${server}/user_Details`);
   }
   //Add User API End
   return (
