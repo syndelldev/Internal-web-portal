@@ -360,14 +360,30 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
   
   }else{
 
+    // get selected language
+    if(u_Language != ""){
+      var Language = u_Language[0].value;
+    }
+
+    // get selected department
+    if(u_Department != ""){
+      var Department = u_Department[0].value;
+    }
+
+    // get selected priority
     if(u_Priority != ""){
       var Priority = u_Priority[0].value;
+    }
+
+    // get selected status
+    if(u_Status != ""){
+      var Status = u_Status[0].value;
     }
 
     const res = await fetch(`${server}/api/project/update_project`,{
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ project_id:uoption.project_id, project_person: allMember, project_status:uoption.project_status , project_department:uoption.project_department ,  project_title: uoption.project_title , project_description:uoption.project_description , project_language:uoption.project_language, project_priority:Priority, project_start: startDate , project_deadline: endDate }),
+      body: JSON.stringify({ project_id: uoption.project_id, project_person: allMember, project_status: Status , project_department: Department ,  project_title: uoption.project_title , project_description: uoption.project_description , project_language: Language, project_priority: Priority, project_start: startDate , project_deadline: endDate }),
     });
     if(!toast.isActive(toastId.current)) {
       toastId.current = toast.success('Project updated successfully !', {
@@ -391,18 +407,22 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
     const p_start = result.start.toDateString();
     const p_end = result.end.toDateString();
 
+    // get selected language
     if(u_Language != ""){
       var Language = u_Language[0].value;
     }
 
+    // get selected department
     if(u_Department != ""){
       var Department = u_Department[0].value;
     }
 
+    // get selected priority
     if(u_Priority != ""){
       var Priority = u_Priority[0].value;
     }
 
+    // get selected status
     if(u_Status != ""){
       var Status = u_Status[0].value;
     }
@@ -1320,14 +1340,6 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                         placeholder="Project Priority"
                                         showArrow={true}
                                     />
-
-                                        {/* <select name="project_priority" id="priority" className="form-control signup-input" value={uoption.project_priority} onChange={handleChange} disabled={cookies.Role_id == "2"}>
-                                          <option value=""  disabled selected>Select Project Priority</option>
-                                          <option value="High" className="High">High</option>
-                                          <option value="Medium" className="Medium">Medium</option>
-                                          <option value="Low"className="Low">Low</option>
-                                        </select>
-                                        <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span> */}
                                       </div> 
                                     </GridItem>
                                   
@@ -1347,14 +1359,6 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                               placeholder="Project Status"
                                               showArrow={true}
                                           />
-
-                                            {/* <select name="project_status" id="Status" className="form-control signup-input" value={uoption.project_status} onChange={handleChange} disabled={cookies.Role_id == "2"} >
-                                              <option value=""  disabled selected>Select Project Status</option>
-                                              <option value="on hold">On hold</option>
-                                              <option value="running">Running</option>
-                                              <option value="completed">Completed</option>
-                                            </select>
-                                          <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span> */}
                                         </div> 
                                     </GridItem>
                                   </GridContainer><br/>
