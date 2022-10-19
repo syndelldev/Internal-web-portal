@@ -966,13 +966,13 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
     <GridContainer>
       <GridItem>
         <button className="bttn-design" onClick={()=> 
-          {  project_running("running"), closeOnHold("running"), setrunning_title(true), project_OnHold("on hold"), closeTaskToDo("on hold"), setonhold_title(true)
-          project_Completed("completed"), closeCompleted("completed"), setcompleted_title(true) }}
+          {  project_running("Running"), closeOnHold("Running"), setrunning_title(true), project_OnHold("On hold"), closeTaskToDo("On hold"), setonhold_title(true)
+          project_Completed("Completed"), closeCompleted("Completed"), setcompleted_title(true) }}
           >Expand All</button>
 
         <button className="bttn-design" onClick={()=> 
-          {  project_running("running"), closeOnHold("running"), setrunning_title(false), project_OnHold("on hold"), closeTaskToDo("on hold"), setonhold_title(false)
-          project_Completed("completed"), closeCompleted("completed"), setcompleted_title(false) }}
+          {  project_running("Running"), closeOnHold("Running"), setrunning_title(false), project_OnHold("On hold"), closeTaskToDo("On hold"), setonhold_title(false)
+          project_Completed("Completed"), closeCompleted("Completed"), setcompleted_title(false) }}
           >Collapse All</button>
         </GridItem>
 
@@ -1089,7 +1089,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
 <Card className="task_title_status">
       <GridContainer >
         <GridItem xs={12} sm={12} md={12} >
-          <div onClick={()=> {  project_running("running") , closeOnHold("running") , setrunning_title(!running_title) }} className="task_title" > Project In Progress {running_title ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
+          <div onClick={()=> {  project_running("Running") , closeOnHold("Running") , setrunning_title(!running_title) }} className="task_title" > Project In Progress {running_title ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
         </GridItem>
       </GridContainer>
     </Card>
@@ -1104,7 +1104,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
           </tr>
           {project_details.map((project)=>{
             if(project.project_delete == "no"){
-              if(project.project_status == 'running'){
+              if(project.project_status == 'Running'){
                 var person = project.project_person.split(",");
                 return(
                   <tr key={project.project_id} onClick={()=>{toggle(project.project_id)}} className="expand_dropdown">
@@ -1507,7 +1507,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
     <Card className="task_title_status">
       <GridContainer >
         <GridItem xs={12} sm={12} md={12} >
-          <div onClick={()=> {  project_OnHold("on hold") , closeTaskToDo("on hold") , setonhold_title(!onhold_title) }} className="task_title" > Project On Hold {onhold_title ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
+          <div onClick={()=> {  project_OnHold("On hold") , closeTaskToDo("On hold") , setonhold_title(!onhold_title) }} className="task_title" > Project On Hold {onhold_title ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
         </GridItem>
       </GridContainer>
     </Card>
@@ -1522,7 +1522,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
           </tr>
           {project_details.map((project)=>{
             if(project.project_delete == "no"){
-              if(project.project_status == 'on hold'){
+              if(project.project_status == 'On hold'){
                 var person = project.project_person.split(",");
                 return(
                   <tr key={project.project_id} onClick={()=>{toggle(project.project_id)}} className="expand_dropdown">
@@ -1920,7 +1920,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
     <Card className="task_title_status">
       <GridContainer >
         <GridItem xs={12} sm={12} md={12} >
-          <div onClick={()=> {  project_Completed("completed") , closeCompleted("completed") , setcompleted_title(!completed_title) }} className="task_title"> Project Completed {completed_title ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
+          <div onClick={()=> {  project_Completed("Completed") , closeCompleted("Completed") , setcompleted_title(!completed_title) }} className="task_title"> Project Completed {completed_title ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
         </GridItem>
       </GridContainer>
     </Card>
@@ -1935,7 +1935,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
           </tr>
           {project_details.map((project)=>{
             if(project.project_delete == "no"){
-              if(project.project_status == 'completed'){
+              if(project.project_status == 'Completed'){
                 var person = project.project_person.split(",");
                 return(
                   <tr key={project.project_id} onClick={()=>{toggle(project.project_id)}} className="expand_dropdown">
