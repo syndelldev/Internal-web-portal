@@ -764,28 +764,20 @@ const updateComment = async(id, comment) =>{
                         <div className="error-msg">{errors.task_start && <span>{errors.task_start.message}</span>}</div> */}
                         <Controller
                           control={control}
-                          // name="date"
                           name="datetime"
-                          // value={value || ""}
-                          selected={startDate}
-                          className={"form-control"}
                           rules={{ required: true }} //optional
                           render={({
-                            field: { onChange, selected, name, value },
-                            // fieldState: { invalid, isDirty }, //optional
+                            field: { onChange, name, value },
+                            fieldState: { invalid, isDirty }, //optional
                             formState: { errors }, //optional, but necessary if you want to show an error message
                           }) => (
                             <>
                               <DatePicker
-                                // value={value || ""}
-                                // onChange={(date) => {
-                                //   onChange(date?.isValid ? date : "");
-                                // }}
                                 placeholderText="Start Date : dd/mm/yyyy"
                                 isClearable
-                                // value={startDate || ""}
-                                
-                                onChange={val => {
+                                className={"form-control"}
+                                selected={startDate}
+                                onChange={(val) => {
                                   setStartDate(val);
                                   setValue("start", val);
                                 }}
@@ -796,7 +788,16 @@ const updateComment = async(id, comment) =>{
                             </>
                           )}
                         />
-
+                      {/* <input type="date"
+                        dateFormat="dd-MM-yyyy"
+                        className={"form-control"}
+                        // value={startDate}
+                        onChange={(val) => {
+                          setStartDate(val);
+                          setValue("start", val);
+                        }}
+                        minDate={new Date()}
+                      /> */}
 
 
                       </div> 
@@ -805,7 +806,7 @@ const updateComment = async(id, comment) =>{
                     <GridItem xs={12} sm={12} md={6}>
                       <div className="form-group">
                       <span>Task End Date</span><span className="required">*</span>
-                        <DatePicker
+                        {/* <DatePicker
                           placeholderText="End Date : dd/mm/yyyy"
                           isClearable
                           name="datetime1"
@@ -817,10 +818,36 @@ const updateComment = async(id, comment) =>{
                           }}
                           dateFormat="dd-MM-yyyy"
                           minDate={startDate}
-                          // {...register('task_deadline', {required:"Please enter task end date" ,message:'Please select atleast one option', })}
+                        /> */}
+                        <Controller
+                          control={control}
+                          name="datetime1"
+                          rules={{ required: true }} //optional
+                          render={({
+                            field: { onChange, name, value },
+                            fieldState: { invalid, isDirty }, //optional
+                            formState: { errors }, //optional, but necessary if you want to show an error message
+                          }) => (
+                            <>
+                              <DatePicker
+                                placeholderText="End Date : dd/mm/yyyy"
+                                isClearable
+                                name="datetime1"
+                                className={"form-control"}
+                                selected={endDate}
+                                onChange={val => {
+                                  setEndDate(val);
+                                  setValue("end", val);
+                                }}
+                                dateFormat="dd-MM-yyyy"
+                                minDate={startDate}
+                              />
+                              {errors && errors[name] && errors[name].type === "required" && ( <span>please enter task end date</span> )}
+                            </>
+                          )}
                         />
-                        {/* <div className="error-msg">{errors.task_deadline && <span>{errors.task_deadline.message}</span>}</div> */}
                       </div> 
+                      
                     </GridItem>
                   </GridContainer><br/>
 
