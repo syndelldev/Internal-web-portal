@@ -704,13 +704,6 @@ const updateComment = async(id, comment) =>{
     console.log(updateTime);
     // router.reload(`${server}/tasks`);
   }
-  
-  const update_tasktime = async (task_id)=>{
-    var updateTime = await axios.put(`${server}/api/comment/update_tasktime`, { task_id:task_id, user_id:cookies.Id, estimate:userdata.estimate_time , spent:userdata.spent_time });
-    console.log(updateTime)
-    // router.reload(`${server}/tasks`);
-  }
-
   // date range
   const [dateRange, setDateRange] = useState([null, null]);
   // startdate and enddate get value
