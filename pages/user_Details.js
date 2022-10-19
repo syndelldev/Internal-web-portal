@@ -298,7 +298,7 @@ function UserDetail({UserDetail}) {
                             <GridContainer>
                               <GridItem xs={12} sm={12} md={12}>
                                 <div className="form-group">
-                                  <select name="position" id="position" className="form-control signup-input" {...register('position', {required: "Please enter your department" ,message:'Please select atleast one option', })}>
+                                  <select name="position" id="position" className="form-control signup-input" {...register('position', {required: "Please enter your position" ,message:'Please select atleast one option', })}>
                                     <option value="" disabled selected>Select Your Position</option>
                                     <option value="Jr. HR">Jr. HR</option>
                                     <option value="Jr. UI & UX">Jr. UI & UX</option>
