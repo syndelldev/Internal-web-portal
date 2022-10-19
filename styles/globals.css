@@ -782,3 +782,15 @@ p.save-btn{
 font-size: 17px!important;
   }}
 
+@media only screen and (max-width: 375px)
+{
+  .makeStyles-content-3
+  {
+    padding:0px 0px !important;
+    margin-top: 70px !important;
+  }
+  .makeStyles-container-4
+  {
+    padding:0px 0px !important;
+  }
+}
