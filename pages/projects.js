@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { makeStyles } from "@material-ui/core/styles";
@@ -104,14 +104,14 @@ export async function getServerSideProps(context) {
   const res = await fetch(`${server}/api/project`);
   const project_details = await res.json();
 
-  // const res1 = await fetch(`${server}/api/user_dashboard`, {
-  //   headers: {
-  //     'Access-Control-Allow-Credentials': true,
-  //     Cookie: context.req.headers.cookie
-  //   },
-  // })
-  // const user_project = await res1.json()
-  // console.log(user_project)
+  const res1 = await fetch(`${server}/api/user_dashboard`, {
+    headers: {
+      'Access-Control-Allow-Credentials': true,
+      Cookie: context.req.headers.cookie
+    },
+  })
+  const user_project = await res1.json()
+  console.log(user_project)
 
   const response = await fetch(`${server}/api/admin`);
   const User_name = await response.json();
@@ -135,7 +135,7 @@ export async function getServerSideProps(context) {
 }
 
 function Dashboard( { project_details, user_project, User_name, language, user_Department, languageDepartment, priority, status } ) {
-
+  console.log('project_details',project_details)
   const useStyles = makeStyles(styles);
   const classes = useStyles();
 
@@ -160,7 +160,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
     autoClose: false,
     keepAfterRouteChange: true
   });
-  console.log('options', options)
+  // console.log('options', options)
   function handleOptionChange(e) {
       const { name, checked } = e.target;
       setoptions(options => ({ ...options, [name]: checked }));
@@ -290,10 +290,12 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
 
   // department dropdown options
   const [all_Department, setAllDepartment] = useState([]);
+  
   useEffect(() =>{
     const u_data = async() =>{
   
       const getDepartment = [];
+      console.log(getDepartment)
       languageDepartment.map((department)=>{
         getDepartment.push( {'label' :department.language_department, 'value' :department.language_department} );
       });
@@ -303,7 +305,6 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
   },[]);
   // set and get selected value of department
   const [u_Department, setDepartment] = useState([]);
-
   // priority dropdown options
   const [all_Priority, setAllPriority] = useState([]);
   useEffect(() =>{
@@ -730,6 +731,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
       const [startDates, endDates] = dateRange;
       // get selected dates projects list
       const [dateDetails, setDateDetails] = useState();
+      console.log('dateDetails',dateDetails)
       // get selected dates projects list for user
       const [date_uData, setDate_uDetails] = useState();
       // onclick show data
@@ -746,7 +748,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
             body:JSON.stringify({ dateStart: startDates, dateEnd: endDates }),
           })
           const date_Data=await res.json()
-          
+          console.log('date_Data',date_Data)
           if(res.status==200)
           {
             setDateDetails(date_Data);
@@ -794,25 +796,6 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
       
   return (
     <spanspan>
-          <div>
-            <button className="btn btn-success m-1" onClick={() => alertService.success('Success!!', options)}>Success</button>
-            <button className="btn btn-danger m-1" onClick={() => alertService.error('Error :(', options)}>Error</button>
-            <button className="btn btn-info m-1" onClick={() => alertService.info('Some info....', options)}>Info</button>
-            <button className="btn btn-warning m-1" onClick={() => alertService.warn('Warning: ...', options)}>Warn</button>
-            <button className="btn btn-outline-dark m-1" onClick={() => alertService.clear()}>Clear</button>
-            <div className="form-group mt-2">
-                <div className="form-check">
-                    <input type="checkbox" className="form-check-input" name="autoClose" id="autoClose" checked={options.autoClose} onChange={handleOptionChange} />
-                    <label htmlFor="autoClose">Auto close alert after three seconds</label>
-                </div>
-                <div className="form-check">
-                    <input type="checkbox" className="form-check-input" name="keepAfterRouteChange" id="keepAfterRouteChange" checked onChange={handleOptionChange} />
-                    <label htmlFor="keepAfterRouteChange">Keep displaying after one route change</label>
-                </div>
-            </div>
-          </div>
-
-      {/* <Alert/> */}
       <div className="buttonalign" hidden={cookies.Role_id == "2"} >
         <GridContainer>
           <GridItem>
@@ -1023,7 +1006,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
 
                           </CardBody>
                           <CardFooter>
-                            <Button color="primary" type="submit" onClick={() => alertService.info('Some info....', options)} >Add Project</Button>
+                            <Button color="primary" type="submit" >Add Project</Button>
                             <Button className="button" onClick={() => { close(); }}> Cancel </Button>
                           </CardFooter>
                         </Card>
@@ -1462,7 +1445,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                         </CardBody>
                                         <div hidden={cookies.Role_id == "2"}>
                                           <CardFooter>
-                                            <Button color="primary" onClick={() => { updateProject(project.project_id); createNotification(project.project_id) }}>Save</Button>
+                                            <Button color="primary" onClick={() => { updateProject(project.project_id) }}>Save</Button>
                                             <Button className="button" onClick={() => { close(); }}> Cancel </Button>
                                           </CardFooter>
                                         </div>

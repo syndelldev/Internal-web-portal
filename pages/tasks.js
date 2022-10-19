@@ -1,4 +1,4 @@
-import React, { useEffect,useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { useState } from "react";
 import { useRouter } from "next/router";
 // react plugin for creating charts
@@ -19,7 +19,7 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 import { IoMdArrowDropdown } from "react-icons/io";
-import { useForm } from "react-hook-form";
+import { useForm ,Controller } from "react-hook-form";
 import { server } from "config";
 import { useCookies } from "react-cookie";
 import Popup from "reactjs-popup";
@@ -157,6 +157,7 @@ function Dashboard( { project_details , User_name , allTask, userTask, language,
     handleSubmit,
     formState: { errors },
     setValue,
+    control,
   } = useForm();
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
@@ -781,16 +782,41 @@ const updateComment = async(id, comment) =>{
                       <div className="form-group">
                         <span>Task Title</span><span className="required">*</span>
                         <input type="text" className="form-control signup-input" placeholder="Task Title" {...register('task_title',  { required: "Please enter task title"})} />
-                        {/* <div className="error-msg">{errors.task_title && <span>{errors.task_title.message}</span>}</div> */}
+                        <div className="error-msg">{errors.task_title && <span>{errors.task_title.message}</span>}</div>
                       </div> 
                     </GridItem>
                   </GridContainer><br/>
                     
                   <GridContainer>
                     <GridItem xs={12} sm={12} md={12}>
-                    <div className="form-group" {...register('project_name')}>
-                      
+                    <div className="form-group">
                     <span>Project</span><span className="required">*</span>
+                    {/* <Controller
+                      control={control}
+                      name="person"
+                      rules={{ required: true }}
+                      render={({
+                        field: { value, ...other },
+                        // fieldState: { invalid, isTouched, isDirty, error },
+                        // formState: { errors },
+                      }) => (
+                        <Multiselect
+                          {...other}
+                          displayValue="value"
+                          options={project_list}
+                          value={p_selected}
+                          selectionLimit="1"
+                          onChange={setProject}
+                          onRemove={setProject}
+                          onSearch={function noRefCheck(){}}
+                          onSelect={setProject}
+                          placeholder="Project List"
+                          showArrow={true}
+                        />
+                      )}
+                    />
+                    <div className="invalid-feedback">{errors.person?.message || errors.person?.value.message}</div> */}
+
                       <Multiselect
                         displayValue="value"
                         options={project_list}
@@ -800,11 +826,12 @@ const updateComment = async(id, comment) =>{
                         onRemove={setProject}
                         onSearch={function noRefCheck(){}}
                         onSelect={setProject}
-                        placeholder="Project List"
+                        // placeholder="Project List"
                         showArrow={true}
+                        // emptyRecordMsg={"Maximum nominees selected !"}
+                        // {...register('project_name', {required: "Please select project" ,message:'Please select atleast one option', })}
                       />
-                      
-                        {/* <div className="error-msg">{errors.project_name && <span>{errors.project_name.message}</span>}</div> */}
+                      {/* <div className="error-msg">{errors.project_name && <span>{errors.project_name.message}</span>}</div> */}
                       </div> 
                     </GridItem>
                   </GridContainer><br/>
@@ -817,9 +844,7 @@ const updateComment = async(id, comment) =>{
                                   <textarea
                                     className="form-control signup-input"
                                     placeholder="Task Description"
-                                    {...register("task_description", {
-                                      required: "Description is required",
-                                    })}
+                                    {...register('task_description', { required: 'Description is required', } )}
                                   />
                                   <div className="error-msg">{errors.task_description && <span>{errors.task_description.message}</span>}</div>
                                 </div>
@@ -831,18 +856,26 @@ const updateComment = async(id, comment) =>{
                     <GridItem xs={12} sm={12} md={6}>
                       <div className="form-group">
                       <span>Task Priority</span><span className="required">*</span>
-                      <Multiselect
-                          displayValue="value"
-                          options={all_Priority}
-                          value={u_Priority}
-                          selectionLimit="1"
-                          onChange={setPriority}
-                          onRemove={setPriority}
-                          onSearch={function noRefCheck(){}}
-                          onSelect={setPriority}
-                          placeholder="Task Priority"
-                          showArrow={true}
-                      />
+                      <Controller
+                        control={control}
+                        name="roles"
+                        render={({ field: { onChange, value } }) => (
+                        <Multiselect
+                            displayValue="value"
+                            options={all_Priority}
+                            value={u_Priority}
+                            selectionLimit="1"
+                            onChange={setPriority}
+                            onRemove={setPriority}
+                            onSearch={function noRefCheck(){}}
+                            onSelect={setPriority}
+                            placeholder="Task Priority"
+                            showArrow={true}
+                            {...register('task_priority', { required: 'Description is required', } )}
+                        />
+                      )}
+                    />
+                      <div className="error-msg">{errors.task_priority && <span>{errors.task_priority.message}</span>}</div>
 
                         {/* <select name="priority" id="priority" className="form-control signup-input" {...register('task_priority', {required:true ,message:'Please select atleast one option', })}>
                           <option value=""  disabled selected>Select Task Priority</option>
@@ -869,20 +902,45 @@ const updateComment = async(id, comment) =>{
                         onSelect={setLanguage}
                         placeholder="Task Language"
                         showArrow={true}
+                        {...register('task_language', { required: 'Language is required', } )}
                       />
                       </div> 
+                      <div className="error-msg">{errors.task_language && <span>{errors.task_language.message}</span>}</div>
                     </GridItem>
                   </GridContainer><br/>
 
                             <GridContainer>
                               <GridItem xs={12} sm={12} md={6}>
-                                <div
-                                  className="form-group"
-                                  {...register("task_start")}
-                                >
+                                <div  className="form-group" >
                                   <span>Task Start Date</span>
                                   <span className="required">*</span>
-                                  <DatePicker
+                                  <Controller
+                                    control={control}
+                                    name="datetime"
+                                    rules={{ required: true }} //optional
+                                    render={({
+                                      field: { onChange, name, value },
+                                      fieldState: { invalid, isDirty }, //optional
+                                      formState: { errors }, //optional, but necessary if you want to show an error message
+                                    }) => (
+                                      <>
+                                        <DatePicker
+                                          placeholderText="Start Date : dd/mm/yyyy"
+                                          isClearable
+                                          className={"form-control"}
+                                          selected={startDate}
+                                          onChange={(val) => {
+                                            setStartDate(val);
+                                            setValue("start", val);
+                                          }}
+                                          dateFormat="dd-MM-yyyy"
+                                          minDate={new Date()}
+                                        />
+                                        {errors && errors[name] && errors[name].type === "required" && ( <span>please enter task start date</span> )}
+                                      </>
+                                    )}
+                                  />
+                                  {/* <DatePicker
                                     placeholderText="Start Date : dd/mm/yyyy"
                                     isClearable
                                     name="datetime"
@@ -894,19 +952,44 @@ const updateComment = async(id, comment) =>{
                                     }}
                                     dateFormat="dd-MM-yyyy"
                                     minDate={new Date()}
+                                    {...register('task_start', {required:true ,message:'Please select atleast one option', })}
                                   />
-                                  <div className="error-msg">{errors.task_start && <span>{errors.task_start.message}</span>}</div>
+                                  <div className="error-msg">{errors.task_start && <span>{errors.task_start.message}</span>}</div> */}
                                 </div>
                               </GridItem>
 
                               <GridItem xs={12} sm={12} md={6}>
-                                <div
-                                  className="form-group"
-                                  {...register("task_deadline")}
-                                >
+                                <div className="form-group">
                                   <span>Task End Date</span>
                                   <span className="required">*</span>
-                                  <DatePicker
+                                  <Controller
+                                    control={control}
+                                    name="datetime1"
+                                    rules={{ required: true }} //optional
+                                    render={({
+                                      field: { onChange, name, value },
+                                      fieldState: { invalid, isDirty }, //optional
+                                      formState: { errors }, //optional, but necessary if you want to show an error message
+                                    }) => (
+                                      <>
+                                        <DatePicker
+                                          placeholderText="End Date : dd/mm/yyyy"
+                                          isClearable
+                                          name="datetime1"
+                                          className={"form-control"}
+                                          selected={endDate}
+                                          onChange={val => {
+                                            setEndDate(val);
+                                            setValue("end", val);
+                                          }}
+                                          dateFormat="dd-MM-yyyy"
+                                          minDate={startDate}
+                                        />
+                                        {errors && errors[name] && errors[name].type === "required" && ( <span>please enter task end date</span> )}
+                                      </>
+                                    )}
+                                  />
+                                  {/* <DatePicker
                                     placeholderText="End Date : dd/mm/yyyy"
                                     isClearable
                                     name="datetime1"
@@ -918,8 +1001,9 @@ const updateComment = async(id, comment) =>{
                                     }}
                                     dateFormat="dd-MM-yyyy"
                                     minDate={startDate}
+                                    {...register('task_deadline', {required:true ,message:'Please select atleast one option', })}
                                   />
-                                  <div className="error-msg">{errors.task_deadline && <span>{errors.task_deadline.message}</span>}</div>
+                                  <div className="error-msg">{errors.task_deadline && <span>{errors.task_deadline.message}</span>}</div> */}
                                 </div>
                               </GridItem>
                             </GridContainer>
@@ -927,10 +1011,7 @@ const updateComment = async(id, comment) =>{
 
                             <GridContainer>
                               <GridItem xs={12} sm={12} md={12}>
-                                <div
-                                  className="form-group"
-                                  {...register("task_person")}
-                                >
+                                <div className="form-group">
                                   <span>Task Members</span>
                                   <span className="required">*</span>
                                   <Multiselect
@@ -942,8 +1023,8 @@ const updateComment = async(id, comment) =>{
                                     onSelect={setSelected}
                                     placeholder="Select Task Members"
                                     showArrow={true}
+                                    {...register('task_person', {required:"please select persons" ,message:'Please select atleast one option', })}
                                   />
-
                                   <div className="error-msg">{errors.task_person && <span>{errors.task_person.message}</span>}</div>
                                 </div>
                               </GridItem>
@@ -993,14 +1074,14 @@ const updateComment = async(id, comment) =>{
             <div className="department_dropdown">
             <button className="dropdown_button">Project Departments</button>
                 <div className="department-link">
-                {user_Department.map((department)=>{
+                  {user_Department.map((department)=>{
                     return(
                       <span>
                         <a href={`${server}/project_department/${department.department_name}`}>{department.department_name}</a>
                       </span>
                     )                      
                   }
-                )}
+                  )}
                 </div>
             </div>
           </GridItem>
@@ -1009,19 +1090,18 @@ const updateComment = async(id, comment) =>{
             <div className="department_dropdown">
               <button className="dropdown_button">Project Languages</button>
                   <div className="department-link">
-                  {language.map((language)=>{
+                    {language.map((language)=>{
                       return(
                         <span>
                           <a href={`${server}/project_language/${language.language_name}`}>{language.language_name}</a>
                         </span>
                       )
                     }
-                  )}
+                    )}
                   </div>
             </div>
           </GridItem>
-
-</GridContainer>
+        </GridContainer>
 </div>
 
 

@@ -313,7 +313,7 @@ display: flex;
   margin: 0px 0px !important;
 }
 .chip{
-  width: 20%!important;
+  /* width: 20%!important; */
   border: 2px solid;
   display: inherit;
   border-radius: 30px!important;
