@@ -132,10 +132,13 @@ export async function getServerSideProps(context){
   const pri = await fetch(`${server}/api/priority`)
   const priority = await pri.json();
 
-  return{ props: {project_details, User_name, allTask, userTask, language, user_Department, priority} }
+  const stat = await fetch(`${server}/api/taskStatus`)
+  const status = await stat.json();
+
+  return{ props: {project_details, User_name, allTask, userTask, language, user_Department, priority, status } }
 }
 
-function Dashboard( { project_details , User_name , allTask, userTask, language, user_Department, priority } ) {
+function Dashboard( { project_details , User_name , allTask, userTask, language, user_Department, priority, status } ) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   // get role from cookies
@@ -204,13 +207,13 @@ function Dashboard( { project_details , User_name , allTask, userTask, language,
   selectedProject.push({'label' :projectName[0] , 'value' : projectName[0]});
 
   const [updateSelected, setUpdateSelected] = React.useState([]);
-  const [all_Language, setAllLanguage] = useState([]);
 
+  // language dropdown options
+  const [all_Language, setAllLanguage] = useState([]);
   useEffect(() =>{
     const u_data = async() =>{
   
       const getLanguage = [];
-   
       language.map((language)=>{
         getLanguage.push( {'label' :language.language_name, 'value' :language.language_name} );
       });
@@ -218,8 +221,10 @@ function Dashboard( { project_details , User_name , allTask, userTask, language,
     }
     u_data();
   },[]);
+  // set and get selected value of language
   const [u_Language, setLanguage] = useState([]);
 
+  // priority dropdown options
   const [all_Priority, setAllPriority] = useState([]);
   useEffect(() =>{
     const u_data = async() =>{
@@ -232,7 +237,24 @@ function Dashboard( { project_details , User_name , allTask, userTask, language,
     }
     u_data();
   },[]);
+  // set and get selected value of priority
   const [u_Priority, setPriority] = useState([]);
+
+  // status dropdown options
+  const [all_Status, setAllStatus] = useState([]);
+  useEffect(() =>{
+    const u_data = async() =>{
+  
+      const getStatus = [];
+      status.map((status)=>{
+        getStatus.push( {'label' :status.projectstatus_name, 'value' :status.projectstatus_name} );
+      });
+      setAllStatus(getStatus);
+    }
+    u_data();
+  },[]);
+  // set and get selected value of status
+  const [u_Status, setStatus] = useState([]);
 
   const projectId = async(id) =>{
     var comment = await axios.post(`${server}/api/comment/userComments`, { task_id: id });
@@ -250,12 +272,23 @@ function Dashboard( { project_details , User_name , allTask, userTask, language,
       getAllname.push( {'label' :user, 'value' :user} );
     });
 
+    // set language name from database for update language
     const getLanguage = [];
     getLanguage.push( {'label' :udata.task_language, 'value' :udata.task_language} );
 
+    // set department name from database for update department
+    const getDepartment = [];
+    getDepartment.push( {'label' :udata.task_department, 'value' :udata.task_department} );
+
+    // set priority from database for update priority
     const getPriority = [];
     getPriority.push( {'label' :udata.task_priority, 'value' :udata.task_priority} );
 
+    // set status from database for update status
+    const getStatus = [];
+    getStatus.push( {'label' :udata.task_status, 'value' :udata.task_status} );
+
+    setStatus(getStatus);
     setLanguage(getLanguage);
     setPriority(getPriority);
     setUpdateSelected(getAllname);
