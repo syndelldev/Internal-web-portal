@@ -247,7 +247,7 @@ function Dashboard( { project_details , User_name , allTask, userTask, language,
   
       const getStatus = [];
       status.map((status)=>{
-        getStatus.push( {'label' :status.projectstatus_name, 'value' :status.projectstatus_name} );
+        getStatus.push( {'label' :status.taskStatus_name, 'value' :status.taskStatus_name} );
       });
       setAllStatus(getStatus);
     }
@@ -916,14 +916,13 @@ const updateComment = async(id, comment) =>{
                           minDate={startDate}
                         />
                       {/* <div className="error-msg">{errors.task_deadline && <span>{errors.task_deadline.message}</span>}</div> */}
-                      </div> 
+                      </div>
                     </GridItem>
                   </GridContainer><br/>
 
                   <GridContainer>
                   <GridItem xs={12} sm={12} md={12}>
                       <div className="form-group" {...register('task_person')}>
-                      
                       <span>Task Members</span><span className="required">*</span>
                       <Multiselect
                       displayValue="value"
@@ -935,7 +934,6 @@ const updateComment = async(id, comment) =>{
                         placeholder="Select Task Members"
                         showArrow={true}
                       />
-                      
                         {/* <div className="error-msg">{errors.task_person && <span>{errors.task_person.message}</span>}</div> */}
                       </div> 
                     </GridItem>
@@ -1288,14 +1286,27 @@ const updateComment = async(id, comment) =>{
                                   </div> 
                                   <div className="form-group" hidden={cookies.Role_id == "2"}>
                                     <span>Task Status</span><span className="required">*</span>
-                                      <select name="task_status" id="Status" className="form-control signup-input" onChange={handleChange} value={uoption.task_status} >
+                                    <Multiselect
+                                        displayValue="value"
+                                        options={all_Status}
+                                        value={u_Status}
+                                        selectedValues={u_Status}
+                                        selectionLimit="1"
+                                        onChange={setStatus}
+                                        onRemove={setStatus}
+                                        onSearch={function noRefCheck(){}}
+                                        onSelect={setStatus}
+                                        placeholder="Task Priority"
+                                        showArrow={true}
+                                    />
+                                      {/* <select name="task_status" id="Status" className="form-control signup-input" onChange={handleChange} value={uoption.task_status} >
                                         <option value="" disabled selected>Select Task Status</option>
                                         <option value="task_toDo">Task to do</option>
                                         <option value="taskOn_hold">Task On hold</option>
                                         <option value="task_Running">Task Running</option>
                                         <option value="task_completed">Task Completed</option>
                                       </select>
-                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span> */}
                                   </div> 
                                 </GridItem>
                               </GridContainer><br/>

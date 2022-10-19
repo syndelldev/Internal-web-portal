@@ -6,7 +6,7 @@ const handler=nc();
 async function Status(req,res) {
     
     try{
-        let status = await executeQuery("SELECT * FROM `tbl_projectstatus` group by `projectstatus_name` ");
+        let status = await executeQuery("SELECT * FROM `tbl_projectstatus` group by `projectstatus_name` ORDER BY FIELD(`projectstatus_name`,'Running','On hold','Completed') ");
         res.status(200).json(status);
     }
     catch(err){
