@@ -221,6 +221,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
   const add_user = [];
   add_user.push(userID);
   
+  // language dropdown options
   const [all_Language, setAllLanguage] = useState([]);
   useEffect(() =>{
     const u_data = async() =>{
@@ -233,8 +234,10 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
     }
     u_data();
   },[]);
+  // set and get selected value of language
   const [u_Language, setLanguage] = useState([]);
 
+  // department dropdown options
   const [all_Department, setAllDepartment] = useState([]);
   useEffect(() =>{
     const u_data = async() =>{
@@ -247,8 +250,10 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
     }
     u_data();
   },[]);
+  // set and get selected value of department
   const [u_Department, setDepartment] = useState([]);
 
+  // priority dropdown options
   const [all_Priority, setAllPriority] = useState([]);
   useEffect(() =>{
     const u_data = async() =>{
@@ -261,8 +266,10 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
     }
     u_data();
   },[]);
+  // set and get selected value of priority
   const [u_Priority, setPriority] = useState([]);
 
+  // status dropdown options
   const [all_Status, setAllStatus] = useState([]);
   useEffect(() =>{
     const u_data = async() =>{
@@ -275,6 +282,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
     }
     u_data();
   },[]);
+  // set and get selected value of status
   const [u_Status, setStatus] = useState([]);
 
   const projectId = async(id) =>{
@@ -290,15 +298,19 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
       getAllname.push( {'label' :user, 'value' :user} );
     });
 
+    // set language name from database for update language
     const getLanguage = [];
     getLanguage.push( {'label' :udata.project_language, 'value' :udata.project_language} );
 
+    // set department name from database for update department
     const getDepartment = [];
     getDepartment.push( {'label' :udata.project_department, 'value' :udata.project_department} );
 
+    // set priority from database for update priority
     const getPriority = [];
     getPriority.push( {'label' :udata.project_priority, 'value' :udata.project_priority} );
 
+    // set status from database for update status
     const getStatus = [];
     getStatus.push( {'label' :udata.project_status, 'value' :udata.project_status} );
 
