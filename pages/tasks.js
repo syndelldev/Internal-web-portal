@@ -292,6 +292,7 @@ function Dashboard( { project_details , User_name , allTask, userTask, language,
     const getStatus = [];
     getStatus.push( {'label' :udata.task_status, 'value' :udata.task_status} );
 
+    setProject(getProject);
     setStatus(getStatus);
     setLanguage(getLanguage);
     setPriority(getPriority);
@@ -312,17 +313,9 @@ function Dashboard( { project_details , User_name , allTask, userTask, language,
       }
     
         console.log("project name");
-        console.log(selectedProject);
-        console.log(select_updateProject);
-        if(select_updateProject == ""){
-          var u_project = selectedProject;
-        }else{
-          var u_project = select_updateProject;
-        }
-        console.log("project");
-        console.log(u_project);
+        console.log(p_selected);
   
-      if( uoption.task_id == ""  ||  u_project  == ""  || allMember  == ""  || u_Status == "" || uoption.task_title == ""  || uoption.task_description == ""  ||  u_Language == ""  || u_Priority == ""  || startDate == ""  || endDate == "" ){
+      if( uoption.task_id == "" || allMember  == ""  || u_Status == "" || uoption.task_title == ""  || uoption.task_description == ""  ||  u_Language == ""  || u_Priority == ""  || startDate == ""  || endDate == "" ){
         if(! toast.isActive(toastId.current)) {
           toastId.current = toast.error('Please fill all the required fields', {
               position: "top-right",
@@ -353,8 +346,9 @@ function Dashboard( { project_details , User_name , allTask, userTask, language,
       const res = await fetch(`${server}/api/subtask/update_subtask`,{
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ task_id:uoption.task_id, project_name:u_project , task_person: allMember, task_status: Status, task_title: uoption.task_title , task_description:uoption.task_description , task_language: Language, task_priority: Priority, task_start: startDate , task_deadline: endDate }),
+        body: JSON.stringify({ task_id:uoption.task_id, project_name: p_selected , task_person: allMember, task_status: Status, task_title: uoption.task_title , task_description:uoption.task_description , task_language: Language, task_priority: Priority, task_start: startDate , task_deadline: endDate }),
       });
+      
       if(!toast.isActive(toastId.current)) {
         toastId.current = toast.success('Task updated Successfully!🎉', {
             position: "top-right",
@@ -382,7 +376,7 @@ function Dashboard( { project_details , User_name , allTask, userTask, language,
             closeOnClick: true,
             hideProgressBar: true,
           });
-        }
+      }
 
     }else{
     
@@ -1248,16 +1242,16 @@ const updateComment = async(id, comment) =>{
                                 <GridItem xs={12} sm={12} md={12}>
                                 <div className="form-group" name="project_name" onChange={handleChange} >
                                   
-                                  <span>Project</span><span className="required">*</span>
+                                  <span>Project Name</span><span className="required">*</span>
                                   <Multiselect
                                     displayValue="value"
                                     options={project_list}
-                                    value={select_updateProject}
-                                    selectedValues={selectedProject}
-                                    singleSelect={true}
-                                    onChange={setUpdateProject}
-                                    onRemove={setUpdateProject}
-                                    onSelect={setUpdateProject}
+                                    value={p_selected}
+                                    selectionLimit="1"
+                                    selectedValues={p_selected}
+                                    onChange={setProject}
+                                    onRemove={setProject}
+                                    onSelect={setProject}
                                     placeholder="Project List"
                                     showArrow={true}
                                     disable={cookies.Role_id == "2"}
@@ -1305,14 +1299,6 @@ const updateComment = async(id, comment) =>{
                                         placeholder="Task Priority"
                                         showArrow={true}
                                     />
-                                      {/* <select name="task_status" id="Status" className="form-control signup-input" onChange={handleChange} value={uoption.task_status} >
-                                        <option value="" disabled selected>Select Task Status</option>
-                                        <option value="task_toDo">Task to do</option>
-                                        <option value="taskOn_hold">Task On hold</option>
-                                        <option value="task_Running">Task Running</option>
-                                        <option value="task_completed">Task Completed</option>
-                                      </select>
-                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span> */}
                                   </div> 
                                 </GridItem>
                               </GridContainer><br/>
@@ -1334,14 +1320,6 @@ const updateComment = async(id, comment) =>{
                                       placeholder="Task Priority"
                                       showArrow={true}
                                   />
-
-                                    {/* <select id="priority" className="form-control signup-input" disabled={cookies.Role_id == "2"} name="task_priority" value={uoption.task_priority} onChange={handleChange}  >
-                                      <option value=""  disabled selected>Select Task Priority</option>
-                                      <option value="High">High</option>
-                                      <option value="Medium">Medium</option>
-                                      <option value="Low">Low</option>
-                                    </select>
-                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span> */}
                                   </div> 
                                 </GridItem>
 
@@ -1431,7 +1409,7 @@ const updateComment = async(id, comment) =>{
                             </CardBody>
 
                             <CardFooter hidden={cookies.Role_id == "2"}>
-                                <Button color="primary" type="submit" onClick={()=> { updateProject(task.task_id); } }  hidden={cookies.Role_id == "2"}>Save</Button>
+                                <Button color="primary" type="submit" onClick={()=> { updateProject(task.task_id) } }  hidden={cookies.Role_id == "2"}>Save</Button>
                                 <Button className="button" onClick={() => { close(); }} hidden={cookies.Role_id == "2"}> Cancel </Button>
                             </CardFooter>
 
@@ -1779,12 +1757,12 @@ const updateComment = async(id, comment) =>{
                                   <Multiselect
                                     displayValue="value"
                                     options={project_list}
-                                    value={select_updateProject}
-                                    selectedValues={selectedProject}
-                                    singleSelect={true}
-                                    onChange={setUpdateProject}
-                                    onRemove={setUpdateProject}
-                                    onSelect={setUpdateProject}
+                                    value={p_selected}
+                                    selectionLimit="1"
+                                    selectedValues={p_selected}
+                                    onChange={setProject}
+                                    onRemove={setProject}
+                                    onSelect={setProject}
                                     placeholder="Project List"
                                     showArrow={true}
                                     disable={cookies.Role_id == "2"}
@@ -1819,14 +1797,19 @@ const updateComment = async(id, comment) =>{
                                   </div> 
                                   <div className="form-group" hidden={cookies.Role_id == "2"}>
                                     <span>Task Status</span><span className="required">*</span>
-                                      <select name="task_status" id="Status" className="form-control signup-input" onChange={handleChange} value={uoption.task_status} >
-                                        <option value="" disabled selected>Select Task Status</option>
-                                        <option value="task_toDo">Task to do</option>
-                                        <option value="taskOn_hold">Task On hold</option>
-                                        <option value="task_Running">Task Running</option>
-                                        <option value="task_completed">Task Completed</option>
-                                      </select>
-                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                    <Multiselect
+                                        displayValue="value"
+                                        options={all_Status}
+                                        value={u_Status}
+                                        selectedValues={u_Status}
+                                        selectionLimit="1"
+                                        onChange={setStatus}
+                                        onRemove={setStatus}
+                                        onSearch={function noRefCheck(){}}
+                                        onSelect={setStatus}
+                                        placeholder="Task Priority"
+                                        showArrow={true}
+                                    />
                                   </div> 
                                 </GridItem>
                               </GridContainer><br/>
@@ -1848,14 +1831,6 @@ const updateComment = async(id, comment) =>{
                                       placeholder="Task Priority"
                                       showArrow={true}
                                   />
-
-                                    {/* <select id="priority" className="form-control signup-input" disabled={cookies.Role_id == "2"} name="task_priority" value={uoption.task_priority} onChange={handleChange}  >
-                                      <option value=""  disabled selected>Select Task Priority</option>
-                                      <option value="High">High</option>
-                                      <option value="Medium">Medium</option>
-                                      <option value="Low">Low</option>
-                                    </select>
-                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span> */}
                                   </div> 
                                 </GridItem>
 
@@ -2289,16 +2264,16 @@ const updateComment = async(id, comment) =>{
                                 <GridItem xs={12} sm={12} md={12}>
                                 <div className="form-group" name="project_name" onChange={handleChange} >
                                   
-                                  <span>Project</span><span className="required">*</span>
+                                  <span>Project Name</span><span className="required">*</span>
                                   <Multiselect
                                     displayValue="value"
                                     options={project_list}
-                                    value={select_updateProject}
-                                    selectedValues={selectedProject}
-                                    singleSelect={true}
-                                    onChange={setUpdateProject}
-                                    onRemove={setUpdateProject}
-                                    onSelect={setUpdateProject}
+                                    value={p_selected}
+                                    selectionLimit="1"
+                                    selectedValues={p_selected}
+                                    onChange={setProject}
+                                    onRemove={setProject}
+                                    onSelect={setProject}
                                     placeholder="Project List"
                                     showArrow={true}
                                     disable={cookies.Role_id == "2"}
@@ -2333,14 +2308,19 @@ const updateComment = async(id, comment) =>{
                                   </div> 
                                   <div className="form-group" hidden={cookies.Role_id == "2"}>
                                     <span>Task Status</span><span className="required">*</span>
-                                      <select name="task_status" id="Status" className="form-control signup-input" onChange={handleChange} value={uoption.task_status} >
-                                        <option value="" disabled selected>Select Task Status</option>
-                                        <option value="task_toDo">Task to do</option>
-                                        <option value="taskOn_hold">Task On hold</option>
-                                        <option value="task_Running">Task Running</option>
-                                        <option value="task_completed">Task Completed</option>
-                                      </select>
-                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                    <Multiselect
+                                        displayValue="value"
+                                        options={all_Status}
+                                        value={u_Status}
+                                        selectedValues={u_Status}
+                                        selectionLimit="1"
+                                        onChange={setStatus}
+                                        onRemove={setStatus}
+                                        onSearch={function noRefCheck(){}}
+                                        onSelect={setStatus}
+                                        placeholder="Task Priority"
+                                        showArrow={true}
+                                    />
                                   </div> 
                                 </GridItem>
                               </GridContainer><br/>
@@ -2362,14 +2342,6 @@ const updateComment = async(id, comment) =>{
                                       placeholder="Task Priority"
                                       showArrow={true}
                                   />
-
-                                    {/* <select id="priority" className="form-control signup-input" disabled={cookies.Role_id == "2"} name="task_priority" value={uoption.task_priority} onChange={handleChange}  >
-                                      <option value=""  disabled selected>Select Task Priority</option>
-                                      <option value="High">High</option>
-                                      <option value="Medium">Medium</option>
-                                      <option value="Low">Low</option>
-                                    </select>
-                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span> */}
                                   </div> 
                                 </GridItem>
 
@@ -2548,10 +2520,10 @@ const updateComment = async(id, comment) =>{
                                 </GridContainer>
 
                                 <GridContainer>
-                                                  <GridItem>
-                                                    <div>
+                <GridItem>
+                  <div>
 
-                                                    <ReactQuill value={uComment.comment} theme="bubble" readOnly />
+                  <ReactQuill value={uComment.comment} theme="bubble" readOnly />
 
                       <Popup trigger={ <span><button onClick={()=>{ editComment(uComment.id)} } disabled={ uComment.username != cookies.name }>Edit</button></span> }
                       className="popupReact"
@@ -2804,16 +2776,16 @@ const updateComment = async(id, comment) =>{
                                 <GridItem xs={12} sm={12} md={12}>
                                 <div className="form-group" name="project_name" onChange={handleChange} >
                                   
-                                  <span>Project</span><span className="required">*</span>
+                                  <span>Project Name</span><span className="required">*</span>
                                   <Multiselect
                                     displayValue="value"
                                     options={project_list}
-                                    value={select_updateProject}
-                                    selectedValues={selectedProject}
-                                    singleSelect={true}
-                                    onChange={setUpdateProject}
-                                    onRemove={setUpdateProject}
-                                    onSelect={setUpdateProject}
+                                    value={p_selected}
+                                    selectionLimit="1"
+                                    selectedValues={p_selected}
+                                    onChange={setProject}
+                                    onRemove={setProject}
+                                    onSelect={setProject}
                                     placeholder="Project List"
                                     showArrow={true}
                                     disable={cookies.Role_id == "2"}
@@ -2848,14 +2820,19 @@ const updateComment = async(id, comment) =>{
                                   </div> 
                                   <div className="form-group" hidden={cookies.Role_id == "2"}>
                                     <span>Task Status</span><span className="required">*</span>
-                                      <select name="task_status" id="Status" className="form-control signup-input" onChange={handleChange} value={uoption.task_status} >
-                                        <option value="" disabled selected>Select Task Status</option>
-                                        <option value="task_toDo">Task to do</option>
-                                        <option value="taskOn_hold">Task On hold</option>
-                                        <option value="task_Running">Task Running</option>
-                                        <option value="task_completed">Task Completed</option>
-                                      </select>
-                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                    <Multiselect
+                                        displayValue="value"
+                                        options={all_Status}
+                                        value={u_Status}
+                                        selectedValues={u_Status}
+                                        selectionLimit="1"
+                                        onChange={setStatus}
+                                        onRemove={setStatus}
+                                        onSearch={function noRefCheck(){}}
+                                        onSelect={setStatus}
+                                        placeholder="Task Priority"
+                                        showArrow={true}
+                                    />
                                   </div> 
                                 </GridItem>
                               </GridContainer><br/>
