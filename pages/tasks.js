@@ -1380,7 +1380,7 @@ const updateComment = async(id, comment) =>{
                                   <span>Task Start Date</span><span className="required">*</span>
                                     <DatePicker
                                       placeholderText="Start Date : dd/mm/yyyy"
-                                      isClearable
+                                      // isClearable
                                       name="datetime"
                                       className={"form-control"}
                                       selected={startDate}
@@ -1400,7 +1400,7 @@ const updateComment = async(id, comment) =>{
                                   <span>Task End Date</span><span className="required">*</span>
                                     <DatePicker
                                       placeholderText="End Date : dd/mm/yyyy"
-                                      isClearable
+                                      // isClearable
                                       name="datetime1"
                                       className={"form-control"}
                                       selected={endDate}
@@ -1913,7 +1913,7 @@ const updateComment = async(id, comment) =>{
                                   <span>Task Start Date</span><span className="required">*</span>
                                     <DatePicker
                                       placeholderText="Start Date : dd/mm/yyyy"
-                                      isClearable
+                                      // isClearable
                                       name="datetime"
                                       className={"form-control"}
                                       selected={startDate}
@@ -1933,7 +1933,7 @@ const updateComment = async(id, comment) =>{
                                   <span>Task End Date</span><span className="required">*</span>
                                     <DatePicker
                                       placeholderText="End Date : dd/mm/yyyy"
-                                      isClearable
+                                      // isClearable
                                       name="datetime1"
                                       className={"form-control"}
                                       selected={endDate}
@@ -2447,7 +2447,7 @@ const updateComment = async(id, comment) =>{
                                   <span>Task Start Date</span><span className="required">*</span>
                                     <DatePicker
                                       placeholderText="Start Date : dd/mm/yyyy"
-                                      isClearable
+                                      // isClearable
                                       name="datetime"
                                       className={"form-control"}
                                       selected={startDate}
@@ -2467,7 +2467,7 @@ const updateComment = async(id, comment) =>{
                                   <span>Task End Date</span><span className="required">*</span>
                                     <DatePicker
                                       placeholderText="End Date : dd/mm/yyyy"
-                                      isClearable
+                                      // isClearable
                                       name="datetime1"
                                       className={"form-control"}
                                       selected={endDate}
@@ -2990,7 +2990,7 @@ const updateComment = async(id, comment) =>{
                                   <span>Task Start Date</span><span className="required">*</span>
                                     <DatePicker
                                       placeholderText="Start Date : dd/mm/yyyy"
-                                      isClearable
+                                      // isClearable
                                       name="datetime"
                                       className={"form-control"}
                                       selected={startDate}
@@ -3010,7 +3010,7 @@ const updateComment = async(id, comment) =>{
                                   <span>Task End Date</span><span className="required">*</span>
                                     <DatePicker
                                       placeholderText="End Date : dd/mm/yyyy"
-                                      isClearable
+                                      // isClearable
                                       name="datetime1"
                                       className={"form-control"}
                                       selected={endDate}
