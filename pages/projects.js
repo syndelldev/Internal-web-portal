@@ -897,14 +897,6 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                       customCloseIcon={<></>}
                                       disable={cookies.Role_id == "2"}
                                   />
-
-                                    {/* <select name="priority" id="priority" className="form-control signup-input" {...register('project_priority', {required:true ,message:'Please select atleast one option', })}>
-                                      <option value=""  disabled selected>Select Project Priority</option>
-                                      <option value="High" className="high">High</option>
-                                      <option value="Medium" className="medium">Medium</option>
-                                      <option value="Low"className="low">Low</option>
-                                    </select>
-                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span> */}
                                     <div className="error-msg">{errors.project_priority && <span>{errors.project_priority.message}</span>}</div>
                                   </div> 
                                 </GridItem>
@@ -926,15 +918,6 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                           customCloseIcon={<></>}
                                           disable={cookies.Role_id == "2"}
                                       />
-                                      
-                                      {/* <select name="Status" id="Status" className="form-control signup-input" {...register('project_status', {required:true ,message:'Please select atleast one option', })}>
-                                        <option value=""  disabled selected>Select Project Status</option>
-                                        <option value="on hold">On hold</option>
-                                        <option value="running">Running</option>
-                                        <option value="completed">Completed</option>
-                                      </select>
-                                      <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span> */}
-                                      {/* <div className="error-msg">{errors.status && <p>{errors.status.message}</p>}</div> */}
                                     </div> 
                                 </GridItem>
                               </GridContainer><br/>
@@ -1024,8 +1007,9 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
           >Collapse All</button>
         </GridItem>
 
+{/* select start date & end date for Date Filter */}
+{/* Date filter start */}
       <GridItem>
-
         <DatePicker
         monthsShown={2}
           selectsRange={true}
@@ -1041,6 +1025,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
         <button onClick={() => date_Range()}>enter</button>
 
       </GridItem>
+{/* Date filter end */}
     </GridContainer>
   </div>
 
@@ -1070,7 +1055,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                           <div className="chip">
                             <span>{person[1]}</span>
                           </div>
-                            {/* Edit popUp Start*/}
+      {/* All project members popUp Start*/}
                             <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} className="popupReact"  position="left">
                             {close => (
                               <div className="popup-align">
@@ -1105,7 +1090,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                               </div>
                             )}
                             </Popup>
-                            {/*Edit popup End*/}
+      {/* All project members popup End*/}
                         </>
                       ):(
                         <span>
