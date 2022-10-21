@@ -2,7 +2,7 @@ import { executeQuery } from "../../config/db";
 
 const getAllUser = async (req,res) =>{
     try{
-        let userData=await executeQuery(" SELECT * FROM `tbl_user` WHERE `role_id` NOT IN (1) ", [] );
+        let userData=await executeQuery(" SELECT * FROM `tbl_user` WHERE `role_id` NOT IN (1) order by `username` ", [] );
         res.send(userData);
     }
     catch(err){

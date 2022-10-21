@@ -1,5 +1,5 @@
 import nc from "next-connect";
-import { getAllUser,adminProfile,AddUser } from '../../../controller/admin/admin'
+import { getAllUser,AddUser } from '../../../controller/admin/admin'
 
 const handler=nc();
 
