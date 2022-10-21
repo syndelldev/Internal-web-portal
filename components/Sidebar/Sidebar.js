@@ -37,16 +37,16 @@ export default function Sidebar(props) {
       {routes.map((prop, key) => {
         var activePro = " ";
         var listItemClasses;
-        // if (prop.path === "/upgrade-to-pro") {
-        //   activePro = classes.activePro + " ";
-        //   listItemClasses = classNames({
-        //     [" " + classes[color]]: true,
-        //   });
-        // } else {
-        //   listItemClasses = classNames({
-        //     [" " + classes[color]]: activeRoute(prop.layout + prop.path),
-        //   });
-        // }
+        if (prop.path === "/upgrade-to-pro") {
+          activePro = classes.activePro + " ";
+          listItemClasses = classNames({
+            [" " + classes[color]]: true,
+          });
+        } else {
+          listItemClasses = classNames({
+            [" " + classes[color]]: activeRoute(prop.layout + prop.path),
+          });
+        }
         const whiteFontClasses = classNames({
           [" " + classes.whiteFont]:
             activeRoute(prop.layout + prop.path) ||
@@ -116,6 +116,10 @@ export default function Sidebar(props) {
         >
           {brand}
           <div className={classes.sidebarWrapper}>
+            {props.rtlActive ? <RTLNavbarLinks /> : <AdminNavbarLinks />}
+            {links}
+          </div>
+          {/* <div className={classes.sidebarWrapper}>
             <div className="makeStyles-sidebarWrapper-36">
                 <ul className="MuiList-root makeStyles-list-22 MuiList-padding"><br/>
 
@@ -132,7 +136,6 @@ export default function Sidebar(props) {
                 <Link href="/projects">
                   <a className=" makeStyles-item-15">
                     <div className="MuiButtonBase-root MuiListItem-root makeStyles-itemLink-16undefined MuiListItem-gutters MuiListItem-button" tabIndex="0" role="button" aria-disabled="false">
-                      {/* <span className="material-icons MuiIcon-root makeStyles-itemIcon-17  makeStyles-whiteFont-21" aria-hidden="true">content_paste</span> */}
                       <img src={`${server}/Project.png`} alt="smiley" className="dashboard-image" />
                       <div className="MuiListItemText-root makeStyles-itemText-19">Projects</div>
                       <span className="MuiTouchRipple-root"></span>
@@ -172,7 +175,7 @@ export default function Sidebar(props) {
 
                 </ul>
             </div>
-          </div>
+          </div> */}
           {image !== undefined ? (
             <div
               className={classes.background}
@@ -180,7 +183,7 @@ export default function Sidebar(props) {
             />
           ) : null}
         </Drawer>
-          </Hidden>
+      </Hidden>
     </div>
   );
 }

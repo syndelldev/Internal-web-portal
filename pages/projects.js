@@ -135,7 +135,7 @@ export async function getServerSideProps(context) {
 }
 
 function Dashboard( { project_details, user_project, User_name, language, user_Department, languageDepartment, priority, status } ) {
-  console.log('project_details',project_details)
+  // console.log('project_details',project_details)
   const useStyles = makeStyles(styles);
   const classes = useStyles();
 
@@ -295,7 +295,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
     const u_data = async() =>{
   
       const getDepartment = [];
-      console.log(getDepartment)
+      // console.log(getDepartment)
       languageDepartment.map((department)=>{
         getDepartment.push( {'label' :department.language_department, 'value' :department.language_department} );
       });
@@ -305,6 +305,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
   },[]);
   // set and get selected value of department
   const [u_Department, setDepartment] = useState([]);
+  console.log('u_Department', u_Department)
   // priority dropdown options
   const [all_Priority, setAllPriority] = useState([]);
   useEffect(() =>{
@@ -731,7 +732,6 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
       const [startDates, endDates] = dateRange;
       // get selected dates projects list
       const [dateDetails, setDateDetails] = useState();
-      console.log('dateDetails',dateDetails)
       // get selected dates projects list for user
       const [date_uData, setDate_uDetails] = useState();
       // onclick show data
@@ -786,11 +786,11 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
       
       if(cookies.Role_id==1 || cookies.Role_id==3){
         var project_list = dateDetails;
-        console.log(project_list);
+        // console.log(project_list);
       }
       else if(cookies.Role_id==2){
         var project_list = date_uData;
-        console.log(project_list);
+        // console.log(project_list);
       }
     
       
@@ -1305,6 +1305,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                         <div className="form-group">
                                         <span>Project Department</span><span className="required">*</span>
                                         <Multiselect
+                                          disable={cookies.Role_id == "2"}
                                           displayValue="value"
                                           options={all_Department}
                                           value={u_Department}
@@ -1324,6 +1325,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                       <div className="form-group">
                                       <span>Project Language</span><span className="required">*</span>
                                       <Multiselect
+                                        disable={cookies.Role_id == "2"}
                                         displayValue="value"
                                         options={all_Language}
                                         value={u_Language}
@@ -1347,7 +1349,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                                 <DatePicker
                                                   disabled={cookies.Role_id == "2"}
                                                   placeholderText="Start Date : dd/mm/yyyy"
-                                                  isClearable
+                                                  // isClearable = {true}
                                                   name="datetime"
                                                   className={"form-control"}
                                                   value={new Date(uoption.project_start)}
@@ -1367,7 +1369,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                                 <DatePicker
                                                   disabled={cookies.Role_id == "2"}
                                                   placeholderText="End Date : dd/mm/yyyy"
-                                                  isClearable
+                                                  // isClearable
                                                   name="datetime1"
                                                   value={new Date(uoption.project_deadline)}
                                                   className={"form-control"}
@@ -1388,6 +1390,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                       <div className="form-group">
                                       <span>Project Priority</span><span className="required">*</span>
                                       <Multiselect
+                                        disable={cookies.Role_id == "2"}
                                         displayValue="value"
                                         options={all_Priority}
                                         value={u_Priority}
@@ -1407,6 +1410,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                         <div className="form-group">
                                           <span>Project Status</span><span className="required">*</span>
                                           <Multiselect
+                                              disable={cookies.Role_id == "2"}
                                               displayValue="value"
                                               options={all_Status}
                                               value={u_Status}
@@ -1707,6 +1711,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                         <div className="form-group">
                                         <span>Project Department</span><span className="required">*</span>
                                         <Multiselect
+                                          disable={cookies.Role_id == "2"}
                                           displayValue="value"
                                           options={all_Department}
                                           value={u_Department}
@@ -1726,6 +1731,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                       <div className="form-group">
                                       <span>Project Language</span><span className="required">*</span>
                                       <Multiselect
+                                        disable={cookies.Role_id == "2"}
                                         displayValue="value"
                                         options={all_Language}
                                         value={u_Language}
@@ -1749,7 +1755,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                                 <DatePicker
                                                   disabled={cookies.Role_id == "2"}
                                                   placeholderText="Start Date : dd/mm/yyyy"
-                                                  isClearable
+                                                  // isClearable
                                                   name="datetime"
                                                   className={"form-control"}
                                                   value={new Date(uoption.project_start)}
@@ -1769,7 +1775,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                                 <DatePicker
                                                   disabled={cookies.Role_id == "2"}
                                                   placeholderText="End Date : dd/mm/yyyy"
-                                                  isClearable
+                                                  // isClearable
                                                   name="datetime1"
                                                   value={new Date(uoption.project_deadline)}
                                                   className={"form-control"}
@@ -1790,6 +1796,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                       <div className="form-group">
                                       <span>Project Priority</span><span className="required">*</span>
                                       <Multiselect
+                                        disable={cookies.Role_id == "2"}
                                         displayValue="value"
                                         options={all_Priority}
                                         value={u_Priority}
@@ -1810,6 +1817,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                         <div className="form-group">
                                           <span>Project Status</span><span className="required">*</span>
                                           <Multiselect
+                                              disable={cookies.Role_id == "2"}
                                               displayValue="value"
                                               options={all_Status}
                                               value={u_Status}
@@ -2120,6 +2128,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                         <div className="form-group">
                                         <span>Project Department</span><span className="required">*</span>
                                         <Multiselect
+                                          disable={cookies.Role_id == "2"}
                                           displayValue="value"
                                           options={all_Department}
                                           value={u_Department}
@@ -2139,6 +2148,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                       <div className="form-group">
                                       <span>Project Language</span><span className="required">*</span>
                                       <Multiselect
+                                        disable={cookies.Role_id == "2"}
                                         displayValue="value"
                                         options={all_Language}
                                         value={u_Language}
@@ -2162,7 +2172,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                                 <DatePicker
                                                   disabled={cookies.Role_id == "2"}
                                                   placeholderText="Start Date : dd/mm/yyyy"
-                                                  isClearable
+                                                  // isClearable
                                                   name="datetime"
                                                   className={"form-control"}
                                                   value={new Date(uoption.project_start)}
@@ -2182,7 +2192,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                                 <DatePicker
                                                   disabled={cookies.Role_id == "2"}
                                                   placeholderText="End Date : dd/mm/yyyy"
-                                                  isClearable
+                                                  // isClearable
                                                   name="datetime1"
                                                   value={new Date(uoption.project_deadline)}
                                                   className={"form-control"}
@@ -2203,6 +2213,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                       <div className="form-group">
                                       <span>Project Priority</span><span className="required">*</span>
                                       <Multiselect
+                                        disable={cookies.Role_id == "2"}
                                         displayValue="value"
                                         options={all_Priority}
                                         value={u_Priority}
@@ -2230,6 +2241,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                         <div className="form-group">
                                           <span>Project Status</span><span className="required">*</span>
                                           <Multiselect
+                                              disable={cookies.Role_id == "2"}
                                               displayValue="value"
                                               options={all_Status}
                                               value={u_Status}

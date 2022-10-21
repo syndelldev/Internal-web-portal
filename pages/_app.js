@@ -60,7 +60,7 @@ Router.events.on("routeChangeError", () => {
 function Loading(){
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  console.log(loading)
+  console.log('loading',loading)
   useEffect(()=>{
     const handleStart = (url) => (url !== router.asPath) && setLoading(true);
     const handleComplete = (url) => (url === router.asPath) && setTimeout(() =>{setLoading(false)},2000);
