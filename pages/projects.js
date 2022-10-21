@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { makeStyles } from "@material-ui/core/styles";
@@ -104,14 +104,14 @@ export async function getServerSideProps(context) {
   const res = await fetch(`${server}/api/project`);
   const project_details = await res.json();
 
-  // const res1 = await fetch(`${server}/api/user_dashboard`, {
-  //   headers: {
-  //     'Access-Control-Allow-Credentials': true,
-  //     Cookie: context.req.headers.cookie
-  //   },
-  // })
-  // const user_project = await res1.json()
-  // console.log(user_project)
+  const res1 = await fetch(`${server}/api/user_dashboard`, {
+    headers: {
+      'Access-Control-Allow-Credentials': true,
+      Cookie: context.req.headers.cookie
+    },
+  })
+  const user_project = await res1.json()
+  console.log(user_project)
 
   const response = await fetch(`${server}/api/admin`);
   const User_name = await response.json();
