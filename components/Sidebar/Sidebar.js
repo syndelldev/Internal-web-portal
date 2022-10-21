@@ -115,11 +115,11 @@ export default function Sidebar(props) {
           }}
         >
           {brand}
-          {/* <div className={classes.sidebarWrapper}>
-            {props.rtlActive ? <RTLNavbarLinks /> : <AdminNavbarLinks />}
-            {links}
-          </div> */}
           <div className={classes.sidebarWrapper}>
+            {/* {props.rtlActive ? <RTLNavbarLinks /> : <AdminNavbarLinks />} */}
+            {links}
+          </div>
+          {/* <div className={classes.sidebarWrapper}>
             <div className="makeStyles-sidebarWrapper-36">
                 <ul className="MuiList-root makeStyles-list-22 MuiList-padding"><br/>
 
@@ -175,7 +175,7 @@ export default function Sidebar(props) {
 
                 </ul>
             </div>
-          </div>
+          </div> */}
           {image !== undefined ? (
             <div
               className={classes.background}
