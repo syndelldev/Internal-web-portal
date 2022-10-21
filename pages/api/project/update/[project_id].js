@@ -2,9 +2,9 @@ import { executeQuery } from "../../../../config/db";
 
 async function projectId(req,res){
     let id = req.query.project_id;
-    console.log("projectId");
-    console.log(req.query);
-    console.log(id);
+    // console.log("projectId");
+    // console.log(req.query);
+    // console.log(id);
 
     try{
         // let projectById=await executeQuery(` SELECT * FROM tbl_project`);

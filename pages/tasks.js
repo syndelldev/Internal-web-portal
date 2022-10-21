@@ -19,7 +19,7 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 import { IoMdArrowDropdown } from "react-icons/io";
-import { useForm ,Controller } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { server } from "config";
 import { useCookies } from "react-cookie";
 import Popup from "reactjs-popup";
@@ -122,10 +122,10 @@ export async function getServerSideProps(context) {
   const pri = await fetch(`${server}/api/priority`)
   const priority = await pri.json();
 
-  return{ props: {project_details, User_name, allTask, userTask, language, user_Department, priority} }
+  return { props: { project_details, User_name, allTask, userTask, language, user_Department, priority } }
 }
 
-function Dashboard( { project_details , User_name , allTask, userTask, language, user_Department, priority } ) {
+function Dashboard({ project_details, User_name, allTask, userTask, language, user_Department, priority }) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   // get role from cookies
@@ -133,12 +133,12 @@ function Dashboard( { project_details , User_name , allTask, userTask, language,
 
   // redirect page if cookies is not set
   useEffect(() => {
-    if(!cookies.name){
+    if (!cookies.name) {
       router.push(`${server}/login`);
     }
   });
-    
-  if(cookies.Role_id == "2"){
+
+  if (cookies.Role_id == "2") {
     var allTask = userTask;
   } else {
     var allTask = allTask;
@@ -200,40 +200,40 @@ function Dashboard( { project_details , User_name , allTask, userTask, language,
   const projectName = project.split(",");
   // console.log(projectName);
 
-  selectedProject.push({'label' :projectName[0] , 'value' : projectName[0]});
+  selectedProject.push({ 'label': projectName[0], 'value': projectName[0] });
 
   const [updateSelected, setUpdateSelected] = React.useState([]);
   const [all_Language, setAllLanguage] = useState([]);
 
-  useEffect(() =>{
-    const u_data = async() =>{
-  
+  useEffect(() => {
+    const u_data = async () => {
+
       const getLanguage = [];
-   
-      language.map((language)=>{
-        getLanguage.push( {'label' :language.language_name, 'value' :language.language_name} );
+
+      language.map((language) => {
+        getLanguage.push({ 'label': language.language_name, 'value': language.language_name });
       });
       setAllLanguage(getLanguage);
     }
     u_data();
-  },[]);
+  }, []);
   const [u_Language, setLanguage] = useState([]);
 
   const [all_Priority, setAllPriority] = useState([]);
-  useEffect(() =>{
-    const u_data = async() =>{
-  
+  useEffect(() => {
+    const u_data = async () => {
+
       const getPriority = [];
-      priority.map((priority)=>{
-        getPriority.push( {'label' :priority.priority_name, 'value' :priority.priority_name} );
+      priority.map((priority) => {
+        getPriority.push({ 'label': priority.priority_name, 'value': priority.priority_name });
       });
       setAllPriority(getPriority);
     }
     u_data();
-  },[]);
+  }, []);
   const [u_Priority, setPriority] = useState([]);
 
-  const projectId = async(id) =>{
+  const projectId = async (id) => {
     var comment = await axios.post(`${server}/api/comment/userComments`, { task_id: id });
     setcomments(comment.data);
 
@@ -245,15 +245,15 @@ function Dashboard( { project_details , User_name , allTask, userTask, language,
     const selectedMember = (udata.task_person).split(",");
 
     const getAllname = [];
-    selectedMember.map((user)=>{
-      getAllname.push( {'label' :user, 'value' :user} );
+    selectedMember.map((user) => {
+      getAllname.push({ 'label': user, 'value': user });
     });
 
     const getLanguage = [];
-    getLanguage.push( {'label' :udata.task_language, 'value' :udata.task_language} );
+    getLanguage.push({ 'label': udata.task_language, 'value': udata.task_language });
 
     const getPriority = [];
-    getPriority.push( {'label' :udata.task_priority, 'value' :udata.task_priority} );
+    getPriority.push({ 'label': udata.task_priority, 'value': udata.task_priority });
 
     setLanguage(getLanguage);
     setPriority(getPriority);
@@ -262,152 +262,164 @@ function Dashboard( { project_details , User_name , allTask, userTask, language,
     setStartDate(new Date(udata.task_start));
     setEndDate(new Date(udata.task_deadline));
 
-    }
-    console.log("language");
-    console.log(u_Language);
+  }
+  // console.log("language");
+  console.log(u_Language);
 
   const [p_selected, setProject] = useState([]);
   const [select_updateProject, setUpdateProject] = useState([]);
 
 
-    const toastId = React.useRef(null);
-    const updateProject = async() =>{
+  const toastId = React.useRef(null);
+  const updateProject = async () => {
 
-      const allMember = [];
-      for(var i=0; i<updateSelected.length; i++){
-            allMember.push(updateSelected[i].value);
+    const allMember = [];
+    for (var i = 0; i < updateSelected.length; i++) {
+      allMember.push(updateSelected[i].value);
+    }
+
+    console.log("project name");
+    console.log(selectedProject);
+    console.log(select_updateProject);
+    if (select_updateProject == "") {
+      var u_project = selectedProject;
+    } else {
+      var u_project = select_updateProject;
+    }
+    console.log("project");
+    console.log(u_project);
+
+    if (uoption.task_id == "" || u_project == "" || allMember == "" || uoption.task_status == "" || uoption.task_department == "" || uoption.task_title == "" || uoption.task_description == "" || uoption.task_language == "" || uoption.task_priority == "" || startDate == "" || endDate == "") {
+      if (!toast.isActive(toastId.current)) {
+        toastId.current = toast.error('Please fill all the required fields', {
+          position: "top-right",
+          autoClose: 5000,
+          theme: "colored",
+          closeOnClick: true,
+          hideProgressBar: true,
+        });
       }
-    
-        console.log("project name");
-        console.log(selectedProject);
-        console.log(select_updateProject);
-        if(select_updateProject == ""){
-          var u_project = selectedProject;
-        }else{
-          var u_project = select_updateProject;
-        }
-        console.log("project");
-        console.log(u_project);
-  
-      if( uoption.task_id == ""  ||  u_project  == ""  || allMember  == ""  || uoption.task_status == ""  || uoption.task_department == ""  || uoption.task_title == ""  || uoption.task_description == ""  ||  uoption.task_language == ""  || uoption.task_priority == ""  || startDate == ""  || endDate == "" ){
-        if(! toast.isActive(toastId.current)) {
-          toastId.current = toast.error('Please fill all the required fields', {
-              position: "top-right",
-              autoClose:5000,
-              theme: "colored",
-              closeOnClick: true,
-              hideProgressBar: true,
-            });
-          }
-    
-    }else{
 
-      if(u_Language != ""){
+    } else {
+
+      if (u_Language != "") {
         var updated_Language = u_Language[0].value;
       }
 
-      if(u_Priority != ""){
+      if (u_Priority != "") {
         var Priority = u_Priority[0].value;
       }
 
-      const res = await fetch(`${server}/api/subtask/update_subtask`,{
+      const res = await fetch(`${server}/api/subtask/update_subtask`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ task_id:uoption.task_id, project_name:u_project , task_person: allMember, task_status:uoption.task_status , task_department:uoption.task_department ,  task_title: uoption.task_title , task_description:uoption.task_description , task_language:updated_Language, task_priority:Priority, task_start: startDate , task_deadline: endDate }),
+        body: JSON.stringify({ task_id: uoption.task_id, project_name: u_project, task_person: allMember, task_status: uoption.task_status, task_department: uoption.task_department, task_title: uoption.task_title, task_description: uoption.task_description, task_language: updated_Language, task_priority: Priority, task_start: startDate, task_deadline: endDate }),
       });
-      if(!toast.isActive(toastId.current)) {
+      if (!toast.isActive(toastId.current)) {
         toastId.current = toast.success('Task updated Successfully!🎉', {
-            position: "top-right",
-            autoClose:1000,
-            theme: "colored",
-            hideProgressBar: true,
-          });
-        }
-        router.reload(`${server}/tasks`);
+          position: "top-right",
+          autoClose: 1000,
+          theme: "colored",
+          hideProgressBar: true,
+        });
+      }
+      router.reload(`${server}/tasks`);
     }
   };
 
+ 
+  const [error, setError] = useState("");
+  console.log('error',error)
+  const ErrorHandler = () =>{
+    console.log("ErrorHandler called")
+  }
   const onSubmit = async (result) => {
     console.log(result);
     console.log(selected);
+    console.log(result.task_description)
 
+    if(error==""){
+      setError("null")
+    }
+    else if(error!=""){
+      setError("not null")
+    }
     
-    if(selected == "" || p_selected == "" ||  result.task_status == "" ||  result.task_title  == "" || result.task_description == "" || result.task_language == "" || result.task_priority == "" ||  result.start == "" ||  result.end == "" ){
-      if(! toast.isActive(toastId.current)) {
+    if (selected == "" || p_selected == "" || result.task_status == "" || result.task_title == "" || result.task_description == "" || result.task_language == "" || result.task_priority == "" || result.start == "" || result.end == "") {
+      if (!toast.isActive(toastId.current)) {
         toastId.current = toast.error('Please fill all the required fields', {
-            position: "top-right",
-            autoClose:5000,
-            theme: "colored",
-            closeOnClick: true,
-            hideProgressBar: true,
-          });
-        }
-
-    }else{
-    
-    const p_start = result.start.toDateString();
-    const p_end = result.end.toDateString();
-
-    if(u_Language != ""){
-      var Language = u_Language[0].value;
+          position: "top-right",
+          autoClose: 5000,
+          theme: "colored",
+          closeOnClick: true,
+          hideProgressBar: true,
+        });
+      }
     }
+    else {
 
-    if(u_Priority != ""){
-      var Priority = u_Priority[0].value;
-    }
+      const p_start = result.start.toDateString();
+      const p_end = result.end.toDateString();
 
-    const res = await fetch(`${server}/api/subtask/add_subtask`,{
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body:JSON.stringify({task_person:selected, project_name:p_selected, task_status:result.task_status , task_title:result.task_title, task_description:result.task_description, task_language:Language, task_createdBy:cookies.name , task_priority:Priority, task_start: p_start , task_deadline: p_end }),
-    })
-    const data=await res.json()
+      if (u_Language != "") {
+        var Language = u_Language[0].value;
+      }
 
+      if (u_Priority != "") {
+        var Priority = u_Priority[0].value;
+      }
+
+      const res = await fetch(`${server}/api/subtask/add_subtask`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ task_person: selected, project_name: p_selected, task_status: result.task_status, task_title: result.task_title, task_description: result.task_description, task_language: Language, task_createdBy: cookies.name, task_priority: Priority, task_start: p_start, task_deadline: p_end }),
+      })
+      const data = await res.json()
+      console.log(data)
       if (res.status == 200) {
         // alert("success");
-        if (!toast.isActive(toastID.current)) {
+        if (!toast.isActive(toastId.current)) {
           toastId.current = toast.success("Task added Successfully ! 🎉", {
             position: "top-right",
             autoClose: 1000,
             theme: "colored",
             hideProgressBar: true,
-            });
+          });
         }
-      router.reload(`${server}/tasks`);
+        // router.reload(`${server}/tasks`);
+      }
+      else {
+        alert("Fail");
+      }
     }
-    else
-    {
-      alert("Fail");
+  }
+
+  const [uoptions, setOptions] = useState([]);
+  useEffect(() => {
+    const u_data = async () => {
+
+      const getUsername = [];
+      User_name.map((user) => {
+        getUsername.push({ 'label': user.username, 'value': user.username });
+      });
+      setOptions(getUsername);
     }
-  }
-}
+    u_data();
+  }, []);
+  const [selected, setSelected] = useState([]);
 
-const [uoptions, setOptions] = useState([]);
-useEffect(() =>{
-  const u_data = async() =>{
+  const [project_list, setLists] = useState([]);
+  useEffect(() => {
+    const u_data = async () => {
 
-    const getUsername = [];
-    User_name.map((user)=>{
-      getUsername.push( {'label' :user.username, 'value' :user.username} );
-    });
-    setOptions(getUsername);
-  }
-  u_data();
-},[]);
-const [selected, setSelected] = useState([]);
-
-const [project_list, setLists] = useState([]);
-useEffect(() =>{
-  const u_data = async() =>{
-
-    const getUsername = [];
-    project_details.map((project)=>{
-      getUsername.push( {'label' :project.project_title , 'value' :project.project_title } );
-    });
-    setLists(getUsername);
-  }
-  u_data();
-},[]);
+      const getUsername = [];
+      project_details.map((project) => {
+        getUsername.push({ 'label': project.project_title, 'value': project.project_title });
+      });
+      setLists(getUsername);
+    }
+    u_data();
+  }, []);
 
   // to do task block open and close onclick
   const [taskTodo, setTaskToDo] = useState([]);
@@ -462,8 +474,8 @@ useEffect(() =>{
     }
   };
 
-// status update function only for user
-const updateStatus = async(t_status) =>{
+  // status update function only for user
+  const updateStatus = async (t_status) => {
 
     const res = await fetch(`${server}/api/subtask/update_taskStatus`, {
       method: "PUT",
@@ -482,66 +494,66 @@ const updateStatus = async(t_status) =>{
     // router.reload(`${server}/tasks`);
   };
 
-const [comments, setcomments] = useState([]);
-// get and set comment values in editor
-const [ u_Comment, setCommentValue ] = useState("");
-// quill ref
-const quillRef = useRef(null);
+  const [comments, setcomments] = useState([]);
+  // get and set comment values in editor
+  const [u_Comment, setCommentValue] = useState("");
+  // quill ref
+  const quillRef = useRef(null);
 
-// Upload image in project public/upload_img folder and show image in editor
-const imageHandler = () => {
+  // Upload image in project public/upload_img folder and show image in editor
+  const imageHandler = () => {
 
-  const input = document.createElement('input');
-  input.setAttribute('type', 'file');
-  input.setAttribute('accept', 'image/*');
-  input.click();
+    const input = document.createElement('input');
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', 'image/*');
+    input.click();
 
-  input.onchange = async () => {
+    input.onchange = async () => {
       let data = null;
       const file = input.files ? input.files[0] : null;
 
-      if (/^image\//.test(file.type)) {          
-      const formData = new FormData();
+      if (/^image\//.test(file.type)) {
+        const formData = new FormData();
 
-      formData.append('image', file);
-      formData.getAll('image');
+        formData.append('image', file);
+        formData.getAll('image');
 
-      // upload image API
-      const res = await fetch(`${server}/api/upload`,{ 
+        // upload image API
+        const res = await fetch(`${server}/api/upload`, {
           method: 'POST',
           body: formData,
-      });
-      data = await res.json();
-      console.log(data);
-      console.log(data.files.image.newFilename);
-
-      // Save current cursor 
-      const range = quillRef.current.getEditor().getSelection();
-      const quill = quillRef.current.getEditor();
-      // show uploaded image in editor
-      quill.insertEmbed( range.index, "image", `${server}/upload_img/${data.files.image.newFilename}${data.files.image.originalFilename}`);
-      quillRef.current.getEditor().setSelection(range.index + 1);
-
-  }else{
-
-    // only upload images toast error
-    if(! toast.isActive(toastId.current)) {
-      toastId.current = toast.error('Please upload only image', {
-          position: "top-right",
-          autoClose:5000,
-          theme: "colored",
-          closeOnClick: true,
-          hideProgressBar: true,
         });
+        data = await res.json();
+        console.log(data);
+        console.log(data.files.image.newFilename);
+
+        // Save current cursor 
+        const range = quillRef.current.getEditor().getSelection();
+        const quill = quillRef.current.getEditor();
+        // show uploaded image in editor
+        quill.insertEmbed(range.index, "image", `${server}/upload_img/${data.files.image.newFilename}${data.files.image.originalFilename}`);
+        quillRef.current.getEditor().setSelection(range.index + 1);
+
+      } else {
+
+        // only upload images toast error
+        if (!toast.isActive(toastId.current)) {
+          toastId.current = toast.error('Please upload only image', {
+            position: "top-right",
+            autoClose: 5000,
+            theme: "colored",
+            closeOnClick: true,
+            hideProgressBar: true,
+          });
+        }
+
+      }
     }
-
   }
-}
-}
 
-// quill modules
-const modules = useMemo(() => ({
-  toolbar: {
+  // quill modules
+  const modules = useMemo(() => ({
+    toolbar: {
       container: [
         [{ font: [] }],
         [{ size: ["small", false, "large", "huge"] }],
@@ -555,14 +567,14 @@ const modules = useMemo(() => ({
       handlers: {
         image: imageHandler
       }
-  },
-}), []);
+    },
+  }), []);
 
-// add comments
-const sendMessage = async (task_id) => {
-  const date = new Date().toLocaleString();
-  console.log("date");
-  console.log(date);
+  // add comments
+  const sendMessage = async (task_id) => {
+    const date = new Date().toLocaleString();
+    console.log("date");
+    console.log(date);
 
     var addComment = await axios.post(`${server}/api/comment/addcomment`, {
       username: cookies.name,
@@ -584,15 +596,15 @@ const sendMessage = async (task_id) => {
     }
   };
 
-  console.log("project");
-  console.log(u_Comment);
+  // console.log("project");
+  // console.log(u_Comment);
 
   const [commentEdit, setEditComment] = useState();
 
-// comment ID API
-const editComment = async( id ) =>{
-  console.log("id");
-  console.log(id);
+  // comment ID API
+  const editComment = async (id) => {
+    console.log("id");
+    console.log(id);
 
     var commentId = await axios.post(`${server}/api/comment/comment_id`, {
       comment_id: id,
@@ -606,8 +618,8 @@ const editComment = async( id ) =>{
     }
   };
 
-const updateComment = async(id, comment) =>{
-  var comment = await axios.post(`${server}/api/comment/updateComment`, { comment_id: id, user: cookies.name, comment:comment });
+  const updateComment = async (id, comment) => {
+    var comment = await axios.post(`${server}/api/comment/updateComment`, { comment_id: id, user: cookies.name, comment: comment });
 
     if (!toast.isActive(toastId.current)) {
       toastId.current = toast.success("Comment updated successfully!🎉", {
@@ -676,7 +688,7 @@ const updateComment = async(id, comment) =>{
     setuserdata(Time);
     console.log("userdata", userdata);
   }, [Time]);
-  console.log("userdata", userdata);
+  // console.log("userdata", userdata);
   const handleChangePanel = ({ target: { name, value } }) => {
     setuserdata({ ...userdata, [name]: value });
   };
@@ -715,33 +727,32 @@ const updateComment = async(id, comment) =>{
   const [dateDataDisplay, setData] = useState(false);
 
   // daterange function onClick
-  const date_Range = async() =>{
-    if(startDates != null && endDates != null){
+  const date_Range = async () => {
+    if (startDates != null && endDates != null) {
       console.log(dateRange);
 
-      const res = await fetch(`${server}/api/project/dateRange_Tasks`,{
+      const res = await fetch(`${server}/api/project/dateRange_Tasks`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body:JSON.stringify({ dateStart: startDates, dateEnd: endDates, user: cookies.name }),
+        body: JSON.stringify({ dateStart: startDates, dateEnd: endDates, user: cookies.name }),
       })
-      const date_Data=await res.json()
-      
-      if(res.status==200)
-      {
+      const date_Data = await res.json()
+
+      if (res.status == 200) {
         setDateDetails(date_Data);
         setData(true);
       }
-          
-    }else{
+
+    } else {
       // select startDate and endDate toast error
-      if(! toast.isActive(toastId.current)) {
+      if (!toast.isActive(toastId.current)) {
         toastId.current = toast.error('Please select dates range!', {
-            position: "top-right",
-            autoClose:2000,
-            theme: "colored",
-            closeOnClick: true,
-            hideProgressBar: true,
-          });
+          position: "top-right",
+          autoClose: 2000,
+          theme: "colored",
+          closeOnClick: true,
+          hideProgressBar: true,
+        });
       }
     }
   }
@@ -749,92 +760,43 @@ const updateComment = async(id, comment) =>{
 
   return (
     <div>
-    <div className="buttonalign" hidden={cookies.Role_id == "2"}>
-    <GridContainer>
-        <GridItem>
+      <div className="buttonalign" hidden={cookies.Role_id == "2"}>
+        <GridContainer>
+          <GridItem>
 
-          <Popup trigger={<div hidden={cookies.Role_id == "2"}><button className="bttn-design">Add Task</button></div>}  className="popupReact"  modal>
+            <Popup trigger={<div hidden={cookies.Role_id == "2"}><button className="bttn-design">Add Task</button></div>} className="popupReact" modal>
 
-    {close => (
-      <div>
-      <GridContainer>
-        <GridItem xs={12} sm={12} md={12}>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Card>
-              <CardHeader color="primary">
-                <GridContainer>
-                  <GridItem>
-                    <h4 className={classes.cardTitleWhite}>Create Task</h4>
-                    <p className={classes.cardCategoryWhite}>Enter your new task details</p>
-                  </GridItem>
-
-                  {/* <GridItem> */}
-                    <div className={classes.close}>
-                      <a onClick={close}>&times;</a>
-                    </div>
-                  {/* </GridItem> */}
-                </GridContainer>
-              </CardHeader>
-                <CardBody>
-
-                  <GridContainer>
-                    <GridItem xs={12} sm={12} md={12}>                      
-                      <div className="form-group">
-                        <span>Task Title</span><span className="required">*</span>
-                        <input type="text" className="form-control signup-input" placeholder="Task Title" {...register('task_title',  { required: "Please enter task title"})} />
-                        <div className="error-msg">{errors.task_title && <span>{errors.task_title.message}</span>}</div>
-                      </div> 
-                    </GridItem>
-                  </GridContainer><br/>
-                    
+              {close => (
+                <div>
                   <GridContainer>
                     <GridItem xs={12} sm={12} md={12}>
-                    <div className="form-group">
-                    <span>Project</span><span className="required">*</span>
-                    {/* <Controller
-                      control={control}
-                      name="person"
-                      rules={{ required: true }}
-                      render={({
-                        field: { value, ...other },
-                        // fieldState: { invalid, isTouched, isDirty, error },
-                        // formState: { errors },
-                      }) => (
-                        <Multiselect
-                          {...other}
-                          displayValue="value"
-                          options={project_list}
-                          value={p_selected}
-                          selectionLimit="1"
-                          onChange={setProject}
-                          onRemove={setProject}
-                          onSearch={function noRefCheck(){}}
-                          onSelect={setProject}
-                          placeholder="Project List"
-                          showArrow={true}
-                        />
-                      )}
-                    />
-                    <div className="invalid-feedback">{errors.person?.message || errors.person?.value.message}</div> */}
+                      <form onSubmit={handleSubmit(onSubmit)}>
+                        <Card>
+                          <CardHeader color="primary">
+                            <GridContainer>
+                              <GridItem>
+                                <h4 className={classes.cardTitleWhite}>Create Task</h4>
+                                <p className={classes.cardCategoryWhite}>Enter your new task details</p>
+                              </GridItem>
 
-                      <Multiselect
-                        displayValue="value"
-                        options={project_list}
-                        value={p_selected}
-                        selectionLimit="1"
-                        onChange={setProject}
-                        onRemove={setProject}
-                        onSearch={function noRefCheck(){}}
-                        onSelect={setProject}
-                        // placeholder="Project List"
-                        showArrow={true}
-                        // emptyRecordMsg={"Maximum nominees selected !"}
-                        // {...register('project_name', {required: "Please select project" ,message:'Please select atleast one option', })}
-                      />
-                      {/* <div className="error-msg">{errors.project_name && <span>{errors.project_name.message}</span>}</div> */}
-                      </div> 
-                    </GridItem>
-                  </GridContainer><br/>
+                              {/* <GridItem> */}
+                              <div className={classes.close}>
+                                <a onClick={close}>&times;</a>
+                              </div>
+                              {/* </GridItem> */}
+                            </GridContainer>
+                          </CardHeader>
+                          <CardBody>
+
+                            <GridContainer>
+                              <GridItem xs={12} sm={12} md={12}>
+                                <div className="form-group">
+                                  <span>Task Title</span><span className="required">*</span>
+                                  <input type="text" className="form-control signup-input" placeholder="Task Title" {...register('task_title', { required: "Please enter task title" })} />
+                                  <div className="error-msg">{errors.task_title && <span>{errors.task_title.message}</span>}</div>
+                                </div>
+                              </GridItem>
+                            </GridContainer><br />
 
                             <GridContainer>
                               <GridItem xs={12} sm={12} md={12}>
@@ -844,7 +806,7 @@ const updateComment = async(id, comment) =>{
                                   <textarea
                                     className="form-control signup-input"
                                     placeholder="Task Description"
-                                    {...register('task_description', { required: 'Description is required', } )}
+                                    {...register('task_description', { required: 'Description is required', })}
                                   />
                                   <div className="error-msg">{errors.task_description && <span>{errors.task_description.message}</span>}</div>
                                 </div>
@@ -852,69 +814,93 @@ const updateComment = async(id, comment) =>{
                             </GridContainer>
                             <br />
 
-                  <GridContainer>
-                    <GridItem xs={12} sm={12} md={6}>
-                      <div className="form-group">
-                      <span>Task Priority</span><span className="required">*</span>
-                      <Controller
-                        control={control}
-                        name="roles"
-                        render={({ field: { onChange, value } }) => (
-                        <Multiselect
-                            displayValue="value"
-                            options={all_Priority}
-                            value={u_Priority}
-                            selectionLimit="1"
-                            onChange={setPriority}
-                            onRemove={setPriority}
-                            onSearch={function noRefCheck(){}}
-                            onSelect={setPriority}
-                            placeholder="Task Priority"
-                            showArrow={true}
-                            {...register('task_priority', { required: 'Description is required', } )}
-                        />
-                      )}
-                    />
-                      <div className="error-msg">{errors.task_priority && <span>{errors.task_priority.message}</span>}</div>
+                            <GridContainer>
+                              <GridItem xs={12} sm={12} md={12}>
+                                <div className="form-group"  {...register('project_name', {required: true, message:'Please select atleast one option', })}>
+                                  <span>Project</span><span className="required">*</span>
 
-                        {/* <select name="priority" id="priority" className="form-control signup-input" {...register('task_priority', {required:true ,message:'Please select atleast one option', })}>
+                                  <Multiselect
+                                    displayValue="value"
+                                    options={project_list}
+                                    value={p_selected}
+                                    selectionLimit="1"
+                                    onChange={setProject}
+                                    onRemove={setProject}
+                                    onSearch={function noRefCheck() { }}
+                                    onSelect={setProject}
+                                    placeholder="Project List"
+                                    showArrow={true}
+                                    // onClick={()=>{ErrorHandler()}}
+                                  />
+                                  <div className="error-msg">{errors.project_name && <span>{errors.project_name.message}</span>}</div>
+                                  {/* <div className="error-msg"><span>{error}</span></div> */}
+                                </div>
+                              </GridItem>
+                            </GridContainer><br />
+
+                            <GridContainer>
+                              <GridItem xs={12} sm={12} md={6}>
+                                <div className="form-group">
+                                  <span>Task Priority</span><span className="required">*</span>
+                                  <Controller
+                                    control={control}
+                                    name="roles"
+                                    render={({ field: { onChange, value } }) => (
+                                      <Multiselect
+                                        displayValue="value"
+                                        options={all_Priority}
+                                        value={u_Priority}
+                                        selectionLimit="1"
+                                        onChange={setPriority}
+                                        onRemove={setPriority}
+                                        onSearch={function noRefCheck() { }}
+                                        onSelect={setPriority}
+                                        placeholder="Task Priority"
+                                        showArrow={true}
+                                      // {...register('task_priority', { required: 'Description is required', } )}
+                                      />
+                                    )}
+                                  />
+                                  {/* <div className="error-msg">{errors.task_priority && <span>{errors.task_priority.message}</span>}</div> */}
+
+                                  {/* <select name="priority" id="priority" className="form-control signup-input" {...register('task_priority', {required:true ,message:'Please select atleast one option', })}>
                           <option value=""  disabled selected>Select Task Priority</option>
                           <option value="High">High</option>
                           <option value="Medium">Medium</option>
                           <option value="Low">Low</option>
                         </select>
                         <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span> */}
-                        {/* <div className="error-msg">{errors.task_priority && <span>{errors.task_priority.message}</span>}</div> */}
-                      </div> 
-                    </GridItem>
+                                  {/* <div className="error-msg">{errors.task_priority && <span>{errors.task_priority.message}</span>}</div> */}
+                                </div>
+                              </GridItem>
 
-                    <GridItem xs={12} sm={12} md={6}>
-                      <div className="form-group">
-                      <span>Task Language</span><span className="required">*</span>
-                      <Multiselect
-                        displayValue="value"
-                        options={all_Language}
-                        value={u_Language}
-                        selectionLimit="1"
-                        onChange={setLanguage}
-                        onRemove={setLanguage}
-                        onSearch={function noRefCheck(){}}
-                        onSelect={setLanguage}
-                        placeholder="Task Language"
-                        showArrow={true}
-                        {...register('task_language', { required: 'Language is required', } )}
-                      />
-                      </div> 
-                      <div className="error-msg">{errors.task_language && <span>{errors.task_language.message}</span>}</div>
-                    </GridItem>
-                  </GridContainer><br/>
+                              <GridItem xs={12} sm={12} md={6}>
+                                <div className="form-group">
+                                  <span>Task Language</span><span className="required">*</span>
+                                  <Multiselect
+                                    displayValue="value"
+                                    options={all_Language}
+                                    value={u_Language}
+                                    selectionLimit="1"
+                                    onChange={setLanguage}
+                                    onRemove={setLanguage}
+                                    onSearch={function noRefCheck() { }}
+                                    onSelect={setLanguage}
+                                    placeholder="Task Language"
+                                    showArrow={true}
+                                  // {...register('task_language', { required: 'Language is required', } )}
+                                  />
+                                </div>
+                                {/* <div className="error-msg">{errors.task_language && <span>{errors.task_language.message}</span>}</div> */}
+                              </GridItem>
+                            </GridContainer><br />
 
                             <GridContainer>
                               <GridItem xs={12} sm={12} md={6}>
-                                <div  className="form-group" >
+                                <div className="form-group" >
                                   <span>Task Start Date</span>
                                   <span className="required">*</span>
-                                  <Controller
+                                  {/* <Controller
                                     control={control}
                                     name="datetime"
                                     rules={{ required: true }} //optional
@@ -939,8 +925,8 @@ const updateComment = async(id, comment) =>{
                                         {errors && errors[name] && errors[name].type === "required" && ( <span>please enter task start date</span> )}
                                       </>
                                     )}
-                                  />
-                                  {/* <DatePicker
+                                  /> */}
+                                  <DatePicker
                                     placeholderText="Start Date : dd/mm/yyyy"
                                     isClearable
                                     name="datetime"
@@ -952,9 +938,9 @@ const updateComment = async(id, comment) =>{
                                     }}
                                     dateFormat="dd-MM-yyyy"
                                     minDate={new Date()}
-                                    {...register('task_start', {required:true ,message:'Please select atleast one option', })}
+                                  // {...register('task_start', {required:true ,message:'Please select atleast one option', })}
                                   />
-                                  <div className="error-msg">{errors.task_start && <span>{errors.task_start.message}</span>}</div> */}
+                                  {/* <div className="error-msg">{errors.task_start && <span>{errors.task_start.message}</span>}</div> */}
                                 </div>
                               </GridItem>
 
@@ -962,7 +948,7 @@ const updateComment = async(id, comment) =>{
                                 <div className="form-group">
                                   <span>Task End Date</span>
                                   <span className="required">*</span>
-                                  <Controller
+                                  {/* <Controller
                                     control={control}
                                     name="datetime1"
                                     rules={{ required: true }} //optional
@@ -988,8 +974,8 @@ const updateComment = async(id, comment) =>{
                                         {errors && errors[name] && errors[name].type === "required" && ( <span>please enter task end date</span> )}
                                       </>
                                     )}
-                                  />
-                                  {/* <DatePicker
+                                  /> */}
+                                  <DatePicker
                                     placeholderText="End Date : dd/mm/yyyy"
                                     isClearable
                                     name="datetime1"
@@ -1001,9 +987,9 @@ const updateComment = async(id, comment) =>{
                                     }}
                                     dateFormat="dd-MM-yyyy"
                                     minDate={startDate}
-                                    {...register('task_deadline', {required:true ,message:'Please select atleast one option', })}
+                                  // {...register('task_deadline', {required:true ,message:'Please select atleast one option', })}
                                   />
-                                  <div className="error-msg">{errors.task_deadline && <span>{errors.task_deadline.message}</span>}</div> */}
+                                  {/* <div className="error-msg">{errors.task_deadline && <span>{errors.task_deadline.message}</span>}</div> */}
                                 </div>
                               </GridItem>
                             </GridContainer>
@@ -1023,9 +1009,9 @@ const updateComment = async(id, comment) =>{
                                     onSelect={setSelected}
                                     placeholder="Select Task Members"
                                     showArrow={true}
-                                    {...register('task_person', {required:"please select persons" ,message:'Please select atleast one option', })}
+                                  // {...register('task_person', {required:"please select persons" ,message:'Please select atleast one option', })}
                                   />
-                                  <div className="error-msg">{errors.task_person && <span>{errors.task_person.message}</span>}</div>
+                                  {/* <div className="error-msg">{errors.task_person && <span>{errors.task_person.message}</span>}</div> */}
                                 </div>
                               </GridItem>
                             </GridContainer>
@@ -1038,27 +1024,17 @@ const updateComment = async(id, comment) =>{
                                   <textarea
                                     className="form-control signup-input"
                                     placeholder="Comment"
-                                    {...register("task_comment")}
+                                  // {...register("task_comment")}
                                   />
-                                  <div className="error-msg">{errors.position && <span>{errors.position.message}</span>}</div>
+                                  {/* <div className="error-msg">{errors.position && <span>{errors.position.message}</span>}</div> */}
                                 </div>
                               </GridItem>
                             </GridContainer>
                           </CardBody>
 
                           <CardFooter>
-                            <Button color="primary" type="submit">
-                              Add Task
-                            </Button>
-                            <Button
-                              className="button"
-                              onClick={() => {
-                                close();
-                              }}
-                            >
-                              {" "}
-                              Cancel{" "}
-                            </Button>
+                            <Button color="primary" type="submit"> Add Task</Button>
+                            <Button className="button" onClick={() => { close(); }}> {" "} Cancel{" "} </Button>
                           </CardFooter>
                         </Card>
                       </form>
@@ -1072,92 +1048,92 @@ const updateComment = async(id, comment) =>{
 
           <GridItem>
             <div className="department_dropdown">
-            <button className="dropdown_button">Project Departments</button>
-                <div className="department-link">
-                  {user_Department.map((department)=>{
-                    return(
-                      <span>
-                        <a href={`${server}/project_department/${department.department_name}`}>{department.department_name}</a>
-                      </span>
-                    )                      
-                  }
-                  )}
-                </div>
+              <button className="dropdown_button">Project Departments</button>
+              <div className="department-link">
+                {user_Department.map((department) => {
+                  return (
+                    <span>
+                      <a href={`${server}/project_department/${department.department_name}`}>{department.department_name}</a>
+                    </span>
+                  )
+                }
+                )}
+              </div>
             </div>
           </GridItem>
 
           <GridItem>
             <div className="department_dropdown">
               <button className="dropdown_button">Project Languages</button>
-                  <div className="department-link">
-                    {language.map((language)=>{
-                      return(
-                        <span>
-                          <a href={`${server}/project_language/${language.language_name}`}>{language.language_name}</a>
-                        </span>
-                      )
-                    }
-                    )}
-                  </div>
+              <div className="department-link">
+                {language.map((language) => {
+                  return (
+                    <span>
+                      <a href={`${server}/project_language/${language.language_name}`}>{language.language_name}</a>
+                    </span>
+                  )
+                }
+                )}
+              </div>
             </div>
           </GridItem>
         </GridContainer>
-</div>
+      </div>
 
 
 
-<GridContainer>
+      <GridContainer>
 
-  <div className="main_task_title">
-  <div className="Project-title">Tasks</div>
-    <GridContainer>
-      <GridItem>
-        <button className="bttn-design" onClick={()=>{taskToDo("task_toDo") ,  settodo_title(true), taskOnHold("taskOn_hold") , setonhold_title(true), taskRunning("task_Running") , setrunning_title(true), taskCompleted("task_completed") , setcompleted_title(true) }}>Expand All</button>
-      </GridItem>
-      <GridItem>
-        <button className="bttn-design" onClick={()=>{taskToDo("task_toDo") , closeTaskToDo("task_toDo"), settodo_title(false), taskOnHold("taskOn_hold") , closeTaskOnHold("taskOn_hold"), setonhold_title(false), taskRunning("task_Running") , closeTaskRunning("task_Running"),setrunning_title(false), taskCompleted("task_completed") , closeTaskCompleted("task_completed") , setcompleted_title(false) }}>Collpase All</button>
-      </GridItem>
-    </GridContainer>
-  </div>
+        <div className="main_task_title">
+          <div className="Project-title">Tasks</div>
+          <GridContainer>
+            <GridItem>
+              <button className="bttn-design" onClick={() => { taskToDo("task_toDo"), settodo_title(true), taskOnHold("taskOn_hold"), setonhold_title(true), taskRunning("task_Running"), setrunning_title(true), taskCompleted("task_completed"), setcompleted_title(true) }}>Expand All</button>
+            </GridItem>
+            <GridItem>
+              <button className="bttn-design" onClick={() => { taskToDo("task_toDo"), closeTaskToDo("task_toDo"), settodo_title(false), taskOnHold("taskOn_hold"), closeTaskOnHold("taskOn_hold"), setonhold_title(false), taskRunning("task_Running"), closeTaskRunning("task_Running"), setrunning_title(false), taskCompleted("task_completed"), closeTaskCompleted("task_completed"), setcompleted_title(false) }}>Collpase All</button>
+            </GridItem>
+          </GridContainer>
+        </div>
 
-  <GridItem>
+        <GridItem>
 
-    <DatePicker
-      monthsShown={2}
-        selectsRange={true}
-        startDate={startDates}
-        endDate={endDates}
-        onChange={(update) => {
-          setDateRange(update);
-        }}
-        isClearable={true}
-        dateFormat="dd/MM/yyyy"
-    />
-    <button onClick={() => date_Range()}>enter</button>
+          <DatePicker
+            monthsShown={2}
+            selectsRange={true}
+            startDate={startDates}
+            endDate={endDates}
+            onChange={(update) => {
+              setDateRange(update);
+            }}
+            isClearable={true}
+            dateFormat="dd/MM/yyyy"
+          />
+          <button onClick={() => date_Range()}>enter</button>
 
-  </GridItem>
+        </GridItem>
 
-</GridContainer>
+      </GridContainer>
 
-{/* selected daterange projects list data start */}
-{dateDataDisplay ? (
-  <span>
-    <h3>Tasks List</h3>
-    <table className="project-data" >
-      <tr className="project-data-title">
-            <th  className="status">Task Name</th>
-            <th className="Priority">Priority</th>
-            <th className="assignee">Assignee</th>
-          </tr>
-          {dateDetails.map((task)=>{
-            if(task.task_delete == "no"){
+      {/* selected daterange projects list data start */}
+      {dateDataDisplay ? (
+        <span>
+          <h3>Tasks List</h3>
+          <table className="project-data" >
+            <tr className="project-data-title">
+              <th className="status">Task Name</th>
+              <th className="Priority">Priority</th>
+              <th className="assignee">Assignee</th>
+            </tr>
+            {dateDetails.map((task) => {
+              if (task.task_delete == "no") {
                 var person = task.task_person.split(",");
-                return(
-                  <tr key={task.task_id} onClick={()=>{toggle(task.task_id)}} className="expand_dropdown">
+                return (
+                  <tr key={task.task_id} onClick={() => { toggle(task.task_id) }} className="expand_dropdown">
                     <td className="project-title-table">{task.task_title}</td>
                     <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
                     <td className="project-priority-person">
-                      {person.length>2 ? (
+                      {person.length > 2 ? (
                         <>
                           <div className="chip">
                             <span>{person[0]}</span>
@@ -1165,8 +1141,8 @@ const updateComment = async(id, comment) =>{
                           <div className="chip">
                             <span>{person[1]}</span>
                           </div>
-                            {/* Edit popUp Start*/}
-                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} className="popupReact"  position="left">
+                          {/* Edit popUp Start*/}
+                          <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} className="popupReact" position="left">
                             {close => (
                               <div className="popup-align">
                                 <Card>
@@ -1186,8 +1162,8 @@ const updateComment = async(id, comment) =>{
 
                                     <GridContainer>
                                       <GridItem>
-                                        {person.map((user)=>{
-                                          return(
+                                        {person.map((user) => {
+                                          return (
                                             <span>
                                               <span className="members" title={user}>{user}</span>
                                             </span>
@@ -1199,13 +1175,13 @@ const updateComment = async(id, comment) =>{
                                 </Card>
                               </div>
                             )}
-                            </Popup>
-                            {/*Edit popup End*/}
+                          </Popup>
+                          {/*Edit popup End*/}
                         </>
-                      ):(
+                      ) : (
                         <span>
-                          {person.map((user)=>{
-                            return(
+                          {person.map((user) => {
+                            return (
                               <div className="chip">
                                 <span className="members" title={user}>{user}</span>
                               </div>
@@ -1216,120 +1192,120 @@ const updateComment = async(id, comment) =>{
                     </td>
                   </tr>
                 )
-            }
-          })}
-        </table>
+              }
+            })}
+          </table>
 
-  </span>
-) 
-: ("")
-}
-{/* selected daterange projects list data end */}
+        </span>
+      )
+        : ("")
+      }
+      {/* selected daterange projects list data end */}
 
-  <GridContainer>
-    <Card>
       <GridContainer>
-        <GridItem xs={12} sm={12} md={12}>
-          <div className="task_title" onClick={()=> { taskToDo("task_toDo") , closeTaskToDo("task_toDo"), settodo_title(!todo_title) }}>Task to do {todo_title ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
-        </GridItem>
-      </GridContainer>
-    </Card>
-    {todo_title ? (
-      <>
-        <table className="project-data" >
-          <tr className="project-data-title">
-            <th className="status">Project Name</th>
-            <th className="title">Task name </th>
-            <th>Priority</th>
-            <th className="assignee">Assignee</th>
-            <th className="view-edit">View & Edit</th>
-          </tr>
-          {allTask.map((task)=>{
-            if(task.task_status == taskTodo){
-              var person = task.task_person.split(",");
-              const MySQLDate  = task.task_deadline;
-              let date = MySQLDate.replace(/[-]/g, '/').substr(0,10);
-              return(
-                <>
-                  <tr key={task.task_id} onClick={()=>{toggle(task.task_id);getData(task.task_id);getTime(task.task_id);}} className="expand_dropdown">
-                    <td className="project-title-table">{task.project_name}</td>
-                    <td><h4 className="projectTitle">{task.task_title}</h4></td>
-                    <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
+        <Card>
+          <GridContainer>
+            <GridItem xs={12} sm={12} md={12}>
+              <div className="task_title" onClick={() => { taskToDo("task_toDo"), closeTaskToDo("task_toDo"), settodo_title(!todo_title) }}>Task to do {todo_title ? <FaArrowUp /> : <FaArrowDown />}  </div>
+            </GridItem>
+          </GridContainer>
+        </Card>
+        {todo_title ? (
+          <>
+            <table className="project-data" >
+              <tr className="project-data-title">
+                <th className="status">Project Name</th>
+                <th className="title">Task name </th>
+                <th>Priority</th>
+                <th className="assignee">Assignee</th>
+                <th className="view-edit">View & Edit</th>
+              </tr>
+              {allTask.map((task) => {
+                if (task.task_status == taskTodo) {
+                  var person = task.task_person.split(",");
+                  const MySQLDate = task.task_deadline;
+                  let date = MySQLDate.replace(/[-]/g, '/').substr(0, 10);
+                  return (
+                    <>
+                      <tr key={task.task_id} onClick={() => { toggle(task.task_id); getData(task.task_id); getTime(task.task_id); }} className="expand_dropdown">
+                        <td className="project-title-table">{task.project_name}</td>
+                        <td><h4 className="projectTitle">{task.task_title}</h4></td>
+                        <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
 
-                    <td className="project-priority-person">
-                      {person.length>2 ? (
-                        <>
-                          <div className="chip">
-                            <span>{person[0]}</span>
-                          </div>
-                          <div className="chip">
-                            <span>{person[1]}</span>
-                          </div>
-                            {/* Edit popUp Start*/}
-                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} className="popupReact"  position="left">
-                            {close => (
-                              <div className="popup-align">
-                                <Card>
-                                  <CardBody>
-                                    <CardHeader>
-                                      <GridContainer>
-                                        <GridItem>
-                                          <strong>Assignee</strong>
-                                        </GridItem>
-                                        <GridItem>
-                                          <div className={classes.close}>
-                                            <a onClick={close}>&times;</a>
-                                          </div>
-                                        </GridItem>
-                                      </GridContainer>
-                                    </CardHeader>
-
-                                    <GridContainer>
-                                      <GridItem>
-                                        {person.map((user)=>{
-                                          return(
-                                            <span>
-                                              <span className="members" title={user}>{user}</span>
-                                            </span>
-                                          )
-                                        })}
-                                      </GridItem>
-                                    </GridContainer>
-                                  </CardBody>
-                                </Card>
-                              </div>
-                            )}
-                            </Popup>
-                            {/*Edit popup End*/}
-                        </>
-                        ):(
-                        <span>
-                          {person.map((user)=>{
-                            return(
+                        <td className="project-priority-person">
+                          {person.length > 2 ? (
+                            <>
                               <div className="chip">
-                                <span className="members" title={user}>{user}</span>
+                                <span>{person[0]}</span>
                               </div>
-                            )
-                          })}
-                        </span>
-                      )}
-                    </td>
+                              <div className="chip">
+                                <span>{person[1]}</span>
+                              </div>
+                              {/* Edit popUp Start*/}
+                              <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} className="popupReact" position="left">
+                                {close => (
+                                  <div className="popup-align">
+                                    <Card>
+                                      <CardBody>
+                                        <CardHeader>
+                                          <GridContainer>
+                                            <GridItem>
+                                              <strong>Assignee</strong>
+                                            </GridItem>
+                                            <GridItem>
+                                              <div className={classes.close}>
+                                                <a onClick={close}>&times;</a>
+                                              </div>
+                                            </GridItem>
+                                          </GridContainer>
+                                        </CardHeader>
 
-                    <td className="project-edit-table">
-                      <Popup trigger={<div><a className="bttn-design1" onClick={()=> { projectId(task.task_id) }  }><FiEdit/></a></div>}  className="popupReact" modal nested>
-                      {close => (
-                      <div>
-                      <GridContainer>
-                      <GridItem xs={12} sm={12} md={12}>
-                      <form onSubmit={handleSubmit(onSubmit)}>              
-                        <Card>
-                          <CardHeader color="primary">
+                                        <GridContainer>
+                                          <GridItem>
+                                            {person.map((user) => {
+                                              return (
+                                                <span>
+                                                  <span className="members" title={user}>{user}</span>
+                                                </span>
+                                              )
+                                            })}
+                                          </GridItem>
+                                        </GridContainer>
+                                      </CardBody>
+                                    </Card>
+                                  </div>
+                                )}
+                              </Popup>
+                              {/*Edit popup End*/}
+                            </>
+                          ) : (
+                            <span>
+                              {person.map((user) => {
+                                return (
+                                  <div className="chip">
+                                    <span className="members" title={user}>{user}</span>
+                                  </div>
+                                )
+                              })}
+                            </span>
+                          )}
+                        </td>
 
-                          <GridContainer>
-                            <GridItem>
-                              <h4 className={classes.cardTitleWhite}>Edit Task</h4>
-                              <p className={classes.cardCategoryWhite}>Update your task details</p>
-                            </GridItem>
+                        <td className="project-edit-table">
+                          <Popup trigger={<div><a className="bttn-design1" onClick={() => { projectId(task.task_id) }}><FiEdit /></a></div>} className="popupReact" modal nested>
+                            {close => (
+                              <div>
+                                <GridContainer>
+                                  <GridItem xs={12} sm={12} md={12}>
+                                    <form onSubmit={handleSubmit(onSubmit)}>
+                                      <Card>
+                                        <CardHeader color="primary">
+
+                                          <GridContainer>
+                                            <GridItem>
+                                              <h4 className={classes.cardTitleWhite}>Edit Task</h4>
+                                              <p className={classes.cardCategoryWhite}>Update your task details</p>
+                                            </GridItem>
 
                                             <div className={classes.close}>
                                               <a onClick={close}>&times;</a>
@@ -1507,54 +1483,54 @@ const updateComment = async(id, comment) =>{
                                           </GridContainer>
                                           <br />
 
-                              <GridContainer>
-                                <GridItem xs={12} sm={12} md={6}>
-                                  <div className="form-group">
-                                  <span>Task Priority</span><span className="required">*</span>
-                                  <Multiselect
-                                      displayValue="value"
-                                      options={all_Priority}
-                                      value={u_Priority}
-                                      selectedValues={u_Priority}
-                                      selectionLimit="1"
-                                      onChange={setPriority}
-                                      onRemove={setPriority}
-                                      onSearch={function noRefCheck(){}}
-                                      onSelect={setPriority}
-                                      placeholder="Task Priority"
-                                      showArrow={true}
-                                  />
+                                          <GridContainer>
+                                            <GridItem xs={12} sm={12} md={6}>
+                                              <div className="form-group">
+                                                <span>Task Priority</span><span className="required">*</span>
+                                                <Multiselect
+                                                  displayValue="value"
+                                                  options={all_Priority}
+                                                  value={u_Priority}
+                                                  selectedValues={u_Priority}
+                                                  selectionLimit="1"
+                                                  onChange={setPriority}
+                                                  onRemove={setPriority}
+                                                  onSearch={function noRefCheck() { }}
+                                                  onSelect={setPriority}
+                                                  placeholder="Task Priority"
+                                                  showArrow={true}
+                                                />
 
-                                    {/* <select id="priority" className="form-control signup-input" disabled={cookies.Role_id == "2"} name="task_priority" value={uoption.task_priority} onChange={handleChange}  >
+                                                {/* <select id="priority" className="form-control signup-input" disabled={cookies.Role_id == "2"} name="task_priority" value={uoption.task_priority} onChange={handleChange}  >
                                       <option value=""  disabled selected>Select Task Priority</option>
                                       <option value="High">High</option>
                                       <option value="Medium">Medium</option>
                                       <option value="Low">Low</option>
                                     </select>
                                     <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span> */}
-                                  </div> 
-                                </GridItem>
+                                              </div>
+                                            </GridItem>
 
-                                <GridItem xs={12} sm={12} md={6}>
-                                  <div className="form-group">
-                                  <span>Task Language</span><span className="required">*</span>
-                                  <Multiselect
-                                    displayValue="value"
-                                    options={all_Language}
-                                    value={u_Language}
-                                    selectionLimit="1"
-                                    onChange={setLanguage}
-                                    onRemove={setLanguage}
-                                    onSearch={function noRefCheck(){}}
-                                    onSelect={setLanguage}
-                                    placeholder="Task Language"
-                                    showArrow={true}
-                                    selectedValues={u_Language}
-                                  />
+                                            <GridItem xs={12} sm={12} md={6}>
+                                              <div className="form-group">
+                                                <span>Task Language</span><span className="required">*</span>
+                                                <Multiselect
+                                                  displayValue="value"
+                                                  options={all_Language}
+                                                  value={u_Language}
+                                                  selectionLimit="1"
+                                                  onChange={setLanguage}
+                                                  onRemove={setLanguage}
+                                                  onSearch={function noRefCheck() { }}
+                                                  onSelect={setLanguage}
+                                                  placeholder="Task Language"
+                                                  showArrow={true}
+                                                  selectedValues={u_Language}
+                                                />
 
-                                  </div> 
-                                </GridItem>
-                              </GridContainer><br/>
+                                              </div>
+                                            </GridItem>
+                                          </GridContainer><br />
 
                                           <GridContainer>
                                             <GridItem xs={12} sm={12} md={6}>
@@ -1682,7 +1658,7 @@ const updateComment = async(id, comment) =>{
                                               {TimeData.length == 0 ? (
                                                 <>
                                                   <form
-                                                  className="form-time"
+                                                    className="form-time"
                                                     onSubmit={handleSubmit(
                                                       insert_time
                                                     )}
@@ -1852,7 +1828,7 @@ const updateComment = async(id, comment) =>{
                                                 onChange={setCommentValue}
                                               />
                                               <div
-                                              className="btn btn-primary mt-2 mb-4"
+                                                className="btn btn-primary mt-2 mb-4"
                                                 onClick={() => {
                                                   sendMessage(task.task_id),
                                                     close();
@@ -1864,121 +1840,121 @@ const updateComment = async(id, comment) =>{
                                           </GridContainer>
 
                                           <div className="form-comment-section">
-                                          {comments.map((uComment) => {
-                                            return (
-                                              <span className="single-comment">
-                                                <GridContainer>
-                                                  <GridItem>
-                                                    <span className="fcs-name">
-                                                      {uComment.username}
-                                                    </span>
-                                                  </GridItem>
-                                                </GridContainer>
+                                            {comments.map((uComment) => {
+                                              return (
+                                                <span className="single-comment">
+                                                  <GridContainer>
+                                                    <GridItem>
+                                                      <span className="fcs-name">
+                                                        {uComment.username}
+                                                      </span>
+                                                    </GridItem>
+                                                  </GridContainer>
 
-                                                <GridContainer>
-                                                  <GridItem>
-                                                    <div>
-                                                      <ReactQuill
-                                                        value={uComment.comment}
-                                                        theme="bubble"
-                                                        readOnly
-                                                      />
+                                                  <GridContainer>
+                                                    <GridItem>
+                                                      <div>
+                                                        <ReactQuill
+                                                          value={uComment.comment}
+                                                          theme="bubble"
+                                                          readOnly
+                                                        />
 
-                                                      <Popup
-                                                        trigger={
-                                                          <span>
-                                                            <button
-                                                            className="btn btn-primary"
-                                                              onClick={() => {
-                                                                editComment(
-                                                                  uComment.id
-                                                                );
-                                                              }}
-                                                              disabled={
-                                                                uComment.username !=
-                                                                cookies.name
-                                                              }
-                                                            >
-                                                              Edit
-                                                            </button>
-                                                          </span>
-                                                        }
-                                                        className="popupReact"
-                                                        modal
-                                                      >
-                                                        {(close) => (
-                                                          <Card>
-                                                            <CardBody>
-                                                              <div
-                                                                className={
-                                                                  classes.close
+                                                        <Popup
+                                                          trigger={
+                                                            <span>
+                                                              <button
+                                                                className="btn btn-primary"
+                                                                onClick={() => {
+                                                                  editComment(
+                                                                    uComment.id
+                                                                  );
+                                                                }}
+                                                                disabled={
+                                                                  uComment.username !=
+                                                                  cookies.name
                                                                 }
                                                               >
-                                                                <a
-                                                                  onClick={
-                                                                    close
+                                                                Edit
+                                                              </button>
+                                                            </span>
+                                                          }
+                                                          className="popupReact"
+                                                          modal
+                                                        >
+                                                          {(close) => (
+                                                            <Card>
+                                                              <CardBody>
+                                                                <div
+                                                                  className={
+                                                                    classes.close
                                                                   }
                                                                 >
-                                                                  &times;
-                                                                </a>
-                                                              </div>
-                                                              <GridContainer>
-                                                                <GridItem
-                                                                  xs={12}
-                                                                  sm={12}
-                                                                  md={12}
-                                                                >
-                                                                  <form>
-                                                                    <ReactQuill
-                                                                      modules={
-                                                                        modules
-                                                                      }
-                                                                      theme="snow"
-                                                                      onChange={
-                                                                        setEditComment
-                                                                      }
-                                                                      value={
+                                                                  <a
+                                                                    onClick={
+                                                                      close
+                                                                    }
+                                                                  >
+                                                                    &times;
+                                                                  </a>
+                                                                </div>
+                                                                <GridContainer>
+                                                                  <GridItem
+                                                                    xs={12}
+                                                                    sm={12}
+                                                                    md={12}
+                                                                  >
+                                                                    <form>
+                                                                      <ReactQuill
+                                                                        modules={
+                                                                          modules
+                                                                        }
+                                                                        theme="snow"
+                                                                        onChange={
+                                                                          setEditComment
+                                                                        }
+                                                                        value={
+                                                                          commentEdit
+                                                                        }
+                                                                      />
+                                                                    </form>
+                                                                  </GridItem>
+                                                                </GridContainer>
+                                                                <CardFooter>
+                                                                  <Button
+                                                                    color="primary"
+                                                                    type="submit"
+                                                                    onClick={() => {
+                                                                      updateComment(
+                                                                        uComment.id,
                                                                         commentEdit
-                                                                      }
-                                                                    />
-                                                                  </form>
-                                                                </GridItem>
-                                                              </GridContainer>
-                                                              <CardFooter>
-                                                                <Button
-                                                                  color="primary"
-                                                                  type="submit"
-                                                                  onClick={() => {
-                                                                    updateComment(
-                                                                      uComment.id,
-                                                                      commentEdit
-                                                                    ),
+                                                                      ),
+                                                                        close();
+                                                                    }}
+                                                                  >
+                                                                    Update
+                                                                  </Button>
+                                                                  <Button
+                                                                    className="button"
+                                                                    onClick={() => {
                                                                       close();
-                                                                  }}
-                                                                >
-                                                                  Update
-                                                                </Button>
-                                                                <Button
-                                                                  className="button"
-                                                                  onClick={() => {
-                                                                    close();
-                                                                  }}
-                                                                >
-                                                                  {" "}
-                                                                  Cancel{" "}
-                                                                </Button>
-                                                              </CardFooter>
-                                                            </CardBody>
-                                                          </Card>
-                                                        )}
-                                                      </Popup>
-                                                    </div>
-                                                  </GridItem>
-                                                </GridContainer>
-                                                <hr />
-                                              </span>
-                                            );
-                                          })}
+                                                                    }}
+                                                                  >
+                                                                    {" "}
+                                                                    Cancel{" "}
+                                                                  </Button>
+                                                                </CardFooter>
+                                                              </CardBody>
+                                                            </Card>
+                                                          )}
+                                                        </Popup>
+                                                      </div>
+                                                    </GridItem>
+                                                  </GridContainer>
+                                                  <hr />
+                                                </span>
+                                              );
+                                            })}
                                           </div>
                                         </CardBody>
                                       </Card>
@@ -2124,108 +2100,108 @@ const updateComment = async(id, comment) =>{
           ""
         )}
 
-    <Card>
-      <GridContainer>
-        <GridItem xs={12} sm={12} md={12}>
-          <div className="taskOn_hold task_title" onClick={()=> { taskOnHold("taskOn_hold") , closeTaskOnHold("taskOn_hold"), setonhold_title(!onhold_title) }}>Task on hold {onhold_title ? <FaArrowUp/>:<FaArrowDown/>}</div>
-        </GridItem>
-      </GridContainer>
-    </Card>
-    {onhold_title ? (
-      <>
-        <table className="project-data" >
-          <tr className="project-data-title">
-            <th className="status">Project Name</th>
-            <th className="title">Task name </th>
-            <th>Priority</th>
-            <th className="assignee">Assignee</th>
-            <th className="view-edit">View & Edit</th>
-          </tr>
-            {allTask.map((task)=>{
-              if(task.task_delete == "no"){
-                if(task.task_status == TaskOnHold){
-                  var person = task.task_person.split(",");
-                  return(
-                    <>
-                    <tr key={task.task_id} onClick={()=>{toggle(task.task_id);getData(task.task_id);getTime(task.task_id);}} className="expand_dropdown">
-                      <td className="project-title-table">{task.project_name}</td>
-                      <td><h4 className="projectTitle">{task.task_title}</h4></td>
-                      <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
+        <Card>
+          <GridContainer>
+            <GridItem xs={12} sm={12} md={12}>
+              <div className="taskOn_hold task_title" onClick={() => { taskOnHold("taskOn_hold"), closeTaskOnHold("taskOn_hold"), setonhold_title(!onhold_title) }}>Task on hold {onhold_title ? <FaArrowUp /> : <FaArrowDown />}</div>
+            </GridItem>
+          </GridContainer>
+        </Card>
+        {onhold_title ? (
+          <>
+            <table className="project-data" >
+              <tr className="project-data-title">
+                <th className="status">Project Name</th>
+                <th className="title">Task name </th>
+                <th>Priority</th>
+                <th className="assignee">Assignee</th>
+                <th className="view-edit">View & Edit</th>
+              </tr>
+              {allTask.map((task) => {
+                if (task.task_delete == "no") {
+                  if (task.task_status == TaskOnHold) {
+                    var person = task.task_person.split(",");
+                    return (
+                      <>
+                        <tr key={task.task_id} onClick={() => { toggle(task.task_id); getData(task.task_id); getTime(task.task_id); }} className="expand_dropdown">
+                          <td className="project-title-table">{task.project_name}</td>
+                          <td><h4 className="projectTitle">{task.task_title}</h4></td>
+                          <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
 
-                      <td className="project-priority-person">
-                      {person.length>2 ? (
-                        <>
-                          <div className="chip">
-                            <span>{person[0]}</span>
-                          </div>
-                          <div className="chip">
-                            <span>{person[1]}</span>
-                          </div>
-                            {/* Edit popUp Start*/}
-                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} className="popupReact"  position="left">
-                            {close => (
-                              <div className="popup-align">
-                                <Card>
-                                  <CardBody>
-                                    <CardHeader>
-                                      <GridContainer>
-                                        <GridItem>
-                                          <strong>Assignee</strong>
-                                        </GridItem>
-                                        <GridItem>
-                                          <div className={classes.close}>
-                                            <a onClick={close}>&times;</a>
-                                          </div>
-                                        </GridItem>
-                                      </GridContainer>
-                                    </CardHeader>
+                          <td className="project-priority-person">
+                            {person.length > 2 ? (
+                              <>
+                                <div className="chip">
+                                  <span>{person[0]}</span>
+                                </div>
+                                <div className="chip">
+                                  <span>{person[1]}</span>
+                                </div>
+                                {/* Edit popUp Start*/}
+                                <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} className="popupReact" position="left">
+                                  {close => (
+                                    <div className="popup-align">
+                                      <Card>
+                                        <CardBody>
+                                          <CardHeader>
+                                            <GridContainer>
+                                              <GridItem>
+                                                <strong>Assignee</strong>
+                                              </GridItem>
+                                              <GridItem>
+                                                <div className={classes.close}>
+                                                  <a onClick={close}>&times;</a>
+                                                </div>
+                                              </GridItem>
+                                            </GridContainer>
+                                          </CardHeader>
 
-                                    <GridContainer>
-                                      <GridItem>
-                                        {person.map((user)=>{
-                                          return(
-                                            <span>
-                                              <span className="members" title={user}>{user}</span>
-                                            </span>
-                                          )
-                                        })}
-                                      </GridItem>
-                                    </GridContainer>
-                                  </CardBody>
-                                </Card>
-                              </div>
+                                          <GridContainer>
+                                            <GridItem>
+                                              {person.map((user) => {
+                                                return (
+                                                  <span>
+                                                    <span className="members" title={user}>{user}</span>
+                                                  </span>
+                                                )
+                                              })}
+                                            </GridItem>
+                                          </GridContainer>
+                                        </CardBody>
+                                      </Card>
+                                    </div>
+                                  )}
+                                </Popup>
+                                {/*Edit popup End*/}
+                              </>
+                            ) : (
+                              <span>
+                                {person.map((user) => {
+                                  return (
+                                    <div className="chip">
+                                      <span className="members" title={user}>{user}</span>
+                                    </div>
+                                  )
+                                })}
+                              </span>
                             )}
-                            </Popup>
-                            {/*Edit popup End*/}
-                        </>
-                        ):(
-                        <span>
-                          {person.map((user)=>{
-                            return(
-                              <div className="chip">
-                                <span className="members" title={user}>{user}</span>
-                              </div>
-                            )
-                          })}
-                        </span>
-                      )}
-                    </td>
+                          </td>
 
-                      <td className="project-edit-table">
-                      <Popup trigger={<div><a className="bttn-design1" onClick={()=> { projectId(task.task_id) }  }><FiEdit/></a></div>}  className="popupReact" modal nested>
-                      {close => (
-                      <div>
-                      <GridContainer>
-                      <GridItem xs={12} sm={12} md={12}>
-                      <form onSubmit={handleSubmit(onSubmit)}>              
-                        <Card>
-                          <CardHeader color="primary">
+                          <td className="project-edit-table">
+                            <Popup trigger={<div><a className="bttn-design1" onClick={() => { projectId(task.task_id) }}><FiEdit /></a></div>} className="popupReact" modal nested>
+                              {close => (
+                                <div>
+                                  <GridContainer>
+                                    <GridItem xs={12} sm={12} md={12}>
+                                      <form onSubmit={handleSubmit(onSubmit)}>
+                                        <Card>
+                                          <CardHeader color="primary">
 
-                          <GridContainer>
-                            <GridItem>
-                              <h4 className={classes.cardTitleWhite}>Edit Task</h4>
-                              <p className={classes.cardCategoryWhite}>Update your task details</p>
-                            </GridItem>
+                                            <GridContainer>
+                                              <GridItem>
+                                                <h4 className={classes.cardTitleWhite}>Edit Task</h4>
+                                                <p className={classes.cardCategoryWhite}>Update your task details</p>
+                                              </GridItem>
 
                                               <div className={classes.close}>
                                                 <a onClick={close}>&times;</a>
@@ -2407,53 +2383,53 @@ const updateComment = async(id, comment) =>{
                                             </GridContainer>
                                             <br />
 
-                              <GridContainer>
-                                <GridItem xs={12} sm={12} md={6}>
-                                  <div className="form-group">
-                                  <span>Task Priority</span><span className="required">*</span>
-                                  <Multiselect
-                                      displayValue="value"
-                                      options={all_Priority}
-                                      value={u_Priority}
-                                      selectedValues={u_Priority}
-                                      selectionLimit="1"
-                                      onChange={setPriority}
-                                      onRemove={setPriority}
-                                      onSearch={function noRefCheck(){}}
-                                      onSelect={setPriority}
-                                      placeholder="Task Priority"
-                                      showArrow={true}
-                                  />
+                                            <GridContainer>
+                                              <GridItem xs={12} sm={12} md={6}>
+                                                <div className="form-group">
+                                                  <span>Task Priority</span><span className="required">*</span>
+                                                  <Multiselect
+                                                    displayValue="value"
+                                                    options={all_Priority}
+                                                    value={u_Priority}
+                                                    selectedValues={u_Priority}
+                                                    selectionLimit="1"
+                                                    onChange={setPriority}
+                                                    onRemove={setPriority}
+                                                    onSearch={function noRefCheck() { }}
+                                                    onSelect={setPriority}
+                                                    placeholder="Task Priority"
+                                                    showArrow={true}
+                                                  />
 
-                                    {/* <select id="priority" className="form-control signup-input" disabled={cookies.Role_id == "2"} name="task_priority" value={uoption.task_priority} onChange={handleChange}  >
+                                                  {/* <select id="priority" className="form-control signup-input" disabled={cookies.Role_id == "2"} name="task_priority" value={uoption.task_priority} onChange={handleChange}  >
                                       <option value=""  disabled selected>Select Task Priority</option>
                                       <option value="High">High</option>
                                       <option value="Medium">Medium</option>
                                       <option value="Low">Low</option>
                                     </select>
                                     <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span> */}
-                                  </div> 
-                                </GridItem>
+                                                </div>
+                                              </GridItem>
 
-                                <GridItem xs={12} sm={12} md={6}>
-                                  <div className="form-group">
-                                  <span>Task Language</span><span className="required">*</span>
-                                  <Multiselect
-                                    displayValue="value"
-                                    options={all_Language}
-                                    value={u_Language}
-                                    selectionLimit="1"
-                                    onChange={setLanguage}
-                                    onRemove={setLanguage}
-                                    onSearch={function noRefCheck(){}}
-                                    onSelect={setLanguage}
-                                    placeholder="Task Language"
-                                    showArrow={true}
-                                    selectedValues={u_Language}
-                                  />
-                                  </div> 
-                                </GridItem>
-                              </GridContainer><br/>
+                                              <GridItem xs={12} sm={12} md={6}>
+                                                <div className="form-group">
+                                                  <span>Task Language</span><span className="required">*</span>
+                                                  <Multiselect
+                                                    displayValue="value"
+                                                    options={all_Language}
+                                                    value={u_Language}
+                                                    selectionLimit="1"
+                                                    onChange={setLanguage}
+                                                    onRemove={setLanguage}
+                                                    onSearch={function noRefCheck() { }}
+                                                    onSelect={setLanguage}
+                                                    placeholder="Task Language"
+                                                    showArrow={true}
+                                                    selectedValues={u_Language}
+                                                  />
+                                                </div>
+                                              </GridItem>
+                                            </GridContainer><br />
 
                                             <GridContainer>
                                               <GridItem xs={12} sm={12} md={6}>
@@ -2583,7 +2559,7 @@ const updateComment = async(id, comment) =>{
                                                 {TimeData.length == 0 ? (
                                                   <>
                                                     <form
-                                                    className="form-time"
+                                                      className="form-time"
                                                       onSubmit={handleSubmit(
                                                         insert_time
                                                       )}
@@ -2674,7 +2650,7 @@ const updateComment = async(id, comment) =>{
                                                 ) : (
                                                   <>
                                                     <form
-                                                    className="form-time"
+                                                      className="form-time"
                                                       onSubmit={update_tasktime}
                                                     >
                                                       <GridContainer>
@@ -2750,7 +2726,7 @@ const updateComment = async(id, comment) =>{
                                                   onChange={setCommentValue}
                                                 />
                                                 <div
-                                                className="btn btn-primary mt-2 mb-4"
+                                                  className="btn btn-primary mt-2 mb-4"
                                                   onClick={() => {
                                                     sendMessage(task.task_id),
                                                       close();
@@ -2762,123 +2738,123 @@ const updateComment = async(id, comment) =>{
                                             </GridContainer>
 
                                             <div className="form-comment-section">
-                                            {comments.map((uComment) => {
-                                              return (
-                                                <span className="single-comment">
-                                                  <GridContainer>
-                                                    <GridItem>
-                                                      <span className="fcs-name">
-                                                        {uComment.username}
-                                                      </span>
-                                                    </GridItem>
-                                                  </GridContainer>
+                                              {comments.map((uComment) => {
+                                                return (
+                                                  <span className="single-comment">
+                                                    <GridContainer>
+                                                      <GridItem>
+                                                        <span className="fcs-name">
+                                                          {uComment.username}
+                                                        </span>
+                                                      </GridItem>
+                                                    </GridContainer>
 
-                                                  <GridContainer>
-                                                    <GridItem>
-                                                      <div>
-                                                        <ReactQuill
-                                                          value={
-                                                            uComment.comment
-                                                          }
-                                                          theme="bubble"
-                                                          readOnly
-                                                        />
+                                                    <GridContainer>
+                                                      <GridItem>
+                                                        <div>
+                                                          <ReactQuill
+                                                            value={
+                                                              uComment.comment
+                                                            }
+                                                            theme="bubble"
+                                                            readOnly
+                                                          />
 
-                                                        <Popup
-                                                          trigger={
-                                                            <span>
-                                                              <button
-                                                              className="btn btn-primary"
-                                                                onClick={() => {
-                                                                  editComment(
-                                                                    uComment.id
-                                                                  );
-                                                                }}
-                                                                disabled={
-                                                                  uComment.username !=
-                                                                  cookies.name
-                                                                }
-                                                              >
-                                                                Edit
-                                                              </button>
-                                                            </span>
-                                                          }
-                                                          className="popupReact"
-                                                          modal
-                                                        >
-                                                          {(close) => (
-                                                            <Card>
-                                                              <CardBody>
-                                                                <div
-                                                                  className={
-                                                                    classes.close
+                                                          <Popup
+                                                            trigger={
+                                                              <span>
+                                                                <button
+                                                                  className="btn btn-primary"
+                                                                  onClick={() => {
+                                                                    editComment(
+                                                                      uComment.id
+                                                                    );
+                                                                  }}
+                                                                  disabled={
+                                                                    uComment.username !=
+                                                                    cookies.name
                                                                   }
                                                                 >
-                                                                  <a
-                                                                    onClick={
-                                                                      close
+                                                                  Edit
+                                                                </button>
+                                                              </span>
+                                                            }
+                                                            className="popupReact"
+                                                            modal
+                                                          >
+                                                            {(close) => (
+                                                              <Card>
+                                                                <CardBody>
+                                                                  <div
+                                                                    className={
+                                                                      classes.close
                                                                     }
                                                                   >
-                                                                    &times;
-                                                                  </a>
-                                                                </div>
-                                                                <GridContainer>
-                                                                  <GridItem
-                                                                    xs={12}
-                                                                    sm={12}
-                                                                    md={12}
-                                                                  >
-                                                                    <form>
-                                                                      <ReactQuill
-                                                                        modules={
-                                                                          modules
-                                                                        }
-                                                                        theme="snow"
-                                                                        onChange={
-                                                                          setEditComment
-                                                                        }
-                                                                        value={
+                                                                    <a
+                                                                      onClick={
+                                                                        close
+                                                                      }
+                                                                    >
+                                                                      &times;
+                                                                    </a>
+                                                                  </div>
+                                                                  <GridContainer>
+                                                                    <GridItem
+                                                                      xs={12}
+                                                                      sm={12}
+                                                                      md={12}
+                                                                    >
+                                                                      <form>
+                                                                        <ReactQuill
+                                                                          modules={
+                                                                            modules
+                                                                          }
+                                                                          theme="snow"
+                                                                          onChange={
+                                                                            setEditComment
+                                                                          }
+                                                                          value={
+                                                                            commentEdit
+                                                                          }
+                                                                        />
+                                                                      </form>
+                                                                    </GridItem>
+                                                                  </GridContainer>
+                                                                  <CardFooter>
+                                                                    <Button
+                                                                      color="primary"
+                                                                      type="submit"
+                                                                      onClick={() => {
+                                                                        updateComment(
+                                                                          uComment.id,
                                                                           commentEdit
-                                                                        }
-                                                                      />
-                                                                    </form>
-                                                                  </GridItem>
-                                                                </GridContainer>
-                                                                <CardFooter>
-                                                                  <Button
-                                                                    color="primary"
-                                                                    type="submit"
-                                                                    onClick={() => {
-                                                                      updateComment(
-                                                                        uComment.id,
-                                                                        commentEdit
-                                                                      ),
+                                                                        ),
+                                                                          close();
+                                                                      }}
+                                                                    >
+                                                                      Update
+                                                                    </Button>
+                                                                    <Button
+                                                                      className="button"
+                                                                      onClick={() => {
                                                                         close();
-                                                                    }}
-                                                                  >
-                                                                    Update
-                                                                  </Button>
-                                                                  <Button
-                                                                    className="button"
-                                                                    onClick={() => {
-                                                                      close();
-                                                                    }}
-                                                                  >
-                                                                    {" "}
-                                                                    Cancel{" "}
-                                                                  </Button>
-                                                                </CardFooter>
-                                                              </CardBody>
-                                                            </Card>
-                                                          )}
-                                                        </Popup>
-                                                      </div>
-                                                    </GridItem>
-                                                  </GridContainer>
-                                                  <hr />
-                                                </span>
-                                              );
-                                            })}
+                                                                      }}
+                                                                    >
+                                                                      {" "}
+                                                                      Cancel{" "}
+                                                                    </Button>
+                                                                  </CardFooter>
+                                                                </CardBody>
+                                                              </Card>
+                                                            )}
+                                                          </Popup>
+                                                        </div>
+                                                      </GridItem>
+                                                    </GridContainer>
+                                                    <hr />
+                                                  </span>
+                                                );
+                                              })}
                                             </div>
                                           </CardBody>
                                         </Card>
@@ -2889,192 +2865,192 @@ const updateComment = async(id, comment) =>{
                               )}
                             </Popup>
 
-                      <Popup trigger={<div hidden={cookies.Role_id == "2"}><MdDelete/></div>} modal >
-                          {close => (
-                            <div>
-                            <Card>                            
-                              <GridContainer>
-                                <GridItem xs={12} sm={12} md={12}>
+                            <Popup trigger={<div hidden={cookies.Role_id == "2"}><MdDelete /></div>} modal >
+                              {close => (
+                                <div>
+                                  <Card>
                                     <GridContainer>
-                                      <GridItem>
-                                        <div>
-                                          <CardBody>
-                                            <h4 className={classes.cardTitleWhite}>Are you sure you want to delete {task.task_title} task?</h4>
-                                          </CardBody>
-                                          <CardFooter>
-                                              <Button onClick={()=>deleteTask(task.task_id)}>Yes</Button>
-                                              <Button className="button" onClick={() => { close(); }}> No </Button>
-                                          </CardFooter>
-                                        </div>
+                                      <GridItem xs={12} sm={12} md={12}>
+                                        <GridContainer>
+                                          <GridItem>
+                                            <div>
+                                              <CardBody>
+                                                <h4 className={classes.cardTitleWhite}>Are you sure you want to delete {task.task_title} task?</h4>
+                                              </CardBody>
+                                              <CardFooter>
+                                                <Button onClick={() => deleteTask(task.task_id)}>Yes</Button>
+                                                <Button className="button" onClick={() => { close(); }}> No </Button>
+                                              </CardFooter>
+                                            </div>
+                                          </GridItem>
+                                          <div className={classes.close}>
+                                            <a onClick={close}>&times;</a>
+                                          </div>
+                                        </GridContainer>
                                       </GridItem>
-                                        <div className={classes.close}>
-                                          <a onClick={close}>&times;</a>
-                                        </div>
                                     </GridContainer>
-                                </GridItem>
-                              </GridContainer>
-                            </Card>
+                                  </Card>
 
-                            </div>
-                          )}
-                        </Popup>
-                    </td>
-                    </tr>
-                    <p className={showTime==task.task_id ? 'content show':'content'}>
-                    {/*Time Modulule*/}
-                    <p>
-                    {TimeData.length==0?(
-                      <>
-                        <GridContainer>
-                          <GridItem>
-                            <input value={task.task_id} type="hidden"/>
-                            <p>Estimate Time - {estimate}</p>
-                            <p>Spent Time - {spent}</p>
-                          </GridItem>
-                        </GridContainer>
+                                </div>
+                              )}
+                            </Popup>
+                          </td>
+                        </tr>
+                        <p className={showTime == task.task_id ? 'content show' : 'content'}>
+                          {/*Time Modulule*/}
+                          <p>
+                            {TimeData.length == 0 ? (
+                              <>
+                                <GridContainer>
+                                  <GridItem>
+                                    <input value={task.task_id} type="hidden" />
+                                    <p>Estimate Time - {estimate}</p>
+                                    <p>Spent Time - {spent}</p>
+                                  </GridItem>
+                                </GridContainer>
+                              </>
+                            ) : (
+                              <>
+                                <GridContainer>
+                                  <GridItem>
+                                    <input value={task.task_id} type="hidden" />
+                                    <p>Estimate Time - {userdata.estimate_time}</p>
+                                    <p>Spent Time - {userdata.spent_time} </p>
+                                  </GridItem>
+                                </GridContainer>
+                              </>
+                            )}
+                            {/*Time Modulule*/}
+                          </p>
+                          <p>
+                            {/* display comments in dropdown */}
+                            {dropdown_Comments.map((dComment) => {
+                              return (
+                                <span>
+                                  <GridContainer>
+                                    <GridItem>
+                                      <p>{dComment.username}</p>
+                                      <p><ReactQuill value={dComment.comment} theme="bubble" readOnly /></p>
+                                      <p>{dComment.creation_time}</p>
+                                    </GridItem>
+                                  </GridContainer>
+                                </span>
+                              )
+                            })}
+                          </p>
+                          {/* display comments in dropdown */}
+                        </p>
                       </>
-                      ):(
-                      <>
-                        <GridContainer>
-                          <GridItem>
-                            <input value={task.task_id} type="hidden"/>
-                            <p>Estimate Time - {userdata.estimate_time}</p>
-                            <p>Spent Time - {userdata.spent_time} </p>
-                          </GridItem>
-                        </GridContainer>
-                      </>
-                      )}
-                    {/*Time Modulule*/}
-                      </p>
-                      <p>
-                      {/* display comments in dropdown */}
-                        {dropdown_Comments.map((dComment)=>{
-                          return(
-                            <span>
-                              <GridContainer>
-                                <GridItem>
-                                  <p>{dComment.username}</p>
-                                  <p><ReactQuill value={dComment.comment} theme="bubble" readOnly /></p>
-                                  <p>{dComment.creation_time}</p>
-                                </GridItem>
-                              </GridContainer>
-                            </span>
-                          )
-                        })}
-                      </p>
-                      {/* display comments in dropdown */}
-                  </p>
-                  </>
-                  ) 
+                    )
+                  }
                 }
-              }
-            })}
-        </table>
-      </>
-    ):("")}
-    
-    <Card>
-      <GridContainer>
-        <GridItem xs={12} sm={12} md={12}>
-          <div className="taskRunning task_title" onClick={()=> { taskRunning("task_Running") , closeTaskRunning("task_Running"),setrunning_title(!running_title) }}>Task Running {running_title ? <FaArrowUp/>:<FaArrowDown/>} </div>
-        </GridItem>
-      </GridContainer>
-    </Card>
-    {running_title ? (
-      <>
-        <table className="project-data" >
-          <tr className="project-data-title">
-            <th className="status">Project Name</th>
-            <th className="title">Task name </th>
-            <th>Priority</th>
-            <th className="assignee">Assignee</th>
-            <th className="view-edit">View & Edit</th>
-          </tr>
-          {allTask.map((task)=>{
-            if(task.task_delete == "no"){
-              if(task.task_status == TaskRunning){
-                var person = task.task_person.split(",");
-                return(
-                  <>
-                  <tr key={task.task_id} onClick={()=>{toggle(task.task_id);getData(task.task_id);getTime(task.task_id);}} className="expand_dropdown">
-                    <td className="project-title-table">{task.project_name}</td>
-                    <td><h4 className="projectTitle">{task.task_title}</h4></td>
-                    <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
+              })}
+            </table>
+          </>
+        ) : ("")}
 
-                    <td className="project-priority-person">
-                      {person.length>2 ? (
-                        <>
-                          <div className="chip">
-                            <span>{person[0]}</span>
-                          </div>
-                          <div className="chip">
-                            <span>{person[1]}</span>
-                          </div>
-                            {/* Edit popUp Start*/}
-                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} className="popupReact"  position="left">
-                            {close => (
-                              <div className="popup-align">
-                                <Card>
-                                  <CardBody>
-                                    <CardHeader>
-                                      <GridContainer>
-                                        <GridItem>
-                                          <strong>Assignee</strong>
-                                        </GridItem>
-                                        <GridItem>
-                                          <div className={classes.close}>
-                                            <a onClick={close}>&times;</a>
-                                          </div>
-                                        </GridItem>
-                                      </GridContainer>
-                                    </CardHeader>
+        <Card>
+          <GridContainer>
+            <GridItem xs={12} sm={12} md={12}>
+              <div className="taskRunning task_title" onClick={() => { taskRunning("task_Running"), closeTaskRunning("task_Running"), setrunning_title(!running_title) }}>Task Running {running_title ? <FaArrowUp /> : <FaArrowDown />} </div>
+            </GridItem>
+          </GridContainer>
+        </Card>
+        {running_title ? (
+          <>
+            <table className="project-data" >
+              <tr className="project-data-title">
+                <th className="status">Project Name</th>
+                <th className="title">Task name </th>
+                <th>Priority</th>
+                <th className="assignee">Assignee</th>
+                <th className="view-edit">View & Edit</th>
+              </tr>
+              {allTask.map((task) => {
+                if (task.task_delete == "no") {
+                  if (task.task_status == TaskRunning) {
+                    var person = task.task_person.split(",");
+                    return (
+                      <>
+                        <tr key={task.task_id} onClick={() => { toggle(task.task_id); getData(task.task_id); getTime(task.task_id); }} className="expand_dropdown">
+                          <td className="project-title-table">{task.project_name}</td>
+                          <td><h4 className="projectTitle">{task.task_title}</h4></td>
+                          <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
 
-                                    <GridContainer>
-                                      <GridItem>
-                                        {person.map((user)=>{
-                                          return(
-                                            <span>
-                                              <span className="members" title={user}>{user}</span>
-                                            </span>
-                                          )
-                                        })}
-                                      </GridItem>
-                                    </GridContainer>
-                                  </CardBody>
-                                </Card>
-                              </div>
+                          <td className="project-priority-person">
+                            {person.length > 2 ? (
+                              <>
+                                <div className="chip">
+                                  <span>{person[0]}</span>
+                                </div>
+                                <div className="chip">
+                                  <span>{person[1]}</span>
+                                </div>
+                                {/* Edit popUp Start*/}
+                                <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} className="popupReact" position="left">
+                                  {close => (
+                                    <div className="popup-align">
+                                      <Card>
+                                        <CardBody>
+                                          <CardHeader>
+                                            <GridContainer>
+                                              <GridItem>
+                                                <strong>Assignee</strong>
+                                              </GridItem>
+                                              <GridItem>
+                                                <div className={classes.close}>
+                                                  <a onClick={close}>&times;</a>
+                                                </div>
+                                              </GridItem>
+                                            </GridContainer>
+                                          </CardHeader>
+
+                                          <GridContainer>
+                                            <GridItem>
+                                              {person.map((user) => {
+                                                return (
+                                                  <span>
+                                                    <span className="members" title={user}>{user}</span>
+                                                  </span>
+                                                )
+                                              })}
+                                            </GridItem>
+                                          </GridContainer>
+                                        </CardBody>
+                                      </Card>
+                                    </div>
+                                  )}
+                                </Popup>
+                                {/*Edit popup End*/}
+                              </>
+                            ) : (
+                              <span>
+                                {person.map((user) => {
+                                  return (
+                                    <div className="chip">
+                                      <span className="members" title={user}>{user}</span>
+                                    </div>
+                                  )
+                                })}
+                              </span>
                             )}
-                            </Popup>
-                            {/*Edit popup End*/}
-                        </>
-                        ):(
-                        <span>
-                          {person.map((user)=>{
-                            return(
-                              <div className="chip">
-                                <span className="members" title={user}>{user}</span>
-                              </div>
-                            )
-                          })}
-                        </span>
-                      )}
-                    </td>
+                          </td>
 
-                    <td className="project-edit-table">
-                      <Popup trigger={<div><a className="bttn-design1" onClick={()=> { projectId(task.task_id) }  }><FiEdit/></a></div>}  className="popupReact" modal nested>
-                      {close => (
-                      <div>
-                      <GridContainer>
-                      <GridItem xs={12} sm={12} md={12}>
-                      <form onSubmit={handleSubmit(onSubmit)}>              
-                        <Card>
-                          <CardHeader color="primary">
+                          <td className="project-edit-table">
+                            <Popup trigger={<div><a className="bttn-design1" onClick={() => { projectId(task.task_id) }}><FiEdit /></a></div>} className="popupReact" modal nested>
+                              {close => (
+                                <div>
+                                  <GridContainer>
+                                    <GridItem xs={12} sm={12} md={12}>
+                                      <form onSubmit={handleSubmit(onSubmit)}>
+                                        <Card>
+                                          <CardHeader color="primary">
 
-                          <GridContainer>
-                            <GridItem>
-                              <h4 className={classes.cardTitleWhite}>Edit Task</h4>
-                              <p className={classes.cardCategoryWhite}>Update your task details</p>
-                            </GridItem>
+                                            <GridContainer>
+                                              <GridItem>
+                                                <h4 className={classes.cardTitleWhite}>Edit Task</h4>
+                                                <p className={classes.cardCategoryWhite}>Update your task details</p>
+                                              </GridItem>
 
                                               <div className={classes.close}>
                                                 <a onClick={close}>&times;</a>
@@ -3256,50 +3232,50 @@ const updateComment = async(id, comment) =>{
                                             </GridContainer>
                                             <br />
 
-                              <GridContainer>
-                                <GridItem xs={12} sm={12} md={6}>
-                                  <div className="form-group">
-                                  <span>Task Priority</span><span className="required">*</span>
-                                  <Multiselect
-                                      displayValue="value"
-                                      options={all_Priority}
-                                      value={u_Priority}
-                                      selectedValues={u_Priority}
-                                      selectionLimit="1"
-                                      onChange={setPriority}
-                                      onRemove={setPriority}
-                                      onSearch={function noRefCheck(){}}
-                                      onSelect={setPriority}
-                                      placeholder="Task Priority"
-                                      showArrow={true}
-                                  />
+                                            <GridContainer>
+                                              <GridItem xs={12} sm={12} md={6}>
+                                                <div className="form-group">
+                                                  <span>Task Priority</span><span className="required">*</span>
+                                                  <Multiselect
+                                                    displayValue="value"
+                                                    options={all_Priority}
+                                                    value={u_Priority}
+                                                    selectedValues={u_Priority}
+                                                    selectionLimit="1"
+                                                    onChange={setPriority}
+                                                    onRemove={setPriority}
+                                                    onSearch={function noRefCheck() { }}
+                                                    onSelect={setPriority}
+                                                    placeholder="Task Priority"
+                                                    showArrow={true}
+                                                  />
 
-                                    {/* <select id="priority" className="form-control signup-input" disabled={cookies.Role_id == "2"} name="task_priority" value={uoption.task_priority} onChange={handleChange}  >
+                                                  {/* <select id="priority" className="form-control signup-input" disabled={cookies.Role_id == "2"} name="task_priority" value={uoption.task_priority} onChange={handleChange}  >
                                       <option value=""  disabled selected>Select Task Priority</option>
                                       <option value="High">High</option>
                                       <option value="Medium">Medium</option>
                                       <option value="Low">Low</option>
                                     </select>
                                     <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span> */}
-                                  </div> 
-                                </GridItem>
+                                                </div>
+                                              </GridItem>
 
-                                <GridItem xs={12} sm={12} md={6}>
-                                  <div className="form-group">
-                                  <span>Task Language</span><span className="required">*</span>
-                                    <select id="Task_created_by" className="form-control signup-input" disabled={cookies.Role_id == "2"} name="task_language" value={uoption.task_language} onChange={handleChange} >
-                                      <option value="" disabled selected>Select Language</option>
-                                      <option value="Wordpress">Wordpress</option>
-                                      <option value="Shopify">Shopify</option>
-                                      <option value="ReactJS">ReactJS</option>
-                                      <option value="Laravel">Laravel</option>
-                                      <option value="Android">Android</option>
-                                      <option value="Bubble">Bubble</option>
-                                    </select>
-                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                                  </div> 
-                                </GridItem>
-                              </GridContainer><br/>
+                                              <GridItem xs={12} sm={12} md={6}>
+                                                <div className="form-group">
+                                                  <span>Task Language</span><span className="required">*</span>
+                                                  <select id="Task_created_by" className="form-control signup-input" disabled={cookies.Role_id == "2"} name="task_language" value={uoption.task_language} onChange={handleChange} >
+                                                    <option value="" disabled selected>Select Language</option>
+                                                    <option value="Wordpress">Wordpress</option>
+                                                    <option value="Shopify">Shopify</option>
+                                                    <option value="ReactJS">ReactJS</option>
+                                                    <option value="Laravel">Laravel</option>
+                                                    <option value="Android">Android</option>
+                                                    <option value="Bubble">Bubble</option>
+                                                  </select>
+                                                  <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                                </div>
+                                              </GridItem>
+                                            </GridContainer><br />
 
                                             <GridContainer>
                                               <GridItem xs={12} sm={12} md={6}>
@@ -3429,7 +3405,7 @@ const updateComment = async(id, comment) =>{
                                                 {TimeData.length == 0 ? (
                                                   <>
                                                     <form
-                                                    className="form-time"
+                                                      className="form-time"
                                                       onSubmit={handleSubmit(
                                                         insert_time
                                                       )}
@@ -3520,7 +3496,7 @@ const updateComment = async(id, comment) =>{
                                                 ) : (
                                                   <>
                                                     <form
-                                                    className="form-time"
+                                                      className="form-time"
                                                       onSubmit={update_tasktime}
                                                     >
                                                       <GridContainer>
@@ -3596,7 +3572,7 @@ const updateComment = async(id, comment) =>{
                                                   onChange={setCommentValue}
                                                 />
                                                 <div
-                                                className="btn btn-primary mt-2 mb-4"
+                                                  className="btn btn-primary mt-2 mb-4"
                                                   onClick={() => {
                                                     sendMessage(task.task_id),
                                                       close();
@@ -3608,123 +3584,123 @@ const updateComment = async(id, comment) =>{
                                             </GridContainer>
 
                                             <div className="form-comment-section">
-                                            {comments.map((uComment) => {
-                                              return (
-                                                <span className="single-comment">
-                                                  <GridContainer>
-                                                    <GridItem>
-                                                      <span className="fcs-name">
-                                                        {uComment.username}
-                                                      </span>
-                                                    </GridItem>
-                                                  </GridContainer>
+                                              {comments.map((uComment) => {
+                                                return (
+                                                  <span className="single-comment">
+                                                    <GridContainer>
+                                                      <GridItem>
+                                                        <span className="fcs-name">
+                                                          {uComment.username}
+                                                        </span>
+                                                      </GridItem>
+                                                    </GridContainer>
 
-                                                  <GridContainer>
-                                                    <GridItem>
-                                                      <div>
-                                                        <ReactQuill
-                                                          value={
-                                                            uComment.comment
-                                                          }
-                                                          theme="bubble"
-                                                          readOnly
-                                                        />
+                                                    <GridContainer>
+                                                      <GridItem>
+                                                        <div>
+                                                          <ReactQuill
+                                                            value={
+                                                              uComment.comment
+                                                            }
+                                                            theme="bubble"
+                                                            readOnly
+                                                          />
 
-                                                        <Popup
-                                                          trigger={
-                                                            <span>
-                                                              <button
-                                                              className="btn btn-primary"
-                                                                onClick={() => {
-                                                                  editComment(
-                                                                    uComment.id
-                                                                  );
-                                                                }}
-                                                                disabled={
-                                                                  uComment.username !=
-                                                                  cookies.name
-                                                                }
-                                                              >
-                                                                Edit
-                                                              </button>
-                                                            </span>
-                                                          }
-                                                          className="popupReact"
-                                                          modal
-                                                        >
-                                                          {(close) => (
-                                                            <Card>
-                                                              <CardBody>
-                                                                <div
-                                                                  className={
-                                                                    classes.close
+                                                          <Popup
+                                                            trigger={
+                                                              <span>
+                                                                <button
+                                                                  className="btn btn-primary"
+                                                                  onClick={() => {
+                                                                    editComment(
+                                                                      uComment.id
+                                                                    );
+                                                                  }}
+                                                                  disabled={
+                                                                    uComment.username !=
+                                                                    cookies.name
                                                                   }
                                                                 >
-                                                                  <a
-                                                                    onClick={
-                                                                      close
+                                                                  Edit
+                                                                </button>
+                                                              </span>
+                                                            }
+                                                            className="popupReact"
+                                                            modal
+                                                          >
+                                                            {(close) => (
+                                                              <Card>
+                                                                <CardBody>
+                                                                  <div
+                                                                    className={
+                                                                      classes.close
                                                                     }
                                                                   >
-                                                                    &times;
-                                                                  </a>
-                                                                </div>
-                                                                <GridContainer>
-                                                                  <GridItem
-                                                                    xs={12}
-                                                                    sm={12}
-                                                                    md={12}
-                                                                  >
-                                                                    <form>
-                                                                      <ReactQuill
-                                                                        modules={
-                                                                          modules
-                                                                        }
-                                                                        theme="snow"
-                                                                        onChange={
-                                                                          setEditComment
-                                                                        }
-                                                                        value={
+                                                                    <a
+                                                                      onClick={
+                                                                        close
+                                                                      }
+                                                                    >
+                                                                      &times;
+                                                                    </a>
+                                                                  </div>
+                                                                  <GridContainer>
+                                                                    <GridItem
+                                                                      xs={12}
+                                                                      sm={12}
+                                                                      md={12}
+                                                                    >
+                                                                      <form>
+                                                                        <ReactQuill
+                                                                          modules={
+                                                                            modules
+                                                                          }
+                                                                          theme="snow"
+                                                                          onChange={
+                                                                            setEditComment
+                                                                          }
+                                                                          value={
+                                                                            commentEdit
+                                                                          }
+                                                                        />
+                                                                      </form>
+                                                                    </GridItem>
+                                                                  </GridContainer>
+                                                                  <CardFooter>
+                                                                    <Button
+                                                                      color="primary"
+                                                                      type="submit"
+                                                                      onClick={() => {
+                                                                        updateComment(
+                                                                          uComment.id,
                                                                           commentEdit
-                                                                        }
-                                                                      />
-                                                                    </form>
-                                                                  </GridItem>
-                                                                </GridContainer>
-                                                                <CardFooter>
-                                                                  <Button
-                                                                    color="primary"
-                                                                    type="submit"
-                                                                    onClick={() => {
-                                                                      updateComment(
-                                                                        uComment.id,
-                                                                        commentEdit
-                                                                      ),
+                                                                        ),
+                                                                          close();
+                                                                      }}
+                                                                    >
+                                                                      Update
+                                                                    </Button>
+                                                                    <Button
+                                                                      className="button"
+                                                                      onClick={() => {
                                                                         close();
-                                                                    }}
-                                                                  >
-                                                                    Update
-                                                                  </Button>
-                                                                  <Button
-                                                                    className="button"
-                                                                    onClick={() => {
-                                                                      close();
-                                                                    }}
-                                                                  >
-                                                                    {" "}
-                                                                    Cancel{" "}
-                                                                  </Button>
-                                                                </CardFooter>
-                                                              </CardBody>
-                                                            </Card>
-                                                          )}
-                                                        </Popup>
-                                                      </div>
-                                                    </GridItem>
-                                                  </GridContainer>
-                                                  <hr />
-                                                </span>
-                                              );
-                                            })}
+                                                                      }}
+                                                                    >
+                                                                      {" "}
+                                                                      Cancel{" "}
+                                                                    </Button>
+                                                                  </CardFooter>
+                                                                </CardBody>
+                                                              </Card>
+                                                            )}
+                                                          </Popup>
+                                                        </div>
+                                                      </GridItem>
+                                                    </GridContainer>
+                                                    <hr />
+                                                  </span>
+                                                );
+                                              })}
                                             </div>
                                           </CardBody>
                                         </Card>
@@ -3735,192 +3711,192 @@ const updateComment = async(id, comment) =>{
                               )}
                             </Popup>
 
-                      <Popup trigger={<div hidden={cookies.Role_id == "2"}><MdDelete/></div>} modal >
-                          {close => (
-                            <div>
-                            <Card>                            
-                              <GridContainer>
-                                <GridItem xs={12} sm={12} md={12}>
+                            <Popup trigger={<div hidden={cookies.Role_id == "2"}><MdDelete /></div>} modal >
+                              {close => (
+                                <div>
+                                  <Card>
                                     <GridContainer>
-                                      <GridItem>
-                                        <div>
-                                          <CardBody>
-                                            <h4 className={classes.cardTitleWhite}>Are you sure you want to delete {task.task_title} task?</h4>
-                                          </CardBody>
-                                          <CardFooter>
-                                              <Button onClick={()=>deleteTask(task.task_id)}>Yes</Button>
-                                              <Button className="button" onClick={() => { close(); }}> No </Button>
-                                          </CardFooter>
-                                        </div>
-                                      </GridItem>
-                                        <div className={classes.close}>
-                                          <a onClick={close}>&times;</a>
-                                        </div>
-                                    </GridContainer>
-                                </GridItem>
-                              </GridContainer>
-                            </Card>
-
-                            </div>
-                          )}
-                        </Popup>
-                    </td>
-                  </tr>
-                  <p className={showTime==task.task_id ? 'content show':'content'}>
-                    {/*Time Modulule*/}
-                    <p>
-                    {TimeData.length==0?(
-                      <>
-                        <GridContainer>
-                          <GridItem>
-                            <input value={task.task_id} type="hidden"/>
-                            <p>Estimate Time - {estimate}</p>
-                            <p>Spent Time - {spent}</p>
-                          </GridItem>
-                        </GridContainer>
-                      </>
-                      ):(
-                      <>
-                        <GridContainer>
-                          <GridItem>
-                            <input value={task.task_id} type="hidden"/>
-                            <p>Estimate Time - {userdata.estimate_time}</p>
-                            <p>Spent Time - {userdata.spent_time} </p>
-                          </GridItem>
-                        </GridContainer>
-                      </>
-                      )}
-                    {/*Time Modulule*/}
-                      </p>
-                      <p>
-                      {/* display comments in dropdown */}
-                        {dropdown_Comments.map((dComment)=>{
-                          return(
-                            <span>
-                              <GridContainer>
-                                <GridItem>
-                                  <p>{dComment.username}</p>
-                                  <p><ReactQuill value={dComment.comment} theme="bubble" readOnly /></p>
-                                  <p>{dComment.creation_time}</p>
-                                </GridItem>
-                              </GridContainer>
-                            </span>
-                          )
-                        })}
-                      </p>
-                      {/* display comments in dropdown */}
-                  </p>
-                  </>
-                )
-              }
-            }
-          })}
-        </table>
-      </>
-    ):("")}
-    
-    <Card>
-      <GridContainer>
-        <GridItem xs={12} sm={12} md={12}>
-          <div className="taskCompleted task_title" onClick={()=> { taskCompleted("task_completed") , closeTaskCompleted("task_completed") , setcompleted_title(!completed_title)}}>Task completed {completed_title ? <FaArrowUp/>:<FaArrowDown/>} </div>
-        </GridItem>
-      </GridContainer>
-    </Card>
-    {completed_title ? (
-      <>
-        <table className="project-data" >
-          <tr className="project-data-title">
-            <th className="status">Project Name</th>
-            <th className="title">Task name </th>
-            <th>Priority</th>
-            <th className="assignee">Assignee</th>
-            <th className="view-edit">View & Edit</th>
-          </tr>
-          {allTask.map((task)=>{
-            if(task.task_delete == "no"){
-              if(task.task_status == TaskCompleted){
-                var person = task.task_person.split(",");
-                return(
-                  <>
-                  <tr key={task.task_id} onClick={()=>{toggle(task.task_id);getData(task.task_id);getTime(task.task_id);}} className="expand_dropdown">
-                    <td className="project-title-table">{task.project_name}</td>
-                    <td><h4 className="projectTitle">{task.task_title}</h4></td>
-                    <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
-
-                    <td className="project-priority-person">
-                      {person.length>2 ? (
-                        <>
-                          <div className="chip">
-                            <span>{person[0]}</span>
-                          </div>
-                          <div className="chip">
-                            <span>{person[1]}</span>
-                          </div>
-                            {/* Edit popUp Start*/}
-                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} className="popupReact"  position="left">
-                            {close => (
-                              <div className="popup-align">
-                                <Card>
-                                  <CardBody>
-                                    <CardHeader>
-                                      <GridContainer>
-                                        <GridItem>
-                                          <strong>Assignee</strong>
-                                        </GridItem>
-                                        <GridItem>
+                                      <GridItem xs={12} sm={12} md={12}>
+                                        <GridContainer>
+                                          <GridItem>
+                                            <div>
+                                              <CardBody>
+                                                <h4 className={classes.cardTitleWhite}>Are you sure you want to delete {task.task_title} task?</h4>
+                                              </CardBody>
+                                              <CardFooter>
+                                                <Button onClick={() => deleteTask(task.task_id)}>Yes</Button>
+                                                <Button className="button" onClick={() => { close(); }}> No </Button>
+                                              </CardFooter>
+                                            </div>
+                                          </GridItem>
                                           <div className={classes.close}>
                                             <a onClick={close}>&times;</a>
                                           </div>
-                                        </GridItem>
-                                      </GridContainer>
-                                    </CardHeader>
-
-                                    <GridContainer>
-                                      <GridItem>
-                                        {person.map((user)=>{
-                                          return(
-                                            <span>
-                                              <span className="members" title={user}>{user}</span>
-                                            </span>
-                                          )
-                                        })}
+                                        </GridContainer>
                                       </GridItem>
                                     </GridContainer>
-                                  </CardBody>
-                                </Card>
-                              </div>
-                            )}
+                                  </Card>
+
+                                </div>
+                              )}
                             </Popup>
-                            {/*Edit popup End*/}
-                        </>
-                        ):(
-                        <span>
-                          {person.map((user)=>{
-                            return(
-                              <div className="chip">
-                                <span className="members" title={user}>{user}</span>
-                              </div>
-                            )
-                          })}
-                        </span>
-                      )}
-                    </td>
+                          </td>
+                        </tr>
+                        <p className={showTime == task.task_id ? 'content show' : 'content'}>
+                          {/*Time Modulule*/}
+                          <p>
+                            {TimeData.length == 0 ? (
+                              <>
+                                <GridContainer>
+                                  <GridItem>
+                                    <input value={task.task_id} type="hidden" />
+                                    <p>Estimate Time - {estimate}</p>
+                                    <p>Spent Time - {spent}</p>
+                                  </GridItem>
+                                </GridContainer>
+                              </>
+                            ) : (
+                              <>
+                                <GridContainer>
+                                  <GridItem>
+                                    <input value={task.task_id} type="hidden" />
+                                    <p>Estimate Time - {userdata.estimate_time}</p>
+                                    <p>Spent Time - {userdata.spent_time} </p>
+                                  </GridItem>
+                                </GridContainer>
+                              </>
+                            )}
+                            {/*Time Modulule*/}
+                          </p>
+                          <p>
+                            {/* display comments in dropdown */}
+                            {dropdown_Comments.map((dComment) => {
+                              return (
+                                <span>
+                                  <GridContainer>
+                                    <GridItem>
+                                      <p>{dComment.username}</p>
+                                      <p><ReactQuill value={dComment.comment} theme="bubble" readOnly /></p>
+                                      <p>{dComment.creation_time}</p>
+                                    </GridItem>
+                                  </GridContainer>
+                                </span>
+                              )
+                            })}
+                          </p>
+                          {/* display comments in dropdown */}
+                        </p>
+                      </>
+                    )
+                  }
+                }
+              })}
+            </table>
+          </>
+        ) : ("")}
 
-                    <td className="project-edit-table">
-                      <Popup trigger={<div><a className="bttn-design1" onClick={()=> { projectId(task.task_id) }  }><FiEdit/></a></div>}  className="popupReact" modal nested>
-                      {close => (
-                      <div>
-                      <GridContainer>
-                      <GridItem xs={12} sm={12} md={12}>
-                      <form onSubmit={handleSubmit(onSubmit)}>              
-                        <Card>
-                          <CardHeader color="primary">
+        <Card>
+          <GridContainer>
+            <GridItem xs={12} sm={12} md={12}>
+              <div className="taskCompleted task_title" onClick={() => { taskCompleted("task_completed"), closeTaskCompleted("task_completed"), setcompleted_title(!completed_title) }}>Task completed {completed_title ? <FaArrowUp /> : <FaArrowDown />} </div>
+            </GridItem>
+          </GridContainer>
+        </Card>
+        {completed_title ? (
+          <>
+            <table className="project-data" >
+              <tr className="project-data-title">
+                <th className="status">Project Name</th>
+                <th className="title">Task name </th>
+                <th>Priority</th>
+                <th className="assignee">Assignee</th>
+                <th className="view-edit">View & Edit</th>
+              </tr>
+              {allTask.map((task) => {
+                if (task.task_delete == "no") {
+                  if (task.task_status == TaskCompleted) {
+                    var person = task.task_person.split(",");
+                    return (
+                      <>
+                        <tr key={task.task_id} onClick={() => { toggle(task.task_id); getData(task.task_id); getTime(task.task_id); }} className="expand_dropdown">
+                          <td className="project-title-table">{task.project_name}</td>
+                          <td><h4 className="projectTitle">{task.task_title}</h4></td>
+                          <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
 
-                          <GridContainer>
-                            <GridItem>
-                              <h4 className={classes.cardTitleWhite}>Edit Task</h4>
-                              <p className={classes.cardCategoryWhite}>Update your task details</p>
-                            </GridItem>
+                          <td className="project-priority-person">
+                            {person.length > 2 ? (
+                              <>
+                                <div className="chip">
+                                  <span>{person[0]}</span>
+                                </div>
+                                <div className="chip">
+                                  <span>{person[1]}</span>
+                                </div>
+                                {/* Edit popUp Start*/}
+                                <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} className="popupReact" position="left">
+                                  {close => (
+                                    <div className="popup-align">
+                                      <Card>
+                                        <CardBody>
+                                          <CardHeader>
+                                            <GridContainer>
+                                              <GridItem>
+                                                <strong>Assignee</strong>
+                                              </GridItem>
+                                              <GridItem>
+                                                <div className={classes.close}>
+                                                  <a onClick={close}>&times;</a>
+                                                </div>
+                                              </GridItem>
+                                            </GridContainer>
+                                          </CardHeader>
+
+                                          <GridContainer>
+                                            <GridItem>
+                                              {person.map((user) => {
+                                                return (
+                                                  <span>
+                                                    <span className="members" title={user}>{user}</span>
+                                                  </span>
+                                                )
+                                              })}
+                                            </GridItem>
+                                          </GridContainer>
+                                        </CardBody>
+                                      </Card>
+                                    </div>
+                                  )}
+                                </Popup>
+                                {/*Edit popup End*/}
+                              </>
+                            ) : (
+                              <span>
+                                {person.map((user) => {
+                                  return (
+                                    <div className="chip">
+                                      <span className="members" title={user}>{user}</span>
+                                    </div>
+                                  )
+                                })}
+                              </span>
+                            )}
+                          </td>
+
+                          <td className="project-edit-table">
+                            <Popup trigger={<div><a className="bttn-design1" onClick={() => { projectId(task.task_id) }}><FiEdit /></a></div>} className="popupReact" modal nested>
+                              {close => (
+                                <div>
+                                  <GridContainer>
+                                    <GridItem xs={12} sm={12} md={12}>
+                                      <form onSubmit={handleSubmit(onSubmit)}>
+                                        <Card>
+                                          <CardHeader color="primary">
+
+                                            <GridContainer>
+                                              <GridItem>
+                                                <h4 className={classes.cardTitleWhite}>Edit Task</h4>
+                                                <p className={classes.cardCategoryWhite}>Update your task details</p>
+                                              </GridItem>
 
                                               <div className={classes.close}>
                                                 <a onClick={close}>&times;</a>
@@ -4102,39 +4078,39 @@ const updateComment = async(id, comment) =>{
                                             </GridContainer>
                                             <br />
 
-                              <GridContainer>
-                                <GridItem xs={12} sm={12} md={6}>
-                                  <div className="form-group">
-                                  <span>Task Priority</span><span className="required">*</span>
-                                    <select id="priority" className="form-control signup-input" disabled={cookies.Role_id == "2"} name="task_priority" value={uoption.task_priority} onChange={handleChange}  >
-                                      <option value=""  disabled selected>Select Task Priority</option>
-                                      <option value="High">High</option>
-                                      <option value="Medium">Medium</option>
-                                      <option value="Low">Low</option>
-                                    </select>
-                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                                  </div> 
-                                </GridItem>
+                                            <GridContainer>
+                                              <GridItem xs={12} sm={12} md={6}>
+                                                <div className="form-group">
+                                                  <span>Task Priority</span><span className="required">*</span>
+                                                  <select id="priority" className="form-control signup-input" disabled={cookies.Role_id == "2"} name="task_priority" value={uoption.task_priority} onChange={handleChange}  >
+                                                    <option value="" disabled selected>Select Task Priority</option>
+                                                    <option value="High">High</option>
+                                                    <option value="Medium">Medium</option>
+                                                    <option value="Low">Low</option>
+                                                  </select>
+                                                  <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                                </div>
+                                              </GridItem>
 
-                                <GridItem xs={12} sm={12} md={6}>
-                                  <div className="form-group">
-                                  <span>Task Language</span><span className="required">*</span>
-                                  <Multiselect
-                                    displayValue="value"
-                                    options={all_Language}
-                                    value={u_Language}
-                                    selectionLimit="1"
-                                    onChange={setLanguage}
-                                    onRemove={setLanguage}
-                                    onSearch={function noRefCheck(){}}
-                                    onSelect={setLanguage}
-                                    placeholder="Task Language"
-                                    showArrow={true}
-                                    selectedValues={u_Language}
-                                  />
-                                  </div> 
-                                </GridItem>
-                              </GridContainer><br/>
+                                              <GridItem xs={12} sm={12} md={6}>
+                                                <div className="form-group">
+                                                  <span>Task Language</span><span className="required">*</span>
+                                                  <Multiselect
+                                                    displayValue="value"
+                                                    options={all_Language}
+                                                    value={u_Language}
+                                                    selectionLimit="1"
+                                                    onChange={setLanguage}
+                                                    onRemove={setLanguage}
+                                                    onSearch={function noRefCheck() { }}
+                                                    onSelect={setLanguage}
+                                                    placeholder="Task Language"
+                                                    showArrow={true}
+                                                    selectedValues={u_Language}
+                                                  />
+                                                </div>
+                                              </GridItem>
+                                            </GridContainer><br />
 
                                             <GridContainer>
                                               <GridItem xs={12} sm={12} md={6}>
@@ -4264,7 +4240,7 @@ const updateComment = async(id, comment) =>{
                                                 {TimeData.length == 0 ? (
                                                   <>
                                                     <form
-                                                    className="form-time"
+                                                      className="form-time"
                                                       onSubmit={handleSubmit(
                                                         insert_time
                                                       )}
@@ -4340,7 +4316,7 @@ const updateComment = async(id, comment) =>{
                                                         </GridItem>
                                                       </GridContainer>
                                                       <button
-                                                       className="btn btn-primary mt-2 text-white"
+                                                        className="btn btn-primary mt-2 text-white"
                                                         onClick={() => {
                                                           insert_time(
                                                             task.task_id
@@ -4355,7 +4331,7 @@ const updateComment = async(id, comment) =>{
                                                 ) : (
                                                   <>
                                                     <form
-                                                    className="form-time"
+                                                      className="form-time"
                                                       onSubmit={update_tasktime}
                                                     >
                                                       <GridContainer>
@@ -4432,7 +4408,7 @@ const updateComment = async(id, comment) =>{
                                                   onChange={setCommentValue}
                                                 />
                                                 <div
-                                                className="btn btn-primary mt-2 mb-4"
+                                                  className="btn btn-primary mt-2 mb-4"
                                                   onClick={() => {
                                                     sendMessage(task.task_id),
                                                       close();
@@ -4470,7 +4446,7 @@ const updateComment = async(id, comment) =>{
                                                             trigger={
                                                               <span>
                                                                 <button
-                                                                className="btn btn-primary"
+                                                                  className="btn btn-primary"
                                                                   onClick={() => {
                                                                     editComment(
                                                                       uComment.id

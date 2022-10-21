@@ -123,7 +123,7 @@ export default function AdminNavbarLinks({useravtar}) {
         </Hidden>
       </Button> */}
       <div className={classes.manager}>
-        <Button
+        {/* <Button
           color={size.width > 959 ? "transparent" : "white"}
           justIcon={size.width > 959}
           simple={!(size.width > 959)}
@@ -139,8 +139,8 @@ export default function AdminNavbarLinks({useravtar}) {
               Notification
             </p>
           </Hidden>
-        </Button>
-        <Poppers
+        </Button> */}
+        {/* <Poppers
           open={Boolean(openNotification)}
           anchorEl={openNotification}
           transition
@@ -198,7 +198,7 @@ export default function AdminNavbarLinks({useravtar}) {
               </Paper>
             </Grow>
           )}
-            </Poppers>
+            </Poppers> */}
         </div>
       <div className={classes.manager}>
       
@@ -212,32 +212,10 @@ export default function AdminNavbarLinks({useravtar}) {
           className={classes.buttonLink}  
         >
           <Person className={classes.icons} />
-          {/*{users.map((avtar)=>{
-          return(
-            <div key={avtar.id}>
-              <p>{avtar.avtar}</p>
-              <img src={`${server}/avtar.png`} width={40} height={40} className={classes.icons}/>
-            </div>
-          )
-        })}*/}
           <Hidden mdUp implementation="css">
             <p className={classes.linkText}>Profile</p>
           </Hidden>
         </Button>
-        
-        {/*<input 
-            type='file' 
-            accept="/image/*"
-            onChange={(e)=>{
-              const file = e.target.files[0];
-              if(file && file.type.substring(0,5)==="image"){
-                setavtar(file);
-              }
-              else{
-                setavtar(null)
-              }
-            }}
-          />*/}
         <Poppers
           open={Boolean(openProfile)}
           anchorEl={openProfile}
