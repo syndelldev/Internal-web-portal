@@ -129,10 +129,18 @@ export async function getServerSideProps(context){
   const stat = await fetch(`${server}/api/projectStatus`)
   const status = await stat.json();
 
-  return{ props: { project_details, project_hold, project_completed, project_running, User_name, project_runn, project_h, project_comp, language, languageDepartment, priority, status } }
+  const high = await fetch(`${server}/api/user/u_priority`,{
+    headers: {
+      'Access-Control-Allow-Credentials': true,
+      Cookie: context.req.headers.cookie
+    },
+  })
+  const high_priority = await high.json();
+
+  return{ props: { project_details, project_hold, project_completed, project_running, User_name, project_runn, project_h, project_comp, language, languageDepartment, priority, status, high_priority } }
 }
 
-function Dashboard( { project_details, project_hold, project_completed, project_running, User_name, project_runn, project_h, project_comp, language, languageDepartment, priority, status } ) {
+function Dashboard( { project_details, project_hold, project_completed, project_running, User_name, project_runn, project_h, project_comp, language, languageDepartment, priority, status, high_priority } ) {
 
   const { register,  watch, handleSubmit, formState: { errors }, setValue } = useForm(); 
   const router = useRouter();
@@ -801,6 +809,36 @@ useEffect(() =>{
         </table>
       </>
     ):("")}
+
+<div className="my-task"  hidden={cookies.Role_id == "1"}>
+        <GridContainer>
+          <GridItem xs={12} sm={6} md={6}>
+            <h3 className="my-task-priorities"><h2 className="title-my-task">My Task Priorities</h2>
+              {high_priority.map((task)=>{
+
+                        const MySQLDate  = task.task_deadline;
+                        let date = MySQLDate.substr(0,10);
+                        // let date = MySQLDate.replace(/[-]/g, '-').substr(0,10);
+
+                        const today = new Date().toISOString().slice(0,10);
+                        console.log( new Date().toISOString().slice(0,10) );
+                        console.log(date);
+
+              if(date >= today){
+                return(
+                  <span>
+                    <div>
+                      <p className="task-high">{task.task_title}<span className={task.task_priority}>{task.task_priority}</span></p>
+                    </div>
+                  </span>
+                )
+              }
+
+              })}
+            </h3>
+          </GridItem>
+        </GridContainer>
+      </div>    
 
     <ToastContainer limit={1}/>
     </>
