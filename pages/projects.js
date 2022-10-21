@@ -680,7 +680,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
       // get selected dates projects list
       const [dateDetails, setDateDetails] = useState();
       // get selected dates projects list for user
-      const [date_uData, setDate_uDetails] = useState();
+      // const [date_uData, setDate_uDetails] = useState();
       // onclick show data
       const [dateDataDisplay, setData] = useState(false);
     
@@ -698,8 +698,10 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
           
           if(res.status==200)
           {
-            setDateDetails(date_Data);
-            setData(true);
+            if(cookies.Role_id==1 || cookies.Role_id==3){
+              setDateDetails(date_Data);
+              setData(true);
+            }
           }
 
           const response = await fetch(`${server}/api/project/dateRange_ProjectsUser`,{
@@ -713,8 +715,10 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
           
           if(response.status==200)
           {
-            setDate_uDetails(date_uData);
-            setData(true);
+            if(cookies.Role_id==2){
+              setDateDetails(date_uData);
+              setData(true);
+            }
           }
               
         }else{
@@ -731,14 +735,17 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
         }
       }
       
-      if(cookies.Role_id==1 || cookies.Role_id==3){
-        var project_list = dateDetails;
-        console.log(project_list);
-      }
-      else if(cookies.Role_id==2){
-        var project_list = date_uData;
-        console.log(project_list);
-      }
+      // if(cookies.Role_id==1 || cookies.Role_id==3){
+      //   const project_list = dateDetails;
+      //   console.log("admin date");
+      //   console.log(project_list);
+      //   console.log(dateDetails);
+      // }else if(cookies.Role_id==2){
+      //   const project_list = date_uData;
+      //   console.log("user date");
+      //   console.log(project_list);
+      //   console.log(date_uData);
+      // }
     
       
   return (
@@ -1022,6 +1029,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
         <DatePicker
         monthsShown={2}
           selectsRange={true}
+          placeholderText="Start Date - End Date"
           startDate={startDates}
           endDate={endDates}
           onChange={(update) => {
@@ -1042,10 +1050,10 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
     <h3>Projects List</h3>
     <table className="project-data" >
       <tr className="project-data-title">
-            <th  className="status">Project Name</th>
-            <th className="Priority">Priority</th>
-            <th className="assignee">Assignee</th>
-          </tr>
+        <th  className="status">Project Name</th>
+        <th className="Priority">Priority</th>
+        <th className="assignee">Assignee</th>
+      </tr>
           {dateDetails.map((project)=>{
             if(project.project_delete == "no"){
                 var person = project.project_person.split(",");
