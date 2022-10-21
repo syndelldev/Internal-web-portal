@@ -1001,10 +1001,10 @@ const updateComment = async(id, comment) =>{
   <div className="Project-title">Tasks</div>
     <GridContainer>
       <GridItem>
-        <button className="bttn-design" onClick={()=>{taskToDo("task_toDo") ,  settodo_title(true), taskOnHold("taskOn_hold") , setonhold_title(true), taskRunning("task_Running") , setrunning_title(true), taskCompleted("task_completed") , setcompleted_title(true) }}>Expand All</button>
+        <button className="bttn-design" onClick={()=>{taskToDo("Task to do") ,  settodo_title(true), taskOnHold("Task on hold") , setonhold_title(true), taskRunning("Task running") , setrunning_title(true), taskCompleted("Task completed") , setcompleted_title(true) }}>Expand All</button>
       </GridItem>
       <GridItem>
-        <button className="bttn-design" onClick={()=>{taskToDo("task_toDo") , closeTaskToDo("task_toDo"), settodo_title(false), taskOnHold("taskOn_hold") , closeTaskOnHold("taskOn_hold"), setonhold_title(false), taskRunning("task_Running") , closeTaskRunning("task_Running"),setrunning_title(false), taskCompleted("task_completed") , closeTaskCompleted("task_completed") , setcompleted_title(false) }}>Collpase All</button>
+        <button className="bttn-design" onClick={()=>{taskToDo("Task to do") , closeTaskToDo("Task to do"), settodo_title(false), taskOnHold("Task on hold") , closeTaskOnHold("Task on hold"), setonhold_title(false), taskRunning("Task running") , closeTaskRunning("Task running"),setrunning_title(false), taskCompleted("Task completed") , closeTaskCompleted("Task completed") , setcompleted_title(false) }}>Collpase All</button>
       </GridItem>
     </GridContainer>
   </div>
@@ -1119,7 +1119,7 @@ const updateComment = async(id, comment) =>{
     <Card>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-          <div className="task_title" onClick={()=> { taskToDo("task_toDo") , closeTaskToDo("task_toDo"), settodo_title(!todo_title) }}>Task to do {todo_title ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
+          <div className="task_title" onClick={()=> { taskToDo("Task to do") , closeTaskToDo("Task to do"), settodo_title(!todo_title) }}>Task to do {todo_title ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
         </GridItem>
       </GridContainer>
     </Card>
@@ -1273,7 +1273,20 @@ const updateComment = async(id, comment) =>{
                               <GridItem xs={12} sm={12} md={12}>
                                 <div className="form-group" hidden={cookies.Role_id != "2"}>
                                     <span>Task Status</span><span className="required">*</span>
-                                      <select name="task_status" id="Status" className="form-control signup-input" 
+                                    <Multiselect
+                                        displayValue="value"
+                                        options={all_Status}
+                                        value={u_Status}
+                                        selectedValues={u_Status}
+                                        selectionLimit="1"
+                                        onChange={setStatus}
+                                        onRemove={setStatus}
+                                        onSearch={function noRefCheck(){}}
+                                        onSelect={setStatus}
+                                        placeholder="Task Priority"
+                                        showArrow={true}
+                                    />
+                                      {/* <select name="task_status" id="Status" className="form-control signup-input" 
                                       onChange={(e)=> { updateStatus(e.target.value), close() }} 
                                       value={uoption.task_status} >
                                         <option value="" disabled selected>Select Task Status</option>
@@ -1282,7 +1295,7 @@ const updateComment = async(id, comment) =>{
                                         <option value="task_Running">Task Running</option>
                                         <option value="task_completed">Task Completed</option>
                                       </select>
-                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span> */}
                                   </div> 
                                   <div className="form-group" hidden={cookies.Role_id == "2"}>
                                     <span>Task Status</span><span className="required">*</span>
@@ -1631,7 +1644,7 @@ const updateComment = async(id, comment) =>{
     <Card>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-          <div className="taskOn_hold task_title" onClick={()=> { taskOnHold("taskOn_hold") , closeTaskOnHold("taskOn_hold"), setonhold_title(!onhold_title) }}>Task on hold {onhold_title ? <FaArrowUp/>:<FaArrowDown/>}</div>
+          <div className="taskOn_hold task_title" onClick={()=> { taskOnHold("Task on hold") , closeTaskOnHold("Task on hold"), setonhold_title(!onhold_title) }}>Task on hold {onhold_title ? <FaArrowUp/>:<FaArrowDown/>}</div>
         </GridItem>
       </GridContainer>
     </Card>
@@ -1784,7 +1797,20 @@ const updateComment = async(id, comment) =>{
                               <GridItem xs={12} sm={12} md={12}>
                                 <div className="form-group" hidden={cookies.Role_id != "2"}>
                                     <span>Task Status</span><span className="required">*</span>
-                                      <select name="task_status" id="Status" className="form-control signup-input" 
+                                    <Multiselect
+                                        displayValue="value"
+                                        options={all_Status}
+                                        value={u_Status}
+                                        selectedValues={u_Status}
+                                        selectionLimit="1"
+                                        onChange={setStatus}
+                                        onRemove={setStatus}
+                                        onSearch={function noRefCheck(){}}
+                                        onSelect={setStatus}
+                                        placeholder="Task Priority"
+                                        showArrow={true}
+                                    />
+                                      {/* <select name="task_status" id="Status" className="form-control signup-input" 
                                       onChange={(e)=> { updateStatus(e.target.value), close() }} 
                                       value={uoption.task_status} >
                                         <option value="" disabled selected>Select Task Status</option>
@@ -1793,7 +1819,7 @@ const updateComment = async(id, comment) =>{
                                         <option value="task_Running">Task Running</option>
                                         <option value="task_completed">Task Completed</option>
                                       </select>
-                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span> */}
                                   </div> 
                                   <div className="form-group" hidden={cookies.Role_id == "2"}>
                                     <span>Task Status</span><span className="required">*</span>
@@ -2142,7 +2168,7 @@ const updateComment = async(id, comment) =>{
     <Card>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-          <div className="taskRunning task_title" onClick={()=> { taskRunning("task_Running") , closeTaskRunning("task_Running"),setrunning_title(!running_title) }}>Task Running {running_title ? <FaArrowUp/>:<FaArrowDown/>} </div>
+          <div className="taskRunning task_title" onClick={()=> { taskRunning("Task running") , closeTaskRunning("Task running"),setrunning_title(!running_title) }}>Task Running {running_title ? <FaArrowUp/>:<FaArrowDown/>} </div>
         </GridItem>
       </GridContainer>
     </Card>
@@ -2295,7 +2321,20 @@ const updateComment = async(id, comment) =>{
                               <GridItem xs={12} sm={12} md={12}>
                                 <div className="form-group" hidden={cookies.Role_id != "2"}>
                                     <span>Task Status</span><span className="required">*</span>
-                                      <select name="task_status" id="Status" className="form-control signup-input" 
+                                    <Multiselect
+                                        displayValue="value"
+                                        options={all_Status}
+                                        value={u_Status}
+                                        selectedValues={u_Status}
+                                        selectionLimit="1"
+                                        onChange={setStatus}
+                                        onRemove={setStatus}
+                                        onSearch={function noRefCheck(){}}
+                                        onSelect={setStatus}
+                                        placeholder="Task Priority"
+                                        showArrow={true}
+                                    />
+                                      {/* <select name="task_status" id="Status" className="form-control signup-input" 
                                       onChange={(e)=> { updateStatus(e.target.value), close() }} 
                                       value={uoption.task_status} >
                                         <option value="" disabled selected>Select Task Status</option>
@@ -2304,7 +2343,7 @@ const updateComment = async(id, comment) =>{
                                         <option value="task_Running">Task Running</option>
                                         <option value="task_completed">Task Completed</option>
                                       </select>
-                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span> */}
                                   </div> 
                                   <div className="form-group" hidden={cookies.Role_id == "2"}>
                                     <span>Task Status</span><span className="required">*</span>
@@ -2654,7 +2693,7 @@ const updateComment = async(id, comment) =>{
     <Card>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-          <div className="taskCompleted task_title" onClick={()=> { taskCompleted("task_completed") , closeTaskCompleted("task_completed") , setcompleted_title(!completed_title)}}>Task completed {completed_title ? <FaArrowUp/>:<FaArrowDown/>} </div>
+          <div className="taskCompleted task_title" onClick={()=> { taskCompleted("Task completed") , closeTaskCompleted("Task completed") , setcompleted_title(!completed_title)}}>Task completed {completed_title ? <FaArrowUp/>:<FaArrowDown/>} </div>
         </GridItem>
       </GridContainer>
     </Card>
@@ -2807,7 +2846,20 @@ const updateComment = async(id, comment) =>{
                               <GridItem xs={12} sm={12} md={12}>
                                 <div className="form-group" hidden={cookies.Role_id != "2"}>
                                     <span>Task Status</span><span className="required">*</span>
-                                      <select name="task_status" id="Status" className="form-control signup-input" 
+                                    <Multiselect
+                                        displayValue="value"
+                                        options={all_Status}
+                                        value={u_Status}
+                                        selectedValues={u_Status}
+                                        selectionLimit="1"
+                                        onChange={setStatus}
+                                        onRemove={setStatus}
+                                        onSearch={function noRefCheck(){}}
+                                        onSelect={setStatus}
+                                        placeholder="Task Priority"
+                                        showArrow={true}
+                                    />
+                                      {/* <select name="task_status" id="Status" className="form-control signup-input" 
                                       onChange={(e)=> { updateStatus(e.target.value), close() }} 
                                       value={uoption.task_status} >
                                         <option value="" disabled selected>Select Task Status</option>
@@ -2816,7 +2868,7 @@ const updateComment = async(id, comment) =>{
                                         <option value="task_Running">Task Running</option>
                                         <option value="task_completed">Task Completed</option>
                                       </select>
-                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                    <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span> */}
                                   </div> 
                                   <div className="form-group" hidden={cookies.Role_id == "2"}>
                                     <span>Task Status</span><span className="required">*</span>
