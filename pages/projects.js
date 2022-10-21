@@ -1221,8 +1221,8 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                   <CardHeader color="primary">
                                     <GridContainer>
                                       <GridItem>
-                                        <h4 className={classes.cardTitleWhite + ' ' + 'text-white'}>Edit Project</h4>
-                                        <p className={classes.cardCategoryWhite + ' ' + 'text-white'}>Update your project details</p>
+                                        <h4 className={classes.cardTitleWhite + ' ' + 'text-white'}><span hidden={cookies.Role_id == "2"}>Edit</span> <span hidden={cookies.Role_id != "2"}>View</span> Project Details</h4>
+                                        {/* <p className={classes.cardCategoryWhite + ' ' + 'text-white'}>Update your project details</p> */}
                                       </GridItem>
                                       <div className={classes.close}>
                                         <a onClick={close}>&times;</a>
@@ -1300,7 +1300,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                         <DatePicker
                                           disabled={cookies.Role_id == "2"}
                                           placeholderText="Start Date : dd/mm/yyyy"
-                                          isClearable
+                                          // isClearable
                                           name="datetime"
                                           className={"form-control"}
                                           value={new Date(uoption.project_start)}
@@ -1320,7 +1320,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                         <DatePicker
                                           disabled={cookies.Role_id == "2"}
                                           placeholderText="End Date : dd/mm/yyyy"
-                                          isClearable
+                                          // isClearable
                                           name="datetime1"
                                           value={new Date(uoption.project_deadline)}
                                           className={"form-control"}
@@ -1632,8 +1632,8 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                   <CardHeader color="primary">
                                     <GridContainer>
                                       <GridItem>
-                                        <h4 className={classes.cardTitleWhite + ' ' + 'text-white'}>Edit Project</h4>
-                                        <p className={classes.cardCategoryWhite + ' ' + 'text-white'}>Update your project details</p>
+                                        <h4 className={classes.cardTitleWhite + ' ' + 'text-white'}><span hidden={cookies.Role_id == "2"}>Edit</span> <span hidden={cookies.Role_id != "2"}>View</span> Project Details</h4>
+                                        {/* <p className={classes.cardCategoryWhite + ' ' + 'text-white'}>Update your project details</p> */}
                                       </GridItem>
                                       <div className={classes.close}>
                                         <a onClick={close}>&times;</a>
@@ -1711,7 +1711,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                         <DatePicker
                                           disabled={cookies.Role_id == "2"}
                                           placeholderText="Start Date : dd/mm/yyyy"
-                                          isClearable
+                                          // isClearable
                                           name="datetime"
                                           className={"form-control"}
                                           value={new Date(uoption.project_start)}
@@ -1731,7 +1731,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                         <DatePicker
                                           disabled={cookies.Role_id == "2"}
                                           placeholderText="End Date : dd/mm/yyyy"
-                                          isClearable
+                                          // isClearable
                                           name="datetime1"
                                           value={new Date(uoption.project_deadline)}
                                           className={"form-control"}
@@ -2053,8 +2053,8 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                   <CardHeader color="primary">
                                     <GridContainer>
                                       <GridItem>
-                                        <h4 className={classes.cardTitleWhite + ' ' + 'text-white'}>Edit Project</h4>
-                                        <p className={classes.cardCategoryWhite + ' ' + 'text-white'}>Update your project details</p>
+                                        <h4 className={classes.cardTitleWhite + ' ' + 'text-white'}><span hidden={cookies.Role_id == "2"}>Edit</span> <span hidden={cookies.Role_id != "2"}>View</span> Project Details</h4>
+                                        {/* <p className={classes.cardCategoryWhite + ' ' + 'text-white'}>Update your project details</p> */}
                                       </GridItem>
                                       <div className={classes.close}>
                                         <a onClick={close}>&times;</a>
@@ -2132,7 +2132,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                         <DatePicker
                                           disabled={cookies.Role_id == "2"}
                                           placeholderText="Start Date : dd/mm/yyyy"
-                                          isClearable
+                                          // isClearable
                                           name="datetime"
                                           className={"form-control"}
                                           value={new Date(uoption.project_start)}
@@ -2152,7 +2152,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                         <DatePicker
                                           disabled={cookies.Role_id == "2"}
                                           placeholderText="End Date : dd/mm/yyyy"
-                                          isClearable
+                                          // isClearable
                                           name="datetime1"
                                           value={new Date(uoption.project_deadline)}
                                           className={"form-control"}
