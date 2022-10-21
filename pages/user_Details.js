@@ -105,7 +105,6 @@ function UserDetail({UserDetail, user_Department}) {
   });
 
   const [selected, setSelected] = useState("");
-  // console.log(selected)
 
   let role_id_type = userdata.role_id;
   const role_id = ["1","2","3"]
@@ -126,6 +125,14 @@ function UserDetail({UserDetail, user_Department}) {
     const res = await fetch(`${server}/api/admin/${id}`)
     const data = await res.json()
     setSingleUser(data[0])
+
+    const department = [];
+    department.push( {'label': data[0].department, 'value': data[0].department} );
+    setProject(department);
+
+    const designation = [];
+    designation.push( {'label': data[0].position, 'value': data[0].position} );
+    set_uDesignation(designation);
   }
 
   useEffect(()=>{
@@ -136,12 +143,20 @@ function UserDetail({UserDetail, user_Department}) {
     setuserdata({ ...userdata, [name]: value });
     setSelected({ ...selected, [name]: value });
   }
-  console.log(userdata);
-  
 
   //Password Hide & Show Toggle
   const [pwd, setPwd] = useState('');
   const [isRevealPwd, setIsRevealPwd] = useState(false);
+
+  if(userdata.length != 0){
+
+    if(userdata.department != ""){
+      const department = [];
+      department.push( {'label': userdata.department, 'value': userdata.department} );
+      // setProject(department);
+    }
+    // console.log(department);
+  }
 
     // store department value
     const [u_Department, setDepartment] = useState([]);
@@ -197,7 +212,7 @@ function UserDetail({UserDetail, user_Department}) {
     else{
       // let data = await axios.put(`${server}/api/admin/${id}`, userdata);
       let data = await axios.put(`${server}/api/admin/${id}`, {
-        role_id:role_id_type , username:userdata.username, password:userdata.password, email:userdata.email, mobile_no:userdata.mobile_no, department:p_selected, position:user_Designation, status:userdata.status, role:userdata.role
+        role_id:role_id_type , username:userdata.username, password:userdata.password, email:userdata.email, mobile_no:userdata.mobile_no, department:p_selected[0].value, position:user_Designation[0].value, status:userdata.status, role:userdata.role
       });
       console.log(data)
       console.log(userdata)
@@ -466,7 +481,7 @@ function UserDetail({UserDetail, user_Department}) {
                                         <GridContainer>
                                           <GridItem xs={12} sm={12} md={12}>
                                             <div className="form-group">
-                                              <input type="text" className="form-control signup-input" name="username" placeholder="enter your name" value={userdata.username} onChange={handleChange} />
+                                              <input type="text" className="form-control signup-input" name="username" placeholder="Enter your name" value={userdata.username} onChange={handleChange} />
                                             </div> 
                                           </GridItem>
                                         </GridContainer><br/>
@@ -474,7 +489,7 @@ function UserDetail({UserDetail, user_Department}) {
                                         <GridContainer>  
                                           <GridItem xs={12} sm={12} md={12}>
                                             <div className="form-group">
-                                              <input type="text" className="form-control signup-input" name="email" placeholder="enter your email" value={userdata.email} onChange={handleChange} autoComplete="off"  />
+                                              <input type="text" className="form-control signup-input" name="email" placeholder="Enter your email" value={userdata.email} onChange={handleChange} autoComplete="off"  />
                                             </div> 
                                           </GridItem>
                                         </GridContainer><br/>
@@ -482,7 +497,7 @@ function UserDetail({UserDetail, user_Department}) {
                                         {/* <GridContainer>
                                           <GridItem xs={12} sm={12} md={12}>
                                             <div className="form-group">
-                                              <input type={isRevealPwd ? 'text' : 'password'} className="form-control signup-input" name="password" placeholder="enter your password" value={userdata.password} onChange={handleChange} autoComplete="off"  />
+                                              <input type={isRevealPwd ? 'text' : 'password'} className="form-control signup-input" name="password" placeholder="Enter your password" value={userdata.password} onChange={handleChange} autoComplete="off"  />
                                               <span className='icon-eyes' onClick={() => setIsRevealPwd((prevState) => !prevState)} >{isRevealPwd ? <IoMdEyeOff /> : <IoMdEye/>}</span>
                                             </div> 
                                           </GridItem>
@@ -491,48 +506,43 @@ function UserDetail({UserDetail, user_Department}) {
                                         <GridContainer>
                                           <GridItem xs={12} sm={12} md={6}>
                                             <div className="form-group">
-                                              <input type="text" className="form-control signup-input" name="mobile_no" placeholder="enter your Mobile number" value={userdata.mobile_no} onChange={handleChange} autoComplete="off"  />
+                                              <input type="text" className="form-control signup-input" name="mobile_no" placeholder="Enter your Mobile number" value={userdata.mobile_no} onChange={handleChange} autoComplete="off"  />
                                             </div> 
                                           </GridItem>
+
                                           <GridItem xs={12} sm={12} md={6}>
-                                            <div className="form-group">
-                                              <select name="department" id="Department" value={userdata.department} onChange={handleChange} autoComplete="off" className="form-control signup-input" >
-                                                <option value="" disabled selected>enter your department</option>
-                                                <option value="HR">HR</option>
-                                                <option value="UI & UX">UI & UX</option>
-                                                <option value="Web development">Web development</option>
-                                                <option value="Content writer">Content writer</option>
-                                                <option value="Project manager">Project manager</option>
-                                                <option value="Mobile App developer">Mobile App developer</option>
-                                                <option value="SEO">SEO</option>
-                                              </select>
-                                              <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
-                                            </div> 
+                                          <Multiselect
+                                              displayValue="value"
+                                              options={u_Department}
+                                              value={p_selected}
+                                              selectedValues={p_selected}
+                                              selectionLimit="1"
+                                              onChange={handleSelect}
+                                              onRemove={handleSelect}
+                                              onSearch={function noRefCheck(){}}
+                                              onSelect={handleSelect}
+                                              placeholder="Select User Department"
+                                              showArrow={true}
+                                          />
                                           </GridItem>
                                         </GridContainer><br/>
 
                                         <GridContainer>
                                           <GridItem xs={12} sm={12} md={12}>
                                             <div className="form-group">
-                                              {/*<input type="text" className="form-control signup-input" name="position" placeholder="enter your position" value={userdata.position} onChange={handleChange} autoComplete="off"  />*/}
-                                              <select name="position" id="position" className="form-control signup-input" value={userdata.position} onChange={handleChange}  >
-                                                <option value="" disabled selected>Junior HR</option>
-                                                <option value="Jr. HR">Jr. HR</option>
-                                                <option value="Jr. UI & UX">Jr. UI & UX</option>
-                                                <option value="Jr. Web Development">Jr. Web Developer</option>
-                                                <option value="Jr. Content Writer">Jr. Content Writer</option>
-                                                <option value="Jr. Project Manager">Jr. Project Manager</option>
-                                                <option value="Jr. Mobile App Developer">Jr. Mobile App Developer</option>
-                                                <option value="Jr. SEO">Jr. SEO</option>
-                                                <option value="Sr. HR">Sr. HR</option>
-                                                <option value="Sr. UI & UX">Sr. UI & UX</option>
-                                                <option value="Sr. Web Developer">Sr. Web Developer</option>
-                                                <option value="Sr. Content Writer">Sr. Content Writer</option>
-                                                <option value="Sr. Project Manager">Sr. Project Manager</option>
-                                                <option value="Sr. Mobile App Developer">Sr. Mobile App Developer</option>
-                                                <option value="Sr. SEO">Sr. SEO</option>
-                                              </select>
-                                              <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
+                                            <Multiselect
+                                                displayValue="value"
+                                                options={u_Designation}
+                                                value={user_Designation}
+                                                selectedValues={user_Designation}
+                                                selectionLimit="1"
+                                                onChange={set_uDesignation}
+                                                onRemove={set_uDesignation}
+                                                onSearch={function noRefCheck(){}}
+                                                onSelect={set_uDesignation}
+                                                placeholder="User Designation"
+                                                showArrow={true}
+                                            />
                                             </div> 
                                           </GridItem>
                                         </GridContainer><br/>
@@ -541,7 +551,7 @@ function UserDetail({UserDetail, user_Department}) {
                                           <GridItem xs={12} sm={12} md={6}>
                                             <div className="form-group">
                                               <select name="status" id="Status" className="form-control signup-input"  value={userdata.status} onChange={handleChange} autoComplete="off"   >
-                                                <option value="" disabled selected>enter your status</option>
+                                                <option value="" disabled selected>Enter your status</option>
                                                 <option value="Active">Active</option>
                                                 <option value="Inactive">Inactive</option>
                                               </select>
@@ -552,7 +562,7 @@ function UserDetail({UserDetail, user_Department}) {
                                           <GridItem xs={12} sm={12} md={6}>
                                             <div className="form-group">
                                               <select name="role" id="Role" className="form-control signup-input" value={userdata.role}  onChange={handleChange} autoComplete="off" >
-                                                <option value="" disabled selected >enter your role</option>
+                                                <option value="" disabled selected >Enter your role</option>
                                                 <option value="User">User</option>
                                                 <option value="Admin">Admin</option>
                                                 <option value="Super User">Super User</option>
