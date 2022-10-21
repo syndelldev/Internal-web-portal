@@ -802,6 +802,8 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                       onSelect={setDepartment}
                                       placeholder="Project Department"
                                       showArrow={true}
+                                      customCloseIcon={<></>}
+                                      disable={cookies.Role_id == "2"}
                                     />
                                     </div> 
                                 </GridItem>
@@ -820,6 +822,8 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                     onSelect={setLanguage}
                                     placeholder="Project Language"
                                     showArrow={true}
+                                    customCloseIcon={<></>}
+                                    disable={cookies.Role_id == "2"}
                                   />
                                   <div className="error-msg">{errors.project_language && <span>{errors.project_language.message}</span>}</div>
                                   </div> 
@@ -883,6 +887,8 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                       onSelect={setPriority}
                                       placeholder="Project Priority"
                                       showArrow={true}
+                                      customCloseIcon={<></>}
+                                      disable={cookies.Role_id == "2"}
                                   />
 
                                     {/* <select name="priority" id="priority" className="form-control signup-input" {...register('project_priority', {required:true ,message:'Please select atleast one option', })}>
@@ -910,6 +916,8 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                           onSelect={setStatus}
                                           placeholder="Project Status"
                                           showArrow={true}
+                                          customCloseIcon={<></>}
+                                          disable={cookies.Role_id == "2"}
                                       />
                                       
                                       {/* <select name="Status" id="Status" className="form-control signup-input" {...register('project_status', {required:true ,message:'Please select atleast one option', })}>
@@ -929,15 +937,16 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                 <div className="form-group" {...register('project_person')}>
                                   <span>Project Members</span><span className="required">*</span>
                                   <Multiselect
-                                  displayValue="value"
+                                    displayValue="value"
                                     options={uoptions}
                                     value={selected}
-                                    // selectedValues={add_user}
                                     onChange={setSelected}
                                     onRemove={setSelected}
                                     onSelect={setSelected}
                                     placeholder="Select Project Members"
                                     showArrow={true}
+                                    customCloseIcon={<></>}
+                                    disable={cookies.Role_id == "2"}
                                   />
                                   <div className="error-msg">{errors.project_person && <span>{errors.project_person.message}</span>}</div>
                                 </div> 
@@ -1256,6 +1265,8 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                           onSelect={setDepartment}
                                           placeholder="Project Department"
                                           showArrow={true}
+                                          customCloseIcon={<></>}
+                                          disable={cookies.Role_id == "2"}
                                         />
                                         </div> 
                                     </GridItem>
@@ -1275,6 +1286,8 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                         onSelect={setLanguage}
                                         placeholder="Project Language"
                                         showArrow={true}
+                                        customCloseIcon={<></>}
+                                        disable={cookies.Role_id == "2"}
                                       />
                                       </div> 
                                     </GridItem>
@@ -1339,6 +1352,8 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                         onSelect={setPriority}
                                         placeholder="Project Priority"
                                         showArrow={true}
+                                        customCloseIcon={<></>}
+                                        disable={cookies.Role_id == "2"}
                                     />
                                       </div> 
                                     </GridItem>
@@ -1358,6 +1373,8 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                               onSelect={setStatus}
                                               placeholder="Project Status"
                                               showArrow={true}
+                                              customCloseIcon={<></>}
+                                              disable={cookies.Role_id == "2"}
                                           />
                                         </div> 
                                     </GridItem>
@@ -1368,7 +1385,6 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                         <div className="form-group">     
                                         <span>Project Members</span><span className="required">*</span>
                                           <Multiselect
-                                            disable={cookies.Role_id == "2"}
                                             displayValue="value"
                                             options={uoptions}
                                             value={updateSelected}
@@ -1378,7 +1394,9 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                             onSelect={setUpdateSelected}
                                             placeholder="Select Project Members"
                                             showArrow={true}
-                                            />
+                                            customCloseIcon={<></>}
+                                            disable={cookies.Role_id == "2"}
+                                          />
                                         </div> 
                                       </GridItem>
                                     </GridContainer><br/>
@@ -1658,6 +1676,8 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                           onSelect={setDepartment}
                                           placeholder="Project Department"
                                           showArrow={true}
+                                          customCloseIcon={<></>}
+                                          disable={cookies.Role_id == "2"}
                                         />
                                         </div> 
                                     </GridItem>
@@ -1677,6 +1697,8 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                         onSelect={setLanguage}
                                         placeholder="Project Language"
                                         showArrow={true}
+                                        customCloseIcon={<></>}
+                                        disable={cookies.Role_id == "2"}
                                       />
                                       </div> 
                                     </GridItem>
@@ -1741,6 +1763,8 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                         onSelect={setPriority}
                                         placeholder="Project Priority"
                                         showArrow={true}
+                                        customCloseIcon={<></>}
+                                        disable={cookies.Role_id == "2"}
                                     />
 
                                       </div> 
@@ -1761,6 +1785,8 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                               onSelect={setStatus}
                                               placeholder="Project Status"
                                               showArrow={true}
+                                              customCloseIcon={<></>}
+                                              disable={cookies.Role_id == "2"}
                                           />
 
                                             {/* <select name="project_status" id="Status" className="form-control signup-input" value={uoption.project_status} onChange={handleChange} disabled={cookies.Role_id == "2"} >
@@ -1779,7 +1805,6 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                         <div className="form-group">     
                                         <span>Project Members</span><span className="required">*</span>
                                           <Multiselect
-                                            disabled={cookies.Role_id == "2"}
                                             displayValue="value"
                                             options={uoptions}
                                             value={updateSelected}
@@ -1789,8 +1814,9 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                             onSelect={setUpdateSelected}
                                             placeholder="Select Project Members"
                                             showArrow={true}
+                                            customCloseIcon={<></>}
                                             disable={cookies.Role_id == "2"}
-                                            />
+                                          />
                                         </div> 
                                       </GridItem>
                                     </GridContainer><br/>
@@ -2071,6 +2097,8 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                           onSelect={setDepartment}
                                           placeholder="Project Department"
                                           showArrow={true}
+                                          customCloseIcon={<></>}
+                                          disable={cookies.Role_id == "2"}
                                         />
                                         </div> 
                                     </GridItem>
@@ -2090,6 +2118,8 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                         onSelect={setLanguage}
                                         placeholder="Project Language"
                                         showArrow={true}
+                                        customCloseIcon={<></>}
+                                        disable={cookies.Role_id == "2"}
                                       />
                                       </div> 
                                     </GridItem>
@@ -2154,6 +2184,8 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                         onSelect={setPriority}
                                         placeholder="Project Priority"
                                         showArrow={true}
+                                        customCloseIcon={<></>}
+                                        disable={cookies.Role_id == "2"}
                                       />
 
                                         {/* <select name="project_priority" id="priority" className="form-control signup-input" value={uoption.project_priority} onChange={handleChange} disabled={cookies.Role_id == "2"}>
@@ -2181,6 +2213,8 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                               onSelect={setStatus}
                                               placeholder="Project Status"
                                               showArrow={true}
+                                              customCloseIcon={<></>}
+                                              disable={cookies.Role_id == "2"}
                                           />
 
                                             {/* <select name="project_status" id="Status" className="form-control signup-input" value={uoption.project_status} onChange={handleChange} disabled={cookies.Role_id == "2"} >
@@ -2199,7 +2233,6 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                         <div className="form-group">     
                                         <span>Project Members</span><span className="required">*</span>
                                           <Multiselect
-                                            disabled={cookies.Role_id == "2"}
                                             displayValue="value"
                                             options={uoptions}
                                             value={updateSelected}
@@ -2209,6 +2242,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                             onSelect={setUpdateSelected}
                                             placeholder="Select Project Members"
                                             showArrow={true}
+                                            customCloseIcon={<></>}
                                             disable={cookies.Role_id == "2"}
                                           />
                                         </div> 

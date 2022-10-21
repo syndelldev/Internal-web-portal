@@ -552,8 +552,8 @@ useEffect(() =>{
                                   <CardHeader color="primary">
                                     <GridContainer>
                                       <GridItem>
-                                        <h4 className="Updatedetails">Edit Project</h4>
-                                        <p className="Updatedetails">Update your project details</p>
+                                        <h4 className="Updatedetails"><span hidden={cookies.Role_id == "2"}>Edit</span> <span hidden={cookies.Role_id != "2"}>View</span> Project Details</h4>
+                                        {/* <p className="Updatedetails">Update your project details</p> */}
                                       </GridItem>
                                       <div className={classes.close}>
                                         <a onClick={close}>&times;</a>
@@ -596,6 +596,8 @@ useEffect(() =>{
                                           onSelect={setDepartment}
                                           placeholder="Project Department"
                                           showArrow={true}
+                                          customCloseIcon={<></>}
+                                          disable={cookies.Role_id == "2"}  
                                         />
                                         </div> 
                                     </GridItem>
@@ -615,7 +617,9 @@ useEffect(() =>{
                                         onSelect={setLanguage}
                                         placeholder="Project Language"
                                         showArrow={true}
-                                      />
+                                        customCloseIcon={<></>}
+                                        disable={cookies.Role_id == "2"}  
+                                    />
                                       <div className="error-msg">{errors.project_language && <span>{errors.project_language.message}</span>}</div>
                                       </div> 
                                     </GridItem>
@@ -628,7 +632,7 @@ useEffect(() =>{
                                         <DatePicker
                                           disabled={cookies.Role_id == "2"}
                                           placeholderText="Start Date : dd/mm/yyyy"
-                                          isClearable
+                                          // isClearable
                                           name="datetime"
                                           className={"form-control"}
                                           value={new Date(uoption.project_start)}
@@ -648,7 +652,7 @@ useEffect(() =>{
                                         <DatePicker
                                           disabled={cookies.Role_id == "2"}
                                           placeholderText="End Date : dd/mm/yyyy"
-                                          isClearable
+                                          isClearable={false}
                                           name="datetime1"
                                           value={new Date(uoption.project_deadline)}
                                           className={"form-control"}
@@ -680,7 +684,9 @@ useEffect(() =>{
                                         onSelect={setPriority}
                                         placeholder="Project Priority"
                                         showArrow={true}
-                                    />
+                                        customCloseIcon={<></>}
+                                        disable={cookies.Role_id == "2"}
+                                      />
                                       </div> 
                                     </GridItem>
                                   
@@ -699,7 +705,9 @@ useEffect(() =>{
                                               onSelect={setStatus}
                                               placeholder="Project Status"
                                               showArrow={true}
-                                          />
+                                              customCloseIcon={<></>}
+                                              disable={cookies.Role_id == "2"}  
+                                            />
                                         </div> 
                                     </GridItem>
                                   </GridContainer><br/>
@@ -719,6 +727,7 @@ useEffect(() =>{
                                             onSelect={setUpdateSelected}
                                             placeholder="Select Project Members"
                                             showArrow={true}
+                                            customCloseIcon={<></>}
                                             disable={cookies.Role_id == "2"}
                                           />
                                         </div> 

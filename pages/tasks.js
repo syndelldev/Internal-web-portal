@@ -814,6 +814,8 @@ const updateComment = async(id, comment) =>{
                         onSelect={setProject}
                         placeholder="Project List"
                         showArrow={true}
+                        customCloseIcon={<></>}
+                        disable={cookies.Role_id == "2"}
                       />
                       
                         {/* <div className="error-msg">{errors.project_name && <span>{errors.project_name.message}</span>}</div> */}
@@ -846,7 +848,9 @@ const updateComment = async(id, comment) =>{
                           onSelect={setPriority}
                           placeholder="Task Priority"
                           showArrow={true}
-                      />
+                          customCloseIcon={<></>}
+                          disable={cookies.Role_id == "2"}
+                        />
 
                         {/* <select name="priority" id="priority" className="form-control signup-input" {...register('task_priority', {required:true ,message:'Please select atleast one option', })}>
                           <option value=""  disabled selected>Select Task Priority</option>
@@ -873,6 +877,8 @@ const updateComment = async(id, comment) =>{
                         onSelect={setLanguage}
                         placeholder="Task Language"
                         showArrow={true}
+                        customCloseIcon={<></>}
+                        disable={cookies.Role_id == "2"}
                       />
                       </div> 
                     </GridItem>
@@ -933,6 +939,8 @@ const updateComment = async(id, comment) =>{
                         onSelect={setSelected}
                         placeholder="Select Task Members"
                         showArrow={true}
+                        customCloseIcon={<></>}
+                        disable={cookies.Role_id == "2"}
                       />
                         {/* <div className="error-msg">{errors.task_person && <span>{errors.task_person.message}</span>}</div> */}
                       </div> 
@@ -1254,6 +1262,7 @@ const updateComment = async(id, comment) =>{
                                     onSelect={setProject}
                                     placeholder="Project List"
                                     showArrow={true}
+                                    customCloseIcon={<></>}
                                     disable={cookies.Role_id == "2"}
                                   />
                                   </div> 
@@ -1285,7 +1294,9 @@ const updateComment = async(id, comment) =>{
                                         onSelect={setStatus}
                                         placeholder="Task Priority"
                                         showArrow={true}
-                                    />
+                                        customCloseIcon={<></>}
+                                        disable={cookies.Role_id == "2"}
+                                      />
                                       {/* <select name="task_status" id="Status" className="form-control signup-input" 
                                       onChange={(e)=> { updateStatus(e.target.value), close() }} 
                                       value={uoption.task_status} >
@@ -1311,7 +1322,9 @@ const updateComment = async(id, comment) =>{
                                         onSelect={setStatus}
                                         placeholder="Task Priority"
                                         showArrow={true}
-                                    />
+                                        customCloseIcon={<></>}
+                                        disable={cookies.Role_id == "2"}
+                                      />
                                   </div> 
                                 </GridItem>
                               </GridContainer><br/>
@@ -1332,7 +1345,9 @@ const updateComment = async(id, comment) =>{
                                       onSelect={setPriority}
                                       placeholder="Task Priority"
                                       showArrow={true}
-                                  />
+                                      customCloseIcon={<></>}
+                                      disable={cookies.Role_id == "2"}
+                                    />
                                   </div> 
                                 </GridItem>
 
@@ -1351,6 +1366,8 @@ const updateComment = async(id, comment) =>{
                                     placeholder="Task Language"
                                     showArrow={true}
                                     selectedValues={u_Language}
+                                    customCloseIcon={<></>}
+                                    disable={cookies.Role_id == "2"}
                                   />
 
                                   </div> 
@@ -1414,7 +1431,8 @@ const updateComment = async(id, comment) =>{
                                     onSelect={setUpdateSelected}
                                     placeholder="Select Task Members"
                                     showArrow={true}
-                                    disable={cookies.Role_id == "2"}                              
+                                    customCloseIcon={<></>}
+                                    disable={cookies.Role_id == "2"}
                                   />
                                   </div> 
                                 </GridItem>
@@ -1778,6 +1796,7 @@ const updateComment = async(id, comment) =>{
                                     onSelect={setProject}
                                     placeholder="Project List"
                                     showArrow={true}
+                                    customCloseIcon={<></>}
                                     disable={cookies.Role_id == "2"}
                                   />
                                   </div> 
@@ -1809,6 +1828,8 @@ const updateComment = async(id, comment) =>{
                                         onSelect={setStatus}
                                         placeholder="Task Priority"
                                         showArrow={true}
+                                        customCloseIcon={<></>}
+                                        disable={cookies.Role_id == "2"}
                                     />
                                       {/* <select name="task_status" id="Status" className="form-control signup-input" 
                                       onChange={(e)=> { updateStatus(e.target.value), close() }} 
@@ -1835,6 +1856,8 @@ const updateComment = async(id, comment) =>{
                                         onSelect={setStatus}
                                         placeholder="Task Priority"
                                         showArrow={true}
+                                        customCloseIcon={<></>}
+                                        disable={cookies.Role_id == "2"}
                                     />
                                   </div> 
                                 </GridItem>
@@ -1856,6 +1879,8 @@ const updateComment = async(id, comment) =>{
                                       onSelect={setPriority}
                                       placeholder="Task Priority"
                                       showArrow={true}
+                                      customCloseIcon={<></>}
+                                      disable={cookies.Role_id == "2"}
                                   />
                                   </div> 
                                 </GridItem>
@@ -1875,6 +1900,8 @@ const updateComment = async(id, comment) =>{
                                     placeholder="Task Language"
                                     showArrow={true}
                                     selectedValues={u_Language}
+                                    customCloseIcon={<></>}
+                                    disable={cookies.Role_id == "2"}
                                   />
                                   </div> 
                                 </GridItem>
@@ -1928,7 +1955,7 @@ const updateComment = async(id, comment) =>{
                                   
                                   <span>Task Members</span><span className="required">*</span>
                                   <Multiselect
-                                  displayValue="value"
+                                    displayValue="value"
                                     options={uoptions}
                                     value={updateSelected}
                                     selectedValues={allSelectedMember}
@@ -1937,7 +1964,8 @@ const updateComment = async(id, comment) =>{
                                     onSelect={setUpdateSelected}
                                     placeholder="Select Task Members"
                                     showArrow={true}
-                                    disable={cookies.Role_id == "2"}                              
+                                    customCloseIcon={<></>}
+                                    disable={cookies.Role_id == "2"}
                                   />
                                   </div> 
                                 </GridItem>
@@ -2302,6 +2330,7 @@ const updateComment = async(id, comment) =>{
                                     onSelect={setProject}
                                     placeholder="Project List"
                                     showArrow={true}
+                                    customCloseIcon={<></>}
                                     disable={cookies.Role_id == "2"}
                                   />
                                   </div> 
@@ -2333,6 +2362,8 @@ const updateComment = async(id, comment) =>{
                                         onSelect={setStatus}
                                         placeholder="Task Priority"
                                         showArrow={true}
+                                        customCloseIcon={<></>}
+                                        disable={cookies.Role_id == "2"}
                                     />
                                       {/* <select name="task_status" id="Status" className="form-control signup-input" 
                                       onChange={(e)=> { updateStatus(e.target.value), close() }} 
@@ -2359,6 +2390,8 @@ const updateComment = async(id, comment) =>{
                                         onSelect={setStatus}
                                         placeholder="Task Priority"
                                         showArrow={true}
+                                        customCloseIcon={<></>}
+                                        disable={cookies.Role_id == "2"}
                                     />
                                   </div> 
                                 </GridItem>
@@ -2380,6 +2413,8 @@ const updateComment = async(id, comment) =>{
                                       onSelect={setPriority}
                                       placeholder="Task Priority"
                                       showArrow={true}
+                                      customCloseIcon={<></>}
+                                      disable={cookies.Role_id == "2"}
                                   />
                                   </div> 
                                 </GridItem>
@@ -2399,6 +2434,8 @@ const updateComment = async(id, comment) =>{
                                     placeholder="Task Language"
                                     showArrow={true}
                                     selectedValues={u_Language}
+                                    customCloseIcon={<></>}
+                                    disable={cookies.Role_id == "2"}
                                   />
                                   </div> 
                                 </GridItem>
@@ -2461,7 +2498,8 @@ const updateComment = async(id, comment) =>{
                                     onSelect={setUpdateSelected}
                                     placeholder="Select Task Members"
                                     showArrow={true}
-                                    disable={cookies.Role_id == "2"}                              
+                                    customCloseIcon={<></>}
+                                    disable={cookies.Role_id == "2"}
                                   />
                                   </div> 
                                 </GridItem>
@@ -2827,6 +2865,7 @@ const updateComment = async(id, comment) =>{
                                     onSelect={setProject}
                                     placeholder="Project List"
                                     showArrow={true}
+                                    customCloseIcon={<></>}
                                     disable={cookies.Role_id == "2"}
                                   />
                                   </div> 
@@ -2858,6 +2897,8 @@ const updateComment = async(id, comment) =>{
                                         onSelect={setStatus}
                                         placeholder="Task Priority"
                                         showArrow={true}
+                                        customCloseIcon={<></>}
+                                        disable={cookies.Role_id == "2"}
                                     />
                                       {/* <select name="task_status" id="Status" className="form-control signup-input" 
                                       onChange={(e)=> { updateStatus(e.target.value), close() }} 
@@ -2884,6 +2925,8 @@ const updateComment = async(id, comment) =>{
                                         onSelect={setStatus}
                                         placeholder="Task Priority"
                                         showArrow={true}
+                                        customCloseIcon={<></>}
+                                        disable={cookies.Role_id == "2"}
                                     />
                                   </div> 
                                 </GridItem>
@@ -2905,6 +2948,8 @@ const updateComment = async(id, comment) =>{
                                       onSelect={setPriority}
                                       placeholder="Task Priority"
                                       showArrow={true}
+                                      customCloseIcon={<></>}
+                                      disable={cookies.Role_id == "2"}
                                   />
 
                                     {/* <select id="priority" className="form-control signup-input" disabled={cookies.Role_id == "2"} name="task_priority" value={uoption.task_priority} onChange={handleChange}  >
@@ -2932,6 +2977,8 @@ const updateComment = async(id, comment) =>{
                                     placeholder="Task Language"
                                     showArrow={true}
                                     selectedValues={u_Language}
+                                    customCloseIcon={<></>}
+                                    disable={cookies.Role_id == "2"}
                                   />
                                   </div> 
                                 </GridItem>
@@ -2994,7 +3041,8 @@ const updateComment = async(id, comment) =>{
                                     onSelect={setUpdateSelected}
                                     placeholder="Select Task Members"
                                     showArrow={true}
-                                    disable={cookies.Role_id == "2"}                              
+                                    customCloseIcon={<></>}
+                                    disable={cookies.Role_id == "2"}
                                   />
                                   </div> 
                                 </GridItem>
