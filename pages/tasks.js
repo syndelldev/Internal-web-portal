@@ -1012,7 +1012,7 @@ const updateComment = async(id, comment) =>{
         <button className="bttn-design" onClick={()=>{taskToDo("Task to do") ,  settodo_title(true), taskOnHold("Task on hold") , setonhold_title(true), taskRunning("Task running") , setrunning_title(true), taskCompleted("Task completed") , setcompleted_title(true) }}>Expand All</button>
       </GridItem>
       <GridItem>
-        <button className="bttn-design" onClick={()=>{taskToDo("Task to do") , closeTaskToDo("Task to do"), settodo_title(false), taskOnHold("Task on hold") , closeTaskOnHold("Task on hold"), setonhold_title(false), taskRunning("Task running") , closeTaskRunning("Task running"),setrunning_title(false), taskCompleted("Task completed") , closeTaskCompleted("Task completed") , setcompleted_title(false) }}>Collpase All</button>
+        <button className="bttn-design" onClick={()=>{taskToDo("Task to do") , closeTaskToDo("Task to do"), settodo_title(false), taskOnHold("Task on hold") , closeTaskOnHold("Task on hold"), setonhold_title(false), taskRunning("Task running") , closeTaskRunning("Task running"),setrunning_title(false), taskCompleted("Task completed") , closeTaskCompleted("Task completed") , setcompleted_title(false) }}>Collapse All</button>
       </GridItem>
     </GridContainer>
   </div>
