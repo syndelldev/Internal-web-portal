@@ -403,9 +403,21 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
   const onSubmit = async (result) =>{
     
     console.log("result");
-    console.log(result.start.toDateString());
-    const p_start = result.start.toDateString();
-    const p_end = result.end.toDateString();
+    console.log(result.start);
+    // const p_start = result.start.toDateString();
+    // const p_end = result.end.toDateString();
+
+    // start date get year, month, day for database value
+    var year = result.start.getFullYear();
+    var month = result.start.getMonth();
+    var day = result.start.getDate();
+    var s_Date = year + '-' + month + '-' + day;
+    
+    // end date get year, month, day for database value
+    var year = result.end.getFullYear();
+    var month = result.end.getMonth();
+    var day = result.end.getDate();
+    var e_Date = year + '-' + month + '-' + day;
 
     // get selected language
     if(u_Language != ""){
@@ -431,7 +443,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
       const res = await fetch(`${server}/api/project/addproject`,{
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body:JSON.stringify({project_person:selected,project_department:Department,project_status:Status, project_title:result.project_title, project_description:result.project_description, project_language:Language, project_priority:Priority, project_start: p_start , project_deadline: p_end , projectAdded_by: cookies }),
+        body:JSON.stringify({project_person:selected,project_department:Department,project_status:Status, project_title:result.project_title, project_description:result.project_description, project_language:Language, project_priority:Priority, project_start: s_Date , project_deadline: e_Date , projectAdded_by: cookies }),
       })
       const data=await res.json();
       
@@ -712,9 +724,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
             headers: { "Content-Type": "application/json" },
             body:JSON.stringify({ dateStart: startDates, dateEnd: endDates, user: cookies.name }),
           })
-          const date_uData=await response.json()
-          // console.log("user data");
-          // console.log(date_uData);
+          const date_uData=await response.json();
           
           if(response.status==200)
           {
@@ -1260,19 +1270,19 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                         <div className="form-group">
                                           <span>Project Status</span><span className="required">*</span>
                                           <Multiselect
-                                              displayValue="value"
-                                              options={all_Status}
-                                              value={u_Status}
-                                              selectedValues={u_Status}
-                                              selectionLimit="1"
-                                              onChange={setStatus}
-                                              onRemove={setStatus}
-                                              onSearch={function noRefCheck(){}}
-                                              onSelect={setStatus}
-                                              placeholder="Project Status"
-                                              showArrow={true}
-                                              customCloseIcon={<></>}
-                                              disable={cookies.Role_id == "2"}
+                                            displayValue="value"
+                                            options={all_Status}
+                                            value={u_Status}
+                                            selectedValues={u_Status}
+                                            selectionLimit="1"
+                                            onChange={setStatus}
+                                            onRemove={setStatus}
+                                            onSearch={function noRefCheck(){}}
+                                            onSelect={setStatus}
+                                            placeholder="Project Status"
+                                            showArrow={true}
+                                            customCloseIcon={<></>}
+                                            disable={cookies.Role_id == "2"}
                                           />
                                         </div> 
                                     </GridItem>
