@@ -928,7 +928,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                     onSelect={setSelected}
                                     placeholder="Select Project Members"
                                     showArrow={true}
-                                    customCloseIcon={<></>}
+                                    // customCloseIcon={<></>}
                                     disable={cookies.Role_id == "2"}
                                   />
                                   <div className="error-msg">{errors.project_person && <span>{errors.project_person.message}</span>}</div>
@@ -1292,7 +1292,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                             onSelect={setUpdateSelected}
                                             placeholder="Select Project Members"
                                             showArrow={true}
-                                            customCloseIcon={<></>}
+                                            // customCloseIcon={<></>}
                                             disable={cookies.Role_id == "2"}
                                           />
                                         </div> 
@@ -1712,7 +1712,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                             onSelect={setUpdateSelected}
                                             placeholder="Select Project Members"
                                             showArrow={true}
-                                            customCloseIcon={<></>}
+                                            // customCloseIcon={<></>}
                                             disable={cookies.Role_id == "2"}
                                           />
                                         </div> 
@@ -2140,7 +2140,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                             onSelect={setUpdateSelected}
                                             placeholder="Select Project Members"
                                             showArrow={true}
-                                            customCloseIcon={<></>}
+                                            // customCloseIcon={<></>}
                                             disable={cookies.Role_id == "2"}
                                           />
                                         </div> 
