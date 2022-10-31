@@ -93,9 +93,11 @@ const styles = {
 };
 
 export async function getServerSideProps(context){
+  // All project list
   const res = await fetch(`${server}/api/project`);
   const project_details = await res.json();
 
+  // Logged In user projects list
   const response = await fetch(`${server}/api/user_dashboard`, {
     headers: {
       'Access-Control-Allow-Credentials': true,
@@ -105,21 +107,27 @@ export async function getServerSideProps(context){
   const user_project = await response.json()
   console.log(user_project)
 
+  // All users name list
   const resp = await fetch(`${server}/api/admin`)
   const User_name = await resp.json();
 
+  // All departments list for filter
   const department = await fetch(`${server}/api/user/user_department`);
   const user_Department = await department.json();
 
+  // All languages list for filter
   const lang = await fetch(`${server}/api/language`)
   const language = await lang.json();
 
+  // All department options for dropdown
   const lang_department = await fetch(`${server}/api/languageDepartment`)
   const languageDepartment = await lang_department.json();
 
+  // All priority options for dropdown
   const pri = await fetch(`${server}/api/priority`)
   const priority = await pri.json();
 
+  // All status options for dropdown
   const stat = await fetch(`${server}/api/projectStatus`)
   const status = await stat.json();
 
@@ -190,12 +198,8 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
   const [uoption, setUpdate] = React.useState({ 
     project_title: "",
     project_description: "",
-    project_department: "",
-    project_language: "",
     project_start: "",
     project_deadline: "",
-    project_priority: "",
-    project_status: "",
     project_person: ""
   });
 
@@ -392,8 +396,8 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
           theme: "colored",
           hideProgressBar: true,
           });
-      }
-      router.reload(`${server}/projects`);
+    }
+    router.reload(`${server}/projects`);
   }
 }
 
@@ -406,18 +410,14 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
     console.log(result.start);
     // const p_start = result.start.toDateString();
     // const p_end = result.end.toDateString();
+    var year1 = result.start.getFullYear() + '-' + result.start.getMonth();
+    console.log(year1);
 
     // start date get year, month, day for database value
-    var year = result.start.getFullYear();
-    var month = result.start.getMonth();
-    var day = result.start.getDate();
-    var s_Date = year + '-' + month + '-' + day;
+    var s_Date = result.start.getFullYear() + '-' + result.start.getMonth() + '-' + result.start.getDate();
     
     // end date get year, month, day for database value
-    var year = result.end.getFullYear();
-    var month = result.end.getMonth();
-    var day = result.end.getDate();
-    var e_Date = year + '-' + month + '-' + day;
+    var e_Date = result.end.getFullYear() + '-' + result.end.getMonth() + '-' + result.end.getDate();
 
     // get selected language
     if(u_Language != ""){
@@ -447,9 +447,8 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
       })
       const data=await res.json();
       
-      if(res.status==200)
-      {
-        if(!toast.isActive(toastId.current)) {
+      if(res.status==200){
+        if(!toast.isActive(toastId.current)){
           toastId.current = toast.success('Project added Successfully ! 🎉', {
               position: "top-right",
               autoClose:1000,
@@ -465,7 +464,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
       }
     }else{
 
-      if(! toast.isActive(toastId.current)) {
+      if(! toast.isActive(toastId.current)){
         toastId.current = toast.error('Please fill all the required fields', {
             position: "top-right",
             autoClose:5000,
@@ -474,7 +473,6 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
             hideProgressBar: true,
           });
         }
-
     }
   }
 
@@ -686,19 +684,19 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
       }
 
       // date range
-      const [dateRange, setDateRange] = useState([null, null]);
-      // startdate and enddate get value
-      const [startDates, endDates] = dateRange;
+      const [dateRange, setDateRange] = useState([null]);
+      // startdate get and set value
+      const [startDates, setstartDates] = useState(null);
+      // enddate get and set value
+      const [endDates, setendDates] = useState(null);
       // get selected dates projects list
       const [dateDetails, setDateDetails] = useState(project_details);
       // get selected dates projects list for user
       // const [date_uData, setDate_uDetails] = useState();
-      // onclick show data
-      const [dateDataDisplay, setData] = useState(false);
     
       // daterange function onClick
       const date_Range = async() =>{
-        if(startDates != null && endDates != null){
+        if(startDates != null && endDates != null && endDates > startDates){
           console.log(dateRange);
 
           const res = await fetch(`${server}/api/project/dateRange_Projects`,{
@@ -715,7 +713,6 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
               setcompleted_title(true);
               setrunning_title(true);
               setonhold_title(true);
-              setData(true);
             }
           }
 
@@ -733,10 +730,19 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
               setcompleted_title(true);
               setrunning_title(true);
               setonhold_title(true);
-              setData(true);
             }
           }
-              
+        }else if(endDates < startDates){
+          // Improper startDate and endDate toast error
+          if(! toast.isActive(toastId.current)) {
+            toastId.current = toast.error('End date can`t be before its start!', {
+              position: "top-right",
+              autoClose:2000,
+              theme: "colored",
+              closeOnClick: true,
+              hideProgressBar: true,
+            });
+          }
         }else{
           // select startDate and endDate toast error
           if(! toast.isActive(toastId.current)) {
@@ -963,7 +969,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
 
           <GridItem>
             <div className="department_dropdown">
-            <button className="dropdown_button">Project Departments</button>
+            <button className="dropdown_button">Departments</button>
                 <div className="department-link">
                   {user_Department.map((department)=>{
                     return(
@@ -979,7 +985,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
 
           <GridItem>
             <div className="department_dropdown">
-              <button className="dropdown_button">Project Languages</button>
+              <button className="dropdown_button">Languages</button>
                   <div className="department-link">
                     {language.map((language)=>{
                       return(
@@ -1014,20 +1020,36 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
 {/* Date filter select dates start */}
       <GridItem>
         <DatePicker
-        monthsShown={2}
-          selectsRange={true}
-          placeholderText="Start Date - End Date"
-          startDate={startDates}
-          endDate={endDates}
+        // monthsShown={2}
+          // selectsRange={true}
+          placeholderText="Start date"
+          selected={startDates}
           onChange={(update) => {
-            setDateRange(update);
+            setstartDates(update);
           }}
           isClearable={true}
           dateFormat="dd/MM/yyyy"
+          showYearDropdown={true}
+          showMonthDropdown={true}
         />
+      </GridItem>
+
+      <GridItem>
+        <DatePicker
+          placeholderText="End date"
+          selected={endDates}
+          onChange={(update) => {
+            setendDates(update);
+          }}
+          isClearable={true}
+          dateFormat="dd/MM/yyyy"
+          showYearDropdown={true}
+          showMonthDropdown={true}
+          minDate={startDates}
+        />
+      </GridItem>
         <button onClick={() => date_Range()}>enter</button>
 
-      </GridItem>
 {/* Date filter select dates end */}
     </GridContainer>
   </div>
