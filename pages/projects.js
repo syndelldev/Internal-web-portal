@@ -1021,6 +1021,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
       <GridItem>
         <DatePicker
           placeholderText="Start date"
+          className={"form-control"}
           selected={startDates}
           onChange={(update) => {
             setstartDates(update);
@@ -1035,6 +1036,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
       <GridItem>
         <DatePicker
           placeholderText="End date"
+          className={"form-control"}
           selected={endDates}
           onChange={(update) => {
             setendDates(update);
@@ -1046,7 +1048,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
           minDate={startDates}
         />
       </GridItem>
-        <button onClick={() => date_Range()}>enter</button>
+        <button className="bttn-design" onClick={() => date_Range()}>Enter</button>
 {/* Date filter select dates end */}
 
     </GridContainer>
