@@ -782,3 +782,31 @@ button.addproject{
   to {transform: rotate(359deg);}
 }
 /*Loading css End*/
+/***** CSS Added by Ashvini Strat *****/
+.MuiPaper-root.MuiDrawer-paper.makeStyles-drawerPaper-6.MuiDrawer-paperAnchorLeft.MuiDrawer-paperAnchorDockedLeft.MuiPaper-elevation0{
+  background: url('/sidebar_bg.jpg');
+  width: auto;
+  height: 100%;
+  background-size: cover;
+  background-position: center center;
+}
+.MuiDrawer-paper .MuiButton-text span{
+  color: #4caf50!important;
+  padding-left: 15px;
+}
+/* .MuiButton-text span{
+  color: #fff!important;
+} */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px)
+{
+  .MuiButtonBase-root.MuiIconButton-root.MuiIconButton-colorInherit{
+    right: 65%;
+  }
+}
+@media only screen and (min-device-width: 260px) and (max-device-width: 767px)
+{
+  .MuiButtonBase-root.MuiIconButton-root.MuiIconButton-colorInherit{
+    right: 105%;
+  }
+}
+/***** CSS Added by Ashvini End *****/

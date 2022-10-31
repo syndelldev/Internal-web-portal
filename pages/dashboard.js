@@ -23,9 +23,9 @@ import { FiEdit } from "react-icons/fi";
 import { BiArchiveIn } from 'react-icons/bi';
 import Button from "components/CustomButtons/Button.js";
 
+// import AvatarGroup from 'react-avatar-group';
 // import { alertService } from 'services';
 // import {Alert} from "components/Alert.jsx";
-
 
 
 const styles = {
@@ -454,25 +454,6 @@ useEffect(() =>{
       </div>
     <h4 className="project_status">Projects</h4>
     
-            {/* <div className="row">
-                <div className="col">
-                    <Alert id="left-alert" />
-                    <button className="btn btn-success m-1" onClick={() => alertService.success('Success!!', { id: 'left-alert' })}>Success</button>
-                    <button className="btn btn-danger m-1" onClick={() => alertService.error('Error :(', { id: 'left-alert' })}>Error</button>
-                    <button className="btn btn-info m-1" onClick={() => alertService.info('Some info....', { id: 'left-alert' })}>Info</button>
-                    <button className="btn btn-warning m-1" onClick={() => alertService.warn('Warning: ...', { id: 'left-alert' })}>Warn</button>
-                    <button className="btn btn-outline-dark m-1" onClick={() => alertService.clear('left-alert')}>Clear</button>
-                </div>
-                <div className="col">
-                    <Alert id="right-alert" />
-                    <button className="btn btn-success m-1" onClick={() => alertService.success('Success!!', { id: 'right-alert' })}>Success</button>
-                    <button className="btn btn-danger m-1" onClick={() => alertService.error('Error :(', { id: 'right-alert' })}>Error</button>
-                    <button className="btn btn-info m-1" onClick={() => alertService.info('Some info....', { id: 'right-alert' })}>Info</button>
-                    <button className="btn btn-warning m-1" onClick={() => alertService.warn('Warning: ...', { id: 'right-alert' })}>Warn</button>
-                    <button className="btn btn-outline-dark m-1" onClick={() => alertService.clear('right-alert')}>Clear</button>
-                </div>
-            </div> */}
-
     <GridContainer>
       {project_running.map((status)=>{
         const MySQLDate  = status.project_deadline;
@@ -520,16 +501,14 @@ useEffect(() =>{
           </GridItem>
         </GridContainer>
       </div>
-
-{/* admin project lists end */}
-
-
+      <br/>
+    {/* admin project lists end */}
     {running_title ? (
       <>
-      <div className="Projects-title"> {project_Status} Projects</div>
+      <div className="Projects-title"> {project_Status} Projects</div><br/>
         <table className="project-data" >
           {project_List.length > 0 ? (
-            <>
+          <>
           <tr className="project-data-title">
             <th  className="status">Project Name</th>
             <th className="Priority">Priority</th>
@@ -553,7 +532,16 @@ useEffect(() =>{
                         <td className="project-title-table">{project.project_title}</td>
                         <td className="priority-data"><p className={project.project_priority}>{project.project_priority}</p></td>
                         <td className="project-priority-person">
+                          {/* <AvatarGroup
+                            avatars={["James", "Amy", "Will", "Smith"]}
+                            initialCharacters={1}
+                            max={3}
+                            size={50}
+                            displayAllOnHover
+                            shadow={2}
+                          /> */}
                           {person.map((project_person) => {
+                            console.log(project_person)
                             return(
                               <div className="chip">
                                 <span title={project_person}>{project_person}</span>
@@ -608,6 +596,7 @@ useEffect(() =>{
                                         <div className="form-group">
                                         <span>Project Department</span><span className="required">*</span>
                                         <Multiselect
+                                          disable={cookies.Role_id == "2"}
                                           displayValue="value"
                                           options={all_Department}
                                           value={u_Department}
@@ -627,6 +616,7 @@ useEffect(() =>{
                                       <div className="form-group">
                                       <span>Project Language</span><span className="required">*</span>
                                       <Multiselect
+                                        disable={cookies.Role_id == "2"}
                                         displayValue="value"
                                         options={all_Language}
                                         value={u_Language}
@@ -692,6 +682,7 @@ useEffect(() =>{
                                       <div className="form-group">
                                       <span>Project Priority</span><span className="required">*</span>
                                       <Multiselect
+                                        disable={cookies.Role_id == "2"}
                                         displayValue="value"
                                         options={all_Priority}
                                         value={u_Priority}
@@ -711,6 +702,7 @@ useEffect(() =>{
                                         <div className="form-group">
                                           <span>Project Status</span><span className="required">*</span>
                                           <Multiselect
+                                              disable={cookies.Role_id == "2"}
                                               displayValue="value"
                                               options={all_Status}
                                               value={u_Status}
@@ -732,7 +724,7 @@ useEffect(() =>{
                                         <div className="form-group">     
                                         <span>Project Members</span><span className="required">*</span>
                                           <Multiselect
-                                            disabled={cookies.Role_id == "2"}
+                                            disable={cookies.Role_id == "2"}
                                             displayValue="value"
                                             options={uoptions}
                                             value={updateSelected}
@@ -742,7 +734,6 @@ useEffect(() =>{
                                             onSelect={setUpdateSelected}
                                             placeholder="Select Project Members"
                                             showArrow={true}
-                                            disable={cookies.Role_id == "2"}
                                           />
                                         </div> 
                                       </GridItem>

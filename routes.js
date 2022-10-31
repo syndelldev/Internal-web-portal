@@ -45,6 +45,7 @@ const dashboardRoutes = [
     name: "Projects",
     rtlName: "ملف تعريفي للمستخدم",
     icon: LibraryBooks,
+    // icon: "/Project.png",
     layout: "",
   },
   {
@@ -54,13 +55,6 @@ const dashboardRoutes = [
     icon: "content_paste",
     layout: "",
   },
-  // {
-  //   path: "/adminprofile",
-  //   name: "Admin Profile",
-  //   rtlName: "ملف تعريفي للمستخدم",
-  //   icon: Person,
-  //   layout: "/admin",
-  // },
   {
     path: "/user_Rights",
     name: "User Rights",
