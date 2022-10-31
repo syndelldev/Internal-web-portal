@@ -754,6 +754,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
           }
         }
       }
+
             
   return (
     <span>
@@ -1017,7 +1018,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
 {/* select start date & end date for Date Filter */}
 
 {/* Date filter select dates start */}
-<span>Date Filter:</span>
+    <strong>Project Date Filter:</strong>
       <GridItem>
         <DatePicker
           placeholderText="Start date"
@@ -1048,7 +1049,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
           minDate={startDates}
         />
       </GridItem>
-        <button className="bttn-design" onClick={() => date_Range()}>Enter</button>
+      <button className="bttn-design" onClick={() => date_Range()}>Enter</button>
 {/* Date filter select dates end */}
 
     </GridContainer>
