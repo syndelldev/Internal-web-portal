@@ -485,7 +485,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
   const project_running = (project) => {
     setprojectRunning(project);
   }
-  const closeTaskToDo = async(project) =>{
+  const closeProjectProgress = async(project) =>{
     if(projectRunning != ""){
       setprojectRunning("");
     }
@@ -740,20 +740,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
           }
         }
       }
-      
-      // if(cookies.Role_id==1 || cookies.Role_id==3){
-      //   const project_list = dateDetails;
-      //   console.log("admin date");
-      //   console.log(project_list);
-      //   console.log(dateDetails);
-      // }else if(cookies.Role_id==2){
-      //   const project_list = date_uData;
-      //   console.log("user date");
-      //   console.log(project_list);
-      //   console.log(date_uData);
-      // }
-    
-      
+            
   return (
     <span>
 
@@ -1003,18 +990,18 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
     <GridContainer>
       <GridItem>
         <button className="bttn-design" onClick={()=> 
-          {  project_running("Running"), closeOnHold("Running"), setrunning_title(true), project_OnHold("On hold"), closeTaskToDo("On hold"), setonhold_title(true)
+          {  project_running("Running"), closeOnHold("Running"), setrunning_title(true), project_OnHold("On hold"), closeProjectProgress("On hold"), setonhold_title(true)
           project_Completed("Completed"), closeCompleted("Completed"), setcompleted_title(true) }}
           >Expand All</button>
 
         <button className="bttn-design" onClick={()=> 
-          {  project_running("Running"), closeOnHold("Running"), setrunning_title(false), project_OnHold("On hold"), closeTaskToDo("On hold"), setonhold_title(false)
+          {  project_running("Running"), closeOnHold("Running"), setrunning_title(false), project_OnHold("On hold"), closeProjectProgress("On hold"), setonhold_title(false)
           project_Completed("Completed"), closeCompleted("Completed"), setcompleted_title(false) }}
           >Collapse All</button>
         </GridItem>
 
 {/* select start date & end date for Date Filter */}
-{/* Date filter start */}
+{/* Date filter select dates start */}
       <GridItem>
         <DatePicker
         monthsShown={2}
@@ -1031,99 +1018,11 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
         <button onClick={() => date_Range()}>enter</button>
 
       </GridItem>
-{/* Date filter end */}
+{/* Date filter select dates end */}
     </GridContainer>
   </div>
 
-{/* selected daterange projects list data start */}
-{dateDataDisplay ? (
-  <span>
-    <h3>Projects List</h3>
-    <table className="project-data" >
-      <tr className="project-data-title">
-        <th  className="status">Project Name</th>
-        <th className="Priority">Priority</th>
-        <th className="assignee">Assignee</th>
-      </tr>
-          {dateDetails.map((project)=>{
-            if(project.project_delete == "no"){
-                var person = project.project_person.split(",");
-                return(
-                  <tr key={project.project_id} onClick={()=>{toggle(project.project_id)}} className="expand_dropdown">
-                    <td className="project-title-table">{project.project_title}</td>
-                    <td className="priority-data"><p className={project.project_priority}>{project.project_priority}</p></td>
-                    <td className="project-priority-person">
-                      {person.length>2 ? (
-                        <>
-                          <div className="chip">
-                            <span>{person[0]}</span>
-                          </div>
-                          <div className="chip">
-                            <span>{person[1]}</span>
-                          </div>
-      {/* All project members popUp Start*/}
-                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} className="popupReact"  position="left">
-                            {close => (
-                              <div className="popup-align">
-                                <Card>
-                                  <CardBody>
-                                    <CardHeader>
-                                      <GridContainer>
-                                        <GridItem>
-                                          <strong>Assignee</strong>
-                                        </GridItem>
-                                        <GridItem>
-                                          <div className={classes.close}>
-                                            <a onClick={close}>&times;</a>
-                                          </div>
-                                        </GridItem>
-                                      </GridContainer>
-                                    </CardHeader>
-
-                                    <GridContainer>
-                                      <GridItem>
-                                        {person.map((user)=>{
-                                          return(
-                                            <span>
-                                              <span className="members" title={user}>{user}</span>
-                                            </span>
-                                          )
-                                        })}
-                                      </GridItem>
-                                    </GridContainer>
-                                  </CardBody>
-                                </Card>
-                              </div>
-                            )}
-                            </Popup>
-      {/* All project members popup End*/}
-                        </>
-                      ):(
-                        <span>
-                          {person.map((user)=>{
-                            return(
-                              <div className="chip">
-                                <span className="members" title={user}>{user}</span>
-                              </div>
-                            )
-                          })}
-                        </span>
-                      )}
-                    </td>
-                  </tr>
-                )
-            }
-          })}
-        </table>
-
-  </span>
-) 
-: ("")
-
-}
-{/* selected daterange projects list data end */}
-
-    <GridContainer>
+<GridContainer>
     
 {/***** Running Project start *****/}
 <Card className="task_title_status">
@@ -1540,7 +1439,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
     <Card className="task_title_status">
       <GridContainer >
         <GridItem xs={12} sm={12} md={12} >
-          <div onClick={()=> {  project_OnHold("On hold") , closeTaskToDo("On hold") , setonhold_title(!onhold_title) }} className="task_title" > Project On Hold {onhold_title ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
+          <div onClick={()=> {  project_OnHold("On hold") , closeProjectProgress("On hold") , setonhold_title(!onhold_title) }} className="task_title" > Project On Hold {onhold_title ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
         </GridItem>
       </GridContainer>
     </Card>
