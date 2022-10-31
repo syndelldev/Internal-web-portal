@@ -684,20 +684,18 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
       }
 
       // date range
-      const [dateRange, setDateRange] = useState([null]);
-      // startdate get and set value
+      // const [dateRange, setDateRange] = useState([null]);
+
+      // startdate set and get value
       const [startDates, setstartDates] = useState(null);
-      // enddate get and set value
+      // enddate set and get value
       const [endDates, setendDates] = useState(null);
       // get selected dates projects list
       const [dateDetails, setDateDetails] = useState(project_details);
-      // get selected dates projects list for user
-      // const [date_uData, setDate_uDetails] = useState();
     
       // daterange function onClick
       const date_Range = async() =>{
-        if(startDates != null && endDates != null && endDates > startDates){
-          console.log(dateRange);
+        if(startDates != null && endDates != null && endDates >= startDates){
 
           const res = await fetch(`${server}/api/project/dateRange_Projects`,{
             method: "POST",
@@ -746,13 +744,13 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
         }else{
           // select startDate and endDate toast error
           if(! toast.isActive(toastId.current)) {
-            toastId.current = toast.error('Please select dates range!', {
-                position: "top-right",
-                autoClose:2000,
-                theme: "colored",
-                closeOnClick: true,
-                hideProgressBar: true,
-              });
+            toastId.current = toast.error('Please select dates range!',{
+              position: "top-right",
+              autoClose:2000,
+              theme: "colored",
+              closeOnClick: true,
+              hideProgressBar: true,
+            });
           }
         }
       }
@@ -1017,11 +1015,11 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
         </GridItem>
 
 {/* select start date & end date for Date Filter */}
+
 {/* Date filter select dates start */}
+<span>Date Filter:</span>
       <GridItem>
         <DatePicker
-        // monthsShown={2}
-          // selectsRange={true}
           placeholderText="Start date"
           selected={startDates}
           onChange={(update) => {
@@ -1049,8 +1047,8 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
         />
       </GridItem>
         <button onClick={() => date_Range()}>enter</button>
-
 {/* Date filter select dates end */}
+
     </GridContainer>
   </div>
 
