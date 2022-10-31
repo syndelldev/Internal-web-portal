@@ -678,7 +678,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
       // startdate and enddate get value
       const [startDates, endDates] = dateRange;
       // get selected dates projects list
-      const [dateDetails, setDateDetails] = useState();
+      const [dateDetails, setDateDetails] = useState(project_details);
       // get selected dates projects list for user
       // const [date_uData, setDate_uDetails] = useState();
       // onclick show data
@@ -700,6 +700,9 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
           {
             if(cookies.Role_id==1 || cookies.Role_id==3){
               setDateDetails(date_Data);
+              setcompleted_title(true);
+              setrunning_title(true);
+              setonhold_title(true);
               setData(true);
             }
           }
@@ -717,6 +720,9 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
           {
             if(cookies.Role_id==2){
               setDateDetails(date_uData);
+              setcompleted_title(true);
+              setrunning_title(true);
+              setonhold_title(true);
               setData(true);
             }
           }
@@ -1136,7 +1142,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
             <th className="assignee">Assignee</th>
             <th className="view-edit">View & Edit</th>
           </tr>
-          {project_details.map((project)=>{
+          {dateDetails.map((project)=>{
             if(project.project_delete == "no"){
               if(project.project_status == 'Running'){
                 var person = project.project_person.split(",");
@@ -1547,7 +1553,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
             <th className="assignee">Assignee</th>
             <th className="view-edit">View & Edit</th>
           </tr>
-          {project_details.map((project)=>{
+          {dateDetails.map((project)=>{
             if(project.project_delete == "no"){
               if(project.project_status == 'On hold'){
                 var person = project.project_person.split(",");
@@ -1968,7 +1974,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
             <th className="assignee">Assignee</th>
             <th className="view-edit">View & Edit</th>
           </tr>
-          {project_details.map((project)=>{
+          {dateDetails.map((project)=>{
             if(project.project_delete == "no"){
               if(project.project_status == 'Completed'){
                 var person = project.project_person.split(",");
