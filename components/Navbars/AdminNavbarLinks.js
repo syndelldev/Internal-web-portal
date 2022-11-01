@@ -26,6 +26,8 @@ import styles from "assets/jss/nextjs-material-dashboard/components/headerLinksS
 import { server } from 'config';
 import { useCookies } from 'react-cookie';
 
+import AvatarGroup from 'react-avatar-group';
+
 export default function AdminNavbarLinks({useravtar}) {
 
   
@@ -48,7 +50,11 @@ export default function AdminNavbarLinks({useravtar}) {
 
   const router = useRouter();
   const [cookies, setCookie, removeCookie ] = useCookies();
-  //console.log(cookies.Id)
+
+  const profile_avtar=[];
+  profile_avtar.push(cookies.name)
+  console.log('profile_avtar', profile_avtar)
+
   const logoutfunc = () => {
     removeCookie('name', { path:'/' } );
     removeCookie('Email', { path:'/' } );
@@ -212,6 +218,14 @@ export default function AdminNavbarLinks({useravtar}) {
           className={classes.buttonLink}  
         >
           <Person className={classes.icons} />
+          {/* <AvatarGroup
+            avatars={['Ahdf']}
+            initialCharacters={1}
+            max={2}
+            size={40}
+            displayAllOnHover
+            shadow={2}
+          ></AvatarGroup> */}
           <Hidden mdUp implementation="css">
             <p className={classes.linkText}>Profile</p>
           </Hidden>

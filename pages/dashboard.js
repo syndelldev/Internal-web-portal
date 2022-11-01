@@ -23,7 +23,8 @@ import { FiEdit } from "react-icons/fi";
 import { BiArchiveIn } from 'react-icons/bi';
 import Button from "components/CustomButtons/Button.js";
 
-// import AvatarGroup from 'react-avatar-group';
+import AvatarGroup from 'react-avatar-group';
+
 // import { alertService } from 'services';
 // import {Alert} from "components/Alert.jsx";
 
@@ -506,6 +507,7 @@ useEffect(() =>{
     {running_title ? (
       <>
       <div className="Projects-title"> {project_Status} Projects</div><br/>
+        <div className="responsive-table">
         <table className="project-data" >
           {project_List.length > 0 ? (
           <>
@@ -521,7 +523,7 @@ useEffect(() =>{
             if(project.project_delete == "no"){
 
               var person = project.project_person.split(",");
-              
+              console.log('person',person)
               return(
               <>
               {project_List.map((pro_list)=>{
@@ -532,23 +534,28 @@ useEffect(() =>{
                         <td className="project-title-table">{project.project_title}</td>
                         <td className="priority-data"><p className={project.project_priority}>{project.project_priority}</p></td>
                         <td className="project-priority-person">
-                          {/* <AvatarGroup
-                            avatars={["James", "Amy", "Will", "Smith"]}
-                            initialCharacters={1}
-                            max={3}
-                            size={50}
-                            displayAllOnHover
+                          <AvatarGroup
+                            // avatars={["James", "Amy", "Will", "Smith"]}
+                            avatars={person}
+                            initialCharacters={2}
+                            max={2}
+                            size={42}
+                            displayAllOnHover={true}
                             shadow={2}
-                          /> */}
-                          {person.map((project_person) => {
-                            console.log(project_person)
+                            // backgroundColor="#00155c"
+                            fontSize={0.4}
+                            borderColor= "#0000ff"
+                            bold={true}
+                          >
+                          </AvatarGroup>
+                          {/* {person.map((project_person) => {
                             return(
                               <div className="chip">
                                 <span title={project_person}>{project_person}</span>
                               </div>
                               )
                             })
-                          }
+                          } */}
                         </td>
                         <td className="project-edit-table">
 
@@ -757,7 +764,7 @@ useEffect(() =>{
                       </Popup>
                       {/*Edit popup End*/}
                       {/*Delete popUp Start*/}
-                      <Popup trigger={<div className="icon-edit-delete" hidden={cookies.Role_id == "2"}><BiArchiveIn/></div>} modal>
+                      <Popup trigger={<div className="icon-edit-delete archieve-icon" hidden={cookies.Role_id == "2"}><BiArchiveIn/></div>} modal>
                             {close => (
                               <div>
                               <Card>                            
@@ -804,6 +811,7 @@ useEffect(() =>{
           </>
          ) : (<div className="no_Data"><h3 className="not-data">No Data</h3></div>)}
         </table>
+        </div>
       </>
     ):("")}
 

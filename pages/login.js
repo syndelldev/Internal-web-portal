@@ -14,6 +14,9 @@ export default function home(){
     const { register, watch, handleSubmit, formState: { errors }, setValue, control } = useForm({mode: "onBlur"}); 
     const [cookies, setCookie] = useCookies(['name']);
 
+    const avtar=[];
+    console.log('avtar', avtar)
+
     const [email,setemail] = useState("");
     const [password,setpassword] = useState("");
 
