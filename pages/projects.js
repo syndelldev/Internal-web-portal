@@ -754,22 +754,6 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
           }
         }
       }
-      const [allRunningData, set_runningData] = useState([]);
-      useEffect(() =>{
-        // const u_data = async() =>{
-      
-          const all_runningData = [];
-          dateDetails.map((data)=>{
-            if(data.project_status == 'Completed'){
-              all_runningData.push(data);
-            }
-          });
-          set_runningData(all_runningData);
-        })
-        // u_data();
-      // },[]);
-      console.log(allRunningData);
-    
             
   return (
     <span>
@@ -1102,7 +1086,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                     <td className="priority-data"><p className={project.project_priority}>{project.project_priority}</p></td>
                     <td className="project-priority-person">
                       {person.length>2 ? (
-                        <>
+                        <span>
                           <div className="chip">
                             <span>{person[0]}</span>
                           </div>
@@ -1145,7 +1129,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                             )}
                             </Popup>
                             {/*Edit popup End*/}
-                        </>
+                        </span>
                       ):(
                         <span>
                           {person.map((user)=>{
