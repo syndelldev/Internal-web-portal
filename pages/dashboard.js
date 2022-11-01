@@ -805,7 +805,7 @@ useEffect(() =>{
             }
           })}
           </>
-         ) : (<div className="no_Data"><h3 className="not-data">No Data</h3></div>)}
+         ) : (<div className="no_Data"><h3 className="no-data">No Data</h3></div>)}
         </table>
       </>
     ):("")}

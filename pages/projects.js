@@ -754,6 +754,9 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
           }
         }
       }
+console.log("project list");
+console.log(dateDetails);
+console.log(dateDetails.length);
 
             
   return (
@@ -1067,6 +1070,8 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
     </Card>
     {running_title ? (
       <>
+
+      {dateDetails.length > 0 ? (
         <table className="project-data" >
           <tr className="project-data-title">
             <th  className="status">Project Name</th>
@@ -1464,7 +1469,9 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
             }
           })}
         </table>
+      ) : (<div className="no_Data"><h4 className="no-data">No Data</h4></div>)}
       </>
+
     ):("")}
     {/***** Running Project End *****/}
 
@@ -1478,6 +1485,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
     </Card>
     {onhold_title ? (
       <>
+      {dateDetails.length > 0 ? (
         <table className="project-data" >
           <tr className="project-data-title">
             <th className="status">Project Name</th>
@@ -1885,7 +1893,9 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
             }
           })}
         </table>
+      ) : (<div className="no_Data"><h4 className="no-data">No Data</h4></div>)}
       </>
+
     ):("")}
     {/***** On Hold Project End *****/}
 
@@ -1899,6 +1909,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
     </Card>
     {completed_title ? (
       <>
+      {dateDetails.length > 0 ? (
         <table className="project-data" >
           <tr className="project-data-title">
             <th className="status">Project Name</th>
@@ -2305,6 +2316,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
             }
           })}
         </table>
+      ) : (<div className="no_Data"><h4 className="no-data">No Data</h4></div>)}
       </>
     ):("")}
     {/***** Completed Project End *****/}
