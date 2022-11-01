@@ -93,10 +93,18 @@ export async function getServerSideProps(context){
   const response = await fetch(`${server}/api/admin`)
   const User_name = await response.json();
 
-  return{ props: {project_details, User_name} }
+  // All departments list for filter
+  const department = await fetch(`${server}/api/user/user_department`);
+  const user_Department = await department.json();
+
+  // All languages list for filter
+  const lang = await fetch(`${server}/api/language`)
+  const language = await lang.json();
+  
+  return{ props: {project_details, User_name, user_Department, language} }
 }
 
-function ProjectFilter({ project_details , User_name }){
+function ProjectFilter({ project_details , User_name, user_Department, language}){
   console.log(project_details)
 
     const useStyles = makeStyles(styles);
@@ -448,36 +456,37 @@ function ProjectFilter({ project_details , User_name }){
                         {/* create project form end */}
                     </GridItem>
 
-                    <GridItem>
-                        <div className="department_dropdown">
-                        <button className="dropdown_button">Project Departments</button>
-                            <div className="department-link">
-                            <a href={`${server}/projects`}>All</a>
-                            <a href={`${server}/project_department/HR`}>HR</a>
-                            <a href={`${server}/project_department/UI & UX`}>UI & UX</a>
-                            <a href={`${server}/project_department/Web development`}>Web Developer</a>
-                            <a href={`${server}/project_department/Content writer`}>Content Writer</a>
-                            <a href={`${server}/project_department/Project manager`}>Project Manager</a>
-                            <a href={`${server}/project_department/Mobile App developer`}>Mobile App Developer</a>
-                            <a href={`${server}/project_department/SEO`}>SEO</a>
-                            </div>
-                        </div>
-                    </GridItem>
+          <GridItem>
+            <div className="department_dropdown">
+            <button className="dropdown_button">Departments</button>
+                <div className="department-link">
+                  {user_Department.map((department)=>{
+                    return(
+                      <span>
+                        <a href={`${server}/project_department/${department.department_name}`}>{department.department_name}</a>
+                      </span>
+                    )                      
+                  }
+                  )}
+                </div>
+            </div>
+          </GridItem>
 
-                    <GridItem>
-                        <div className="department_dropdown">
-                        <button className="dropdown_button">Project Languages</button>
-                            <div className="department-link">
-                                <a href={`${server}/projects`}>All</a>
-                                <a href={`${server}/project_language/Wordpress`}>Wordpress</a>
-                                <a href={`${server}/project_language/Shopify`}>Shopify</a>
-                                <a href={`${server}/project_language/ReactJS`}>ReactJS</a>
-                                <a href={`${server}/project_language/Laravel`}>Laravel</a>
-                                <a href={`${server}/project_language/Android`}>Android</a>
-                                <a href={`${server}/project_language/Bubble`}>Bubble</a>
-                            </div>
-                        </div>
-                    </GridItem>
+          <GridItem>
+            <div className="department_dropdown">
+              <button className="dropdown_button">Languages</button>
+                  <div className="department-link">
+                    {language.map((language)=>{
+                      return(
+                        <span>
+                          <a href={`${server}/project_language/${language.language_name}`}>{language.language_name}</a>
+                        </span>
+                      )
+                    }
+                    )}
+                  </div>
+            </div>
+          </GridItem>
                 </GridContainer>
             </div>
 
