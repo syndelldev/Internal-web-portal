@@ -717,45 +717,78 @@ const updateComment = async(id, comment) =>{
   }
 
   // date range
-  const [dateRange, setDateRange] = useState([null, null]);
-  // startdate and enddate get value
-  const [startDates, endDates] = dateRange;
-  // get selected dates projects list
-  const [dateDetails, setDateDetails] = useState();
-  // onclick show data
-  const [dateDataDisplay, setData] = useState(false);
+  // const [dateRange, setDateRange] = useState([null, null]);
 
-  // daterange function onClick
-  const date_Range = async() =>{
-    if(startDates != null && endDates != null){
-      console.log(dateRange);
+      // startdate set and get value
+      const [startDates, setstartDates] = useState(null);
+      // enddate set and get value
+      const [endDates, setendDates] = useState(null);
+      // get selected dates projects list
+      const [dateDetails, setDateDetails] = useState(allTask);
+    
+      // daterange function onClick
+      const date_Range = async() =>{
+        if(startDates != null && endDates != null && endDates >= startDates){
 
-      const res = await fetch(`${server}/api/project/dateRange_Tasks`,{
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body:JSON.stringify({ dateStart: startDates, dateEnd: endDates, user: cookies.name }),
-      })
-      const date_Data=await res.json()
-      
-      if(res.status==200)
-      {
-        setDateDetails(date_Data);
-        setData(true);
-      }
+          const res = await fetch(`${server}/api/project/dateRange_Projects`,{
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body:JSON.stringify({ dateStart: startDates, dateEnd: endDates }),
+          })
+          const date_Data=await res.json()
           
-    }else{
-      // select startDate and endDate toast error
-      if(! toast.isActive(toastId.current)) {
-        toastId.current = toast.error('Please select dates range!', {
-            position: "top-right",
-            autoClose:2000,
-            theme: "colored",
-            closeOnClick: true,
-            hideProgressBar: true,
-          });
+          if(res.status==200)
+          {
+            if(cookies.Role_id==1 || cookies.Role_id==3){
+              setDateDetails(date_Data);
+              settodo_title(true);
+              setonhold_title(true);
+              setrunning_title(true);
+              setcompleted_title(true);
+            }
+          }
+
+          const response = await fetch(`${server}/api/project/dateRange_TaskUser`,{
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body:JSON.stringify({ dateStart: startDates, dateEnd: endDates, user: cookies.name }),
+          })
+          const date_uData=await response.json();
+          
+          if(response.status==200)
+          {
+            if(cookies.Role_id==2){
+              setDateDetails(date_uData);
+              settodo_title(true);
+              setonhold_title(true);
+              setrunning_title(true);
+              setcompleted_title(true);
+            }
+          }
+        }else if(endDates < startDates){
+          // Improper startDate and endDate toast error
+          if(! toast.isActive(toastId.current)) {
+            toastId.current = toast.error('End date can`t be before its start!', {
+              position: "top-right",
+              autoClose:2000,
+              theme: "colored",
+              closeOnClick: true,
+              hideProgressBar: true,
+            });
+          }
+        }else{
+          // select startDate and endDate toast error
+          if(! toast.isActive(toastId.current)) {
+            toastId.current = toast.error('Please select dates range!',{
+              position: "top-right",
+              autoClose:2000,
+              theme: "colored",
+              closeOnClick: true,
+              hideProgressBar: true,
+            });
+          }
+        }
       }
-    }
-  }
 
 
   return (
@@ -1011,117 +1044,53 @@ const updateComment = async(id, comment) =>{
       <GridItem>
         <button className="bttn-design" onClick={()=>{taskToDo("Task to do") ,  settodo_title(true), taskOnHold("Task on hold") , setonhold_title(true), taskRunning("Task running") , setrunning_title(true), taskCompleted("Task completed") , setcompleted_title(true) }}>Expand All</button>
       </GridItem>
+
       <GridItem>
         <button className="bttn-design" onClick={()=>{taskToDo("Task to do") , closeTaskToDo("Task to do"), settodo_title(false), taskOnHold("Task on hold") , closeTaskOnHold("Task on hold"), setonhold_title(false), taskRunning("Task running") , closeTaskRunning("Task running"),setrunning_title(false), taskCompleted("Task completed") , closeTaskCompleted("Task completed") , setcompleted_title(false) }}>Collapse All</button>
       </GridItem>
+
+      {/* select start date & end date for Date Filter */}
+      {/* Date filter select dates start */}
+      <strong>Task Date Filter:</strong>
+            <GridItem>
+              <DatePicker
+                placeholderText="Start date"
+                className={"form-control"}
+                selected={startDates}
+                onChange={(update) => {
+                  setstartDates(update);
+                }}
+                isClearable={true}
+                dateFormat="dd/MM/yyyy"
+                showYearDropdown={true}
+                showMonthDropdown={true}
+              />
+            </GridItem>
+
+            <GridItem>
+              <DatePicker
+                placeholderText="End date"
+                className={"form-control"}
+                selected={endDates}
+                onChange={(update) => {
+                  setendDates(update);
+                }}
+                isClearable={true}
+                dateFormat="dd/MM/yyyy"
+                showYearDropdown={true}
+                showMonthDropdown={true}
+                minDate={startDates}
+              />
+            </GridItem>
+            <button className="bttn-design" onClick={() => date_Range()}>Enter</button>
+      {/* Date filter select dates end */}
     </GridContainer>
   </div>
 
-  <GridItem>
 
-    <DatePicker
-      monthsShown={2}
-        selectsRange={true}
-        startDate={startDates}
-        endDate={endDates}
-        onChange={(update) => {
-          setDateRange(update);
-        }}
-        isClearable={true}
-        dateFormat="dd/MM/yyyy"
-    />
-    <button onClick={() => date_Range()}>enter</button>
-
-  </GridItem>
 
 </GridContainer>
 
-{/* selected daterange projects list data start */}
-{dateDataDisplay ? (
-  <span>
-    <h3>Tasks List</h3>
-    <table className="project-data" >
-      <tr className="project-data-title">
-            <th  className="status">Task Name</th>
-            <th className="Priority">Priority</th>
-            <th className="assignee">Assignee</th>
-          </tr>
-          {dateDetails.map((task)=>{
-            if(task.task_delete == "no"){
-                var person = task.task_person.split(",");
-                return(
-                  <tr key={task.task_id} onClick={()=>{toggle(task.task_id)}} className="expand_dropdown">
-                    <td className="project-title-table">{task.task_title}</td>
-                    <td className="priority-data"><p className={task.task_priority}>{task.task_priority}</p></td>
-                    <td className="project-priority-person">
-                      {person.length>2 ? (
-                        <>
-                          <div className="chip">
-                            <span>{person[0]}</span>
-                          </div>
-                          <div className="chip">
-                            <span>{person[1]}</span>
-                          </div>
-                            {/* Edit popUp Start*/}
-                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} className="popupReact"  position="left">
-                            {close => (
-                              <div className="popup-align">
-                                <Card>
-                                  <CardBody>
-                                    <CardHeader>
-                                      <GridContainer>
-                                        <GridItem>
-                                          <strong>Assignee</strong>
-                                        </GridItem>
-                                        <GridItem>
-                                          <div className={classes.close}>
-                                            <a onClick={close}>&times;</a>
-                                          </div>
-                                        </GridItem>
-                                      </GridContainer>
-                                    </CardHeader>
-
-                                    <GridContainer>
-                                      <GridItem>
-                                        {person.map((user)=>{
-                                          return(
-                                            <span>
-                                              <span className="members" title={user}>{user}</span>
-                                            </span>
-                                          )
-                                        })}
-                                      </GridItem>
-                                    </GridContainer>
-                                  </CardBody>
-                                </Card>
-                              </div>
-                            )}
-                            </Popup>
-                            {/*Edit popup End*/}
-                        </>
-                      ):(
-                        <span>
-                          {person.map((user)=>{
-                            return(
-                              <div className="chip">
-                                <span className="members" title={user}>{user}</span>
-                              </div>
-                            )
-                          })}
-                        </span>
-                      )}
-                    </td>
-                  </tr>
-                )
-            }
-          })}
-        </table>
-
-  </span>
-) 
-: ("")
-}
-{/* selected daterange projects list data end */}
 
   <GridContainer>
     <Card>
@@ -1141,7 +1110,7 @@ const updateComment = async(id, comment) =>{
             <th className="assignee">Assignee</th>
             <th className="view-edit">View & Edit</th>
           </tr>
-          {allTask.map((task)=>{
+          {dateDetails.map((task)=>{
             if(task.task_status == taskTodo){
               var person = task.task_person.split(",");
               const MySQLDate  = task.task_deadline;
@@ -1163,7 +1132,7 @@ const updateComment = async(id, comment) =>{
                             <span>{person[1]}</span>
                           </div>
                             {/* Edit popUp Start*/}
-                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} className="popupReact"  position="left">
+                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>Load more</span></div></a>} className="popupReact"  position="left">
                             {close => (
                               <div className="popup-align">
                                 <Card>
@@ -1676,7 +1645,7 @@ const updateComment = async(id, comment) =>{
             <th className="assignee">Assignee</th>
             <th className="view-edit">View & Edit</th>
           </tr>
-            {allTask.map((task)=>{
+            {dateDetails.map((task)=>{
               if(task.task_delete == "no"){
                 if(task.task_status == TaskOnHold){
                   var person = task.task_person.split(",");
@@ -1697,7 +1666,7 @@ const updateComment = async(id, comment) =>{
                             <span>{person[1]}</span>
                           </div>
                             {/* Edit popUp Start*/}
-                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} className="popupReact"  position="left">
+                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>Load more</span></div></a>} className="popupReact"  position="left">
                             {close => (
                               <div className="popup-align">
                                 <Card>
@@ -2210,7 +2179,7 @@ const updateComment = async(id, comment) =>{
             <th className="assignee">Assignee</th>
             <th className="view-edit">View & Edit</th>
           </tr>
-          {allTask.map((task)=>{
+          {dateDetails.map((task)=>{
             if(task.task_delete == "no"){
               if(task.task_status == TaskRunning){
                 var person = task.task_person.split(",");
@@ -2231,7 +2200,7 @@ const updateComment = async(id, comment) =>{
                             <span>{person[1]}</span>
                           </div>
                             {/* Edit popUp Start*/}
-                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} className="popupReact"  position="left">
+                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>Load more</span></div></a>} className="popupReact"  position="left">
                             {close => (
                               <div className="popup-align">
                                 <Card>
@@ -2745,7 +2714,7 @@ const updateComment = async(id, comment) =>{
             <th className="assignee">Assignee</th>
             <th className="view-edit">View & Edit</th>
           </tr>
-          {allTask.map((task)=>{
+          {dateDetails.map((task)=>{
             if(task.task_delete == "no"){
               if(task.task_status == TaskCompleted){
                 var person = task.task_person.split(",");
@@ -2766,7 +2735,7 @@ const updateComment = async(id, comment) =>{
                             <span>{person[1]}</span>
                           </div>
                             {/* Edit popUp Start*/}
-                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>+</span></div></a>} className="popupReact"  position="left">
+                            <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>Load more</span></div></a>} className="popupReact"  position="left">
                             {close => (
                               <div className="popup-align">
                                 <Card>
