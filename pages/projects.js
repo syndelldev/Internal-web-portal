@@ -247,8 +247,8 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
     const u_data = async() =>{
   
       const getDepartment = [];
-      languageDepartment.map((department)=>{
-        getDepartment.push( {'label' :department.language_department, 'value' :department.language_department} );
+      user_Department.map((department)=>{
+        getDepartment.push( {'label' :department.department_name, 'value' :department.department_name} );
       });
       setAllDepartment(getDepartment);
     }
