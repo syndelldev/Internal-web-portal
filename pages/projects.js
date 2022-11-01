@@ -2014,7 +2014,7 @@ console.log(dateDetails.length);
                     </td>
                     <td>
                       {/* Edit popUp Start*/}
-                      <Popup trigger={<button className="edit_project"><div className='icon-width' onClick={()=> { projectId(project.project_id), getData(project.project_id) } }><FiEdit/></div></button>} className="popupReact" modal nested>
+                      <Popup trigger={<a className="icon-edit-delete"><div className='icon-width' onClick={()=> { projectId(project.project_id), getData(project.project_id) } }><FiEdit/></div></a>} className="popupReact" modal nested>
                       {close => (
                         <div className="popup-align">
                           <GridContainer>
