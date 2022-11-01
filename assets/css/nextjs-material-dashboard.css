@@ -806,7 +806,7 @@ button.addproject{
 @media only screen and (min-device-width: 260px) and (max-device-width: 767px)
 {
   .MuiButtonBase-root.MuiIconButton-root.MuiIconButton-colorInherit{
-    right: 105%;
+   /* right: 105%;*/
   }
 }
 /***** CSS Added by Ashvini End *****/

@@ -175,6 +175,7 @@ button.MuiButtonBase-root.MuiButton-root.makeStyles-button-2276.makeStyles-prima
 }
 h4.text {
   margin-bottom: 0em!important;
+  font-weight: 500;
 }
 .add_new_user {
   /* vertical-align: !important; */
@@ -186,7 +187,7 @@ h4.text {
 }
 .makeStyles-content-3{
   
-  margin-top: 0px!important;
+  /*margin-top: 0px!important;*/
 
 }
 .makeStyles-cardBody-134{
@@ -257,7 +258,7 @@ a.icon-edit-delete {
   background-color: white;
   border: none;
 }
-.text ,.projectTitle{
+/*.text ,*/.projectTitle{
   color: black;
   font-weight: bold;
 }
@@ -628,6 +629,10 @@ td.project-title-table,td.project-priority-table {
 td.project-priority-person {
   padding-left: 15px;
 }
+.form-group
+{
+  margin-top: 5px;
+}
 .form-group span{
   color:#00155c;
   font-weight: 600;
@@ -788,5 +793,8 @@ p.save-btn{
 font-size: 17px!important;
   }}
 
-  
-
+.res
+{
+  display: flex;
+  justify-content: center;
+}

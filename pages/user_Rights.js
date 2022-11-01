@@ -130,7 +130,7 @@ function UserRights({UserList,ModuleList}){
                     <Card>
                         <CardHeader color="primary">
                             <h4 className="text">User Rights</h4>
-                        </CardHeader><br/><br/>
+                        </CardHeader>
                         <CardBody>
                             <GridContainer>
                                 <GridItem xs={12} sm={12} md={3}>
