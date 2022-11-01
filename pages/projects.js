@@ -1064,7 +1064,7 @@ console.log(dateDetails.length);
 <Card className="task_title_status">
       <GridContainer >
         <GridItem xs={12} sm={12} md={12} >
-          <div onClick={()=> {  project_running("Running") , closeOnHold("Running") , setrunning_title(!running_title) }} className="task_title" > Project In Progress {running_title ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
+          <div onClick={()=> {  setrunning_title(!running_title) }} className="task_title" > Project In Progress {running_title ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
         </GridItem>
       </GridContainer>
     </Card>
