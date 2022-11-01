@@ -769,7 +769,7 @@ const updateComment = async(id, comment) =>{
               setcompleted_title(true);
             }
           }
-        }else if(endDates < startDates){
+        }else if(startDates != null && endDates != null && endDates < startDates){
           // Improper startDate and endDate toast error
           if(! toast.isActive(toastId.current)) {
             toastId.current = toast.error('End date can`t be before its start!', {
