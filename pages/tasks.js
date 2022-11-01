@@ -734,7 +734,7 @@ const updateComment = async(id, comment) =>{
       const date_Range = async() =>{
         if(startDates != null && endDates != null && endDates >= startDates){
 
-          const res = await fetch(`${server}/api/project/dateRange_Projects`,{
+          const res = await fetch(`${server}/api/project/dateRange_Tasks`,{
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body:JSON.stringify({ dateStart: startDates, dateEnd: endDates }),
