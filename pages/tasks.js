@@ -1001,7 +1001,7 @@ const updateComment = async(id, comment) =>{
 
           <GridItem>
             <div className="department_dropdown">
-            <button className="dropdown_button">Project Departments</button>
+            <button className="dropdown_button">Departments</button>
                 <div className="department-link">
                 {user_Department.map((department)=>{
                     return(
@@ -1017,7 +1017,7 @@ const updateComment = async(id, comment) =>{
 
           <GridItem>
             <div className="department_dropdown">
-              <button className="dropdown_button">Project Languages</button>
+              <button className="dropdown_button">Languages</button>
                   <div className="department-link">
                   {language.map((language)=>{
                       return(
@@ -1400,7 +1400,7 @@ const updateComment = async(id, comment) =>{
                                     onSelect={setUpdateSelected}
                                     placeholder="Select Task Members"
                                     showArrow={true}
-                                    customCloseIcon={<></>}
+                                    // customCloseIcon={<></>}
                                     disable={cookies.Role_id == "2"}
                                   />
                                   </div> 
@@ -1933,7 +1933,7 @@ const updateComment = async(id, comment) =>{
                                     onSelect={setUpdateSelected}
                                     placeholder="Select Task Members"
                                     showArrow={true}
-                                    customCloseIcon={<></>}
+                                    // customCloseIcon={<></>}
                                     disable={cookies.Role_id == "2"}
                                   />
                                   </div> 
@@ -2467,7 +2467,7 @@ const updateComment = async(id, comment) =>{
                                     onSelect={setUpdateSelected}
                                     placeholder="Select Task Members"
                                     showArrow={true}
-                                    customCloseIcon={<></>}
+                                    // customCloseIcon={<></>}
                                     disable={cookies.Role_id == "2"}
                                   />
                                   </div> 
@@ -3010,7 +3010,7 @@ const updateComment = async(id, comment) =>{
                                     onSelect={setUpdateSelected}
                                     placeholder="Select Task Members"
                                     showArrow={true}
-                                    customCloseIcon={<></>}
+                                    // customCloseIcon={<></>}
                                     disable={cookies.Role_id == "2"}
                                   />
                                   </div> 
