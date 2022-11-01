@@ -754,9 +754,6 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
           }
         }
       }
-console.log("project list");
-console.log(dateDetails);
-console.log(dateDetails.length);
 
             
   return (
