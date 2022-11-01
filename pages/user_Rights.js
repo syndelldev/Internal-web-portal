@@ -2,6 +2,7 @@ import Modules from "../layouts/Modules";
 import { makeStyles } from "@material-ui/core/styles";
 import React,{ useState,useEffect } from "react";
 import { useRouter } from 'next/router';
+import { IoMdArrowDropdown } from "react-icons/io";
 
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -17,6 +18,7 @@ import TableCell from "@material-ui/core/TableCell";
 
 import axios from "axios";
 import { server } from 'config';
+import { useCookies } from "react-cookie";
 
 const styles = {
     cardCategoryWhite: {
@@ -57,7 +59,17 @@ function UserRights({UserList,ModuleList}){
     const useStyles = makeStyles(styles);
     const classes = useStyles();
     const router = useRouter();
+    const [cookies, setCookie] = useCookies(['name']);
 
+  // redirect page if cookies is not set
+  useEffect(() => {
+        if(!cookies.name){
+          router.push(`${server}/login`);
+        }else if(cookies.Role_id == "2"){
+          router.push(`${server}/dashboard`);
+        }
+    });
+    
     const [user, setuser] = useState(1)
     const [module, setmodule] = useState(1)
     const changeUser = (e) => {
@@ -130,6 +142,7 @@ function UserRights({UserList,ModuleList}){
                                                 )
                                             })}
                                         </select>
+                                        <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                                     </div>
                                 </GridItem>
                                 <GridItem xs={12} sm={12} md={3}>
@@ -141,6 +154,7 @@ function UserRights({UserList,ModuleList}){
                                                 )
                                             })}
                                         </select>
+                                        <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                                     </div>
                                 </GridItem>
                             </GridContainer><br/>

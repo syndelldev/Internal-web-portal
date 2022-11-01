@@ -6,7 +6,7 @@ import Admin from "layouts/Admin.js";
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import { server } from 'config';
-// import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
+import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 
 const styles = {
   cardCategoryWhite: {
@@ -113,7 +113,6 @@ function Dashboard( { project_hold, project_completed, project_running } ) {
 
   return (
     <>
-    
     <h4 className="project_status">Projects</h4>
     {/* <GridContainer>
 
@@ -131,6 +130,7 @@ function Dashboard( { project_hold, project_completed, project_running } ) {
       })
       }
     </GridContainer> */}
+        
 
     <GridContainer>
       {project_running.map((status)=>{
@@ -171,7 +171,9 @@ function Dashboard( { project_hold, project_completed, project_running } ) {
         // )
       })}
     </GridContainer>
+
 <div className="project-status">
+ 
     <GridContainer>
           <GridItem xs={12} sm={6} md={4} >
               <h3 className="on-track">On Track Project - {On_track.length}</h3>

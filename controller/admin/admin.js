@@ -27,12 +27,25 @@ const AddUser = async (req,res) =>{
     console.log(req.body)
     
     try{
-        var createUser = await executeQuery("INSERT INTO `tbl_user`( `role_id`, `username`, `password`, `email`, `mobile_no`, `department`, `position`, `status`, `role`) VALUES (?,?,?,?,?,?,?,?,?)",
-        [req.body.role_id, req.body.username, req.body.password, req.body.email, req.body.PhoneNum, req.body.department, req.body.position, req.body.status,  req.body.role ])
-        
-        res.status(201).json(createUser);
-
-        console.log(createUser)
+        if(req.body.role == "Admin"){
+            var createUser = await executeQuery("INSERT INTO `tbl_user`( `role_id`, `username`, `password`, `email`, `mobile_no`, `department`, `position`, `status`, `role`) VALUES (?,?,?,?,?,?,?,?,?)",
+            ["1", req.body.username, req.body.password, req.body.email, req.body.PhoneNum, req.body.department, req.body.position, req.body.status,  req.body.role ])
+            
+            res.status(201).json(createUser);
+            console.log(createUser)
+        }else if(req.body.role == "User"){
+            var createUser = await executeQuery("INSERT INTO `tbl_user`( `role_id`, `username`, `password`, `email`, `mobile_no`, `department`, `position`, `status`, `role`) VALUES (?,?,?,?,?,?,?,?,?)",
+            ["2", req.body.username, req.body.password, req.body.email, req.body.PhoneNum, req.body.department, req.body.position, req.body.status,  req.body.role ])
+            
+            res.status(201).json(createUser);
+            console.log(createUser)
+        }else if(req.body.role == "Super User"){
+            var createUser = await executeQuery("INSERT INTO `tbl_user`( `role_id`, `username`, `password`, `email`, `mobile_no`, `department`, `position`, `status`, `role`) VALUES (?,?,?,?,?,?,?,?,?)",
+            ["3", req.body.username, req.body.password, req.body.email, req.body.PhoneNum, req.body.department, req.body.position, req.body.status,  req.body.role ])
+            
+            res.status(201).json(createUser);
+            console.log(createUser)
+        }
     }
     catch(err){
         res.status(500).json(err);

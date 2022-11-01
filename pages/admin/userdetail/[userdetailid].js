@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from 'next/router'
 import { makeStyles } from "@material-ui/core/styles";
+import { IoMdArrowDropdown } from "react-icons/io";
 import { server } from 'config';
 
 import React from "react";
@@ -15,11 +16,10 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
-import { IoMdEye , IoMdEyeOff , IoMdArrowDropdown } from "react-icons/io";
+import avatar from "assets/img/faces/marc.jpg";
 import DatePicker from "react-datepicker";
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
-import bcrypt from 'bcryptjs'
 
 const styles = {
   cardCategoryWhite: {
@@ -53,11 +53,6 @@ function UserById(data){
     const useStyles = makeStyles(styles);
     const classes = useStyles();
 
-    //Password Hide & Show Toggle
-    const [pwd, setPwd] = useState('');
-    const [isRevealPwd, setIsRevealPwd] = useState(false);
-
-
     const [startDate, setStartDate] = useState();
     const router = useRouter();
 
@@ -67,7 +62,7 @@ function UserById(data){
     const [userdata, setuserdata] = useState({
       role_id:"",
       username: "",
-      // password: "",
+      password: "",
       email: "",
       mobile_no: "",
       //dob: "",
@@ -90,13 +85,10 @@ function UserById(data){
     //   console.log('value', value)
     //   setuserdata({...userdata, [e.target.name]:value })
     // }
-    
+
     console.log(userdata);
     const onSubmit = async (e) =>{
         e.preventDefault();
-
-        const hashedPassword = bcrypt.hashSync(userdata.password, 10)
-        console.log(hashedPassword)
 
         let data = await axios.put(`${server}/api/admin/${user.id}`, userdata);
         console.log(data)
@@ -161,8 +153,7 @@ function UserById(data){
                       <GridContainer>  
                         <GridItem xs={12} sm={12} md={12}>
                           <div className="form-group">
-                            <input type={isRevealPwd ? 'text' : 'password'} className="form-control signup-input" name="password" placeholder="enter your password" value={userdata.password} onChange={handleChange} autoComplete="off"  />
-                            <span className='icon-eyes' onClick={() => setIsRevealPwd((prevState) => !prevState)} >{isRevealPwd ? <IoMdEyeOff /> : <IoMdEye/>}</span>
+                            <input type="password" className="form-control signup-input" name="password" placeholder="enter your password" value={userdata.password} onChange={handleChange} autoComplete="off"  />
                           </div> 
                         </GridItem>
                         {/*<GridItem xs={12} sm={12} md={6}>
@@ -252,7 +243,6 @@ function UserById(data){
                               <option value="">enter your role</option>
                               <option value="User">User</option>
                               <option value="Admin">Admin</option>
-                              <option value="Super User">Super User</option>
                             </select>
                             <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span>
                           </div> 

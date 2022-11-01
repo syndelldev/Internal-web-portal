@@ -291,8 +291,17 @@ td.project-edit-table a {
   font-weight: 900;
 }
 td.project-edit-table {
+display: flex;
   transform: translate(50%,60%);
   float: left;
+}
+.save-btn{
+  box-shadow: 0 2px 2px 0 rgb(0 21 92 / 14%), 0 3px 1px -2px rgb(0 21 92 / 20%), 0 1px 5px 0 rgb(0 21 92 / 12%);
+  background-color: #00155c;
+}
+.save-btn span.MuiButton-label {
+ 
+  color: #fff!important;
 }
 /* .icon-edit-delete{
   display: flex;
@@ -304,7 +313,7 @@ td.project-edit-table {
   margin: 0px 0px !important;
 }
 .chip{
-  width: 20%!important;
+  /* width: 20%!important; */
   border: 2px solid;
   display: inherit;
   border-radius: 30px!important;
@@ -352,7 +361,7 @@ img.image {
   margin-bottom: 20px!important;
 }
 .popup-align{
-  padding: 30px !important;
+  padding: 40px 10px !important;
 }
 }
 .usertitle{
@@ -561,9 +570,6 @@ h1.user-welcome {
   font-size: 40px;
   text-align: center;
   font-family: sans-serif;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
 }
 .user
 {
@@ -733,7 +739,7 @@ p.save-btn{
 /* ccs added by pradeep */
 /* expand and collapse btn css */
 .bttn-design{
-  /*margin-left: 15px;*/
+  margin-left: 15px;
   margin-top: 30px;
 }
 /* end css added by pradeep */
@@ -767,30 +773,20 @@ p.save-btn{
     font-size: 17px!important;
   }
   .MuiGrid-grid-md-4{
-    max-width: 100%!important;
-    flex-basis:100%!important
+    max-width: 55.333333%!important;
+    flex-basis:50%!important
     }
- }/*
+ }
  @media only screen and (max-width: 1080px) and (min-width: 960px) {
   .MuiGrid-grid-md-4{
     max-width: 55.333333%!important;
     flex-basis:50% !important;
     }
-}*/
+}
 @media only screen and (min-width: 960px) {
   h4.projectTitle{
 font-size: 17px!important;
   }}
 
-@media only screen and (max-width: 375px)
-{
-  .makeStyles-content-3
-  {
-    padding:0px 0px !important;
-    margin-top: 70px !important;
-  }
-  .makeStyles-container-4
-  {
-    padding:0px 0px !important;
-  }
-}
+  
+

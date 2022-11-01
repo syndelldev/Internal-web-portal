@@ -40,7 +40,7 @@
 }
 
 .ct-label {
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.7) !important;
 }
 
 .ct-chart-line .ct-label,
@@ -253,7 +253,7 @@ footer ul li a:hover {
   border-radius: 8px 0 0 8px;
   text-align: center;
   top: 120px;
-  /* .badge-primary-background-color: #9c27b0; */
+  .badge-primary-background-color: #9c27b0;
 }
 
 .fixed-plugin .SocialMediaShareButton,
@@ -614,21 +614,199 @@ button.addproject{
 .makeStyles-cardTitleWhite-560,p.makeStyles-cardCategoryWhite-559{
   color: #fff!important;
 }
+.update_userdata .form-group .icon-eyes{
+  margin-top: -32px;
+}
+/* css added by Pradeep */
+.main_task_title {
+  margin: 30px -15px 0;
+}
+.quill strong img {
+  max-width: 100px;
+  max-height: 100px;
+  margin: 0 10px;
+}
+.btn-primary {
+  background-color: #00155c !important;
+  border: 1px solid #00155c !important;
+}
+.project-data .content .content-inner .time-main,
+.project-data .content .content-inner .comment-main {
+  height: 250px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  margin: 15px 0 15px 15px;
+  padding: 15px;
+  scrollbar-width: thin;
+  /* width: 100%; */
+  /* min-width: 450px; */
+}
+.content-inner {
+  display: flex;
+  width: 200%;
+}
+.content .content-inner .time-main,
+.content .content-inner .comment-main {
+  border-radius: 10px;
+  border: 1px solid #777777;
+  /* width: 100%; */
+  min-width: 400px;
+}
+.project-data .content .content-inner .name {
+  color: #00155c;
+}
+.project-data .content .content-inner .time-main::-webkit-scrollbar,
+.project-data .content .content-inner .comment-main::-webkit-scrollbar,
+.form-comment-section::-webkit-scrollbar {
+  /* for debugging */
+  background-color: #16171c1f;
+  width: 10px;
+  height: 50px;
+  margin-right: 5px;
+}
+.project-data .content .content-inner .time-main::-webkit-scrollbar,
+.project-data .content .content-inner .comment-main::-webkit-scrollbar,
+.form-comment-section::-webkit-scrollbar {
+  max-height: 50%;
+  height: 50%;
+  border-radius: 10px;
+}
+.time-main p,
+.comment-main p,
+.comment-main p .ql-editor p {
+  margin: 0;
+  font-weight: 500;
+}
+.time-main .MuiGrid-container .MuiGrid-item {
+  display: flex;
+}
+.time-main .MuiGrid-container .MuiGrid-item p {
+  margin-right: 20px;
+}
+.ql-editor {
+  padding: 12px 0 !important;
+}
+.ql-editor p {
+  margin: 0;
+  font-weight: 500;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-size: 16px;
+}
+/* .MuiGrid-container .model-update {
+  border: 1px solid #777777;
+  border-radius: 10px;
+  display: inline-flex;
+} */
+.form-comment-section {
+  border: 1px solid #ced4da;
+  padding: 10px;
+  border-radius: 10px;
+  height: 200px;
+  overflow-y: auto;
+}
+.form-comment-section .fcs-name {
+  font-weight: 700;
+  font-size: 16px;
+  color: #00155c;
+}
+.form-time {
+  border: 1px solid #ced4da;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 30px;
+}
+@media (max-width: 767px) {
+  .content-inner {
+    display: unset !important;
+    width: auto !important;
+  }
+  .content .content-inner .time-main,
+  .content .content-inner .comment-main {
+    min-width: 0 !important;
+    margin: 15px 0 !important;
+  }
+}
+@media (max-width: 1265px) and (min-width: 768px) {
+  .content .content-inner .time-main,
+  .content .content-inner .comment-main {
+    min-width: 330px !important;
+  }
+}
+/* end added css by Pradeep */
+/* Loading css Start */
+.spinner-wrapper {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgb(255, 255, 255);
+  z-index: 9999;
 
-  /* css added by Pradeep */
-  .main_task_title{
-    margin: 30px -15px 0;
+}
+.spinner {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height:60px;
+  width:60px;
+  margin:0px auto;
+  -webkit-animation: rotation .6s infinite linear;
+  -moz-animation: rotation .6s infinite linear;
+  -o-animation: rotation .6s infinite linear;
+  animation: rotation .6s infinite linear;
+  border-left:6px solid rgba(0,174,239,.15);
+  border-right:6px solid rgba(0,174,239,.15);
+  border-bottom:6px solid rgba(0,174,239,.15);
+  border-top:6px solid rgba(0,174,239,.8);
+  border-radius:100%;
+}
+
+@-webkit-keyframes rotation {
+  from {-webkit-transform: rotate(0deg);}
+  to {-webkit-transform: rotate(359deg);}
+}
+@-moz-keyframes rotation {
+  from {-moz-transform: rotate(0deg);}
+  to {-moz-transform: rotate(359deg);}
+}
+@-o-keyframes rotation {
+  from {-o-transform: rotate(0deg);}
+  to {-o-transform: rotate(359deg);}
+}
+@keyframes rotation {
+  from {transform: rotate(0deg);}
+  to {transform: rotate(359deg);}
+}
+/*Loading css End*/
+/***** CSS Added by Ashvini Strat *****/
+.MuiPaper-root.MuiDrawer-paper.makeStyles-drawerPaper-6.MuiDrawer-paperAnchorLeft.MuiDrawer-paperAnchorDockedLeft.MuiPaper-elevation0{
+  background: url('/sidebar_bg.jpg');
+  width: auto;
+  height: 100%;
+  background-size: cover;
+  background-position: center center;
+}
+.MuiDrawer-paper .MuiButton-text span{
+  color: #4caf50!important;
+  padding-left: 15px;
+}
+/* .MuiButton-text span{
+  color: #fff!important;
+} */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px)
+{
+  .MuiButtonBase-root.MuiIconButton-root.MuiIconButton-colorInherit{
+    right: 65%;
   }
-  .quill strong img{
-    max-width: 100px;
-    max-height: 100px;
-    margin: 0 10px;
+}
+@media only screen and (min-device-width: 260px) and (max-device-width: 767px)
+{
+  .MuiButtonBase-root.MuiIconButton-root.MuiIconButton-colorInherit{
+    right: 105%;
   }
-  .btn-primary{
-    margin-top: 10px;
-    margin-bottom: 10px;
-    background-color: #00155c!important;
-    border: 1px solid #00155c!important;
-  }
-  
-  /* end added css by Pradeep */
+}
+/***** CSS Added by Ashvini End *****/

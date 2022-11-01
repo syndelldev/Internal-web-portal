@@ -13,16 +13,16 @@ async function addSubtask(req,res){
             for(var i=0; i<project.length; i++){
                 projectName.push(project[i].value);
             }
-            console.log(projectName);
+            // console.log(projectName);
 
             var members = req.body.task_person;
-            console.log(members);
+            // console.log(members);
 
             const allSelectedUser = [];
             for(var i=0; i<members.length; i++){
                 allSelectedUser.push(members[i].value);
             }
-            console.log(allSelectedUser);
+            // console.log(allSelectedUser);
 
             const userid = [];
                 
@@ -33,14 +33,14 @@ async function addSubtask(req,res){
                 userid.push(memberId);
                 //console.log(userid);
             }
-            console.log(`${userid}`);
+            // console.log(`${userid}`);
 
             var addUserQuery = await executeQuery("create table IF NOT EXISTS `tbl_subtask` ( `task_id` int AUTO_INCREMENT PRIMARY KEY , `project_name` varchar(255), `task_title` varchar(255), `task_description` text, `task_language` varchar(255), `task_priority` varchar(255), `task_person` text , `task_status` varchar(255) , `task_start` varchar(255) , `task_deadline` varchar(255) ,  `task_delete` varchar(255) , `task_createdBy` varchar(255), `task_created_date` timestamp  )");
             var addUserQuery = await executeQuery("INSERT INTO `tbl_subtask` ( `project_name`, `task_title`, `task_description` , `task_language`, `task_priority`, `task_person`, `task_status`, `task_start` , `task_deadline`, `task_delete` , `task_createdBy` ) VALUES (?,?,?,?,?,?,?,?,?,?,?)", 
             [ `${projectName}` , req.body.task_title, req.body.task_description ,  req.body.task_language, req.body.task_priority , `${allSelectedUser}` , "task_toDo" , req.body.task_start , req.body.task_deadline , "no" , req.body.task_createdBy ] );
 
             res.status(200).json(addUserQuery);
-            console.log(addUserQuery.warningCount);
+            // console.log(addUserQuery.warningCount);
         }
         catch(err){
             console.log(err);
