@@ -168,7 +168,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
     var project_details = user_project;
   }
 
-  //Fetch API According Role End
+  //New project add start date & end date
   const [addStartDate, setStart_Date] = useState();
   const [addEndDate, setEnd_Date] = useState();
 
@@ -730,7 +730,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
               setonhold_title(true);
             }
           }
-        }else if(endDates < startDates){
+        }else if(startDates != null && endDates != null && endDates < startDates){
           // Improper startDate and endDate toast error
           if(! toast.isActive(toastId.current)) {
             toastId.current = toast.error('End date can`t be before its start!', {
@@ -845,7 +845,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                 </GridItem>
                               </GridContainer><br/>
 
-                              <GridContainer>  
+                              <GridContainer>
                                 <GridItem xs={12} sm={12} md={6}>
                                   <div className="form-group" {...register('project_start')}>
                                   <span>Project Start Date</span><span className="required">*</span>

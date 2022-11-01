@@ -361,6 +361,10 @@ function Dashboard( { project_details , User_name , allTask, userTask, language,
     }
   }
   
+    //New project add start date & end date
+    const [addStartDate, setStart_Date] = useState();
+    const [addEndDate, setEnd_Date] = useState();
+  
   const onSubmit = async (result) =>{
     
     console.log(result);
@@ -926,9 +930,9 @@ const updateComment = async(id, comment) =>{
                           isClearable
                           name="datetime"
                           className={"form-control"}
-                          selected={startDate}
+                          selected={addStartDate}
                           onChange={val => {
-                            setStartDate(val);
+                            setStart_Date(val);
                             setValue("start", val);
                           }}
                           dateFormat="dd-MM-yyyy"
@@ -946,13 +950,13 @@ const updateComment = async(id, comment) =>{
                           isClearable
                           name="datetime1"
                           className={"form-control"}
-                          selected={endDate}
+                          selected={addEndDate}
                           onChange={val => {
-                            setEndDate(val);
+                            setEnd_Date(val);
                             setValue("end", val);
                           }}
                           dateFormat="dd-MM-yyyy"
-                          minDate={startDate}
+                          minDate={addStartDate}
                         />
                       {/* <div className="error-msg">{errors.task_deadline && <span>{errors.task_deadline.message}</span>}</div> */}
                       </div>
