@@ -1106,6 +1106,7 @@ const updateComment = async(id, comment) =>{
     </Card>
     {todo_title ? (
       <>
+      {dateDetails.length > 0 ? (
         <table className="project-data" >
           <tr className="project-data-title">
             <th className="status">Project Name</th>
@@ -1628,6 +1629,7 @@ const updateComment = async(id, comment) =>{
             }
           })}
         </table>
+      ) : (<div className="no_Data"><h4 className="no-data">No Data</h4></div>)}
       </>
     ):("")
     }
@@ -1641,6 +1643,7 @@ const updateComment = async(id, comment) =>{
     </Card>
     {onhold_title ? (
       <>
+      {dateDetails.length > 0 ? (
         <table className="project-data" >
           <tr className="project-data-title">
             <th className="status">Project Name</th>
@@ -2163,6 +2166,7 @@ const updateComment = async(id, comment) =>{
               }
             })}
         </table>
+      ) : (<div className="no_Data"><h4 className="no-data">No Data</h4></div>)}
       </>
     ):("")}
     
@@ -2175,6 +2179,7 @@ const updateComment = async(id, comment) =>{
     </Card>
     {running_title ? (
       <>
+      {dateDetails.length > 0 ? (
         <table className="project-data" >
           <tr className="project-data-title">
             <th className="status">Project Name</th>
@@ -2698,6 +2703,7 @@ const updateComment = async(id, comment) =>{
             }
           })}
         </table>
+      ) : (<div className="no_Data"><h4 className="no-data">No Data</h4></div>)}
       </>
     ):("")}
     
@@ -2710,6 +2716,7 @@ const updateComment = async(id, comment) =>{
     </Card>
     {completed_title ? (
       <>
+      {dateDetails.length > 0 ? (
         <table className="project-data" >
           <tr className="project-data-title">
             <th className="status">Project Name</th>
@@ -3241,6 +3248,7 @@ const updateComment = async(id, comment) =>{
             }
           })}
         </table>
+      ) : (<div className="no_Data"><h4 className="no-data">No Data</h4></div>)}
       </>
     ):("")}
     

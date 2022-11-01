@@ -754,7 +754,22 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
           }
         }
       }
-
+      const [allRunningData, set_runningData] = useState([]);
+      useEffect(() =>{
+        // const u_data = async() =>{
+      
+          const all_runningData = [];
+          dateDetails.map((data)=>{
+            if(data.project_status == 'Completed'){
+              all_runningData.push(data);
+            }
+          });
+          set_runningData(all_runningData);
+        })
+        // u_data();
+      // },[]);
+      console.log(allRunningData);
+    
             
   return (
     <span>
@@ -1076,6 +1091,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
             <th className="assignee">Assignee</th>
             <th className="view-edit">View & Edit</th>
           </tr>
+
           {dateDetails.map((project)=>{
             if(project.project_delete == "no"){
               if(project.project_status == 'Running'){
