@@ -328,6 +328,15 @@ function Dashboard( { project_details , User_name , allTask, userTask, language,
     
     }else{
 
+      console.log("update task");
+      console.log(startDate);
+      
+    // start date get year, month, day for database value
+    var s_Date = startDate.getFullYear() + '-' + startDate.getMonth() + '-' + startDate.getDate();
+    
+    // end date get year, month, day for database value
+    var e_Date = endDate.getFullYear() + '-' + endDate.getMonth() + '-' + endDate.getDate();
+
     // get selected language
     if(u_Language != ""){
       var Language = u_Language[0].value;
@@ -346,7 +355,7 @@ function Dashboard( { project_details , User_name , allTask, userTask, language,
       const res = await fetch(`${server}/api/subtask/update_subtask`,{
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ task_id:uoption.task_id, project_name: p_selected , task_person: allMember, task_status: Status, task_title: uoption.task_title , task_description:uoption.task_description , task_language: Language, task_priority: Priority, task_start: startDate , task_deadline: endDate }),
+        // body: JSON.stringify({ task_id:uoption.task_id, project_name: p_selected , task_person: allMember, task_status: Status, task_title: uoption.task_title , task_description:uoption.task_description , task_language: Language, task_priority: Priority, task_start: startDate , task_deadline: endDate }),
       });
       
       if(!toast.isActive(toastId.current)) {
