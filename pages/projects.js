@@ -1010,15 +1010,8 @@ console.log(dateDetails.length);
         <div className="Project-title-div">
           <div className="Project-title">Projects</div>     
             <div className="bttn-design-div">
-            <button className="dropdown_button" onClick={()=> 
-              {  project_running("Running"), closeOnHold("Running"), setrunning_title(true), project_OnHold("On hold"), closeTaskToDo("On hold"), setonhold_title(true)
-              project_Completed("Completed"), closeCompleted("Completed"), setcompleted_title(true) }}
-            >Expand All</button>&nbsp;&nbsp;&nbsp;
-            
-            <button className="dropdown_button" onClick={()=> 
-              {  project_running("Running"), closeOnHold("Running"), setrunning_title(false), project_OnHold("On hold"), closeTaskToDo("On hold"), setonhold_title(false)
-              project_Completed("Completed"), closeCompleted("Completed"), setcompleted_title(false) }}
-            >Collapse All</button>
+            <button className="dropdown_button" onClick={()=> { setrunning_title(true), setonhold_title(true), setcompleted_title(true) }}>Expand All</button>&nbsp;&nbsp;&nbsp;            
+            <button className="dropdown_button" onClick={()=> { setrunning_title(false), setonhold_title(false), setcompleted_title(false) }}>Collapse All</button>
           </div>
         </div>
         {/*Project Title End*/}
@@ -1069,7 +1062,7 @@ console.log(dateDetails.length);
 <Card className="task_title_status">
       <GridContainer >
         <GridItem xs={12} sm={12} md={12} >
-          <div onClick={()=> {  project_running("Running") , closeOnHold("Running") , setrunning_title(!running_title) }} className="task_title" > Project In Progress {running_title ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
+          <div onClick={()=> { setrunning_title(!running_title) }} className="task_title" > Project In Progress {running_title ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
         </GridItem>
       </GridContainer>
     </Card>
@@ -1495,7 +1488,7 @@ console.log(dateDetails.length);
     <Card className="task_title_status">
       <GridContainer >
         <GridItem xs={12} sm={12} md={12} >
-          <div onClick={()=> {  project_OnHold("On hold") , closeProjectProgress("On hold") , setonhold_title(!onhold_title) }} className="task_title" > Project On Hold {onhold_title ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
+          <div onClick={()=> {  setonhold_title(!onhold_title) }} className="task_title" > Project On Hold {onhold_title ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
         </GridItem>
       </GridContainer>
     </Card>
