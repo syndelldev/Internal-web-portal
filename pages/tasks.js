@@ -451,58 +451,6 @@ useEffect(() =>{
   u_data();
 },[]);
 
-// to do task block open and close onclick
-const [taskTodo, setTaskToDo] = useState([]);
-    const taskToDo = (task) => {
-        setTaskToDo(task);
-    }
-const closeTaskToDo = async(task) =>{
-  if(taskTodo != ""){
-    setTaskToDo("");
-  }else{
-    setTaskToDo(task);
-  }
-}
-
-// on hold task block open and close onclick
-const [TaskOnHold, setTaskOnHold] = useState([]);
-    const taskOnHold = (task) => {
-        setTaskOnHold(task);
-    }
-    console.log(TaskOnHold);
-const closeTaskOnHold = async(task) =>{
-  if(TaskOnHold != ""){
-    setTaskOnHold("");
-  }else{
-    setTaskOnHold(task);
-  }
-}
-
-// running task block open and close onclick
-const [TaskRunning, setTaskRunning] = useState([]);
-    const taskRunning = (task) => {
-      setTaskRunning(task);
-    }
-const closeTaskRunning = async(task) =>{
-  if(TaskRunning != ""){
-    setTaskRunning("");
-  }else{
-    setTaskRunning(task);
-  }
-}
-
-// completed task block open and close onclick
-const [TaskCompleted, setTaskCompleted] = useState([]);
-    const taskCompleted = (task) => {
-        setTaskCompleted(task);
-    }
-const closeTaskCompleted = async(task) =>{
-  if(TaskCompleted != ""){
-    setTaskCompleted("");
-  }else{
-    setTaskCompleted(task);
-  }
-}
 
 // status update function only for user
 const updateStatus = async(t_status) =>{
