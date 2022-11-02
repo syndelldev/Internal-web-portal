@@ -1102,7 +1102,7 @@ const updateComment = async(id, comment) =>{
     <Card>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-          <div className="task_title" onClick={()=> { taskToDo("Task to do") , closeTaskToDo("Task to do"), settodo_title(!todo_title) }}>Task to do {todo_title ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
+          <div className="task_title" onClick={()=> { settodo_title(!todo_title) }}>Task to do {todo_title ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
         </GridItem>
       </GridContainer>
     </Card>
@@ -1118,7 +1118,7 @@ const updateComment = async(id, comment) =>{
             <th className="view-edit">View & Edit</th>
           </tr>
           {dateDetails.map((task)=>{
-            if(task.task_status == taskTodo){
+            if(task.task_status == "Task to do"){
               var person = task.task_person.split(",");
               const MySQLDate  = task.task_deadline;
               let date = MySQLDate.replace(/[-]/g, '/').substr(0,10);
@@ -1639,7 +1639,7 @@ const updateComment = async(id, comment) =>{
     <Card>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-          <div className="taskOn_hold task_title" onClick={()=> { taskOnHold("Task on hold") , closeTaskOnHold("Task on hold"), setonhold_title(!onhold_title) }}>Task on hold {onhold_title ? <FaArrowUp/>:<FaArrowDown/>}</div>
+          <div className="taskOn_hold task_title" onClick={()=> { setonhold_title(!onhold_title) }}>Task on hold {onhold_title ? <FaArrowUp/>:<FaArrowDown/>}</div>
         </GridItem>
       </GridContainer>
     </Card>
@@ -1656,7 +1656,7 @@ const updateComment = async(id, comment) =>{
           </tr>
             {dateDetails.map((task)=>{
               if(task.task_delete == "no"){
-                if(task.task_status == TaskOnHold){
+                if(task.task_status == "Task on hold"){
                   var person = task.task_person.split(",");
                   return(
                     <>
@@ -2175,7 +2175,7 @@ const updateComment = async(id, comment) =>{
     <Card>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-          <div className="taskRunning task_title" onClick={()=> { taskRunning("Task running") , closeTaskRunning("Task running"),setrunning_title(!running_title) }}>Task Running {running_title ? <FaArrowUp/>:<FaArrowDown/>} </div>
+          <div className="taskRunning task_title" onClick={()=> { setrunning_title(!running_title) }}>Task Running {running_title ? <FaArrowUp/>:<FaArrowDown/>} </div>
         </GridItem>
       </GridContainer>
     </Card>
@@ -2192,7 +2192,7 @@ const updateComment = async(id, comment) =>{
           </tr>
           {dateDetails.map((task)=>{
             if(task.task_delete == "no"){
-              if(task.task_status == TaskRunning){
+              if(task.task_status == "Task running"){
                 var person = task.task_person.split(",");
                 return(
                   <>
@@ -2712,7 +2712,7 @@ const updateComment = async(id, comment) =>{
     <Card>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-          <div className="taskCompleted task_title" onClick={()=> { taskCompleted("Task completed") , closeTaskCompleted("Task completed") , setcompleted_title(!completed_title)}}>Task completed {completed_title ? <FaArrowUp/>:<FaArrowDown/>} </div>
+          <div className="taskCompleted task_title" onClick={()=> { setcompleted_title(!completed_title)}}>Task completed {completed_title ? <FaArrowUp/>:<FaArrowDown/>} </div>
         </GridItem>
       </GridContainer>
     </Card>
@@ -2729,7 +2729,7 @@ const updateComment = async(id, comment) =>{
           </tr>
           {dateDetails.map((task)=>{
             if(task.task_delete == "no"){
-              if(task.task_status == TaskCompleted){
+              if(task.task_status == "Task completed"){
                 var person = task.task_person.split(",");
                 return(
                   <>
