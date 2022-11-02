@@ -19,7 +19,7 @@ a {
 
 .dropdown_button {
   color: #fff;
-  font-weight: 400;
+  font-weight: 600;
   padding: 9px 20px;
   font-size: 16px;
   border: none;
@@ -175,6 +175,7 @@ button.MuiButtonBase-root.MuiButton-root.makeStyles-button-2276.makeStyles-prima
 }
 h4.text {
   margin-bottom: 0em!important;
+  font-weight: 500;
 }
 .add_new_user {
   /* vertical-align: !important; */
@@ -186,7 +187,7 @@ h4.text {
 }
 .makeStyles-content-3{
   
-  margin-top: 0px!important;
+  /*margin-top: 0px!important;*/
 
 }
 .makeStyles-cardBody-134{
@@ -212,6 +213,7 @@ h4.text {
 
 .bttn-design{
   cursor: pointer!important;
+  margin-right: 30px;
   color:#fff;
   font-weight: 600;
   padding: 9px 20px;
@@ -256,7 +258,7 @@ a.icon-edit-delete {
   background-color: white;
   border: none;
 }
-.text ,.projectTitle{
+/*.text ,*/.projectTitle{
   color: black;
   font-weight: bold;
 }
@@ -289,10 +291,9 @@ td.project-edit-table a {
   color: darkblue;
   font-weight: 900;
 }
-td.project-edit-table  .archieve-icon{
-  padding-left: 30px;
-}
-td.project-edit-table .icon-edit-delete .icon-width svg, .icon-edit-delete svg{
+td.project-edit-table {
+display: flex;
+  transform: translate(50%,60%);
   float: left;
 }
 .save-btn{
@@ -303,6 +304,11 @@ td.project-edit-table .icon-edit-delete .icon-width svg, .icon-edit-delete svg{
  
   color: #fff!important;
 }
+/* .icon-edit-delete{
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+} */
 .makeStyles-grid-340{
   width: 100%!important;
   margin: 0px 0px !important;
@@ -381,25 +387,25 @@ p.usersubtitle{
   /* background-color: white ; */
 }
 
-.High{
-  margin: 5px 5px 8px 5px;
+.High
+{
   min-width: 30%!important;
   float: right;
-  background-color: rgb(206, 7, 7);
+  background-color: red;
   border-radius: 5px;
   padding: 5px 20px 5px 20px;
   margin-right: 5px;
   margin-left: 5px;
-  color: #fff;
+  color: #000;
   font-weight: 500;
   text-align: center;
 }
-.Medium{
-  margin: 5px 5px 8px 5px;
+.Medium
+{
   min-width: 30%!important;
   text-align: center;
   float: right;
-  background-color: rgb(245, 245, 28);
+  background-color: yellow;
   border-radius: 5px;
   padding: 5px 20px 5px 20px;
   margin-right: 5px;
@@ -407,16 +413,16 @@ p.usersubtitle{
   color: #000;
   font-weight: 500;
 }
-.Low{
-  margin: 5px 5px 8px 5px;
+.Low
+{
   min-width: 30%!important;
   float: right;
-  background-color: #4BB543;
+  background-color: green;
   border-radius: 5px;
   padding: 5px 20px 5px 20px;
   margin-right: 5px;
   margin-left: 5px;
-  color: #fff;
+  color: #000;
   font-weight: 500;
   text-align: center;
 }
@@ -430,7 +436,7 @@ table.project-data {
 }
 table.project-data th{
   width: 20%!important;
-  background-color: #ddd;
+  background-color: #fff;
   text-align: left;
   padding-left: 15px;
     padding-right: 15px;
@@ -620,6 +626,13 @@ td.project-title-table,td.project-priority-table {
   font-weight: 600;
   font-size: 14px;
 }
+td.project-priority-person {
+  padding-left: 15px;
+}
+.form-group
+{
+  margin-top: 5px;
+}
 .form-group span{
   color:#00155c;
   font-weight: 600;
@@ -643,10 +656,10 @@ h5.profile-data {
   padding-bottom: 4px;
 }
 img.user-image{height: 30px;}
-
 .Project-title {
-  font-size: 35px;
-  font-weight: 400;
+  padding-bottom: 25px;
+  font-size: 40px;
+  font-weight: 500;
 }
 /** Profile page css end **/
 /** Project sidebar css start **/
@@ -780,5 +793,8 @@ p.save-btn{
 font-size: 17px!important;
   }}
 
-  
-
+.res
+{
+  display: flex;
+  justify-content: center;
+}

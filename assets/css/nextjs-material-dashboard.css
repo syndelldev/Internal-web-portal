@@ -825,7 +825,7 @@ tr:nth-child(odd){background-color: #ddd}
 @media only screen and (min-device-width: 260px) and (max-device-width: 767px)
 {
   .MuiButtonBase-root.MuiIconButton-root.MuiIconButton-colorInherit{
-    right: 105%;
+   /* right: 105%;*/
   }
   .Projects-title{
     font-size: 18px;
