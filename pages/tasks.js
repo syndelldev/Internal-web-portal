@@ -384,8 +384,11 @@ function Dashboard( { project_details , User_name , allTask, userTask, language,
 
     }else{
     
-    const p_start = result.start.toDateString();
-    const p_end = result.end.toDateString();
+    // start date get year, month, day for database value
+    var s_Date = result.start.getFullYear() + '-' + result.start.getMonth() + '-' + result.start.getDate();
+    
+    // end date get year, month, day for database value
+    var e_Date = result.end.getFullYear() + '-' + result.end.getMonth() + '-' + result.end.getDate();
 
     if(u_Language != ""){
       var Language = u_Language[0].value;
@@ -398,9 +401,8 @@ function Dashboard( { project_details , User_name , allTask, userTask, language,
     const res = await fetch(`${server}/api/subtask/add_subtask`,{
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body:JSON.stringify({task_person:selected, project_name:p_selected, task_status:result.task_status , task_title:result.task_title, task_description:result.task_description, task_language:Language, task_createdBy:cookies.name , task_priority:Priority, task_start: p_start , task_deadline: p_end }),
+      body:JSON.stringify({task_person:selected, project_name:p_selected, task_status:result.task_status , task_title:result.task_title, task_description:result.task_description, task_language:Language, task_createdBy:cookies.name , task_priority:Priority, task_start: s_Date , task_deadline: e_Date }),
     })
-    const data=await res.json()
 
     if(res.status==200)
     {

@@ -406,13 +406,6 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
 
   const onSubmit = async (result) =>{
     
-    console.log("result");
-    console.log(result.start);
-    // const p_start = result.start.toDateString();
-    // const p_end = result.end.toDateString();
-    var year1 = result.start.getFullYear() + '-' + result.start.getMonth();
-    console.log(year1);
-
     // start date get year, month, day for database value
     var s_Date = result.start.getFullYear() + '-' + result.start.getMonth() + '-' + result.start.getDate();
     
@@ -444,8 +437,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body:JSON.stringify({project_person:selected,project_department:Department,project_status:Status, project_title:result.project_title, project_description:result.project_description, project_language:Language, project_priority:Priority, project_start: s_Date , project_deadline: e_Date , projectAdded_by: cookies }),
-      })
-      const data=await res.json();
+    })
       
       if(res.status==200){
         if(!toast.isActive(toastId.current)){
