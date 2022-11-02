@@ -150,8 +150,6 @@ function Dashboard( { project_details, project_hold, project_completed, project_
     }
   });
 
-  const useStyles = makeStyles(styles);
-  const classes = useStyles();
   const [cookies, setCookie] = useCookies('');
   const [trackdate,settrackdate] = useState("")
   const [users, setusers] = useState([]);
