@@ -26,7 +26,7 @@ import { useCookies } from 'react-cookie';
 import axios from "axios";
 import dynamic from "next/dynamic";
 import AvatarGroup from 'react-avatar-group';
-import Avatar from '@mui/material/Avatar';
+// import Avatar from '@mui/material/Avatar';
 // import AvatarGroup from '@mui/material/AvatarGroup';
 
 const ReactQuill = dynamic(

@@ -584,7 +584,7 @@ button.addproject{
 }
 .content{
   max-height: 0;
-  /* overflow: hidden; */
+  overflow: hidden;
 }
 .content.show{
   display: flex;
