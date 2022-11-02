@@ -6,7 +6,6 @@ import Admin from "layouts/Admin.js";
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import { server } from 'config';
-import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 
 const styles = {
   cardCategoryWhite: {
