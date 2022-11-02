@@ -93,18 +93,10 @@ export async function getServerSideProps(context){
   const response = await fetch(`${server}/api/admin`)
   const User_name = await response.json();
 
-  // All departments list for filter
-  const department = await fetch(`${server}/api/user/user_department`);
-  const user_Department = await department.json();
-
-  // All languages list for filter
-  const lang = await fetch(`${server}/api/language`)
-  const language = await lang.json();
-  
-  return{ props: {project_details, User_name, user_Department, language} }
+  return{ props: {project_details, User_name} }
 }
 
-function ProjectFilter({ project_details , User_name, user_Department, language}){
+function ProjectFilter({ project_details , User_name }){
   console.log(project_details)
 
     const useStyles = makeStyles(styles);
@@ -455,38 +447,37 @@ function ProjectFilter({ project_details , User_name, user_Department, language}
                         </Popup>
                         {/* create project form end */}
                     </GridItem>
+                    <GridItem>
+                        <div className="department_dropdown">
+                        <button className="dropdown_button">Project Departments</button>
+                            <div className="department-link">
+                            {user_Department.map((department)=>{
+                                return(
+                                <span>
+                                    <a href={`${server}/project_department/${department.department_name}`}>{department.department_name}</a>
+                                </span>
+                                )                      
+                            }
+                            )}
+                            </div>
+                        </div>
+                    </GridItem>
 
-          <GridItem>
-            <div className="department_dropdown">
-            <button className="dropdown_button">Departments</button>
-                <div className="department-link">
-                  {user_Department.map((department)=>{
-                    return(
-                      <span>
-                        <a href={`${server}/project_department/${department.department_name}`}>{department.department_name}</a>
-                      </span>
-                    )                      
-                  }
-                  )}
-                </div>
-            </div>
-          </GridItem>
-
-          <GridItem>
-            <div className="department_dropdown">
-              <button className="dropdown_button">Languages</button>
-                  <div className="department-link">
-                    {language.map((language)=>{
-                      return(
-                        <span>
-                          <a href={`${server}/project_language/${language.language_name}`}>{language.language_name}</a>
-                        </span>
-                      )
-                    }
-                    )}
-                  </div>
-            </div>
-          </GridItem>
+                    <GridItem>
+                        <div className="department_dropdown">
+                        <button className="dropdown_button">Project Languages</button>
+                            <div className="department-link">
+                                {language.map((language)=>{
+                                return(
+                                    <span>
+                                    <a href={`${server}/project_language/${language.language_name}`}>{language.language_name}</a>
+                                    </span>
+                                )
+                                }
+                                )}
+                            </div>
+                        </div>
+                    </GridItem>
                 </GridContainer>
             </div>
 

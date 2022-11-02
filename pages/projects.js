@@ -25,6 +25,9 @@ import { MdDelete } from 'react-icons/md';
 import { useCookies } from 'react-cookie';
 import axios from "axios";
 import dynamic from "next/dynamic";
+import AvatarGroup from 'react-avatar-group';
+import Avatar from '@mui/material/Avatar';
+// import AvatarGroup from '@mui/material/AvatarGroup';
 
 const ReactQuill = dynamic(
   async () => {
@@ -406,6 +409,13 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
 
   const onSubmit = async (result) =>{
     
+    console.log("result");
+    console.log(result.start);
+    // const p_start = result.start.toDateString();
+    // const p_end = result.end.toDateString();
+    var year1 = result.start.getFullYear() + '-' + result.start.getMonth();
+    console.log(year1);
+
     // start date get year, month, day for database value
     var s_Date = result.start.getFullYear() + '-' + result.start.getMonth() + '-' + result.start.getDate();
     
@@ -437,7 +447,8 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body:JSON.stringify({project_person:selected,project_department:Department,project_status:Status, project_title:result.project_title, project_description:result.project_description, project_language:Language, project_priority:Priority, project_start: s_Date , project_deadline: e_Date , projectAdded_by: cookies }),
-    })
+      })
+      const data=await res.json();
       
       if(res.status==200){
         if(!toast.isActive(toastId.current)){
@@ -746,14 +757,18 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
           }
         }
       }
+console.log("project list");
+console.log(dateDetails);
+console.log(dateDetails.length);
+
             
   return (
     <span>
 
       <div className="buttonalign" hidden={cookies.Role_id == "2"} >
         <GridContainer>
-          <GridItem>
-            <Popup trigger={<div><button className="bttn-design" onClick={ ()=> userId(cookies.Id)}>Add Project</button></div>} className="popupReact" modal>
+          <div>
+            <Popup trigger={<div><button className="dropdown_button" onClick={ ()=> userId(cookies.Id)}>Add Project</button>&nbsp;&nbsp;&nbsp;</div>} className="popupReact" modal>
             {close => (
               <div>
                 <GridContainer>
@@ -955,11 +970,11 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
               )}
             </Popup>
             {/* create project form end */}
-          </GridItem>
+          </div>
 
-          <GridItem>
+          <div>
             <div className="department_dropdown">
-            <button className="dropdown_button">Departments</button>
+            <button className="dropdown_button">Departments</button>&nbsp;&nbsp;&nbsp;
                 <div className="department-link">
                   {user_Department.map((department)=>{
                     return(
@@ -971,9 +986,9 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                   )}
                 </div>
             </div>
-          </GridItem>
+          </div>
 
-          <GridItem>
+          <div>
             <div className="department_dropdown">
               <button className="dropdown_button">Languages</button>
                   <div className="department-link">
@@ -987,72 +1002,74 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                     )}
                   </div>
             </div>
-          </GridItem>
+          </div>
         </GridContainer>
       </div>
-      {/* <div className="Project-title">Projects</div> */}
-  <div className="main_task_title">
-    <div className="Project-title">Projects</div>
-    <GridContainer>
-      <GridItem>
-        <button className="bttn-design" onClick={()=> 
-          {  project_running("Running"), closeOnHold("Running"), setrunning_title(true), project_OnHold("On hold"), closeProjectProgress("On hold"), setonhold_title(true)
-          project_Completed("Completed"), closeCompleted("Completed"), setcompleted_title(true) }}
-          >Expand All</button>
+      <div className="main_task_title">
+        {/*Project Title Start*/}
+        <div className="Project-title-div">
+          <div className="Project-title">Projects</div>     
+            <div className="bttn-design-div">
+            <button className="dropdown_button" onClick={()=> 
+              {  project_running("Running"), closeOnHold("Running"), setrunning_title(true), project_OnHold("On hold"), closeTaskToDo("On hold"), setonhold_title(true)
+              project_Completed("Completed"), closeCompleted("Completed"), setcompleted_title(true) }}
+            >Expand All</button>&nbsp;&nbsp;&nbsp;
+            
+            <button className="dropdown_button" onClick={()=> 
+              {  project_running("Running"), closeOnHold("Running"), setrunning_title(false), project_OnHold("On hold"), closeTaskToDo("On hold"), setonhold_title(false)
+              project_Completed("Completed"), closeCompleted("Completed"), setcompleted_title(false) }}
+            >Collapse All</button>
+          </div>
+        </div>
+        {/*Project Title End*/}
+    
+    {/* select start date & end date for Date Filter */}
 
-        <button className="bttn-design" onClick={()=> 
-          {  project_running("Running"), closeOnHold("Running"), setrunning_title(false), project_OnHold("On hold"), closeProjectProgress("On hold"), setonhold_title(false)
-          project_Completed("Completed"), closeCompleted("Completed"), setcompleted_title(false) }}
-          >Collapse All</button>
-        </GridItem>
-
-{/* select start date & end date for Date Filter */}
-
-{/* Date filter select dates start */}
+    {/* Date filter select dates start */}
     <strong>Project Date Filter:</strong>
-      <GridItem>
-        <DatePicker
-          placeholderText="Start date"
-          className={"form-control"}
-          selected={startDates}
-          onChange={(update) => {
-            setstartDates(update);
-          }}
-          isClearable={true}
-          dateFormat="dd/MM/yyyy"
-          showYearDropdown={true}
-          showMonthDropdown={true}
-        />
-      </GridItem>
-
-      <GridItem>
-        <DatePicker
-          placeholderText="End date"
-          className={"form-control"}
-          selected={endDates}
-          onChange={(update) => {
-            setendDates(update);
-          }}
-          isClearable={true}
-          dateFormat="dd/MM/yyyy"
-          showYearDropdown={true}
-          showMonthDropdown={true}
-          minDate={startDates}
-        />
-      </GridItem>
-      <button className="bttn-design" onClick={() => date_Range()}>Enter</button>
-{/* Date filter select dates end */}
-
-    </GridContainer>
+      <GridContainer>
+        <GridItem xs={4} sm={3} md={2} >
+          <DatePicker
+            placeholderText="Start date"
+            className='form-control login-input'
+            selected={startDates}
+            onChange={(update) => {
+              setstartDates(update);
+            }}
+            isClearable={true}
+            dateFormat="dd/MM/yyyy"
+            showYearDropdown={true}
+            showMonthDropdown={true}
+          />
+        </GridItem>
+        <GridItem xs={4} sm={3} md={2}> 
+          <DatePicker
+            placeholderText="End date"
+            className='form-control login-input'
+            selected={endDates}
+            onChange={(update) => {
+              setendDates(update);
+            }}
+            isClearable={true}
+            dateFormat="dd/MM/yyyy"
+            showYearDropdown={true}
+            showMonthDropdown={true}
+            minDate={startDates}
+          />
+        </GridItem>
+        <GridItem xs={4} sm={3} md={2}><button className="dropdown_button" onClick={() => date_Range()}>Enter</button></GridItem>
+      </GridContainer>
+      
+    {/* Date filter select dates end */}
+    
   </div>
-
-<GridContainer>
+  <GridContainer>
     
 {/***** Running Project start *****/}
 <Card className="task_title_status">
       <GridContainer >
         <GridItem xs={12} sm={12} md={12} >
-          <div onClick={()=> {  setrunning_title(!running_title) }} className="task_title" > Project In Progress {running_title ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
+          <div onClick={()=> {  project_running("Running") , closeOnHold("Running") , setrunning_title(!running_title) }} className="task_title" > Project In Progress {running_title ? <FaArrowUp/>:<FaArrowDown/>}  </div> 
         </GridItem>
       </GridContainer>
     </Card>
@@ -1060,6 +1077,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
       <>
 
       {dateDetails.length > 0 ? (
+        <div className="responsive-table">
         <table className="project-data" >
           <tr className="project-data-title">
             <th  className="status">Project Name</th>
@@ -1067,7 +1085,6 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
             <th className="assignee">Assignee</th>
             <th className="view-edit">View & Edit</th>
           </tr>
-
           {dateDetails.map((project)=>{
             if(project.project_delete == "no"){
               if(project.project_status == 'Running'){
@@ -1077,15 +1094,27 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                     <td className="project-title-table">{project.project_title}</td>
                     <td className="priority-data"><p className={project.project_priority}>{project.project_priority}</p></td>
                     <td className="project-priority-person">
-                      {person.length>2 ? (
-                        <span>
+                      <AvatarGroup
+                        avatars={person}
+                        initialCharacters={2}
+                        max={2}
+                        size={42}
+                        displayAllOnHover={true}
+                        shadow={2}
+                        // backgroundColor="#00155c"
+                        fontSize={0.4}
+                        borderColor= "#0000ff"
+                        bold={true}
+                      ></AvatarGroup>
+                      
+                      {/* {person.length>2 ? (
+                        <>
                           <div className="chip">
                             <span>{person[0]}</span>
                           </div>
                           <div className="chip">
                             <span>{person[1]}</span>
                           </div>
-                            {/* Edit popUp Start*/}
                             <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>Load more</span></div></a>} className="popupReact"  position="left">
                             {close => (
                               <div className="popup-align">
@@ -1120,8 +1149,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                               </div>
                             )}
                             </Popup>
-                            {/*Edit popup End*/}
-                        </span>
+                        </>
                       ):(
                         <span>
                           {person.map((user)=>{
@@ -1132,7 +1160,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                             )
                           })}
                         </span>
-                      )}
+                      )} */}
                     </td>
                     <td className="project-edit-table">
                       {/* Edit popUp Start*/}
@@ -1351,8 +1379,6 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                   </GridContainer>
 
                                   {comments.map((m)=>{
-                                    // console.log("comments");
-                                    // console.log(comments);
                                       return(
                                         <span className="comment-box">
                                           <GridContainer className="comment-box">
@@ -1370,12 +1396,12 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                               <div>
 
                                               <ReactQuill value={m.comment} theme="bubble" readOnly />
-      <Popup
-        trigger={ <span><button className="btn btn-primary" onClick={()=>{ editComment(m.id)} } disabled={ m.username != cookies.name }>Edit</button></span> }
-        className="popupReact"
-        modal
-      >
-        {close => (
+                                  <Popup
+                                    trigger={ <span><button className="btn btn-primary" onClick={()=>{ editComment(m.id)} } disabled={ m.username != cookies.name }>Edit</button></span> }
+                                    className="popupReact"
+                                    modal
+                                  >
+                                    {close => (
                               <Card>
                                 <CardBody>
                                       <div className={classes.close}>
@@ -1396,9 +1422,9 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                   </CardFooter>
                                 </CardBody>
                               </Card>
-        )}
-        
-      </Popup>
+                                              )}
+                                              
+                                            </Popup>
                                               </div>
                                             </GridItem>
                                           </GridContainer>
@@ -1458,7 +1484,8 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
             }
           })}
         </table>
-      ) : (<div className="no_Data"><h4 className="no-data">No Data</h4></div>)}
+        </div>
+      ) : (<div className="no_Data"><p className="no-data">No Data</p></div>)}
       </>
 
     ):("")}
@@ -1475,6 +1502,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
     {onhold_title ? (
       <>
       {dateDetails.length > 0 ? (
+        <div className="responsive-table">
         <table className="project-data" >
           <tr className="project-data-title">
             <th className="status">Project Name</th>
@@ -1491,7 +1519,19 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                     <td className="project-title-table">{project.project_title}</td>
                     <td className="priority-data"><p className={project.project_priority}>{project.project_priority}</p></td>
                     <td className="project-priority-person">
-                    {person.length>2 ? (
+                      <AvatarGroup
+                        avatars={person}
+                        initialCharacters={2}
+                        max={2}
+                        size={42}
+                        displayAllOnHover={true}
+                        shadow={2}
+                        // backgroundColor="#00155c"
+                        fontSize={0.4}
+                        borderColor= "#0000ff"
+                        bold={true}
+                      ></AvatarGroup>
+                      {/* {person.length>2 ? (
                         <span>
                           <div className="chip">
                             <span>{person[0]}</span>
@@ -1499,7 +1539,6 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                           <div className="chip">
                             <span>{person[1]}</span>
                           </div>
-                            {/* Edit popUp Start*/}
                             <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>Load more</span></div></a>} position="left">
                             {close => (
                               <div className="popup-align">
@@ -1534,7 +1573,6 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                               </div>
                             )}
                             </Popup>
-                            {/*Edit popup End*/}
                         </span>
                       ):(
                         <span>
@@ -1546,7 +1584,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                             )
                           })}
                         </span>
-                      )}
+                      )} */}
                     </td>
                     <td>
                       {/* Edit popUp Start*/}
@@ -1716,14 +1754,6 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                               customCloseIcon={<></>}
                                               disable={cookies.Role_id == "2"}
                                           />
-
-                                            {/* <select name="project_status" id="Status" className="form-control signup-input" value={uoption.project_status} onChange={handleChange} disabled={cookies.Role_id == "2"} >
-                                              <option value=""  disabled selected>Select Project Status</option>
-                                              <option value="on hold">On hold</option>
-                                              <option value="running">Running</option>
-                                              <option value="completed">Completed</option>
-                                            </select>
-                                          <span className='icon-eyes adduser-dropdown'><IoMdArrowDropdown /></span> */}
                                         </div> 
                                     </GridItem>
                                   </GridContainer><br/>
@@ -1774,8 +1804,6 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                                   </GridContainer>
 
                                   {comments.map((m)=>{
-                                    // console.log("comments");
-                                    // console.log(comments);
                                       return(
                                         <span>
                                           <GridContainer>
@@ -1882,6 +1910,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
             }
           })}
         </table>
+        </div>
       ) : (<div className="no_Data"><h4 className="no-data">No Data</h4></div>)}
       </>
 
@@ -1899,6 +1928,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
     {completed_title ? (
       <>
       {dateDetails.length > 0 ? (
+        <div className="responsive-table">
         <table className="project-data" >
           <tr className="project-data-title">
             <th className="status">Project Name</th>
@@ -1915,7 +1945,19 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                     <td className="project-title-table">{project.project_title}</td>
                     <td  className="priority-data"><p className={project.project_priority}>{project.project_priority}</p></td>
                     <td className="project-priority-person">
-                    {person.length>2 ? (
+                      <AvatarGroup
+                        avatars={person}
+                        initialCharacters={2}
+                        max={2}
+                        size={42}
+                        displayAllOnHover={true}
+                        shadow={2}
+                        // backgroundColor="#00155c"
+                        fontSize={0.4}
+                        borderColor= "#0000ff"
+                        bold={true}
+                      ></AvatarGroup>
+                      {/* {person.length>2 ? (
                         <>
                           <div className="chip">
                             <span>{person[0]}</span>
@@ -1923,7 +1965,6 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                           <div className="chip">
                             <span>{person[1]}</span>
                           </div>
-                            {/* Edit popUp Start*/}
                             <Popup trigger={<a className="icon-edit-delete"><div className='chip'><span>Load more</span></div></a>} className="popupReact" position="left">
                             {close => (
                               <div className="popup-align">
@@ -1958,7 +1999,6 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                               </div>
                             )}
                             </Popup>
-                            {/*Edit popup End*/}
                         </>
                       ):(
                         <span>
@@ -1970,11 +2010,11 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
                             )
                           })}
                         </span>
-                      )}
+                      )} */}
                     </td>
                     <td>
                       {/* Edit popUp Start*/}
-                      <Popup trigger={<button className="edit_project"><div className='icon-width' onClick={()=> { projectId(project.project_id), getData(project.project_id) } }><FiEdit/></div></button>} className="popupReact" modal nested>
+                      <Popup trigger={<a className="icon-edit-delete"><div className='icon-width' onClick={()=> { projectId(project.project_id), getData(project.project_id) } }><FiEdit/></div></a>} className="popupReact" modal nested>
                       {close => (
                         <div className="popup-align">
                           <GridContainer>
@@ -2305,6 +2345,7 @@ function Dashboard( { project_details, user_project, User_name, language, user_D
             }
           })}
         </table>
+        </div>
       ) : (<div className="no_Data"><h4 className="no-data">No Data</h4></div>)}
       </>
     ):("")}

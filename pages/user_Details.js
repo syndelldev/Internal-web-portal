@@ -23,7 +23,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableBody from "@material-ui/core/TableBody";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
-import styles from "assets/jss/nextjs-material-dashboard/components/tableStyle.js";
+// import styles from "assets/jss/nextjs-material-dashboard/components/tableStyle.js";
 import axios from "axios";
 import Popup from "reactjs-popup";
 import { server } from 'config';
@@ -43,7 +43,19 @@ export async function getServerSideProps(context){
 
   return{ props: {UserDetail, user_Department} }
 } 
-
+const styles = {
+  link: {
+    border: "1px solid #000000",
+    color: "#000000",
+    padding: "5px 10px",
+  },
+  close: {
+    marginLeft: "auto",
+    fontSize: "40px",
+    paddingRight: "15px",
+    cursor: "pointer",
+  },
+}
 function UserDetail({UserDetail, user_Department}) {
   // console.log(UserDetail);
   const { register,  watch, handleSubmit, formState: { errors }, setValue, control } = useForm({mode: "onBlur"});
@@ -464,12 +476,12 @@ function UserDetail({UserDetail, user_Department}) {
                               <div>
                                 <GridContainer>
                                   <GridItem xs={12} sm={12} md={12}>
-                                    <form onSubmit={handleSubmit(UpdateUser)} method="POST">
+                                    <form onSubmit={handleSubmit(UpdateUser)} method="POST" className="update_userdata">
                                     <Card>
                                       <CardHeader color="primary">
                                       <GridContainer>
                                         <GridItem>
-                                          <h4 className="text">Update User Detail</h4>
+                                          <h4 className="Updatedetails">Update User Detail</h4>
                                         </GridItem>
                                           <div className={classes.close}>
                                             <a onClick={close}>&times;</a>

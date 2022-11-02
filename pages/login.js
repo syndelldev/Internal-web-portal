@@ -14,6 +14,9 @@ export default function home(){
     const { register, watch, handleSubmit, formState: { errors }, setValue, control } = useForm({mode: "onBlur"}); 
     const [cookies, setCookie] = useCookies(['name']);
 
+    const avtar=[];
+    console.log('avtar', avtar)
+
     const [email,setemail] = useState("");
     const [password,setpassword] = useState("");
 
@@ -109,7 +112,7 @@ export default function home(){
                             <div id='personal-account'>
                                 <div className="form-group"  >
                                     <label htmlFor="ba-num"  className='form-label'>Email</label>
-                                    <input type="email" name="email" placeholder="Enter your email" className='form-control login-input' {...register('email', { required: 'Please enter your email', pattern: {value: /^[a-zA-Z0-9]+@+syndelltech+.+[A-z]$/ , message: 'Please enter a valid email ex:email@syndelltech.in',},} )} />
+                                    <input type="email" name="email" placeholder="Enter your email" className='form-control login-input' {...register('email', { required: 'Please enter your email', pattern: {value: /^[a-zA-Z0-9+_.-]+@+syndelltech+.+[A-z]$/ , message: 'Please enter a valid email ex:email@syndelltech.in',},} )} />
                                     <span className='icon-eyes'><IoMdMail /></span>
                                     <div className="error-msg">{errors.email && <p>{errors.email.message}</p>}</div>
                                 </div>

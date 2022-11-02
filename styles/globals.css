@@ -19,7 +19,7 @@ a {
 
 .dropdown_button {
   color: #fff;
-  font-weight: 600;
+  font-weight: 400;
   padding: 9px 20px;
   font-size: 16px;
   border: none;
@@ -212,7 +212,6 @@ h4.text {
 
 .bttn-design{
   cursor: pointer!important;
-  margin-right: 30px;
   color:#fff;
   font-weight: 600;
   padding: 9px 20px;
@@ -290,9 +289,10 @@ td.project-edit-table a {
   color: darkblue;
   font-weight: 900;
 }
-td.project-edit-table {
-display: flex;
-  transform: translate(50%,60%);
+td.project-edit-table  .archieve-icon{
+  padding-left: 30px;
+}
+td.project-edit-table .icon-edit-delete .icon-width svg, .icon-edit-delete svg{
   float: left;
 }
 .save-btn{
@@ -303,17 +303,12 @@ display: flex;
  
   color: #fff!important;
 }
-/* .icon-edit-delete{
-  display: flex;
-  align-items: center;
-  margin-left: auto;
-} */
 .makeStyles-grid-340{
   width: 100%!important;
   margin: 0px 0px !important;
 }
 .chip{
-  width: 20%!important;
+  /* width: 20%!important; */
   border: 2px solid;
   display: inherit;
   border-radius: 30px!important;
@@ -361,7 +356,7 @@ img.image {
   margin-bottom: 20px!important;
 }
 .popup-align{
-  padding: 30px !important;
+  padding: 40px 10px !important;
 }
 }
 .usertitle{
@@ -386,42 +381,42 @@ p.usersubtitle{
   /* background-color: white ; */
 }
 
-.High
-{
+.High{
+  margin: 5px 5px 8px 5px;
   min-width: 30%!important;
   float: right;
-  background-color: red;
+  background-color: rgb(206, 7, 7);
+  border-radius: 5px;
+  padding: 5px 20px 5px 20px;
+  margin-right: 5px;
+  margin-left: 5px;
+  color: #fff;
+  font-weight: 500;
+  text-align: center;
+}
+.Medium{
+  margin: 5px 5px 8px 5px;
+  min-width: 30%!important;
+  text-align: center;
+  float: right;
+  background-color: rgb(245, 245, 28);
   border-radius: 5px;
   padding: 5px 20px 5px 20px;
   margin-right: 5px;
   margin-left: 5px;
   color: #000;
   font-weight: 500;
-  text-align: center;
 }
-.Medium
-{
+.Low{
+  margin: 5px 5px 8px 5px;
   min-width: 30%!important;
-  text-align: center;
   float: right;
-  background-color: yellow;
+  background-color: #4BB543;
   border-radius: 5px;
   padding: 5px 20px 5px 20px;
   margin-right: 5px;
   margin-left: 5px;
-  color: #000;
-  font-weight: 500;
-}
-.Low
-{
-  min-width: 30%!important;
-  float: right;
-  background-color: green;
-  border-radius: 5px;
-  padding: 5px 20px 5px 20px;
-  margin-right: 5px;
-  margin-left: 5px;
-  color: #000;
+  color: #fff;
   font-weight: 500;
   text-align: center;
 }
@@ -435,7 +430,7 @@ table.project-data {
 }
 table.project-data th{
   width: 20%!important;
-  background-color: #fff;
+  background-color: #ddd;
   text-align: left;
   padding-left: 15px;
     padding-right: 15px;
@@ -625,9 +620,6 @@ td.project-title-table,td.project-priority-table {
   font-weight: 600;
   font-size: 14px;
 }
-td.project-priority-person {
-  padding-left: 15px;
-}
 .form-group span{
   color:#00155c;
   font-weight: 600;
@@ -651,10 +643,10 @@ h5.profile-data {
   padding-bottom: 4px;
 }
 img.user-image{height: 30px;}
+
 .Project-title {
-  padding-bottom: 25px;
-  font-size: 40px;
-  font-weight: 500;
+  font-size: 35px;
+  font-weight: 400;
 }
 /** Profile page css end **/
 /** Project sidebar css start **/

@@ -26,7 +26,7 @@ import styles from "assets/jss/nextjs-material-dashboard/components/headerLinksS
 import { server } from 'config';
 import { useCookies } from 'react-cookie';
 
-//axios.defaults.withCredentials=true;
+import AvatarGroup from 'react-avatar-group';
 
 export default function AdminNavbarLinks({useravtar}) {
 
@@ -50,7 +50,11 @@ export default function AdminNavbarLinks({useravtar}) {
 
   const router = useRouter();
   const [cookies, setCookie, removeCookie ] = useCookies();
-  //console.log(cookies.Id)
+
+  const profile_avtar=[];
+  profile_avtar.push(cookies.name)
+  console.log('profile_avtar', profile_avtar)
+
   const logoutfunc = () => {
     removeCookie('name', { path:'/' } );
     removeCookie('Email', { path:'/' } );
@@ -112,7 +116,7 @@ export default function AdminNavbarLinks({useravtar}) {
         </Button>
         </div>*/}
         
-      {/*<Button
+      {/* <Button
         color={size.width > 959 ? "transparent" : "white"}
         justIcon={size.width > 959}
         simple={!(size.width > 959)}
@@ -123,9 +127,9 @@ export default function AdminNavbarLinks({useravtar}) {
         <Hidden mdUp implementation="css">
           <p className={classes.linkText}>Dashboard</p>
         </Hidden>
-      </Button>*/}
-      {/*<div className={classes.manager}>
-        <Button
+      </Button> */}
+      <div className={classes.manager}>
+        {/* <Button
           color={size.width > 959 ? "transparent" : "white"}
           justIcon={size.width > 959}
           simple={!(size.width > 959)}
@@ -141,8 +145,8 @@ export default function AdminNavbarLinks({useravtar}) {
               Notification
             </p>
           </Hidden>
-        </Button>
-        {/*<Poppers
+        </Button> */}
+        {/* <Poppers
           open={Boolean(openNotification)}
           anchorEl={openNotification}
           transition
@@ -200,8 +204,8 @@ export default function AdminNavbarLinks({useravtar}) {
               </Paper>
             </Grow>
           )}
-            </Poppers>
-        </div>*/}
+            </Poppers> */}
+        </div>
       <div className={classes.manager}>
       
         <Button
@@ -214,32 +218,18 @@ export default function AdminNavbarLinks({useravtar}) {
           className={classes.buttonLink}  
         >
           <Person className={classes.icons} />
-          {/*{users.map((avtar)=>{
-          return(
-            <div key={avtar.id}>
-              <p>{avtar.avtar}</p>
-              <img src={`${server}/avtar.png`} width={40} height={40} className={classes.icons}/>
-            </div>
-          )
-        })}*/}
+          {/* <AvatarGroup
+            avatars={['Ahdf']}
+            initialCharacters={1}
+            max={2}
+            size={40}
+            displayAllOnHover
+            shadow={2}
+          ></AvatarGroup> */}
           <Hidden mdUp implementation="css">
             <p className={classes.linkText}>Profile</p>
           </Hidden>
         </Button>
-        
-        {/*<input 
-            type='file' 
-            accept="/image/*"
-            onChange={(e)=>{
-              const file = e.target.files[0];
-              if(file && file.type.substring(0,5)==="image"){
-                setavtar(file);
-              }
-              else{
-                setavtar(null)
-              }
-            }}
-          />*/}
         <Poppers
           open={Boolean(openProfile)}
           anchorEl={openProfile}

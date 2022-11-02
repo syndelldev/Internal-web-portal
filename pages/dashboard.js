@@ -23,6 +23,12 @@ import { FiEdit } from "react-icons/fi";
 import { BiArchiveIn } from 'react-icons/bi';
 import Button from "components/CustomButtons/Button.js";
 
+import AvatarGroup from 'react-avatar-group';
+
+// import { alertService } from 'services';
+// import {Alert} from "components/Alert.jsx";
+
+
 const styles = {
   cardCategoryWhite: {
     color: "rgba(0,0,0,.62)",
@@ -129,18 +135,10 @@ export async function getServerSideProps(context){
   const stat = await fetch(`${server}/api/projectStatus`)
   const status = await stat.json();
 
-  const high = await fetch(`${server}/api/user/u_priority`,{
-    headers: {
-      'Access-Control-Allow-Credentials': true,
-      Cookie: context.req.headers.cookie
-    },
-  })
-  const high_priority = await high.json();
-
-  return{ props: { project_details, project_hold, project_completed, project_running, User_name, project_runn, project_h, project_comp, language, languageDepartment, priority, status, high_priority } }
+  return{ props: { project_details, project_hold, project_completed, project_running, User_name, project_runn, project_h, project_comp, language, languageDepartment, priority, status } }
 }
 
-function Dashboard( { project_details, project_hold, project_completed, project_running, User_name, project_runn, project_h, project_comp, language, languageDepartment, priority, status, high_priority } ) {
+function Dashboard( { project_details, project_hold, project_completed, project_running, User_name, project_runn, project_h, project_comp, language, languageDepartment, priority, status } ) {
 
   const { register,  watch, handleSubmit, formState: { errors }, setValue } = useForm(); 
   const router = useRouter();
@@ -454,10 +452,9 @@ useEffect(() =>{
             </div>
           )
         })}
-
       </div>
     <h4 className="project_status">Projects</h4>
-
+    
     <GridContainer>
       {project_running.map((status)=>{
         const MySQLDate  = status.project_deadline;
@@ -465,11 +462,11 @@ useEffect(() =>{
         if(date>today)
         {
           On_track.push(status.project_id);
-          console.log("On_track",On_track)
+          // console.log("On_track",On_track)
         }
         else{
           Off_track.push(status.project_id);
-          console.log("Off_track",Off_track)
+          // console.log("Off_track",Off_track)
         }
       })}
     </GridContainer>
@@ -505,16 +502,15 @@ useEffect(() =>{
           </GridItem>
         </GridContainer>
       </div>
-
-{/* admin project lists end */}
-
-
+      <br/>
+    {/* admin project lists end */}
     {running_title ? (
       <>
-      <div className="Projects-title"> {project_Status} Projects</div>
+      <div className="Projects-title"> {project_Status} Projects</div><br/>
+        <div className="responsive-table">
         <table className="project-data" >
           {project_List.length > 0 ? (
-            <>
+          <>
           <tr className="project-data-title">
             <th  className="status">Project Name</th>
             <th className="Priority">Priority</th>
@@ -527,7 +523,7 @@ useEffect(() =>{
             if(project.project_delete == "no"){
 
               var person = project.project_person.split(",");
-              
+              console.log('person',person)
               return(
               <>
               {project_List.map((pro_list)=>{
@@ -538,14 +534,28 @@ useEffect(() =>{
                         <td className="project-title-table">{project.project_title}</td>
                         <td className="priority-data"><p className={project.project_priority}>{project.project_priority}</p></td>
                         <td className="project-priority-person">
-                          {person.map((project_person) => {
+                          <AvatarGroup
+                            // avatars={["James", "Amy", "Will", "Smith"]}
+                            avatars={person}
+                            initialCharacters={2}
+                            max={2}
+                            size={42}
+                            displayAllOnHover={true}
+                            shadow={2}
+                            // backgroundColor="#00155c"
+                            fontSize={0.4}
+                            borderColor= "#0000ff"
+                            bold={true}
+                          >
+                          </AvatarGroup>
+                          {/* {person.map((project_person) => {
                             return(
                               <div className="chip">
                                 <span title={project_person}>{project_person}</span>
                               </div>
                               )
                             })
-                          }
+                          } */}
                         </td>
                         <td className="project-edit-table">
 
@@ -560,8 +570,8 @@ useEffect(() =>{
                                   <CardHeader color="primary">
                                     <GridContainer>
                                       <GridItem>
-                                        <h4 className="Updatedetails"><span hidden={cookies.Role_id == "2"}>Edit</span> <span hidden={cookies.Role_id != "2"}>View</span> Project Details</h4>
-                                        {/* <p className="Updatedetails">Update your project details</p> */}
+                                        <h4 className="Updatedetails">Edit Project</h4>
+                                        <p className="Updatedetails">Update your project details</p>
                                       </GridItem>
                                       <div className={classes.close}>
                                         <a onClick={close}>&times;</a>
@@ -593,6 +603,7 @@ useEffect(() =>{
                                         <div className="form-group">
                                         <span>Project Department</span><span className="required">*</span>
                                         <Multiselect
+                                          disable={cookies.Role_id == "2"}
                                           displayValue="value"
                                           options={all_Department}
                                           value={u_Department}
@@ -604,8 +615,6 @@ useEffect(() =>{
                                           onSelect={setDepartment}
                                           placeholder="Project Department"
                                           showArrow={true}
-                                          customCloseIcon={<></>}
-                                          disable={cookies.Role_id == "2"}  
                                         />
                                         </div> 
                                     </GridItem>
@@ -614,6 +623,7 @@ useEffect(() =>{
                                       <div className="form-group">
                                       <span>Project Language</span><span className="required">*</span>
                                       <Multiselect
+                                        disable={cookies.Role_id == "2"}
                                         displayValue="value"
                                         options={all_Language}
                                         value={u_Language}
@@ -625,9 +635,7 @@ useEffect(() =>{
                                         onSelect={setLanguage}
                                         placeholder="Project Language"
                                         showArrow={true}
-                                        customCloseIcon={<></>}
-                                        disable={cookies.Role_id == "2"}  
-                                    />
+                                      />
                                       <div className="error-msg">{errors.project_language && <span>{errors.project_language.message}</span>}</div>
                                       </div> 
                                     </GridItem>
@@ -640,7 +648,7 @@ useEffect(() =>{
                                         <DatePicker
                                           disabled={cookies.Role_id == "2"}
                                           placeholderText="Start Date : dd/mm/yyyy"
-                                          // isClearable
+                                          isClearable
                                           name="datetime"
                                           className={"form-control"}
                                           value={new Date(uoption.project_start)}
@@ -660,7 +668,7 @@ useEffect(() =>{
                                         <DatePicker
                                           disabled={cookies.Role_id == "2"}
                                           placeholderText="End Date : dd/mm/yyyy"
-                                          isClearable={false}
+                                          isClearable
                                           name="datetime1"
                                           value={new Date(uoption.project_deadline)}
                                           className={"form-control"}
@@ -681,6 +689,7 @@ useEffect(() =>{
                                       <div className="form-group">
                                       <span>Project Priority</span><span className="required">*</span>
                                       <Multiselect
+                                        disable={cookies.Role_id == "2"}
                                         displayValue="value"
                                         options={all_Priority}
                                         value={u_Priority}
@@ -692,9 +701,7 @@ useEffect(() =>{
                                         onSelect={setPriority}
                                         placeholder="Project Priority"
                                         showArrow={true}
-                                        customCloseIcon={<></>}
-                                        disable={cookies.Role_id == "2"}
-                                      />
+                                    />
                                       </div> 
                                     </GridItem>
                                   
@@ -702,6 +709,7 @@ useEffect(() =>{
                                         <div className="form-group">
                                           <span>Project Status</span><span className="required">*</span>
                                           <Multiselect
+                                              disable={cookies.Role_id == "2"}
                                               displayValue="value"
                                               options={all_Status}
                                               value={u_Status}
@@ -713,9 +721,7 @@ useEffect(() =>{
                                               onSelect={setStatus}
                                               placeholder="Project Status"
                                               showArrow={true}
-                                              customCloseIcon={<></>}
-                                              disable={cookies.Role_id == "2"}  
-                                            />
+                                          />
                                         </div> 
                                     </GridItem>
                                   </GridContainer><br/>
@@ -725,7 +731,7 @@ useEffect(() =>{
                                         <div className="form-group">     
                                         <span>Project Members</span><span className="required">*</span>
                                           <Multiselect
-                                            disabled={cookies.Role_id == "2"}
+                                            disable={cookies.Role_id == "2"}
                                             displayValue="value"
                                             options={uoptions}
                                             value={updateSelected}
@@ -735,8 +741,6 @@ useEffect(() =>{
                                             onSelect={setUpdateSelected}
                                             placeholder="Select Project Members"
                                             showArrow={true}
-                                            customCloseIcon={<></>}
-                                            disable={cookies.Role_id == "2"}
                                           />
                                         </div> 
                                       </GridItem>
@@ -760,7 +764,7 @@ useEffect(() =>{
                       </Popup>
                       {/*Edit popup End*/}
                       {/*Delete popUp Start*/}
-                      <Popup trigger={<div className="icon-edit-delete" hidden={cookies.Role_id == "2"}><BiArchiveIn/></div>} modal>
+                      <Popup trigger={<div className="icon-edit-delete archieve-icon" hidden={cookies.Role_id == "2"}><BiArchiveIn/></div>} modal>
                             {close => (
                               <div>
                               <Card>                            
@@ -805,40 +809,11 @@ useEffect(() =>{
             }
           })}
           </>
-         ) : (<div className="no_Data"><h3 className="no-data">No Data</h3></div>)}
+         ) : (<div className="no_Data"><h3 className="not-data">No Data</h3></div>)}
         </table>
+        </div>
       </>
     ):("")}
-
-<div className="my-task"  hidden={cookies.Role_id == "1"}>
-        <GridContainer>
-          <GridItem xs={12} sm={6} md={6}>
-            <h3 className="my-task-priorities"><h2 className="title-my-task">My Task Priorities</h2>
-              {high_priority.map((task)=>{
-
-                        const MySQLDate  = task.task_deadline;
-                        let date = MySQLDate.substr(0,10);
-                        // let date = MySQLDate.replace(/[-]/g, '-').substr(0,10);
-
-                        const today = new Date().toISOString().slice(0,10);
-                        console.log( new Date().toISOString().slice(0,10) );
-                        console.log(date);
-
-              if(date >= today){
-                return(
-                  <span>
-                    <div>
-                      <p className="task-high">{task.task_title}<span className={task.task_priority}>{task.task_priority}</span></p>
-                    </div>
-                  </span>
-                )
-              }
-
-              })}
-            </h3>
-          </GridItem>
-        </GridContainer>
-      </div>    
 
     <ToastContainer limit={1}/>
     </>
