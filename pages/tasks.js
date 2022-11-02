@@ -32,11 +32,7 @@ import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import dynamic from "next/dynamic";
 
-// import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-// import Accordion from "@material-ui/core/Accordion";
-// import AccordionDetails from "@material-ui/core/AccordionDetails";
-// import Typography from "@material-ui/core/Typography";
-// import AccordionSummary from "@material-ui/core/AccordionSummary";
+import AvatarGroup from 'react-avatar-group';
 
 const ReactQuill = dynamic(import("react-quill"), { ssr: false });
 
@@ -764,7 +760,7 @@ function Dashboard({ project_details, User_name, allTask, userTask, language, us
         <GridContainer>
           <GridItem>
 
-            <Popup trigger={<div hidden={cookies.Role_id == "2"}><button className="bttn-design">Add Task</button></div>} className="popupReact" modal>
+            <Popup trigger={<div hidden={cookies.Role_id == "2"}><button className="dropdown_button">Add Task</button></div>} className="popupReact" modal>
 
               {close => (
                 <div>
